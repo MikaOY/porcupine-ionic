@@ -11,6 +11,7 @@ import { TodoItem } from '../todo-item/todo-item'; //not working?
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
+import { TodoService } from './todo.service';
 
 @NgModule({
   declarations: [
@@ -34,7 +35,8 @@ import { SplashScreen } from '@ionic-native/splash-screen';
   providers: [
     StatusBar,
     SplashScreen,
-    {provide: ErrorHandler, useClass: IonicErrorHandler}
+    {provide: ErrorHandler, useClass: IonicErrorHandler},
+    TodoService
   ]
 })
 export class AppModule {}
