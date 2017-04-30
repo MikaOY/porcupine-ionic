@@ -1,6 +1,4 @@
-enum Priority {
-    Low, Medium, High
-}
+import { Priority } from './Priority';
 
 export class Todo {
     constructor(public DateCreated: Date, 
