@@ -7,8 +7,7 @@ import { SettingsPage } from '../pages/settings/settings';
 import { TodosPage } from '../pages/todos/todos';
 import { TabsPage } from '../pages/tabs/tabs';
 
-import { TodoItem } from '../todo-item/todo-item'; //not working?
-
+import { TodoList } from '../pages/todos/todo-list/todo-list'; 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { TodoService } from './todo.service';
@@ -19,7 +18,7 @@ import { TodoService } from './todo.service';
     SettingsPage,
     TodosPage,
     TabsPage,
-    TodoItem
+    TodoList
   ],
   imports: [
     BrowserModule,
