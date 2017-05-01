@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
-import { TodoItem } from '../todo-item/todo-item'; //not working
+import { TodoList } from './todo-list/todo-list.component'; 
 
 @Component({
   selector: 'todos-page',

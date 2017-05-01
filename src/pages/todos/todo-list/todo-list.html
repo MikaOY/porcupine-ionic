@@ -1,6 +1,15 @@
-<ion-list>
-  <ion-item *ngFor="let todo of todos">
-    <ion-label>Give an alpaca a hug</ion-label>
-    <ion-checkbox color="dark" checked="true"></ion-checkbox>
-  </ion-item>
+<ion-list *ngFor="let todo of todos">
+  <ion-item-sliding>
+    <ion-item>
+      <ion-checkbox></ion-checkbox>
+      <ion-label>Give an alpaca a hug</ion-label>
+    </ion-item>
+
+    <ion-item-options side="left">
+      <button>Category</button>
+    </ion-item-options>
+    <ion-item-options side="right">
+      <button>Delete</button>
+    </ion-item-options>
+  </ion-item-sliding>
 </ion-list>
