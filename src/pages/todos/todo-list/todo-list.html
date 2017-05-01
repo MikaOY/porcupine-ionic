@@ -1,4 +1,6 @@
-<ion-item>
-  <ion-label>Give an alpaca a hug</ion-label>
-  <ion-checkbox color="dark" checked="true"></ion-checkbox>
-</ion-item>
+<ion-list>
+  <ion-item *ngFor="let todo of todos">
+    <ion-label>Give an alpaca a hug</ion-label>
+    <ion-checkbox color="dark" checked="true"></ion-checkbox>
+  </ion-item>
+</ion-list>
