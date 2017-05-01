@@ -10,7 +10,7 @@ import { Todo } from '../../../app/todo';
 
 export class TodoList implements OnInit {
     
-    todos: Todo[]; // see mock data in todo.service.ts
+    private todos: Todo[]; // see mock data in todo.service.ts
 
     constructor(private todoService: TodoService){
 
