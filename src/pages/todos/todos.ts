@@ -9,7 +9,6 @@ import { TodoList } from './todo-list/todo-list.component';
 export class TodosPage {
 
   constructor(public navCtrl: NavController) {
-
+   
   }
-
 }
