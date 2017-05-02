@@ -19,4 +19,8 @@ export class TodoList implements OnInit {
     ngOnInit(): void {
         this.todoService.getTodos().then(todos => this.todos = todos);
     }
+
+    onTodoClicked(){
+        
+    }
 }
