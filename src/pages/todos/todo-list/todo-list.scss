@@ -1,8 +1,22 @@
 #details{
     background: #cddbf4;
     margin: auto;
-    height: auto;
     width:50%;
     padding: 20px;
-    visibility: hidden;
+}
+
+#toggleButton{
+    position: absolute;
+    right: 0;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+
+.todoLabel{
+
+}
+#todoInfo {
+    display: inline-block;
+    vertical-align: middle;
 }

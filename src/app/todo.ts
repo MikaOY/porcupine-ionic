@@ -7,7 +7,8 @@ export class Todo {
                 public DateCreated: Date, 
                 public Done: boolean, 
                 public DateDone: Date,
-                public Priority: Priority){
+                public Priority: Priority,
+                public DetailShown: boolean){
 
     }
 }
