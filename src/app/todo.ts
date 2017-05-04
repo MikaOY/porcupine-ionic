@@ -5,10 +5,10 @@ export class Todo {
     constructor(public Info: string,
                 public Category: Category,
                 public DateCreated: Date, 
-                public Done: boolean, 
+                public IsDone: boolean, 
                 public DateDone: Date,
                 public Priority: Priority,
-                public DetailShown: boolean){
+                public DetailShown?: boolean){
 
     }
 }
