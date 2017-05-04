@@ -1,20 +1,32 @@
 import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
 import { TodoService } from '../../../app/todo.service';
+import { Todo } from '../../../app/todo';
+import { TodoList } from '../todo-list/todo-list.component';
 
 @Component({ //replace with list of categories
     selector: "category-list",
-    template: `<ion-list>
-    <ion-item (click)="categoryFilter(Life)">Life</ion-item>
-    <ion-item>Code</ion-item>
-    <ion-item>Unsorted</ion-item>
-</ion-list>
+    providers: [TodoService],
+    template: `
+    <ion-list no-lines>
+        <ion-item>
+            <ion-checkbox (click)=categoryFilter(Life)></ion-checkbox>
+            <ion-label>Life</ion-label>
+        </ion-item>
+    </ion-list>
     `
 })
 
 export class CategorySort{
-    categoryFilter(cate){
-        //function to look through and return array
+    todos;
+    
+    contructor(todoService: TodoService){
+        this.todos = todoService.getTodos();
+        
+    }
+
+    categoryFilter(cate:string){
+        
     }
 }
 
@@ -50,7 +62,7 @@ export class PropertySort{
 })
 
 export class PopoverPage{
-  category=true;
+  category: boolean = true;
   
   toggleSort(){
       this.category=!this.category;

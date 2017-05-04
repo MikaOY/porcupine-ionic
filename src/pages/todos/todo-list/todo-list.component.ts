@@ -3,6 +3,7 @@ import { TodoService } from '../../../app/todo.service';
 
 import { Todo } from '../../../app/todo';
 
+
 @Component({
     selector: 'todo-list',
     templateUrl: 'todo-list.html',
@@ -11,9 +12,10 @@ import { Todo } from '../../../app/todo';
 export class TodoList implements OnInit {
     
     private todos: Todo[]; // see mock data in todo.service.ts
+   
 
     constructor(private todoService: TodoService){
-
+        
     }
 
     ngOnInit(): void {
@@ -37,3 +39,6 @@ export class TodoList implements OnInit {
 
     }
 }
+
+
+
