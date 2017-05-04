@@ -5,7 +5,8 @@ export class Category {
                 public Color: number, // select from a limited array
                 public DateCreated: Date, 
                 public Order?: number, 
-                public DefaultPriority?: Priority){
+                public DefaultPriority?: Priority,
+                public IsShown?: boolean){
 
     }
 }

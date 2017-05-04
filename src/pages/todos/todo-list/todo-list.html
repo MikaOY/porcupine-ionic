@@ -1,14 +1,18 @@
 <ion-list no-lines class="container-fluid">
     <div *ngFor="let todo of todos" class="inline-todo">
         <ion-item-sliding>
-            <ion-item>
-                <ion-label class="todoInfo" (click)=OnTodoClicked()>
-                    <button ion-button (click)=OnCheckClicked()>Check</button>
-                    {{todo.Info}}
+            <ion-item class="todoItem">
+                <ion-checkbox></ion-checkbox>
+                <ion-label class="todoLabel">
+                    <p id="todoInfo">{{todo.Info}}</p>
+                    <button ion-button id="toggleButton" small="true" clear="true" (click)=toggleDetail(todo)>+</button>
+                    
                 </ion-label>
+                
+                
             </ion-item>
             <ion-item-options side="left">
-                <button>
+                <button>        
                     {{todo.Category !== null ? todo.Category.Name : 'ADD'}}
                 </button>
             </ion-item-options>
@@ -17,16 +21,16 @@
             </ion-item-options>
         </ion-item-sliding>
     
-        <div id="details" class="container">
-            <div class="row" (click)=OnDateClicked()>
+        <div id="details" class="container" *ngIf="todo.DetailShown">
+            <div class="row" (click)=onDateClicked()>
                 <div class="col-sm-3">Date:</div>
                 <div class="col-sm-9">{{todo.DateCreated}}</div>
             </div>
-            <div class="row" (click)=OnCategoryClicked()>
+            <div class="row" (click)=onCategoryClicked()>
                 <div class="col-sm-3">Category:</div>
                 <div class="col-sm-9">{{todo.Category !== null ? todo.Category.Name : 'none'}}</div>
             </div>
-            <div class="row" (click)=OnPriorityClicked()>
+            <div class="row" (click)=onPriorityClicked()>
                 <div class="col-sm-3">Priority:</div>
                 <div class="col-sm-9">{{todo.Priority}}</div>
             </div>

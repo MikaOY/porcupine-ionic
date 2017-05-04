@@ -20,7 +20,20 @@ export class TodoList implements OnInit {
         this.todoService.getTodos().then(todos => this.todos = todos);
     }
 
-    onTodoClicked(){
-        
+    toggleDetail(todo){
+        todo.DetailShown = !todo.DetailShown;
+    }
+
+
+    onDateClicked(){
+
+    }
+
+    onCategoryClicked(){
+
+    }
+
+    onPriorityClicked(){
+
     }
 }
