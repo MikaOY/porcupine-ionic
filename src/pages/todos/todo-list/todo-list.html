@@ -1,6 +1,6 @@
 <ion-list no-lines class="container-fluid">
     <ng-container *ngFor="let todo of todos" class="inline-todo">
-        <div *ngIf="hello">
+        <div *ngIf="todo.Category == null ? true : todo.Category.IsShown">
             <ion-item-sliding>
                 <ion-item class="todoItem">
                     <ion-checkbox></ion-checkbox>

@@ -1,33 +1,32 @@
-import { Component } from '@angular/core';
-import { NavController } from 'ionic-angular';
+import { Component, OnInit } from '@angular/core';
 import { TodoService } from '../../../app/todo.service';
 import { Todo } from '../../../app/todo';
-import { TodoList } from '../todo-list/todo-list.component';
+import { Category } from '../../../app/category';
 
 @Component({ //replace with list of categories
     selector: "category-list",
     providers: [TodoService],
     template: `
     <ion-list no-lines>
-        <ion-item>
-            <ion-checkbox (click)=categoryFilter(Life)></ion-checkbox>
-            <ion-label>Life</ion-label>
+        <ion-item *ngFor="let cat of cats">
+            <ion-checkbox [(ngModel)]="cat.IsShown"></ion-checkbox>
+            <ion-label>{{cat.Name}}</ion-label>
         </ion-item>
     </ion-list>
     `
 })
 
-export class CategorySort{
-    todos;
-    
-    contructor(todoService: TodoService){
-        this.todos = todoService.getTodos();
+export class CategorySort implements OnInit{
+    private cats: Category[];
+
+    constructor(private todoService: TodoService){
         
     }
 
-    categoryFilter(cate:string){
-        
+     ngOnInit(): void {
+        this.todoService.getCategories().then(cats => this.cats = cats);
     }
+
 }
 
 
@@ -35,13 +34,37 @@ export class CategorySort{
     selector: "property-list",
     template: `
       <ion-list>
-          <ion-item>Priority</ion-item>
+          <ion-item (click)=sortPriority()>Priority</ion-item>
           <ion-item>Date Created</ion-item>
+          <ion-item>Hi</ion-item>
       </ion-list>
     `
 })
 
 export class PropertySort{
+    private todos: Todo[];
+    constructor(private todoService: TodoService){
+        this.todoService.getTodos().then(todos => this.todos = todos);
+     }
+
+    sortPriority(){
+        var sortedTodos = this.todos.sort( (a,b) =>{
+            if (a.Priority > b.Priority){
+                return 1;
+            }
+
+            if (a.Priority < b.Priority){
+                return -1;
+            }
+
+            if (a.Priority = b.Priority){
+                return 0;
+            }
+        }
+
+        );
+    }
+
 }
 
 
@@ -51,23 +74,25 @@ export class PropertySort{
     selector: 'popover-page',
     template: `
     <ion-list>
-        <button ion-item (click)="toggleSort()">Category</button>
-        <button ion-item (click)="toggleSort()">Property</button>
+        <button ion-item (click)="showCategory()">Category</button>
+        <button ion-item (click)="showProperty()">Property</button>
     </ion-list>
     <category-list *ngIf="category; else property"></category-list>
     <ng-template #property>
-    <property-list></property-list>
+        <property-list></property-list>
     </ng-template>
     `
 })
 
 export class PopoverPage{
   category: boolean = true;
-  
-  toggleSort(){
-      this.category=!this.category;
+  showCategory(){
+      this.category = true;
   }
   
+  showProperty(){
+      this.category = null;
+  }
 }
 
 
