@@ -8,7 +8,8 @@ export class Todo {
                 public IsDone: boolean, 
                 public DateDone: Date,
                 public Priority: Priority,
-                public DetailShown?: boolean){
+                public DetailShown?: boolean,
+                public EditActive?: boolean){
 
     }
 }

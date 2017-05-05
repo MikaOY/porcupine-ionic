@@ -26,8 +26,8 @@ export class TodoList implements OnInit {
         todo.DetailShown = !todo.DetailShown;
     }
 
-    editDetail(todo){
-        
+    activateEdit(todo){
+        todo.EditActive = !todo.EditActive;
     }
 
     onDateClicked(){

@@ -1,14 +1,18 @@
 <ion-list no-lines class="container-fluid">
     <ng-container *ngFor="let todo of todos" class="inline-todo">
         <div *ngIf="todo.Category == null ? true : todo.Category.IsShown">
+
             <ion-item-sliding>
                 <ion-item class="todoItem">
                     <ion-checkbox></ion-checkbox>
-                    <ion-label class="todoLabel">
-                        <p id="todoInfo">{{todo.Info}}</p>
-                        <button ion-button id="editButton" small="true" clear="true" *ngIf="todo.DetailShown" (click)=editDetail(todo)>edit</button>
-                        <button ion-button id="toggleButton" small="true" clear="true" (click)=toggleDetail(todo)>+</button>
-                    </ion-label> 
+                    <ion-input clearInput *ngIf="todo.EditActive; else default" [(ngModel)]="todo.Info"></ion-input>
+                    <ng-template #default>
+                        <ion-label class="todoLabel">
+                            <p id="todoInfo">{{todo.Info}}</p>
+                            <button ion-button id="editButton" small="true" clear="true" *ngIf="todo.DetailShown" (click)=activateEdit(todo)>edit</button>
+                            <button ion-button id="toggleButton" small="true" clear="true" (click)=toggleDetail(todo)>+</button>
+                        </ion-label> 
+                    </ng-template>
                 </ion-item>
                 <ion-item-options side="left">
                     <button>        
@@ -21,18 +25,38 @@
             </ion-item-sliding>
         
             <div id="details" class="container" *ngIf="todo.DetailShown">
+                
                 <div class="row" (click)=onDateClicked()>
+                    
                     <div class="col-sm-3">Date:</div>
-                    <div class="col-sm-9">{{todo.DateCreated}}</div>
+                    <ng-template #uDate>
+                        <div class="col-sm-9" #default>{{todo.DateCreated}}</div>
+                    </ng-template>
+                    <ion-input clearInput *ngIf="todo.EditActive; else uDate" [(ngModel)]="todo.DateCreated">
+                        {{todo.DateCreated}}
+                    </ion-input>
                 </div>
+
                 <div class="row" (click)=onCategoryClicked()>
                     <div class="col-sm-3">Category:</div>
-                    <div class="col-sm-9">{{todo.Category !== null ? todo.Category.Name : 'none'}}</div>
+                    <ng-template #uCate>
+                        <div class="col-sm-9">{{todo.Category !== null ? todo.Category.Name : 'none'}}</div>
+                    </ng-template>
+                    <ion-input clearInput *ngIf="todo.EditActive; else uCate" [(ngModel)]="todo.Category.Name">
+                        {{todo.Category !== null ? todo.Category.Name : 'none'}}
+                    </ion-input>
                 </div>
+
                 <div class="row" (click)=onPriorityClicked()>
                     <div class="col-sm-3">Priority:</div>
-                    <div class="col-sm-9">{{todo.Priority}}</div>
+                    <ng-template #uPrior>
+                        <div class="col-sm-9">{{todo.Priority}}</div>
+                    </ng-template>
+                    <ion-input clearInput *ngIf="todo.EditActive; else uPrior" [(ngModel)]="todo.Priority">
+                        {{todo.Priority}}
+                    </ion-input>
                 </div>
+            
             </div>
         </div>
     </ng-container>
