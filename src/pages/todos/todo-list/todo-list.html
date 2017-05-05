@@ -6,8 +6,8 @@
                     <ion-checkbox></ion-checkbox>
                     <ion-label class="todoLabel">
                         <p id="todoInfo">{{todo.Info}}</p>
+                        <button ion-button id="editButton" small="true" clear="true" *ngIf="todo.DetailShown" (click)=editDetail(todo)>edit</button>
                         <button ion-button id="toggleButton" small="true" clear="true" (click)=toggleDetail(todo)>+</button>
-                        
                     </ion-label> 
                 </ion-item>
                 <ion-item-options side="left">

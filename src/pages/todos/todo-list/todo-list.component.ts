@@ -3,10 +3,10 @@ import { TodoService } from '../../../app/todo.service';
 
 import { Todo } from '../../../app/todo';
 
-
 @Component({
     selector: 'todo-list',
     templateUrl: 'todo-list.html',
+
 })
 
 export class TodoList implements OnInit {
@@ -26,9 +26,12 @@ export class TodoList implements OnInit {
         todo.DetailShown = !todo.DetailShown;
     }
 
+    editDetail(todo){
+        
+    }
 
     onDateClicked(){
-
+        console.log("DateClicked");
     }
 
     onCategoryClicked(){
