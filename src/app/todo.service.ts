@@ -20,6 +20,19 @@ const TODOS: Todo[] = [new Todo('Give an alpaca a hug', CATS[0], new Date(2017, 
 @Injectable()
 export class TodoService {
 
+    connect(): void {
+        // Create connection to database
+        var config = {
+            userName: 'your_username', // update me
+            password: 'your_password', // update me
+            server: 'your_server.database.windows.net', // update me
+            options: {
+                database: 'your_database' //update me
+            }
+        }
+        var connection = new Connection(config);
+    }
+
     getTodos(): Promise<Todo[]> {
         return Promise.resolve(TODOS);
     }
