@@ -34,9 +34,9 @@ export class CategorySort implements OnInit{
     selector: "property-list",
     template: `
       <ion-list>
-          <ion-item (click)=sortPriority()>Priority</ion-item>
+          <button ion-item (click)="sortPriority()">Priority</button>
           <ion-item>Date Created</ion-item>
-          <ion-item>Hi</ion-item>
+          <ion-item>{{Hello}}</ion-item>
       </ion-list>
     `
 })
@@ -46,23 +46,33 @@ export class PropertySort{
     constructor(private todoService: TodoService){
         this.todoService.getTodos().then(todos => this.todos = todos);
      }
-
+    
     sortPriority(){
-        var sortedTodos = this.todos.sort( (a,b) =>{
-            if (a.Priority > b.Priority){
-                return 1;
-            }
+        var sortedTodos:Todo[] = this.todos.sort((a,b) => {
 
-            if (a.Priority < b.Priority){
+            if (a.Priority > b.Priority){
                 return -1;
             }
 
-            if (a.Priority = b.Priority){
-                return 0;
+            if (a.Priority < b.Priority){
+                return 1;
             }
+
+            return 0;
         }
 
         );
+
+        for (let a of this.todos){
+            console.log(a.Info);
+        }
+        
+       
+        for (let a of sortedTodos){
+            console.log(a.Info);
+        }
+
+        console.log("clearrrrrrr");
     }
 
 }
