@@ -4,6 +4,9 @@ import { Todo } from './todo';
 import { Category } from './Category';
 import { Priority } from './Priority';
 
+import { Connection, Request } from 'tedious';
+
+
 // TODO: replace with DB info
 const TODOS: Todo[] = [new Todo('Give an alpaca a hug', new Category('Life', 0, new Date(2017, 4, 30)), new Date(2017, 4, 30), false, undefined, Priority.Low),
                         new Todo('Finish Porcupine', new Category('Code', 1, new Date(2017, 3, 26)), new Date(2017, 4, 28), false, undefined, Priority.Medium),
