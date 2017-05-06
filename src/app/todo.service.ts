@@ -15,22 +15,11 @@ const TODOS: Todo[] = [new Todo('Give an alpaca a hug', CATS[0], new Date(2017, 
                         new Todo('Finish Porcupine', CATS[1], new Date(2017, 4, 28), false, undefined, Priority.Medium),
                         new Todo('Make moist brownie', CATS[2], new Date(2017, 4, 29), true, new Date(2017, 4, 30), Priority.High)];
 
-
-
 @Injectable()
 export class TodoService {
 
-    connect(): void {
-        // Create connection to database
-        var config = {
-            userName: 'your_username', // update me
-            password: 'your_password', // update me
-            server: 'your_server.database.windows.net', // update me
-            options: {
-                database: 'your_database' //update me
-            }
-        }
-        var connection = new Connection(config);
+    queryDB(): void {
+        queryDatabase();
     }
 
     getTodos(): Promise<Todo[]> {
