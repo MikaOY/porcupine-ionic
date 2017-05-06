@@ -25,8 +25,6 @@
             </ion-item-sliding>
         
             <div id="details" class="container" *ngIf="todo.DetailShown">
-                
-                <todo-form *ngIf="todo.EditActive; else default"></todo-form>
 
                 <ng-template #default>
                     <div class="row" (click)=onDateClicked()>
@@ -44,6 +42,33 @@
                         <div class="col-sm-9">{{todo.Priority}}</div>
                     </div>
                 </ng-template>
+
+                <!--the form!!!-->
+                <ng-container *ngIf="todo.EditActive; else default">
+                <form>
+                    <ion-item>
+                        <ion-label for="dateCreated">Date:</ion-label>
+                        <ion-input id="dateCreated" value="todo.DateCreated">
+                        </ion-input>
+                    </ion-item>
+                    <ion-item>
+                        <ion-label for="category">Category:</ion-label>
+                        <ion-select id="category">
+                            <ion-option *ngFor="cat in categories">
+                                    {{cat}}
+                            </ion-option>
+                        </ion-select>
+
+                    </ion-item>
+
+                    
+                   
+                </form>
+                </ng-container>
+
+
+
+
             </div>
         </div>
     </ng-container>
