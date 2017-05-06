@@ -1,0 +1,26 @@
+
+<form>
+    <div class="form-group">
+        <ion-label for="dateCreated">Date:</ion-label>
+            <ion-input clearInput class="form-control" id="dateCreated"[(ngModel)]="todo.DateCreated">
+                {{todo.DateCreated}}
+            </ion-input>
+
+    </div>
+
+    <div class="form-group">
+        <ion-label for="category">Category:</ion-label>
+        <ion-input clearInput class="form-control" id="category" [(ngModel)]="todo.Category.Name">
+            {{todo.Category !== null ? todo.Category.Name : 'none'}}
+        </ion-input>
+
+    </div>
+
+    <div class="form-group">
+        <ion-label for="priority">Priority:</ion-label>
+        <ion-input clearInput class="form-control" id="priority" [(ngModel)]="todo.Priority">
+            {{todo.Priority}}
+        </ion-input>
+    </div>
+</form>
+

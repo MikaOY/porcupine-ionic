@@ -15,7 +15,7 @@
                     </ng-template>
                 </ion-item>
                 <ion-item-options side="left">
-                    <button>        
+                    <button>       
                         {{todo.Category !== null ? todo.Category.Name : 'ADD'}}
                     </button>
                 </ion-item-options>
@@ -26,37 +26,24 @@
         
             <div id="details" class="container" *ngIf="todo.DetailShown">
                 
-                <div class="row" (click)=onDateClicked()>
-                    
-                    <div class="col-sm-3">Date:</div>
-                    <ng-template #uDate>
-                        <div class="col-sm-9" #default>{{todo.DateCreated}}</div>
-                    </ng-template>
-                    <ion-input clearInput *ngIf="todo.EditActive; else uDate" [(ngModel)]="todo.DateCreated">
-                        {{todo.DateCreated}}
-                    </ion-input>
-                </div>
+                <todo-form *ngIf="todo.EditActive; else default"></todo-form>
 
-                <div class="row" (click)=onCategoryClicked()>
-                    <div class="col-sm-3">Category:</div>
-                    <ng-template #uCate>
+                <ng-template #default>
+                    <div class="row" (click)=onDateClicked()>
+                        <div class="col-sm-3">Date:</div>
+                        <div class="col-sm-9">{{todo.DateCreated}}</div>
+                    </div>
+
+                    <div class="row" (click)=onCategoryClicked()>
+                        <div class="col-sm-3">Category:</div>
                         <div class="col-sm-9">{{todo.Category !== null ? todo.Category.Name : 'none'}}</div>
-                    </ng-template>
-                    <ion-input clearInput *ngIf="todo.EditActive; else uCate" [(ngModel)]="todo.Category.Name">
-                        {{todo.Category !== null ? todo.Category.Name : 'none'}}
-                    </ion-input>
-                </div>
+                    </div>
 
-                <div class="row" (click)=onPriorityClicked()>
-                    <div class="col-sm-3">Priority:</div>
-                    <ng-template #uPrior>
+                    <div class="row" (click)=onPriorityClicked()>
+                        <div class="col-sm-3">Priority:</div>
                         <div class="col-sm-9">{{todo.Priority}}</div>
-                    </ng-template>
-                    <ion-input clearInput *ngIf="todo.EditActive; else uPrior" [(ngModel)]="todo.Priority">
-                        {{todo.Priority}}
-                    </ion-input>
-                </div>
-            
+                    </div>
+                </ng-template>
             </div>
         </div>
     </ng-container>

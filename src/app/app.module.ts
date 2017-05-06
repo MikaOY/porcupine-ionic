@@ -18,6 +18,8 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { TodoService } from './todo.service';
 
+import { TodoForm } from '../pages/todos/todo-form/todo-form.component';
+
 
 @NgModule({
   declarations: [
@@ -29,7 +31,8 @@ import { TodoService } from './todo.service';
     PopoverPage,
     PopoverButton,
     CategorySort,
-    PropertySort
+    PropertySort,
+    TodoForm
   ],
   imports: [
     BrowserModule,
@@ -44,9 +47,8 @@ import { TodoService } from './todo.service';
     TabsPage,
     PopoverPage,
     CategorySort,
-    PropertySort
-
-  
+    PropertySort,
+    TodoForm,
   ],
   providers: [
     StatusBar,

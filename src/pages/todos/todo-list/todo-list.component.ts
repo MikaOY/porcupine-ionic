@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { TodoService } from '../../../app/todo.service';
 
 import { Todo } from '../../../app/todo';
+import {TodoForm } from '../todo-form/todo-form.component';
 
 @Component({
     selector: 'todo-list',
