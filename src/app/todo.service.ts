@@ -18,11 +18,55 @@ const TODOS: Todo[] = [new Todo('Give an alpaca a hug', CATS[0], new Date(2017, 
 @Injectable()
 export class TodoService {
 
-    queryDB(): void {
-        queryDatabase();
+    testReq(): void {
+        var Connection = require('tedious').Connection;
+        var Request = require('tedious').Request;
+
+
+        // Create connection to database
+        var config = {
+            userName: 'MikaY', 
+            password: 'Azure6377', 
+            server: 'testing-mika.database.windows.net', 
+            options: {
+                database: 'porcupine-db'
+            }
+        }
+        var connection = new Connection(config);
+
+        // Attempt to connect and execute queries if connection goes through
+        connection.on('connect', function(err) {
+            if (err) {
+                console.log(err)
+            }
+            else{
+                queryDatabase()
+            }
+        });
+
+        function queryDatabase(){
+            console.log('Reading rows from porcupine-db...');
+
+            // Read all rows from table
+            var request = new Request(
+                "SELECT * from todo",
+                function(err, rowCount, rows) {
+                    console.log(rowCount + ' row(s) returned');
+                }
+            );
+
+            request.on('row', function(columns) {
+                columns.forEach(function(column) {
+                    console.log("%s\t%s", column.metadata.colName, column.value);
+                });
+            });
+
+            connection.execSql(request);
+        }
     }
 
     getTodos(): Promise<Todo[]> {
+        //this.testReq();
         return Promise.resolve(TODOS);
     }
 
