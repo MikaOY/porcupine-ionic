@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { TodoService } from '../../../app/todo.service';
-import { Todo } from '../../../app/todo';
-import { Category } from '../../../app/category';
+import { TodoService } from './todo.service';
+import { Todo } from './todo';
+import { Category } from './category';
 
 @Component({ //replace with list of categories
     selector: "category-list",
@@ -45,7 +45,7 @@ export class PropertySort{
     constructor(private todoService: TodoService){
         this.todoService.getTodos().then(todos => this.todos = todos);
      }
-     
+
     sortPriority(){
         var sortedTodos:Todo[] = this.todos.sort((a,b) => {
 
@@ -85,20 +85,25 @@ export class PropertySort{
 
 
 @Component({
-    selector: 'popover-page',
+    selector: 'filter-page',
     template: `
     <ion-list>
         <button ion-item (click)="showCategory()">Category</button>
-        <button ion-item (click)="showProperty()">Property</button>
+        <button ion-item (click)="showProperty()">Priority</button>
     </ion-list>
-    <category-list *ngIf="category; else property"></category-list>
-    <ng-template #property>
-        <property-list></property-list>
+    <category-list *ngIf="category; else priority"></category-list>
+    <ng-template #priority>
+        <ion-list no-lines>
+            <ion-item *ngFor="let cat of cats">
+                <ion-checkbox></ion-checkbox>
+                <ion-label>{{cat.Name}}</ion-label>
+            </ion-item>
+        </ion-list>
     </ng-template>
     `
 })
 
-export class PopoverPage{
+export class FilterPage{
   category: boolean = true;
   showCategory(){
       this.category = true;

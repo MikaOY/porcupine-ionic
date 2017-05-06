@@ -48,17 +48,22 @@
                 <form>
                     <ion-item>
                         <ion-label for="dateCreated">Date:</ion-label>
-                        <ion-input id="dateCreated" value="todo.DateCreated">
+                        <ion-input id="dateCreated" value="{{todo.DateCreated}}">
                         </ion-input>
                     </ion-item>
                     <ion-item>
                         <ion-label for="category">Category:</ion-label>
-                        <ion-select id="category">
-                            <ion-option *ngFor="cat in categories">
-                                    {{cat}}
-                            </ion-option>
+                        <ion-select interface="popover" placeholder="{{todo.Category.Name}}">
+                            <ion-option *ngFor="let cat of cats" >{{cat.Name}}</ion-option>
                         </ion-select>
-
+                    </ion-item>
+                    <ion-item>
+                        <ion-label for="priority">Priority:</ion-label>
+                        <ion-select interface="popover" placeholder="{{todo.Priority}}">
+                            <ion-option>Low</ion-option>
+                            <ion-option>Medium</ion-option>
+                            <ion-option>High</ion-option>
+                        </ion-select>
                     </ion-item>
 
                     

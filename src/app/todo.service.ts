@@ -19,7 +19,7 @@ const TODOS: Todo[] = [new Todo('Give an alpaca a hug', CATS[0], new Date(2017, 
 export class TodoService {
 
     queryDB(): void {
-        queryDatabase();
+        
     }
 
     getTodos(): Promise<Todo[]> {
