@@ -19,6 +19,7 @@ const TODOS: Todo[] = [new Todo('Give an alpaca a hug', CATS[0], new Date(2017, 
 export class TodoService {
 
     testReq(): void {
+
         var Connection = require('tedious').Connection;
         var Request = require('tedious').Request;
 
@@ -66,7 +67,7 @@ export class TodoService {
     }
 
     getTodos(): Promise<Todo[]> {
-        //this.testReq();
+        this.testReq();
         return Promise.resolve(TODOS);
     }
 
