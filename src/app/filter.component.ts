@@ -34,8 +34,13 @@ export class CategorySort implements OnInit{
     selector: "property-list",
     template: `
       <ion-list>
+        <ion-item>
           <button ion-item (click)="sortPriority()">Priority</button>
+          <div ion-content>hi</div>
+        </ion-item>
+        <ion-item>
           <button ion-item (click)="DateCreated()">Date Created</button>
+        </ion-item>
       </ion-list>
     `
 })

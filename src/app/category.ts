@@ -1,4 +1,4 @@
-import { Priority } from './Priority';
+import { Priority } from './priority';
 
 export class Category {
     constructor(public Name: string, 

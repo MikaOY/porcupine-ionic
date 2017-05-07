@@ -1,5 +1,5 @@
-import { Category } from './Category';
-import { Priority } from './Priority';
+import { Category } from './category';
+import { Priority } from './priority';
 
 export class Todo {
     constructor(public Info: string,

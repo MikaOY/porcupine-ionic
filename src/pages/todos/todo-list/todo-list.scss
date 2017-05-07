@@ -1,7 +1,7 @@
 #details{
     background: #cddbf4;
     margin: auto;
-    width:50%;
+    width:90%;
     padding: 20px;
 }
 
@@ -13,10 +13,10 @@
 }
 
 #editButton{ //restyle later
-    position: relative;
-    right: 100;
+    position: absolute;
+    right: 0;
     display: inline-block;
-    vertical-align: middle;
+    
 }
 
 #todoInfo {

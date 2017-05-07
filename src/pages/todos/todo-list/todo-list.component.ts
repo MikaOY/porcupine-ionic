@@ -15,7 +15,8 @@ export class TodoList implements OnInit {
     
     private todos: Todo[]; // see mock data in todo.service.ts
     private cats: Category[];
-    // priorities = Priority; //fix later
+    
+    
     // priors: any[];
 
     constructor(private todoService: TodoService){
@@ -38,16 +39,10 @@ export class TodoList implements OnInit {
         todo.EditActive = !todo.EditActive;
     }
 
-    onDateClicked(){
-        console.log("DateClicked");
-    }
 
-    onCategoryClicked(){
-
-    }
-
-    onPriorityClicked(){
-
+    onFormSubmit(todo){
+        todo.DetailShown = false;
+        todo.EditActive = null;
     }
 }
 
