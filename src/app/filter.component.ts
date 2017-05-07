@@ -34,14 +34,14 @@ export class CategorySort implements OnInit{
     selector: "property-list",
     template: `
       <ion-list>
-        <ion-item>
-          <button ion-item (click)="sortPriority()">Priority</button>
-          <div ion-content>hi</div>
-        </ion-item>
-        <ion-item>
-          <button ion-item (click)="DateCreated()">Date Created</button>
-        </ion-item>
+        <ion-list-header>Sort by Priority</ion-list-header>
+            <ion-item (click)="sortPriorityHL()">High to Low</ion-item>
+            <ion-item (click)="sortPriorityLH()">Low to High</ion-item>
       </ion-list>
+    <ion-list>
+        <ion-list-header>Sort by Date</ion-list-header>
+        <ion-item (click)="DateCreated()">Date Created</ion-item>
+    </ion-list>
     `
 })
 
@@ -51,7 +51,7 @@ export class PropertySort{
         this.todoService.getTodos().then(todos => this.todos = todos);
      }
 
-    sortPriority(){
+    sortPriorityHL(){
         var sortedTodos:Todo[] = this.todos.sort((a,b) => {
 
             if (a.Priority > b.Priority){
@@ -63,9 +63,22 @@ export class PropertySort{
             }
 
             return 0;
-        }
+        });
+    }
 
-        );
+    sortPriorityLH(){
+        var sortedTodos:Todo[] = this.todos.sort((a,b) => {
+
+            if (a.Priority > b.Priority){
+                return 1;
+            }
+
+            if (a.Priority < b.Priority){
+                return -1;
+            }
+
+            return 0;
+        });
     }
 
     DateCreated(){
@@ -94,17 +107,8 @@ export class PropertySort{
     template: `
     <ion-list>
         <button ion-item (click)="showCategory()">Category</button>
-        <button ion-item (click)="showProperty()">Priority</button>
     </ion-list>
     <category-list *ngIf="category; else priority"></category-list>
-    <ng-template #priority>
-        <ion-list no-lines>
-            <ion-item *ngFor="let cat of cats">
-                <ion-checkbox></ion-checkbox>
-                <ion-label>{{cat.Name}}</ion-label>
-            </ion-item>
-        </ion-list>
-    </ng-template>
     `
 })
 
