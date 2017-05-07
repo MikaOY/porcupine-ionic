@@ -3,6 +3,7 @@ import { TodoService } from '../../../app/todo.service';
 
 import { Todo } from '../../../app/todo';
 import { Category } from '../../../app/category';
+import { Priority } from '../../../app/priority';
 
 @Component({
     selector: 'todo-list',
@@ -13,35 +14,35 @@ import { Category } from '../../../app/category';
 export class TodoList implements OnInit {
     
     private todos: Todo[]; // see mock data in todo.service.ts
-    private categories: Category[];
+    private cats: Category[];
+    
+    
+    // priors: any[];
 
     constructor(private todoService: TodoService){
-        
+        //this.priors = Object.keys(this.priorities).filter(k => !isNaN(Number(k)));
     }
 
     ngOnInit(): void {
         this.todoService.getTodos().then(todos => this.todos = todos);
-        this.todoService.getCategories().then(categories => this.categories = categories);
+        this.todoService.getCategories().then(categories => this.cats = categories);
+        
     }
+   
 
     toggleDetail(todo){
         todo.DetailShown = !todo.DetailShown;
+         
     }
 
     activateEdit(todo){
         todo.EditActive = !todo.EditActive;
     }
 
-    onDateClicked(){
-        console.log("DateClicked");
-    }
 
-    onCategoryClicked(){
-
-    }
-
-    onPriorityClicked(){
-
+    onFormSubmit(todo){
+        todo.DetailShown = false;
+        todo.EditActive = null;
     }
 }
 

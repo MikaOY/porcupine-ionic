@@ -8,10 +8,9 @@ import { SettingsPage } from '../pages/settings/settings';
 import { TodosPage } from '../pages/todos/todos';
 import { TabsPage } from '../pages/tabs/tabs';
 
-import { PopoverButton} from '../pages/todos/popover/popover-button.component';
-import { PopoverPage } from '../pages/todos/popover/popover.component';
-import { CategorySort} from '../pages/todos/popover/popover.component';
-import { PropertySort} from '../pages/todos/popover/popover.component';
+
+import { FilterPage, CategorySort, PropertySort } from './filter.component';
+
 
 import { TodoList } from '../pages/todos/todo-list/todo-list.component'; 
 import { StatusBar } from '@ionic-native/status-bar';
@@ -27,8 +26,7 @@ import { TodoService } from './todo.service';
     TodosPage,
     TabsPage,
     TodoList,
-    PopoverPage,
-    PopoverButton,
+    FilterPage,
     CategorySort,
     PropertySort,
    
@@ -44,7 +42,7 @@ import { TodoService } from './todo.service';
     SettingsPage,
     TodosPage,
     TabsPage,
-    PopoverPage,
+    FilterPage,
     CategorySort,
     PropertySort,
 
