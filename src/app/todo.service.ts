@@ -4,7 +4,8 @@ import { Todo } from './todo';
 import { Category } from './category';
 import { Priority } from './priority';
 
-import { Connection, Request } from 'tedious';
+import { Headers, Http } from '@angular/http';
+import 'rxjs/add/operator/toPromise';
 
 const CATS: Category[] = [new Category('Life', 0, new Date(2017, 4, 30), undefined, undefined, true), 
                             new Category('Code', 1, new Date(2017, 3, 26), undefined, undefined, true),
@@ -33,60 +34,35 @@ const TODOS: Todo[] = [new Todo('Give an alpaca a very very very very very very 
 @Injectable()
 export class TodoService {
 
-    testReq(): void {
+    private apiUrl: string;
 
-        var Connection = require('tedious').Connection;
-        var Request = require('tedious').Request;
-
-
-        // Create connection to database
-        var config = {
-            userName: 'MikaY', 
-            password: 'Azure6377', 
-            server: 'testing-mika.database.windows.net', 
-            options: {
-                database: 'porcupine-db'
-            }
-        }
-        var connection = new Connection(config);
-
-        // Attempt to connect and execute queries if connection goes through
-        connection.on('connect', function(err) {
-            if (err) {
-                console.log(err)
-            }
-            else{
-                queryDatabase()
-            }
-        });
-
-        function queryDatabase(){
-            console.log('Reading rows from porcupine-db...');
-
-            // Read all rows from table
-            var request = new Request(
-                "SELECT * from todo",
-                function(err, rowCount, rows) {
-                    console.log(rowCount + ' row(s) returned');
-                }
-            );
-
-            request.on('row', function(columns) {
-                columns.forEach(function(column) {
-                    console.log("%s\t%s", column.metadata.colName, column.value);
-                });
-            });
-
-            connection.execSql(request);
-        }
-    }
+    constructor(private http: Http) { }
 
     getTodos(): Promise<Todo[]> {
-        this.testReq();
         return Promise.resolve(TODOS);
     }
 
     getCategories(): Promise<Category[]> {
         return Promise.resolve(CATS);
+    }
+
+    getTodoList(): Promise<Todo[]> {
+        return this.http.get(this.apiUrl)
+               .toPromise()
+               .then(response => response.json().data as Todo[])
+               .catch(this.handleError);
+    }
+
+    getTodo(id: number): Promise<Todo> {
+        const url = `${this.apiUrl}/${id}`;
+        return this.http.get(url)
+            .toPromise()
+            .then(response => response.json().data as Todo)
+            .catch(this.handleError);
+    }
+
+    private handleError(error: any): Promise<any> {
+        console.error('An error occurred', error); // for demo purposes only
+        return Promise.reject(error.message || error);
     }
 }

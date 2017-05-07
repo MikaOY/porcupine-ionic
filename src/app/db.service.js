@@ -4,13 +4,14 @@ var Request = require('tedious').Request;
 
 // Create connection to database
 var config = {
-  userName: 'your_username', // update me
-  password: 'your_password', // update me
-  server: 'your_server.database.windows.net', // update me
-  options: {
-      database: 'your_database' //update me
-  }
-}
+            userName: 'MikaY', 
+            password: 'Azure6377', 
+            server: 'testing-mika.database.windows.net', 
+            options: {
+                database: 'porcupine-db',
+                encrypt: true,
+            }
+        }
 var connection = new Connection(config);
 
 // Attempt to connect and execute queries if connection goes through
@@ -28,7 +29,7 @@ function queryDatabase(){
 
     // Read all rows from table
     request = new Request(
-        "SELECT TOP 1 pc.Name as CategoryName, p.name as ProductName FROM [SalesLT].[ProductCategory] pc JOIN [SalesLT].[Product] p ON pc.productcategoryid = p.productcategoryid",
+        "SELECT * from todo",
         function(err, rowCount, rows) {
             console.log(rowCount + ' row(s) returned');
         }
