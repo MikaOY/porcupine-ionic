@@ -4,7 +4,8 @@ import { Todo } from './todo';
 import { Category } from './category';
 import { Priority } from './priority';
 
-import { Connection, Request } from 'tedious';
+import { Headers, Http } from '@angular/http';
+import 'rxjs/add/operator/toPromise';
 
 const CATS: Category[] = [new Category('Life', 0, new Date(2017, 4, 30), undefined, undefined, true), 
                             new Category('Code', 1, new Date(2017, 3, 26), undefined, undefined, true),
@@ -20,9 +21,9 @@ const TODOS: Todo[] = [new Todo('Give an alpaca a very very very very very very 
 @Injectable()
 export class TodoService {
 
-    queryDB(): void {
-        
-    }
+    private apiUrl: string;
+
+    constructor(private http: Http) { }
 
     getTodos(): Promise<Todo[]> {
         return Promise.resolve(TODOS);
@@ -30,5 +31,25 @@ export class TodoService {
 
     getCategories(): Promise<Category[]> {
         return Promise.resolve(CATS);
+    }
+
+    getTodoList(): Promise<Todo[]> {
+        return this.http.get(this.apiUrl)
+               .toPromise()
+               .then(response => response.json().data as Todo[])
+               .catch(this.handleError);
+    }
+
+    getTodo(id: number): Promise<Todo> {
+        const url = `${this.apiUrl}/${id}`;
+        return this.http.get(url)
+            .toPromise()
+            .then(response => response.json().data as Todo)
+            .catch(this.handleError);
+    }
+
+    private handleError(error: any): Promise<any> {
+        console.error('An error occurred', error); // for demo purposes only
+        return Promise.reject(error.message || error);
     }
 }
