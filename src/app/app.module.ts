@@ -9,7 +9,7 @@ import { TodosPage } from '../pages/todos/todos';
 import { TabsPage } from '../pages/tabs/tabs';
 
 
-import { FilterPage, CategorySort, PropertySort } from './filter.component';
+import { CategorySort, PropertySort } from './filter.component';
 
 
 import { TodoList } from '../pages/todos/todo-list/todo-list.component'; 
@@ -26,7 +26,6 @@ import { TodoService } from './todo.service';
     TodosPage,
     TabsPage,
     TodoList,
-    FilterPage,
     CategorySort,
     PropertySort,
    
@@ -42,7 +41,6 @@ import { TodoService } from './todo.service';
     SettingsPage,
     TodosPage,
     TabsPage,
-    FilterPage,
     CategorySort,
     PropertySort,
 
