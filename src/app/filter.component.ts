@@ -13,6 +13,11 @@ import { Category } from './category';
             <ion-checkbox [(ngModel)]="cat.IsShown"></ion-checkbox>
             <ion-label>{{cat.Name}}</ion-label>
         </ion-item>
+        <ion-item>
+            <ion-checkbox></ion-checkbox>
+            <ion-label>Archived</ion-label>
+            <ion-icon name="archive"></ion-icon>
+        </ion-item>
     </ion-list>
     `
 })
