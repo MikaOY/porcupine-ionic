@@ -7,6 +7,14 @@ import { Category } from './category';
     selector: "category-list",
     providers: [TodoService],
     template: `
+    <ion-list>
+        <ion-item>
+            <ion-avatar item-left id="alpacatar">
+                <img src="../assets/alpacatar.jpeg">
+            </ion-avatar>
+            <h2>Mr. Paca</h2>
+        </ion-item>
+    </ion-list>
     <ion-list no-lines>
         <ion-list-header>Filter by Category</ion-list-header>
         <ion-item *ngFor="let cat of cats">
@@ -15,10 +23,14 @@ import { Category } from './category';
         </ion-item>
         <ion-item>
             <ion-checkbox></ion-checkbox>
-            <ion-label>Archived</ion-label>
-            <ion-icon name="archive"></ion-icon>
+            <ion-label>
+                
+                Archived
+                <ion-icon name="archive"></ion-icon>
+            </ion-label>
         </ion-item>
     </ion-list>
+    
     `
 })
 
@@ -42,14 +54,14 @@ export class CategorySort implements OnInit{
     <ion-grid no-padding>
         <ion-row nowrap>
             <ion-col>
-                <ion-list>
+                <ion-list no-lines>
                     <ion-list-header>Priority</ion-list-header>
                     <button ion-item menuClose (click)="sortPriorityHL()">!!! to !</button>
                     <button ion-item menuClose (click)="sortPriorityLH()">! to !!!</button>
                 </ion-list>
             </ion-col>
             <ion-col>
-                <ion-list>
+                <ion-list no-lines>
                     <ion-list-header>Date</ion-list-header>
                     <button ion-item menuClose (click)="sortRecent()">Most Recent</button>
                     <button ion-item menuClose (click)="sortOldest()">Oldest</button>
