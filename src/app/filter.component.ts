@@ -36,13 +36,13 @@ export class CategorySort implements OnInit{
     template: `
     <ion-list>
         <ion-list-header>Sort by Priority</ion-list-header>
-        <button ion-item (click)="sortPriorityHL()">High to Low</button>
-        <button ion-item (click)="sortPriorityLH()">Low to High</button>
+        <button ion-item menuClose (click)="sortPriorityHL()">High to Low</button>
+        <button ion-item menuClose (click)="sortPriorityLH()">Low to High</button>
     </ion-list>
     <ion-list>
         <ion-list-header>Sort by Date</ion-list-header>
-        <button ion-item (click)="sortRecent()">Most Recent</button>
-        <button ion-item (click)="sortOldest()">Oldest</button>
+        <button ion-item menuClose (click)="sortRecent()">Most Recent</button>
+        <button ion-item menuClose (click)="sortOldest()">Oldest</button>
     </ion-list>
     `
 })
@@ -66,6 +66,7 @@ export class PropertySort{
 
             return 0;
         });
+
     }
 
     sortPriorityLH(){

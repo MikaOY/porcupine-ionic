@@ -20,7 +20,7 @@ export class TodosPage {
     }
 
   addTodo:boolean = false;
-  todo = new Todo(undefined, undefined, undefined, undefined, undefined, undefined);
+  todo = new Todo(undefined, undefined, undefined, undefined, undefined, undefined, undefined);
 
    onFormSubmit(todo){
         //pass todo to data base

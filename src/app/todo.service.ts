@@ -12,11 +12,11 @@ const CATS: Category[] = [new Category('Life', 0, new Date(2017, 4, 30), undefin
                             new Category('Unsorted', null, null, null, null, true)];
 
 // TODO: replace with DB info
-const TODOS: Todo[] = [new Todo('Give an alpaca a very very very very very very big hug', CATS[0], new Date(2017, 4, 30), false, undefined, Priority.Low),
-                        new Todo('Finish Porcupine', CATS[1], new Date(2017, 4, 28), false, undefined, Priority.Medium),
-                        new Todo('Make moist brownie', CATS[2], new Date(2017, 4, 29), true, new Date(2017, 4, 30), Priority.High),
-                        new Todo('Give an alpaca a hug', CATS[0], new Date(2017, 4, 30), false, undefined, Priority.Low),
-                        new Todo('Finish Porcupine', CATS[1], new Date(2017, 4, 28), false, undefined, Priority.Medium)];
+const TODOS: Todo[] = [new Todo('Give an alpaca a very very very very very very big hug', CATS[0], new Date(2017, 4, 30), false, undefined, false, Priority.Low),
+                        new Todo('Finish Porcupine', CATS[1], new Date(2017, 4, 28), false, undefined, false, Priority.Medium),
+                        new Todo('Make moist brownie', CATS[2], new Date(2017, 4, 29), true, new Date(2017, 4, 30), false, Priority.High),
+                        new Todo('Upload photos to google drive', CATS[0], new Date(2017, 4, 30), false, undefined, false, Priority.Low),
+                        new Todo('Pet a pug', CATS[1], new Date(2017, 4, 28), false, undefined, false, Priority.Medium)];
 
 @Injectable()
 export class TodoService {
