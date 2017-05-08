@@ -34,16 +34,24 @@ export class CategorySort implements OnInit{
 @Component({
     selector: "property-list",
     template: `
-    <ion-list>
-        <ion-list-header>Sort by Priority</ion-list-header>
-        <button ion-item (click)="sortPriorityHL()">High to Low</button>
-        <button ion-item (click)="sortPriorityLH()">Low to High</button>
-    </ion-list>
-    <ion-list>
-        <ion-list-header>Sort by Date</ion-list-header>
-        <button ion-item (click)="sortRecent()">Most Recent</button>
-        <button ion-item (click)="sortOldest()">Oldest</button>
-    </ion-list>
+    <ion-grid no-padding>
+        <ion-row nowrap>
+            <ion-col>
+                <ion-list>
+                    <ion-list-header>Priority</ion-list-header>
+                    <button ion-item menuClose (click)="sortPriorityHL()">!!! to !</button>
+                    <button ion-item menuClose (click)="sortPriorityLH()">! to !!!</button>
+                </ion-list>
+            </ion-col>
+            <ion-col>
+                <ion-list>
+                    <ion-list-header>Date</ion-list-header>
+                    <button ion-item menuClose (click)="sortRecent()">Most Recent</button>
+                    <button ion-item menuClose (click)="sortOldest()">Oldest</button>
+                </ion-list>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
     `
 })
 
@@ -66,6 +74,7 @@ export class PropertySort{
 
             return 0;
         });
+
     }
 
     sortPriorityLH(){

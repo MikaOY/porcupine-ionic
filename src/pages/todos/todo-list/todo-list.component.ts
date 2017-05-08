@@ -37,15 +37,17 @@ export class TodoList implements OnInit {
 
     activateEdit(todo){
         todo.EditActive = !todo.EditActive;
+        console.log(todo.EditActive);
     }
 
 
     onFormSubmit(todo){
         todo.DetailShown = false;
-        todo.EditActive = null;
+        todo.EditActive = false;
+        console.log(todo.EditActive);
     }
 
-    itemChecked(IsDone,todo){
+    itemChecked(IsDone,todo){ //run when you click the checkbox
         if (IsDone == true){
             //function to find date and control archive
         }
