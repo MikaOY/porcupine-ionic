@@ -44,6 +44,12 @@ export class TodoList implements OnInit {
         todo.DetailShown = false;
         todo.EditActive = null;
     }
+
+    itemChecked(IsDone,todo){
+        if (IsDone == true){
+            //function to find date and control archive
+        }
+    }
 }
 
 

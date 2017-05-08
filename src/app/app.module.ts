@@ -8,7 +8,7 @@ import { SettingsPage } from '../pages/settings/settings';
 import { TodosPage } from '../pages/todos/todos';
 import { TabsPage } from '../pages/tabs/tabs';
 
-import { FilterPage, CategorySort, PropertySort } from './filter.component';
+import { CategorySort, PropertySort } from './filter.component';
 
 import { TodoList } from '../pages/todos/todo-list/todo-list.component'; 
 import { StatusBar } from '@ionic-native/status-bar';
@@ -24,7 +24,6 @@ import { HttpModule }    from '@angular/http';
     TodosPage,
     TabsPage,
     TodoList,
-    FilterPage,
     CategorySort,
     PropertySort,
    
@@ -41,7 +40,6 @@ import { HttpModule }    from '@angular/http';
     SettingsPage,
     TodosPage,
     TabsPage,
-    FilterPage,
     CategorySort,
     PropertySort,
 

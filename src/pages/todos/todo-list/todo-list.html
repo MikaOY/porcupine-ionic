@@ -4,16 +4,14 @@
 
             <ion-item-sliding>
                 <ion-item class="todoItem">
-                    <ion-checkbox></ion-checkbox>
+                    <ion-checkbox [(ngModel)]="todo.IsDone" (click)=itemChecked(todo.IsDone,todo)></ion-checkbox>
                     <ion-input clearInput *ngIf="todo.EditActive; else default" [(ngModel)]="todo.Info"></ion-input>
                     
                     <ng-template #default>
-                        <ion-label class="todoLabel">
-                            <p text-wrap id="todoInfo">{{todo.Info}}</p>
-                            
-                            
-                            <button ion-button id="toggleButton" small="true" clear="true" (click)=toggleDetail(todo)>+</button>
+                        <ion-label class="todoLabel" text-wrap id="todoInfo">
+                            {{todo.Info}}
                         </ion-label> 
+                        <button ion-button item-right id="toggleButton" small="true" clear="true" (click)=toggleDetail(todo)>+</button>
                     </ng-template>
                 </ion-item>
                 <ion-item-options side="left">
@@ -27,7 +25,6 @@
             </ion-item-sliding>
         
             <div id="details" class="container" *ngIf="todo.DetailShown">
-
                 <ng-template #default>
                     <button ion-button id="editButton" small="true" clear="true" *ngIf="todo.DetailShown" (click)=activateEdit(todo)>edit</button>
                     <div class="row">
@@ -68,8 +65,6 @@
                         </ion-select>
                     </ion-item>
                     <button ion-button type="submit">Done</button>
-                    
-                   
                 </form>
                 </ng-container>
 
