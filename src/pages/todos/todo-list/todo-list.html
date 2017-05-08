@@ -3,13 +3,13 @@
         <div *ngIf="todo.Category == null ? true : todo.Category.IsShown">
 
             <ion-item-sliding>
-                <ion-item class="todoItem" *ngIf="todo.EditActive; else default">
+                <ion-item text-wrap class="todoItem" *ngIf="todo.EditActive; else default">
                     <ion-checkbox [(ngModel)]="todo.IsDone" (click)=itemChecked(todo.IsDone,todo)></ion-checkbox>
-                    <ion-input clearInput [(ngModel)]="todo.Info"></ion-input>
+                    <ion-input text-wrap clearInput [(ngModel)]="todo.Info"></ion-input>
                 </ion-item>
 
                 <ng-template #default>
-                    <ion-item class="todoItem">
+                    <ion-item text-wrap class="todoItem">
                         <ion-checkbox [(ngModel)]="todo.IsDone" (click)=itemChecked(todo.IsDone,todo)></ion-checkbox>
                         <ion-label>{{todo.Info}}</ion-label>
                         <button ion-button item-right id="toggleButton" small="true" clear="true" (click)=toggleDetail(todo)>+</button>
