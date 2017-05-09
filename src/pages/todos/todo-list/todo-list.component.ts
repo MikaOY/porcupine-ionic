@@ -5,6 +5,7 @@ import { Todo } from '../../../app/todo';
 import { Category } from '../../../app/category';
 import { Priority } from '../../../app/priority';
 
+
 @Component({
     selector: 'todo-list',
     templateUrl: 'todo-list.html',
@@ -16,6 +17,8 @@ export class TodoList implements OnInit {
     private todos: Todo[]; // see mock data in todo.service.ts
     private cats: Category[];
     
+    //this sets colors for the category numbers
+    ColorArray: string[] = ["#919191","#ff5c3f", "#ffb523"];
     
     // priors: any[];
 
@@ -32,7 +35,6 @@ export class TodoList implements OnInit {
 
     toggleDetail(todo){
         todo.DetailShown = !todo.DetailShown;
-         
     }
 
     activateEdit(todo){

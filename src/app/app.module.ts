@@ -9,7 +9,8 @@ import { TodosPage } from '../pages/todos/todos';
 import { TabsPage } from '../pages/tabs/tabs';
 
 import { CategorySort, PropertySort } from './filter.component';
-
+import { ElasticModule } from 'angular2-elastic';
+ 
 import { TodoList } from '../pages/todos/todo-list/todo-list.component'; 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -32,7 +33,8 @@ import { HttpModule }    from '@angular/http';
     BrowserModule,
     IonicModule.forRoot(MyApp),
     FormsModule,
-    HttpModule
+    HttpModule,
+    ElasticModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [

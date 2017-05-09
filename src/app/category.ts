@@ -7,7 +7,6 @@ export class Category {
                 public Order?: number, 
                 public DefaultPriority?: Priority,
                 public IsShown?: boolean){
-
     }
 }
 
