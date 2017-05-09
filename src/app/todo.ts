@@ -11,6 +11,5 @@ export class Todo {
                 public Priority: Priority,
                 public DetailShown?: boolean,
                 public EditActive?: boolean){
-
     }
 }

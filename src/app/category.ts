@@ -8,10 +8,6 @@ export class Category {
                 public DefaultPriority?: Priority,
                 public IsShown?: boolean){
     }
-
-    toString(): string {
-        return this.Name;
-    };
 }
 
 
