@@ -1,5 +1,6 @@
 #details{
     background: #cddbf4;
+    position: relative;
     margin: auto;
     width:90%;
     padding: 20px;
@@ -12,8 +13,9 @@
 
 #editButton{ //restyle later
     position: absolute;
+    top: 0;
     right: 0;
-    display: inline-block;
+   
     
 }
 
@@ -22,4 +24,7 @@
     vertical-align: middle;
 }
 
+.detailLabel{
+    font-weight: bold;
+}
 

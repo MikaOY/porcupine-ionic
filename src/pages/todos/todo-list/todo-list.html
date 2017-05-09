@@ -1,3 +1,5 @@
+<h1>{{test}}</h1>
+
 <ion-list no-lines class="container-fluid">
     <ng-container *ngFor="let todo of todos" class="inline-todo">
         <div *ngIf="todo.Category == null ? true : todo.Category.IsShown">
@@ -31,23 +33,24 @@
         
             <div id="details" class="container" *ngIf="todo.DetailShown">
                 <ng-template #default>
-                    <button ion-button id="editButton" small="true" clear="true" *ngIf="todo.DetailShown" (click)=activateEdit(todo)>edit</button>
+                    
                     <ion-grid>
                         <ion-row>
-                            <ion-col col-4>Date:</ion-col>
+                            <ion-col col-4 class="detailLabel">date</ion-col>
                             <ion-col>{{todo.DateCreated | date: 'EEE MMM d, yyyy H:mm' }}</ion-col>
                         </ion-row>
 
                         <ion-row>
-                            <ion-col col-4>Category:</ion-col>
+                            <ion-col col-4 class="detailLabel">category</ion-col>
                             <ion-col>{{todo.Category !== null ? todo.Category.Name : 'none'}}</ion-col>
                         </ion-row>
 
                         <ion-row>
-                            <ion-col col-4>Priority:</ion-col>
+                            <ion-col col-4 class="detailLabel">priority</ion-col>
                             <ion-col>{{todo.Priority}}</ion-col>
                         </ion-row>
                     </ion-grid>
+                    <button ion-button id="editButton" small="true" clear="true" *ngIf="todo.DetailShown" (click)=activateEdit(todo)>edit</button>
                 </ng-template>
 
                 <!--the form!!!-->
@@ -59,13 +62,13 @@
                     </ion-item>
                     <ion-item>
                         <ion-label for="category">Category:</ion-label>
-                        <ion-select interface="popover" placeholder="{{todo.Category.Name}}" [(ngModel)]="todo.Category" name="category">
+                        <ion-select interface="popover" [ngModel]="todo.Category" (ngModelChange)="todo.Category=$event" name="category">
                             <ion-option *ngFor="let cat of cats">{{cat.Name}}</ion-option>
                         </ion-select>
                     </ion-item>
                     <ion-item>
                         <ion-label for="priority">Priority:</ion-label>
-                        <ion-select interface="popover" placeholder="{{todo.Priority}}" [(ngModel)]="todo.Priority" name="priority">
+                        <ion-select interface="popover" [(ngModel)]="todo.Priority" name="priority">
                             <ion-option>0</ion-option>
                             <ion-option>1</ion-option>
                             <ion-option>2</ion-option>

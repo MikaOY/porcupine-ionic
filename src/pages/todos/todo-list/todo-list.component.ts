@@ -14,8 +14,9 @@ import { Priority } from '../../../app/priority';
 
 export class TodoList implements OnInit {
     
-    private todos: Todo[]; // see mock data in todo.service.ts
+    todos: Todo[]; // see mock data in todo.service.ts
     private cats: Category[];
+    
     
     //this sets colors for the category numbers
     ColorArray: string[] = ["#919191","#ff5c3f", "#ffb523"];
@@ -42,9 +43,7 @@ export class TodoList implements OnInit {
         console.log(todo.EditActive);
     }
 
-
     onFormSubmit(todo){
-        todo.DetailShown = false;
         todo.EditActive = false;
         console.log(todo.EditActive);
     }
@@ -53,7 +52,19 @@ export class TodoList implements OnInit {
         if (IsDone == true){
             //function to find date and control archive
         }
+        var test = this.todos.length;
+        console.log("hi");
+        for (let todo of this.todos){
+                console.log(todo.Info);
+                console.log(todo.Category);
+                console.log(todo.Category.Name + "///" + todo.Category.Color);
+                console.log("clearrrrrr.......");
+            }
+    
     }
+    
+    
+    
 }
 
 
