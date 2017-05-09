@@ -62,8 +62,8 @@
                     </ion-item>
                     <ion-item>
                         <ion-label for="category">Category:</ion-label>
-                        <ion-select interface="popover" [ngModel]="todo.Category" (ngModelChange)="todo.Category=$event" name="category">
-                            <ion-option *ngFor="let cat of cats">{{cat.Name}}</ion-option>
+                        <ion-select interface="popover" [(ngModel)]="todo.Category" name="category">
+                            <ion-option *ngFor="let cat of cats" value="{{ cat }}">test</ion-option>
                         </ion-select>
                     </ion-item>
                     <ion-item>
@@ -77,10 +77,6 @@
                     <button ion-button type="submit">Done</button>
                 </form>
                 </ng-container>
-
-
-
-
             </div>
         </div>
     </ng-container>

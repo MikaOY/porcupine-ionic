@@ -14,11 +14,11 @@ import { Priority } from '../../../app/priority';
 
 export class TodoList implements OnInit {
     
-    todos: Todo[]; // see mock data in todo.service.ts
+    private todos: Todo[]; // see mock data in todo.service.ts
     private cats: Category[];
     
     
-    //this sets colors for the category numbers
+    // this sets colors for the category numbers
     ColorArray: string[] = ["#919191","#ff5c3f", "#ffb523"];
     
     // priors: any[];
@@ -30,9 +30,7 @@ export class TodoList implements OnInit {
     ngOnInit(): void {
         this.todoService.getTodos().then(todos => this.todos = todos);
         this.todoService.getCategories().then(categories => this.cats = categories);
-        
     }
-   
 
     toggleDetail(todo){
         todo.DetailShown = !todo.DetailShown;
@@ -54,18 +52,11 @@ export class TodoList implements OnInit {
         }
         var test = this.todos.length;
         console.log("hi");
-        for (let todo of this.todos){
-                console.log(todo.Info);
-                console.log(todo.Category);
-                console.log(todo.Category.Name + "///" + todo.Category.Color);
-                console.log("clearrrrrr.......");
-            }
-    
+        for (let todo of this.todos) {
+            console.log(todo.Info);
+            console.log(todo.Category);
+            console.log(todo.Category.Name + "///" + todo.Category.Color);
+            console.log("clearrrrrr.......");
+        }
     }
-    
-    
-    
 }
-
-
-
