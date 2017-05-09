@@ -32,20 +32,22 @@
             <div id="details" class="container" *ngIf="todo.DetailShown">
                 <ng-template #default>
                     <button ion-button id="editButton" small="true" clear="true" *ngIf="todo.DetailShown" (click)=activateEdit(todo)>edit</button>
-                    <div class="row">
-                        <div class="col-sm-3">Date:</div>
-                        <div class="col-sm-9">{{todo.DateCreated | date: 'EEE MMM d, yyyy H:mm' }}</div>
-                    </div>
+                    <ion-grid>
+                        <ion-row>
+                            <ion-col col-4>Date:</ion-col>
+                            <ion-col>{{todo.DateCreated | date: 'EEE MMM d, yyyy H:mm' }}</ion-col>
+                        </ion-row>
 
-                    <div class="row">
-                        <div class="col-sm-3">Category:</div>
-                        <div class="col-sm-9">{{todo.Category !== null ? todo.Category.Name : 'none'}}</div>
-                    </div>
+                        <ion-row>
+                            <ion-col col-4>Category:</ion-col>
+                            <ion-col>{{todo.Category !== null ? todo.Category.Name : 'none'}}</ion-col>
+                        </ion-row>
 
-                    <div class="row">
-                        <div class="col-sm-3">Priority:</div>
-                        <div class="col-sm-9">{{todo.Priority}}</div>
-                    </div>
+                        <ion-row>
+                            <ion-col col-4>Priority:</ion-col>
+                            <ion-col>{{todo.Priority}}</ion-col>
+                        </ion-row>
+                    </ion-grid>
                 </ng-template>
 
                 <!--the form!!!-->
