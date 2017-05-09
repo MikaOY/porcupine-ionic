@@ -62,16 +62,16 @@
                     </ion-item>
                     <ion-item>
                         <ion-label for="category">Category:</ion-label>
-                        <ion-select interface="popover" [ngModel]="todo.Category" (ngModelChange)="todo.Category=$event" name="category">
+                        <ion-select interface="popover" [ngModel]="todo.Category" (ngModelChange)="todo.Category=cats[0]" name="category">
                             <ion-option *ngFor="let cat of cats">{{cat.Name}}</ion-option>
                         </ion-select>
                     </ion-item>
                     <ion-item>
                         <ion-label for="priority">Priority:</ion-label>
-                        <ion-select interface="popover" [(ngModel)]="todo.Priority" name="priority">
-                            <ion-option>0</ion-option>
-                            <ion-option>1</ion-option>
-                            <ion-option>2</ion-option>
+                        <ion-select interface="popover" [ngModel]="todo.Priority" (ngModelChange)="changePrior($event, todo)" name="priority">
+                            <ion-option>Low</ion-option>
+                            <ion-option>Medium</ion-option>
+                            <ion-option>High</ion-option>
                         </ion-select>
                     </ion-item>
                     <button ion-button type="submit">Done</button>

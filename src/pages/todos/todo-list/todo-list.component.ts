@@ -16,7 +16,7 @@ export class TodoList implements OnInit {
     
     todos: Todo[]; // see mock data in todo.service.ts
     private cats: Category[];
-    
+
     
     //this sets colors for the category numbers
     ColorArray: string[] = ["#919191","#ff5c3f", "#ffb523"];
@@ -36,6 +36,9 @@ export class TodoList implements OnInit {
 
     toggleDetail(todo){
         todo.DetailShown = !todo.DetailShown;
+        var test = new Todo ('hi there', this.cats[0], undefined, false, null, false, Priority.Low);
+        test.Priority=Priority.Medium;
+        console.log(test.Priority);
     }
 
     activateEdit(todo){
@@ -52,7 +55,7 @@ export class TodoList implements OnInit {
         if (IsDone == true){
             //function to find date and control archive
         }
-        var test = this.todos.length;
+        
         console.log("hi");
         for (let todo of this.todos){
                 console.log(todo.Info);
@@ -61,6 +64,15 @@ export class TodoList implements OnInit {
                 console.log("clearrrrrr.......");
             }
     
+    }
+
+//apparently working?
+    changePrior(val: string, todo){
+        console.log("Before it was priority " + todo.Priority);
+        var pri: Priority = Priority[val];
+        todo.Priority = pri;
+       
+        console.log("This todo is priority " + todo.Priority);
     }
     
     
