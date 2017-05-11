@@ -7,11 +7,10 @@ import { Priority } from './priority';
 import { Headers, Http } from '@angular/http';
 import 'rxjs/add/operator/toPromise';
 
-const CATS: Category[] = [new Category('Life', 1, new Date(2017, 4, 30), undefined, undefined, true), 
-                            new Category('Code', 2, new Date(2017, 3, 26), undefined, undefined, true),
-                            new Category('Unsorted', 0, null, null, null, true)];
+const CATS: Category[] = [new Category('Life', 1, new Date(2017, 4, 30), 0), 
+                            new Category('Code', 2, new Date(2017, 3, 26), 1),
+                            new Category('Unsorted', 0, null, 2)];
 
-// TODO: replace with DB info
 const TODOS: Todo[] = [new Todo('Give an alpaca a hug', CATS[0], new Date(2017, 4, 30), false, undefined, false, Priority.Low),
                         new Todo('Finish Porcupine', CATS[1], new Date(2017, 4, 28), false, undefined, false, Priority.Medium),
                         new Todo('Make moist brownie', CATS[2], new Date(2017, 4, 29), true, new Date(2017, 4, 30), false, Priority.High),
@@ -21,31 +20,33 @@ const TODOS: Todo[] = [new Todo('Give an alpaca a hug', CATS[0], new Date(2017, 
 @Injectable()
 export class TodoService {
 
-    private apiUrl: string;
+    private apiUrl: string = 'http://localhost:3000';
+    public todosCachedList: Todo[];
 
     constructor(private http: Http) { }
-
+    /*
     getTodos(): Promise<Todo[]> {
         return Promise.resolve(TODOS);
     }
-
+    
     getCategories(): Promise<Category[]> {
         return Promise.resolve(CATS);
     }
-
-    getTodoList(): Promise<Todo[]> {
-        return this.http.get(this.apiUrl)
+    */
+    getTodos(): Promise<Todo[]> {
+        const url = `${this.apiUrl}/todo/0`;
+        return this.http.get(url)
                .toPromise()
-               .then(response => response.json().data as Todo[])
+               .then(response => this.todosCachedList = this.convertFromJSONArray(Todo, response.json()) as Todo[])
                .catch(this.handleError);
     }
 
-    getTodo(id: number): Promise<Todo> {
-        const url = `${this.apiUrl}/${id}`;
-        return this.http.get(url)
-            .toPromise()
-            .then(response => response.json().data as Todo)
-            .catch(this.handleError);
+    convertFromJSONArray(returnClass: any, json: any[]): any[] {
+        var array: any[];
+        json.forEach(function(obj) { 
+            array.push(Todo.fromJSON(JSON.parse(obj)));
+        });
+        return array;
     }
 
     private handleError(error: any): Promise<any> {

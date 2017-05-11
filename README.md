@@ -20,3 +20,6 @@ https://basarat.gitbooks.io/typescript/docs/quick/nodejs.html
 # To be added
 ORM in data service:
 https://github.com/typeorm/typeorm
+
+# Conventions
+Angular 4 Style Guide: https://angular.io/styleguide

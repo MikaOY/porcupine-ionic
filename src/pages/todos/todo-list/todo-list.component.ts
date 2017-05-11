@@ -17,7 +17,6 @@ export class TodoList implements OnInit {
     private todos: Todo[]; // see mock data in todo.service.ts
     private cats: Category[];
     
-    
     // this sets colors for the category numbers
     ColorArray: string[] = ["#919191","#ff5c3f", "#ffb523"];
     
