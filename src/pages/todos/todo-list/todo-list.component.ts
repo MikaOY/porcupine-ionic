@@ -5,8 +5,6 @@ import { Todo } from '../../../app/todo';
 import { Category } from '../../../app/category';
 import { Priority } from '../../../app/priority';
 
-import { reorderArray } from 'ionic-angular';
-
 @Component({
     selector: 'todo-list',
     templateUrl: 'todo-list.html',
@@ -31,11 +29,11 @@ export class TodoList implements OnInit {
     ngOnInit(): void {
         this.todoService.getTodos().then(todos => this.todos = todos);
         this.todoService.getCategories().then(categories => this.cats = categories);
+        
     }
 
     toggleDetail(todo){
         todo.DetailShown = !todo.DetailShown;
-
     }
 
     activateEdit(todo){
@@ -49,18 +47,21 @@ export class TodoList implements OnInit {
     }
 
     itemChecked(IsDone,todo){ //run when you click the checkbox
+        console.log(todo.Info + " is " + IsDone);
         if (IsDone == true){
             //function to find date and control archive
+            var currentTime = new Date();
+            todo.DateDone = currentTime;
+        }
+        else {
+            todo.DateDone = undefined;
         }
     }
 
     //apparently working?
     changePrior(val: string, todo){
-        console.log("Before it was priority " + todo.Priority);
         var pri: Priority = Priority[val];
         todo.Priority = pri;
-       
-        console.log("This todo is priority " + todo.Priority);
     } 
 
     reorderItems(indexes) {
@@ -71,16 +72,13 @@ export class TodoList implements OnInit {
 
     activateSelect(todo: Todo){
         this.selectActive = true; //allows for reordering
-        console.log(todo.Info + ": " + todo.SelectActive);
+
         if (todo.SelectActive === true){
             todo.SelectActive = false;
-           
-            console.log("true: " + todo.Info + ": " + todo.SelectActive);
         }
         else {
             todo.SelectActive = true;
             this.selectedTodos.push(todo);
-            console.log("else: " + todo.Info + ": " + todo.SelectActive);
         }
     }
 
@@ -93,5 +91,19 @@ export class TodoList implements OnInit {
 
         this.selectedTodos.length = 0;
     }
+
+    addTodo:boolean = false;
+    todo = new Todo(undefined, undefined, undefined, undefined, undefined, undefined, undefined);
+
+    onNewTodoFormSubmit(todo){
+        //pass todo to data base    
+        this.addTodo = !this.addTodo;
+    }
+
+    AddTodo(){
+      this.addTodo = !this.addTodo;
+    }
 }
+
+
 

@@ -19,16 +19,8 @@ export class TodosPage {
         this.todoService.getCategories().then(categories => this.cats = categories);
     }
 
-  addTodo:boolean = false;
-  todo = new Todo(undefined, undefined, undefined, undefined, undefined, undefined, undefined);
-
-   onFormSubmit(todo){
-        //pass todo to data base    
-        this.addTodo = !this.addTodo;
-    }
-
-    AddTodo(){
-      this.addTodo = !this.addTodo;
-    }
+  
+  
+  
 
 }

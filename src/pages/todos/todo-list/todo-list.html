@@ -1,7 +1,14 @@
 
+<p id="filterId">Currently sorting by: {{sortMode}}</p>
 <ion-list no-lines>
+    <ng-template #addButton>
+        <ion-fab *ngIf="selectActive === false">
+            <button ion-fab (click)=AddTodo()>+</button>
+        </ion-fab>
+    </ng-template>
 
-    <ng-container *ngIf="this.selectActive == true; else selInactive">
+    <!--what select mode looks like-->
+    <ng-container *ngIf="selectActive === true; else selInactive">
         <ion-item-group reorder="true" (ionItemReorder)="reorderItems($event)">
             <ion-item text-wrap *ngFor="let todo of todos" 
                                 [style.background-color]="todo.SelectActive ? '#d1d1d1' : '#ffffff'" 
@@ -14,15 +21,17 @@
         <button ion-button><ion-icon name="trash"></ion-icon></button>
     </ng-container>
 
+    <!--your typical todo look-->
     <ng-template #selInactive>
         <ng-container *ngFor="let todo of todos" class="inline-todo">
             <div *ngIf="todo.Category == null ? true : todo.Category.IsShown">
-                <ion-item-sliding>
+                <ion-item-sliding> <!--editable input-->
                     <ion-item text-wrap class="todoItem" *ngIf="todo.EditActive; else default">
                         <ion-checkbox [(ngModel)]="todo.IsDone" (click)=itemChecked(todo.IsDone,todo)></ion-checkbox>
                         <ion-textarea fz-elastic [(ngModel)]="todo.Info"></ion-textarea>
                     </ion-item>
-
+                    
+                    <!--initial default state-->
                     <ng-template #default>
                         <ion-item-group>
                             <ion-item text-wrap class="todoItem" (press)="activateSelect(todo)">
@@ -33,6 +42,7 @@
                         </ion-item-group>
                     </ng-template>
 
+                    <!--swipe left and right buttons-->
                     <ion-item-options side="left">
                         <button ion-button id="slideCat" [style.background-color]="ColorArray[todo.Category.Color]">       
                             {{todo.Category !== null ? todo.Category.Name : 'ADD'}}
@@ -45,7 +55,8 @@
                         </button>
                     </ion-item-options>
                 </ion-item-sliding>
-            
+                
+                <!-- detail box with date, category, priority -->
                 <div id="details" class="container" *ngIf="todo.DetailShown">
                     <ng-template #default>
                         <ion-grid>
@@ -67,7 +78,7 @@
                         <button ion-button id="editButton" small="true" clear="true" *ngIf="todo.DetailShown" (click)=activateEdit(todo)>edit</button>
                     </ng-template>
 
-                    <!--the form!!!-->
+                    <!--the form!!! for editing-->
                     <ng-container *ngIf="todo.EditActive; else default">
                         <form (ngSubmit)="onFormSubmit(todo)" #editForm="ngForm">
                             <ion-item>
@@ -95,5 +106,48 @@
             </div>
         </ng-container>
     </ng-template>
+
+    <!-- code for adding new todos -->
+    <div *ngIf="addTodo; else addButton">
+        <ion-item-sliding>
+            <ion-item class="todoItem">
+                <ion-checkbox></ion-checkbox>
+                <ion-input clearInput [(ngModel)]="todo.Info"></ion-input>
+            </ion-item>
+            <ion-item-options side="left">
+                <button>       
+                    {{todo.Category == null ? 'undefined' : todo.Category.Name}}
+                </button>
+            </ion-item-options>
+            <ion-item-options side="right">
+                <button>Delete</button>
+            </ion-item-options>
+        </ion-item-sliding>
+
+        <div id="details" class="container">
+            <form (ngSubmit)="onNewTodoFormSubmit()" #editForm="ngForm">
+                <ion-item>
+                    <ion-label for="dateCreated">Date:</ion-label>
+                    <ion-datetime displayFormat="DDD MMM D, YYYY" [(ngModel)]="todo.DateCreated" name="dateCreated"></ion-datetime>
+                </ion-item>
+                <ion-item>
+                    <ion-label for="category">Category:</ion-label>
+                    <ion-select interface="popover" [(ngModel)]="todo.Category" name="category">
+                        <ion-option *ngFor="let cat of cats">{{cat.Name}}</ion-option>
+                    </ion-select>
+                </ion-item>
+                <ion-item>
+                    <ion-label for="priority">Priority:</ion-label>
+                    <ion-select interface="popover"[(ngModel)]="todo.Priority" name="priority">
+                        <ion-option>0</ion-option>
+                        <ion-option>1</ion-option>
+                        <ion-option>2</ion-option>
+                    </ion-select>
+                </ion-item>
+                <button ion-button type="submit">Done</button>
+            </form>
+        </div>
+       
+    </div>
 </ion-list>
 
