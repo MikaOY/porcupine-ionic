@@ -23,8 +23,7 @@ export class TodosPage {
   todo = new Todo(undefined, undefined, undefined, undefined, undefined, undefined, undefined);
 
    onFormSubmit(todo){
-        //pass todo to data base
-        
+        //pass todo to data base    
         this.addTodo = !this.addTodo;
     }
 

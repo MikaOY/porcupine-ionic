@@ -5,6 +5,7 @@ import { Todo } from '../../../app/todo';
 import { Category } from '../../../app/category';
 import { Priority } from '../../../app/priority';
 
+import { reorderArray } from 'ionic-angular';
 
 @Component({
     selector: 'todo-list',
@@ -16,15 +17,15 @@ export class TodoList implements OnInit {
     
     private todos: Todo[]; // see mock data in todo.service.ts
     private cats: Category[];
-
+    
     
     // this sets colors for the category numbers
     ColorArray: string[] = ["#919191","#ff5c3f", "#ffb523"];
     
-    // priors: any[];
+    selectedTodos: Todo[] = [];
+    selectActive: boolean = false;
 
     constructor(private todoService: TodoService){
-        //this.priors = Object.keys(this.priorities).filter(k => !isNaN(Number(k)));
     }
 
     ngOnInit(): void {
@@ -34,9 +35,7 @@ export class TodoList implements OnInit {
 
     toggleDetail(todo){
         todo.DetailShown = !todo.DetailShown;
-        var test = new Todo ('hi there', this.cats[0], undefined, false, null, false, Priority.Low);
-        test.Priority=Priority.Medium;
-        console.log(test.Priority);
+
     }
 
     activateEdit(todo){
@@ -53,14 +52,6 @@ export class TodoList implements OnInit {
         if (IsDone == true){
             //function to find date and control archive
         }
-        
-        console.log("hi");
-        for (let todo of this.todos) {
-            console.log(todo.Info);
-            console.log(todo.Category);
-            console.log(todo.Category.Name + "///" + todo.Category.Color);
-            console.log("clearrrrrr.......");
-        }
     }
 
     //apparently working?
@@ -71,5 +62,36 @@ export class TodoList implements OnInit {
        
         console.log("This todo is priority " + todo.Priority);
     } 
+
+    reorderItems(indexes) {
+        let element = this.todos[indexes.from];
+        this.todos.splice(indexes.from, 1);
+        this.todos.splice(indexes.to, 0, element);
+    }
+
+    activateSelect(todo: Todo){
+        this.selectActive = true; //allows for reordering
+        console.log(todo.Info + ": " + todo.SelectActive);
+        if (todo.SelectActive === true){
+            todo.SelectActive = false;
+           
+            console.log("true: " + todo.Info + ": " + todo.SelectActive);
+        }
+        else {
+            todo.SelectActive = true;
+            this.selectedTodos.push(todo);
+            console.log("else: " + todo.Info + ": " + todo.SelectActive);
+        }
+    }
+
+    disableSelect(){
+        this.selectActive = false;
+
+        for (let todo of this.todos){
+            todo.SelectActive = false;
+        }
+
+        this.selectedTodos.length = 0;
+    }
 }
 

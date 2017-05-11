@@ -10,6 +10,7 @@ export class Todo {
                 public IsArchived: boolean,
                 public Priority: Priority,
                 public DetailShown?: boolean,
-                public EditActive?: boolean){
+                public EditActive?: boolean,
+                public SelectActive?:boolean){
     }
 }
