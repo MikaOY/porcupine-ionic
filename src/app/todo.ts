@@ -14,7 +14,8 @@ export class Todo {
                 public DbId?: number, // optional to allow latency with DB
                 private todoService?: TodoService,
                 public DetailShown?: boolean,
-                public EditActive?: boolean){ }
+                public EditActive?: boolean,
+                public SelectActive?: boolean){ }
 
     // toJSON is automatically used by JSON.stringify
     toJSON(): TodoJSON {

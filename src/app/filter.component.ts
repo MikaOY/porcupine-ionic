@@ -24,7 +24,6 @@ import { Category } from './category';
         <ion-item>
             <ion-checkbox></ion-checkbox>
             <ion-label>
-                
                 Archived
                 <ion-icon name="archive"></ion-icon>
             </ion-label>
