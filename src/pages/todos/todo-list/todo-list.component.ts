@@ -29,10 +29,14 @@ export class TodoList implements OnInit {
         this.todoService.getTodos().then(todos => this.todos = todos);
         this.todoService.getCategories().then(categories => this.cats = categories);
         
+        
     }
 
     toggleDetail(todo){
         todo.DetailShown = !todo.DetailShown;
+        for (let todo of this.todos){
+            
+        }
     }
 
     activateEdit(todo){

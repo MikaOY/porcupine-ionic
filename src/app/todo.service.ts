@@ -7,9 +7,9 @@ import { Priority } from './priority';
 import { Headers, Http } from '@angular/http';
 import 'rxjs/add/operator/toPromise';
 
-const CATS: Category[] = [new Category('Life', 1, new Date(2017, 4, 30), 0), 
-                            new Category('Code', 2, new Date(2017, 3, 26), 1),
-                            new Category('Unsorted', 0, null, 2)];
+const CATS: Category[] = [new Category('Life', 1, new Date(2017, 4, 30), 0, true), 
+                            new Category('Code', 2, new Date(2017, 3, 26), 1, true),
+                            new Category('Unsorted', 0, null, 2, true)];
 
 // TODO: replace with DB info
 const TODOS: Todo[] = [new Todo('Give an alpaca a hug', CATS[0], new Date(2017, 4, 30), false, undefined, false, Priority.Low, new Date(2016, 5, 13)),
