@@ -38,16 +38,13 @@ export class TodoList implements OnInit {
 
     activateEdit(todo){
         todo.EditActive = !todo.EditActive;
-        console.log(todo.EditActive);
     }
 
     onFormSubmit(todo){
         todo.EditActive = false;
-        console.log(todo.EditActive);
     }
 
     itemChecked(IsDone,todo){ //run when you click the checkbox
-        console.log(todo.Info + " is " + IsDone);
         if (IsDone == true){
             //function to find date and control archive
             var currentTime = new Date();
@@ -71,7 +68,7 @@ export class TodoList implements OnInit {
     }
 
     activateSelect(todo: Todo){
-        this.selectActive = true; //allows for reordering
+        this.selectActive = true; //mode that controls ability to select/reorder todos
 
         if (todo.SelectActive === true){
             todo.SelectActive = false;
@@ -84,25 +81,30 @@ export class TodoList implements OnInit {
 
     disableSelect(){
         this.selectActive = false;
-
-        for (let todo of this.todos){
+        for (let todo of this.todos){ //turns everything back to white color
             todo.SelectActive = false;
         }
 
-        this.selectedTodos.length = 0;
+        this.selectedTodos.length = 0; //empties selectedTodos array
     }
 
-    addTodo:boolean = false;
-    todo = new Todo(undefined, undefined, undefined, undefined, undefined, undefined, undefined);
-
-    onNewTodoFormSubmit(todo){
-        //pass todo to data base    
-        this.addTodo = !this.addTodo;
-    }
-
+    //adding a new todo
+    addTodo: boolean = false;
+    newTodo = new Todo(undefined, undefined, undefined, undefined, undefined, false, undefined);
     AddTodo(){
       this.addTodo = !this.addTodo;
     }
+   
+
+    onNewTodoFormSubmit(todo){  
+        this.addTodo = !this.addTodo;
+        var currentDate = new Date();
+        this.newTodo.DateCreated = currentDate;
+        //TODO: pass newTodo to server and add to user's array 
+    }
+
+    
+    
 }
 
 
