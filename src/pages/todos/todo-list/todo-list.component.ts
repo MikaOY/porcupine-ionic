@@ -17,7 +17,7 @@ export class TodoList implements OnInit {
     private cats: Category[];
     
     // this sets colors for the category numbers
-    ColorArray: string[] = ["#919191","#ff5c3f", "#ffb523"];
+    ColorArray: string[];
     
     selectedTodos: Todo[] = [];
     selectActive: boolean = false;
@@ -28,15 +28,11 @@ export class TodoList implements OnInit {
     ngOnInit(): void {
         this.todoService.getTodos().then(todos => this.todos = todos);
         this.todoService.getCategories().then(categories => this.cats = categories);
-        
-        
+        this.todoService.getColors().then(ColorArray => this.ColorArray = ColorArray);
     }
 
     toggleDetail(todo){
         todo.DetailShown = !todo.DetailShown;
-        for (let todo of this.todos){
-            
-        }
     }
 
     activateEdit(todo){

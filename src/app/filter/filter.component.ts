@@ -1,7 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { TodoService } from './todo.service';
-import { Todo } from './todo';
-import { Category } from './category';
+import { ModalController } from 'ionic-angular';
+import { ModalPage } from './modal-page';
+import { TodoService } from '../todo.service';
+import { Todo } from '../todo';
+import { Category } from '../category';
+import { CategoryManager } from './cat-manager/cat-manager.component';
 
 @Component({ //replace with list of categories
     selector: "category-list",
@@ -15,8 +18,11 @@ import { Category } from './category';
             <h2>Mr. Paca</h2>
         </ion-item>
     </ion-list>
+
+    <div id="catContainer">
     <ion-list no-lines>
         <ion-list-header>Filter by Category</ion-list-header>
+        <button ion-button clear="true" id="addCatButton" (click)="showCatModal()">+</button>
         <ion-item *ngFor="let cat of cats">
             <ion-checkbox [(ngModel)]="cat.IsShown"></ion-checkbox>
             <ion-label>{{cat.Name}}</ion-label>
@@ -29,6 +35,7 @@ import { Category } from './category';
             </ion-label>
         </ion-item>
     </ion-list>
+    </div>
     
     `
 })
@@ -36,15 +43,20 @@ import { Category } from './category';
 export class CategorySort implements OnInit{
     private cats: Category[];
 
-    constructor(private todoService: TodoService){
-        
+    constructor(private todoService: TodoService, public modalCtrl: ModalController){
     }
 
      ngOnInit(): void {
         this.todoService.getCategories().then(cats => this.cats = cats);
     }
 
+    showCatModal(){
+        let catModal = this.modalCtrl.create(CategoryManager);
+        catModal.present();
+    }
 }
+
+
 
 
 @Component({

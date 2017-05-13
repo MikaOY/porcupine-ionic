@@ -18,6 +18,8 @@ const TODOS: Todo[] = [new Todo('Give an alpaca a hug', CATS[0], new Date(2017, 
                         new Todo('Upload photos to google drive', CATS[0], new Date(2017, 4, 30), false, undefined, false, Priority.Low),
                         new Todo('Pet a pug', CATS[1], new Date(2017, 4, 28), false, undefined, false, Priority.Medium)];
 
+const ColorArray: string[] = ["#919191","#ff5c3f", "#ffb523"];
+
 @Injectable()
 export class TodoService {
 
@@ -32,6 +34,10 @@ export class TodoService {
     
     getCategories(): Promise<Category[]> {
         return Promise.resolve(CATS);
+    }
+
+    getColors(): Promise<string[]>{
+        return Promise.resolve(ColorArray);
     }
     /*
     getTodos(): Promise<Todo[]> {

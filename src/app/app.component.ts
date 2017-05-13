@@ -4,7 +4,7 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
 import { TabsPage } from '../pages/tabs/tabs';
-import { CategorySort, PropertySort } from './filter.component';
+import { CategorySort, PropertySort } from './filter/filter.component';
 
 @Component({
   templateUrl: 'app.html'
