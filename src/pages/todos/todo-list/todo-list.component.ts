@@ -32,8 +32,8 @@ export class TodoList implements OnInit {
     }
 
     todoPriority(pri: number) : Array<number> {
-        var priority = pri + 1;
-        var priArray = Array(priority).fill(2).map((x,i)=>i);
+        let k = pri + 1;
+        var priArray = Array(k).fill(2).map((x,i)=>i);
         return priArray;
     }
 

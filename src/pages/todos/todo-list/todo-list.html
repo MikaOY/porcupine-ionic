@@ -40,8 +40,8 @@
                     <!--swipe left and right to see these buttons-->
                     <ion-item-options side="left">
                         <button ion-button id="slideCat" [style.background-color]="ColorArray[todo.Category.Color]">
-                            <div class="row">
-                                <div class="column priorBar" *ngFor="let num of todoPriority(todo.Priority)">I</div>
+                            <div class="pRow">
+                                <div class="pColumn priorBar" *ngFor="let num of todoPriority(todo.Priority)">I</div>
                                
                             </div>
                             <div>{{todo.Category.Name}}</div>
