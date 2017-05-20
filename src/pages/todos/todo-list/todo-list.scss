@@ -40,3 +40,15 @@
     right: 15px;
     bottom: 15px;
 }
+
+.row{
+    display: table;
+}
+
+.column{
+    display: table-cell;
+}
+
+.priorBar{
+    font-weight: bolder;
+}

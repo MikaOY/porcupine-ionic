@@ -31,6 +31,12 @@ export class TodoList implements OnInit {
         return keys.slice(keys.length / 2);
     }
 
+    todoPriority(pri: number) : Array<number> {
+        var priority = pri + 1;
+        var priArray = Array(priority).fill(2).map((x,i)=>i);
+        return priArray;
+    }
+
     constructor(private todoService: TodoService){
     }
 
