@@ -9,7 +9,7 @@
                                 [style.background-color]="todo.SelectActive ? '#d1d1d1' : '#ffffff'" 
                                 class="todoItem" (click)="activateSelect(todo)">
                 <ion-checkbox [(ngModel)]="todo.IsDone" disabled="true"></ion-checkbox>
-                <ion-label>{{todo.Info + todo.SelectActive}}</ion-label>
+                <ion-label>{{todo.Info}}</ion-label>
             </ion-item>
         </ion-item-group>
         <button ion-button (click)=disableSelect()>Done</button>
@@ -83,25 +83,30 @@
                     <ng-container *ngIf="todo.EditActive; else default">
                         <form (ngSubmit)="onFormSubmit(todo)" #editForm="ngForm">
                             <ion-item>
-                                <ion-label for="dateCreated">Date:</ion-label>
-                                <ion-datetime displayFormat="DDD MMM D, YYYY" [(ngModel)]="todo.DateCreated" name="dateCreated"></ion-datetime>
+                                <ion-label for="dateDue">Date:</ion-label>
+                                <ion-datetime displayFormat="DDD MMM D, YYYY" [(ngModel)]="todo.DateDue" name="dateDue" placeholder="{{todo.DateDue | date: yEEEMMMMd}}"></ion-datetime>
                             </ion-item>
                             <ion-item>
                                 <ion-label for="category">Category:</ion-label>
-                                <ion-select interface="popover" [(ngModel)]="todo.Category" name="category">
-                                    <ion-option *ngFor="let cat of cats" value="{{ cat }}">test</ion-option>
+                                <ion-select interface="popover" [(ngModel)]="todo.Category" name="Category">
+                                    <ion-option *ngFor="let cat of cats" [value]="cat">{{cat.Name}}</ion-option>
                                 </ion-select>
                             </ion-item>
                             <ion-item>
                                 <ion-label for="priority">Priority:</ion-label>
-                                <ion-select interface="popover" [ngModel]="todo.Priority" (ngModelChange)="changePrior($event, todo)" name="priority">
-                                    <ion-option>Low</ion-option>
-                                    <ion-option>Medium</ion-option>
-                                    <ion-option>High</ion-option>
+                                <ion-select interface="popover" [(ngModel)]="todo.Priority" name="priority">
+                                    <ion-option *ngFor="let pri of prior()" [value]="priority[pri]">{{pri}}</ion-option>
                                 </ion-select>
                             </ion-item>
                             <button ion-button type="submit">Done</button>
                         </form>
+                        <div>
+                            <p>{{todo.Info !== undefined ? todo.Info : 'undefined'}}</p>
+                            <p>{{todo.Category !== undefined ? todo.Category.Name : 'undefined'}}</p>
+                            <p>{{todo.Category !== undefined ? todo.Category.Color : 'undefined'}}</p>
+                            <p>{{todo.Priority !== undefined ? todo.Priority : 'undefined'}}</p>
+                            <p>{{todo.DateDue !== undefined ? todo.DateDue : 'undefined'}}</p>
+                        </div>
                     </ng-container>
 
                 </div>
@@ -141,7 +146,7 @@
                 <ion-item>
                     <ion-label for="priority">Priority:</ion-label>
                     <ion-select interface="popover" [(ngModel)]="newTodo.Priority" name="Priority">
-                        <ion-option *ngFor="let pri of prior()" >{{pri}}</ion-option>
+                        <ion-option *ngFor="let pri of prior()">{{pri}}</ion-option>
                     </ion-select>
                 </ion-item>
                 <button ion-button type="submit">Done</button>
