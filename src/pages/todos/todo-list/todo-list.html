@@ -1,11 +1,6 @@
-
 <p id="filterId">Currently sorting by: {{sortMode}}</p>
 <ion-list no-lines>
-    <ng-template #addButton>
-        <ion-fab *ngIf="selectActive === false">
-            <button ion-fab (click)=AddTodo()>+</button>
-        </ion-fab>
-    </ng-template>
+    
 
     <!--what select mode looks like (tap&hold to activate)-->
     <ng-container *ngIf="selectActive === true; else selInactive">
@@ -78,7 +73,7 @@
 
                             <ion-row>
                                 <ion-col col-4 class="detailLabel">priority</ion-col>
-                                <ion-col>{{todo.Priority}}</ion-col>
+                                <ion-col>{{priority[todo.Priority]}}</ion-col>
                             </ion-row>
                         </ion-grid>
                         <button ion-button id="editButton" small="true" clear="true" *ngIf="todo.DetailShown" (click)=activateEdit(todo)>edit</button>
@@ -115,7 +110,7 @@
     </ng-template>
 
     <!-- code for adding new todos -->
-    <div *ngIf="addTodo; else addButton">
+    <div *ngIf="addTodo; else addButton"> <!--see addButton below-->
         <form (ngSubmit)="onNewTodoFormSubmit()" #newTodoForm="ngForm">
             <ion-item-sliding>
                 <ion-item class="todoItem">
@@ -135,7 +130,7 @@
             <div id="details" class="container">
                 <ion-item>
                     <ion-label for="dateCreated">Date:</ion-label>
-                    <ion-datetime displayFormat="DDD MMM D, YYYY" [(ngModel)]="newTodo.DateDue" name="DateCreated"></ion-datetime>
+                    <ion-datetime displayFormat="DDD MMM D, YYYY" [(ngModel)]="newTodo.DateDue" name="DateDue"></ion-datetime>
                 </ion-item>
                 <ion-item>
                     <ion-label for="category">Category:</ion-label>
@@ -145,15 +140,27 @@
                 </ion-item>
                 <ion-item>
                     <ion-label for="priority">Priority:</ion-label>
-                    <ion-select interface="popover"[(ngModel)]="newTodo.Priority" name="Priority">
-                        <ion-option>0</ion-option>
-                        <ion-option>1</ion-option>
-                        <ion-option>2</ion-option>
+                    <ion-select interface="popover" [(ngModel)]="newTodo.Priority" name="Priority">
+                        <ion-option *ngFor="let pri of prior()" >{{pri}}</ion-option>
                     </ion-select>
                 </ion-item>
                 <button ion-button type="submit">Done</button>
             </div>
        </form>
+       <div>
+           <p>{{newTodo.Info !== undefined ? newTodo.Info : 'undefined'}}</p>
+           <p>{{newTodo.Category !== undefined ? newTodo.Category.Name : 'undefined'}}</p>
+           <p>{{newTodo.Category !== undefined ? newTodo.Category.Color : 'undefined'}}</p>
+           <p>{{newTodo.Priority !== undefined ? newTodo.Priority : 'undefined'}}</p>
+           <p>{{newTodo.DateDue !== undefined ? newTodo.DateDue : 'undefined'}}</p>
+
+        </div>
     </div>
+
+    <ng-template #addButton>
+        <ion-fab id="addButton" *ngIf="selectActive === false">
+            <button ion-fab mini (click)=AddTodo()>+</button>
+        </ion-fab>
+    </ng-template>
 </ion-list>
 

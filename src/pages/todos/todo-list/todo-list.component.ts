@@ -5,9 +5,11 @@ import { Todo } from '../../../app/todo';
 import { Category } from '../../../app/category';
 import { Priority } from '../../../app/priority';
 
+
 @Component({
     selector: 'todo-list',
     templateUrl: 'todo-list.html',
+    
 
 })
 
@@ -21,6 +23,13 @@ export class TodoList implements OnInit {
     
     selectedTodos: Todo[] = [];
     selectActive: boolean = false;
+    priority = Priority;
+
+    
+    prior() : Array<string> {
+        var keys = Object.keys(this.priority);
+        return keys.slice(keys.length / 2);
+    }
 
     constructor(private todoService: TodoService){
     }
@@ -29,6 +38,7 @@ export class TodoList implements OnInit {
         this.todoService.getTodos().then(todos => this.todos = todos);
         this.todoService.getCategories().then(categories => this.cats = categories);
         this.todoService.getColors().then(ColorArray => this.ColorArray = ColorArray);
+        
     }
 
     toggleDetail(todo){

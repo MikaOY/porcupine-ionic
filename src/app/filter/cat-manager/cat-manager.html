@@ -13,9 +13,8 @@
 <ion-content>
     <ion-list no-lines>
         <ion-item *ngFor="let cat of cats" [style.background-color]="ColorArray[cat.Color]">
-       
             <span id="catText">{{cat.Name}}</span>
-
+            <ion-icon item-right name="settings" class="whiteIcon"></ion-icon>
         </ion-item>
     </ion-list>
 </ion-content>
