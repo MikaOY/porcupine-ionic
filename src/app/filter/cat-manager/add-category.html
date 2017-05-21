@@ -2,7 +2,7 @@
 <div class="addCatContainer">
     <form (ngSubmit)="onNewCatFormSubmit()" #newCatForm="ngForm">
         <ion-item>
-            <ion-label floating>Category Name</ion-label>
+            <ion-label stacked>Category Name</ion-label>
             <ion-input clearInput [(ngModel)]="newCate.Name" name="Name"></ion-input>
         </ion-item>
         <ion-item *ngIf="this.colorPicker">
@@ -17,7 +17,7 @@
                 <ion-option *ngFor="let pri of prior()" value="{{priority[pri]}}">{{pri}}</ion-option>
             </ion-select>
         </ion-item>
-        <button ion-button type="submit">Done</button>
+        <button clear ion-button type="submit"><ion-icon name="checkmark"></ion-icon></button>
     </form>
     <div>{{newCate.Name}}</div>
     <div>{{newCate.DefaultPriority}}</div>
@@ -28,7 +28,7 @@
 
 
 <div *ngIf="!this.colorPicker" class="addCatContainer">
-    <div><button ion-button (click)="presentColors()">Back</button></div>
+    <div><button ion-button clear (click)="presentColors()">Back</button></div>
     <ion-list no-lines>
         <ion-item *ngFor="let color of ColorArray" [style.background-color]="color" (click)="setColor(color)">{{color}}</ion-item>
     </ion-list>

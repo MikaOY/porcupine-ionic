@@ -43,5 +43,8 @@ export class AddCategory implements OnInit{
     newCate = new Category(undefined, undefined, undefined);
     onNewCatFormSubmit(){
         this.viewCntrl.dismiss();
+        var currentDate = new Date();
+        this.newCate.DateCreated = currentDate;
+        //code to take the newCate and add it to database
     }
 }

@@ -19,7 +19,7 @@ const TODOS: Todo[] = [new Todo('Give an alpaca a hug', CATS[0], new Date(2017, 
                         new Todo('Upload photos to google drive', CATS[0], new Date(2017, 4, 30), false, undefined, false, Priority.Low),
                         new Todo('Pet a pug', CATS[1], new Date(2017, 4, 28), false, undefined, false, Priority.Medium)];
 
-const ColorArray: string[] = ["#919191","#ff5c3f", "#ffb523"];
+const ColorArray: string[] = ["#919191","#ff5c3f", "#ffb523", "#6f9b53", "#1371d6", "#423e7c", "#7606cc", "#c613b4"];
 
 @Injectable()
 export class TodoService {
