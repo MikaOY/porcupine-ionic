@@ -1,0 +1,17 @@
+<div class="addCatContainer">
+    <form (ngSubmit)="onNewCatFormSubmit()" #newCatForm="ngForm">
+        <ion-item>
+            <ion-input clearInput [(ngModel)]="newCate.Name" name="Name" placeholder="Category Name"></ion-input>
+        </ion-item>
+        <ion-item>
+            <ion-select interface="popover" [(ngModel)]="newCate.DefaultPriority" name="DefPriority" placeholder="Default Priority">
+                <ion-option>None</ion-option>
+                <ion-option *ngFor="let pri of prior()">{{pri}}</ion-option>
+            </ion-select>
+        </ion-item>
+        <button ion-button type="submit">Done</button>
+    </form>
+    <div>{{newCate.Name}}</div>
+    <div>{{newCate.DefaultPriority}}</div>
+    
+</div>

@@ -10,7 +10,8 @@ import { TodosPage } from '../pages/todos/todos';
 import { TabsPage } from '../pages/tabs/tabs';
 
 import { CategorySort, PropertySort } from './filter/filter.component';
-import { CategoryManager } from './filter/cat-manager/cat-manager.component';
+import { CategoryManager} from './filter/cat-manager/cat-manager.component';
+import { AddCategory } from './filter/cat-manager/add-category.component';
  
 import { TodoList } from '../pages/todos/todo-list/todo-list.component'; 
 import { StatusBar } from '@ionic-native/status-bar';
@@ -28,7 +29,8 @@ import { HttpModule }    from '@angular/http';
     TodoList,
     CategorySort,
     PropertySort,
-    CategoryManager
+    CategoryManager,
+    AddCategory
   ],
   imports: [
     BrowserModule,
@@ -46,6 +48,7 @@ import { HttpModule }    from '@angular/http';
     CategorySort,
     PropertySort,
     CategoryManager,
+    AddCategory
 
   ],
   providers: [

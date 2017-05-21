@@ -9,8 +9,6 @@ import { Priority } from '../../../app/priority';
 @Component({
     selector: 'todo-list',
     templateUrl: 'todo-list.html',
-    
-
 })
 
 export class TodoList implements OnInit {
@@ -109,7 +107,6 @@ export class TodoList implements OnInit {
     AddTodo(){
       this.addTodo = !this.addTodo;
     }
-   
 
     onNewTodoFormSubmit(todo){  
         this.addTodo = !this.addTodo;

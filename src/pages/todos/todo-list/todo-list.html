@@ -103,13 +103,6 @@
                             </ion-item>
                             <button ion-button type="submit">Done</button>
                         </form>
-                        <div>
-                            <p>{{todo.Info !== undefined ? todo.Info : 'undefined'}}</p>
-                            <p>{{todo.Category !== undefined ? todo.Category.Name : 'undefined'}}</p>
-                            <p>{{todo.Category !== undefined ? todo.Category.Color : 'undefined'}}</p>
-                            <p>{{todo.Priority !== undefined ? todo.Priority : 'undefined'}}</p>
-                            <p>{{todo.DateDue !== undefined ? todo.DateDue : 'undefined'}}</p>
-                        </div>
                     </ng-container>
 
                 </div>
@@ -155,14 +148,13 @@
                 <button ion-button type="submit">Done</button>
             </div>
        </form>
-       <div>
+       <!--<div>
            <p>{{newTodo.Info !== undefined ? newTodo.Info : 'undefined'}}</p>
            <p>{{newTodo.Category !== undefined ? newTodo.Category.Name : 'undefined'}}</p>
            <p>{{newTodo.Category !== undefined ? newTodo.Category.Color : 'undefined'}}</p>
            <p>{{newTodo.Priority !== undefined ? newTodo.Priority : 'undefined'}}</p>
            <p>{{newTodo.DateDue !== undefined ? newTodo.DateDue : 'undefined'}}</p>
-
-        </div>
+        </div>-->
     </div>
 
     <ng-template #addButton>

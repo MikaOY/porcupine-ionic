@@ -12,9 +12,11 @@
 
 <ion-content>
     <ion-list no-lines>
-        <ion-item *ngFor="let cat of cats" [style.background-color]="ColorArray[cat.Color]">
-            <span id="catText">{{cat.Name}}</span>
-            <ion-icon item-right name="settings" class="whiteIcon"></ion-icon>
-        </ion-item>
+        <button ion-item *ngFor="let cat of cats" [style.background-color]="ColorArray[cat.Color]">
+            <span class="catText">{{cat.Name}}</span>
+        </button>
+        <button ion-item id="newCat" (click)="presentAddCat()">
+            <span class="catText">New Category</span>
+        </button>
     </ion-list>
 </ion-content>
