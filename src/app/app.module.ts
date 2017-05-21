@@ -30,7 +30,7 @@ import { HttpModule }    from '@angular/http';
     CategorySort,
     PropertySort,
     CategoryManager,
-    AddCategory
+    AddCategory,
   ],
   imports: [
     BrowserModule,
@@ -48,7 +48,7 @@ import { HttpModule }    from '@angular/http';
     CategorySort,
     PropertySort,
     CategoryManager,
-    AddCategory
+    AddCategory,
 
   ],
   providers: [
