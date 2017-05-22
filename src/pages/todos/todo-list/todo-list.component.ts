@@ -39,6 +39,7 @@ export class TodoList implements OnInit {
     }
 
     constructor(private todoService: TodoService){
+        
     }
 
     ngOnInit(): void {
@@ -48,9 +49,12 @@ export class TodoList implements OnInit {
             this.todos = this.currentBoard.Todos;
             this.cats = this.currentBoard.Categories;
         });
-    }
 
-    
+      
+        // this.todoService.CurrentBoard.subscribe( value => this.currentBoard = value);
+        // console.log(this.currentBoard.Name);
+        // this.todos = this.currentBoard.Todos;
+    }
 
     toggleDetail(todo){
         todo.DetailShown = !todo.DetailShown;

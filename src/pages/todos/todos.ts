@@ -23,7 +23,11 @@ export class TodosPage {
         });
     }
 
-  
+  changeBoard(){
+    console.log("clicked");
+    this.todoService.changeBoard().then(cBoard => this.currentBoard = cBoard);
+    console.log(this.currentBoard.Name);
+  }
   
   
 

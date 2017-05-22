@@ -8,6 +8,11 @@ import { Board } from './board';
 import { Headers, Http } from '@angular/http';
 import 'rxjs/add/operator/toPromise';
 
+import {Observable} from 'rxjs/Observable';
+import 'rxjs/add/operator/share';
+import 'rxjs/add/operator/startWith';
+import {BehaviorSubject} from 'rxjs/BehaviorSubject';
+
 const CATS0: Category[] = [new Category('Life', 1, new Date(2017, 4, 30), 0, true), 
                             new Category('Code', 2, new Date(2017, 3, 26), 1, true),
                             new Category('Unsorted', 0, null, 2, true)];
@@ -33,7 +38,7 @@ const TODOS1: Todo[] = [new Todo('Tell an alpaca he is loved', CATS1[0], new Dat
 const BOARDS: Board[] =[new Board('Important Things in Life', TODOS0, CATS0),
                         new Board ('More Things Todo', TODOS1, CATS1)]
 
-const currentBoard: Board = BOARDS[0];
+
 
 const ColorArray: string[] = ["#919191","#ff5c3f", "#ffb523", "#6f9b53", "#1371d6", "#423e7c", "#7606cc", "#c613b4"];
 
@@ -44,7 +49,8 @@ export class TodoService {
     // public todosCachedList: Todo[];
 
     constructor(private http: Http) { }
-    
+    public currentBoard: Board = BOARDS[0]
+    //public CurrentBoard: BehaviorSubject<Board> = new BehaviorSubject<Board>(BOARDS[1]);
     getTodos(): Promise<Todo[]> { //remove
         return Promise.resolve(TODOS0);
     }
@@ -54,7 +60,12 @@ export class TodoService {
     }
 
     getCurrentBoard(): Promise<Board> {
-        return Promise.resolve(currentBoard);
+        return Promise.resolve(this.currentBoard);
+    }
+
+    changeBoard(): Promise<Board> {
+        this.currentBoard = BOARDS[1];
+        return Promise.resolve(this.currentBoard);
     }
     
     getCategories(): Promise<Category[]> { //remove
