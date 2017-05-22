@@ -4,6 +4,7 @@ import { ModalPage } from './modal-page';
 import { TodoService } from '../todo.service';
 import { Todo } from '../todo';
 import { Category } from '../category';
+import { Board } from '../board';
 import { CategoryManager } from './cat-manager/cat-manager.component';
 
 @Component({ //replace with list of categories
@@ -42,12 +43,15 @@ import { CategoryManager } from './cat-manager/cat-manager.component';
 
 export class CategorySort implements OnInit{
     private cats: Category[];
-
+    private Boards: Board[];
+    private currentBoard: Board;
     constructor(private todoService: TodoService, public modalCtrl: ModalController){
     }
 
      ngOnInit(): void {
-        this.todoService.getCategories().then(cats => this.cats = cats);
+        this.todoService.getCurrentBoard().then(cBoard => this.currentBoard = cBoard).then( () => {
+            this.cats = this.currentBoard.Categories;
+        });
     }
 
     showCatModal(){
@@ -85,8 +89,12 @@ export class CategorySort implements OnInit{
 
 export class PropertySort{
     private todos: Todo[];
+    private Boards: Board[];
+    private currentBoard: Board;
     constructor(private todoService: TodoService){
-        this.todoService.getTodos().then(todos => this.todos = todos);
+        this.todoService.getCurrentBoard().then(cBoard => this.currentBoard = cBoard).then( () => {
+            this.todos = this.currentBoard.Todos;
+        });
      }
 
     sortPriorityHL(){

@@ -4,6 +4,7 @@ import { TodoService } from '../../../app/todo.service';
 import { Todo } from '../../../app/todo';
 import { Category } from '../../../app/category';
 import { Priority } from '../../../app/priority';
+import { Board } from '../../../app/board';
 
 
 @Component({
@@ -18,6 +19,8 @@ export class TodoList implements OnInit {
     
     // this sets colors for the category numbers
     ColorArray: string[];
+    Boards: Board[];
+    currentBoard: Board;
     
     selectedTodos: Todo[] = [];
     selectActive: boolean = false;
@@ -39,14 +42,19 @@ export class TodoList implements OnInit {
     }
 
     ngOnInit(): void {
-        this.todoService.getTodos().then(todos => this.todos = todos);
-        this.todoService.getCategories().then(categories => this.cats = categories);
         this.todoService.getColors().then(ColorArray => this.ColorArray = ColorArray);
-        
+        this.todoService.getBoards().then(boards => this.Boards = boards);
+        this.todoService.getCurrentBoard().then(cBoard => this.currentBoard = cBoard).then( () => {
+            this.todos = this.currentBoard.Todos;
+            this.cats = this.currentBoard.Categories;
+        });
     }
+
+    
 
     toggleDetail(todo){
         todo.DetailShown = !todo.DetailShown;
+         
     }
 
     activateEdit(todo){
@@ -106,6 +114,7 @@ export class TodoList implements OnInit {
     newTodo = new Todo(undefined, undefined, undefined, undefined, undefined, false, undefined);
     AddTodo(){
       this.addTodo = !this.addTodo;
+      
     }
 
     onNewTodoFormSubmit(todo){  
