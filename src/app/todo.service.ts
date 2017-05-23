@@ -49,7 +49,7 @@ export class TodoService {
     // public todosCachedList: Todo[];
 
     constructor(private http: Http) { }
-    public currentBoard: Board = BOARDS[0]
+    public currentBoard: Board = BOARDS[0];
     //public CurrentBoard: BehaviorSubject<Board> = new BehaviorSubject<Board>(BOARDS[1]);
     getTodos(): Promise<Todo[]> { //remove
         return Promise.resolve(TODOS0);

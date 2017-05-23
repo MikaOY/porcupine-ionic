@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { TodoService } from '../../../app/todo.service';
 
 import { Todo } from '../../../app/todo';
@@ -14,19 +14,30 @@ import { Board } from '../../../app/board';
 
 export class TodoList implements OnInit {
     
-    private todos: Todo[]; // see mock data in todo.service.ts
-    private cats: Category[];
+    // @Input() activeBoard: Board;
+    // @Input() todos: Todo[];
     
+    private todos: Todo[];
+    private cats: Category[];
+       
     // this sets colors for the category numbers
     ColorArray: string[];
     Boards: Board[];
-    currentBoard: Board;
     
     selectedTodos: Todo[] = [];
     selectActive: boolean = false;
     priority = Priority;
 
-    
+    constructor(private todoService: TodoService){
+    }
+
+    ngOnInit(): void {
+        this.todoService.getColors().then(ColorArray => this.ColorArray = ColorArray);
+        this.todoService.getBoards().then(boards => this.Boards = boards);
+        this.todoService.getTodos().then(value => this.todos = value);
+        this.todoService.getCategories().then(value => this.cats = value);
+    }
+
     prior() : Array<string> {
         var keys = Object.keys(this.priority);
         return keys.slice(keys.length / 2);
@@ -37,28 +48,9 @@ export class TodoList implements OnInit {
         var priArray = Array(k).fill(2).map((x,i)=>i);
         return priArray;
     }
-
-    constructor(private todoService: TodoService){
-        
-    }
-
-    ngOnInit(): void {
-        this.todoService.getColors().then(ColorArray => this.ColorArray = ColorArray);
-        this.todoService.getBoards().then(boards => this.Boards = boards);
-        this.todoService.getCurrentBoard().then(cBoard => this.currentBoard = cBoard).then( () => {
-            this.todos = this.currentBoard.Todos;
-            this.cats = this.currentBoard.Categories;
-        });
-
-      
-        // this.todoService.CurrentBoard.subscribe( value => this.currentBoard = value);
-        // console.log(this.currentBoard.Name);
-        // this.todos = this.currentBoard.Todos;
-    }
-
+    
     toggleDetail(todo){
         todo.DetailShown = !todo.DetailShown;
-         
     }
 
     activateEdit(todo){
@@ -127,10 +119,4 @@ export class TodoList implements OnInit {
         this.newTodo.DateCreated = currentDate;
         //TODO: pass newTodo to server and add to user's array 
     }
-
-    
-    
 }
-
-
-

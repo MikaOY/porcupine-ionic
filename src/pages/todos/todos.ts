@@ -14,21 +14,18 @@ import { Category } from '../../app/category';
 export class TodosPage {
 
   private cats: Category[];
-  private currentBoard: Board;
+  currentBoard: Board;
+  currentTodos: Todo[];
 
   constructor(private todoService: TodoService){
 
         this.todoService.getCurrentBoard().then(cBoard => this.currentBoard = cBoard).then( () => {
             this.cats = this.currentBoard.Categories;
+            this.currentTodos = this.currentBoard.Todos;
         });
     }
 
   changeBoard(){
-    console.log("clicked");
     this.todoService.changeBoard().then(cBoard => this.currentBoard = cBoard);
-    console.log(this.currentBoard.Name);
   }
-  
-  
-
 }
