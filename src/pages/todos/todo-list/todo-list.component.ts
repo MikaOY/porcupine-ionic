@@ -13,14 +13,11 @@ import { Board } from '../../../app/board';
 })
 
 export class TodoList implements OnInit {
-
-    private todos: Todo[];
-    private cats: Category[];
     private error: any; 
+    private currentBoard: Board;
 
     // this sets colors for the category numbers
     ColorArray: string[];
-    Boards: Board[];
     
     selectedTodos: Todo[] = [];
     selectActive: boolean = false;
@@ -32,8 +29,7 @@ export class TodoList implements OnInit {
     ngOnInit(): void {
         this.todoService.getCategories().then(categories => this.cats = categories);
         this.todoService.getColors().then(ColorArray => this.ColorArray = ColorArray);
-        this.todoService.getBoards().then(boards => this.Boards = boards);
-        this.todoService.getCategories().then(value => this.cats = value);
+        this.todoService.getCurrentBoard().then(value => this.currentBoard = value);
     }
 
     prior() : Array<string> {
@@ -77,9 +73,9 @@ export class TodoList implements OnInit {
     } 
 
     reorderItems(indexes) {
-        let element = this.todos[indexes.from];
-        this.todos.splice(indexes.from, 1);
-        this.todos.splice(indexes.to, 0, element);
+        let element = this.currentBoard.Todos[indexes.from];
+        this.currentBoard.Todos.splice(indexes.from, 1);
+        this.currentBoard.Todos.splice(indexes.to, 0, element);
     }
 
     activateSelect(todo: Todo){
@@ -96,10 +92,9 @@ export class TodoList implements OnInit {
 
     disableSelect(){
         this.selectActive = false;
-        for (let todo of this.todos){ //turns everything back to white color
+        for (let todo of this.currentBoard.Todos){ //turns everything back to white color
             todo.SelectActive = false;
         }
-
         this.selectedTodos.length = 0; //empties selectedTodos array
     }
 
@@ -108,7 +103,6 @@ export class TodoList implements OnInit {
     newTodo = new Todo(undefined, undefined, undefined, undefined, undefined, false, undefined);
     AddTodo(){
       this.addTodo = !this.addTodo;
-      
     }
 
     onNewTodoFormSubmit(todo){  

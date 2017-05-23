@@ -101,7 +101,7 @@ export class PropertySort {
     private error: any;
     
     constructor(private todoService: TodoService) {
-        this.todoService.getTodos().subscribe(todos => this.todos = this.currentBoard.Todos, error => error = this.error.message);
+        this.todoService.getCurrentBoard().then(value => this.currentBoard = value);
      }
 
     sortPriorityHL(){
