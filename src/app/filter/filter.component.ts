@@ -94,14 +94,14 @@ export class CategorySort implements OnInit{
     `
 })
 
-export class PropertySort{
-    private todos: Todo[];
+export class PropertySort {
     private Boards: Board[];
     private currentBoard: Board;
-    constructor(private todoService: TodoService){
-        this.todoService.getCurrentBoard().then(cBoard => this.currentBoard = cBoard).then( () => {
-            this.todos = this.currentBoard.Todos;
-        });
+    private todos: Todo[];
+    private error: any;
+    
+    constructor(private todoService: TodoService) {
+        this.todoService.getTodos().subscribe(todos => this.todos = this.currentBoard.Todos, error => error = this.error.message);
      }
 
     sortPriorityHL(){
@@ -164,11 +164,3 @@ export class PropertySort{
     }
 
 }
-
-
-
-
-
-
-
-
