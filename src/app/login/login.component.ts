@@ -12,12 +12,18 @@ export class LoginPage {
 
     }  
 
+    bananas(){
+        this.viewCtrl.dismiss();
+    }
+
     login(){
         // login to server
         this.viewCtrl.dismiss();
     }
 
-    dismiss(){
-        this.viewCtrl.dismiss();
+    register(){
+        
     }
+
+    
 }
