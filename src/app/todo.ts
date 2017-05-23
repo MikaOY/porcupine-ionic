@@ -1,5 +1,3 @@
-import { TodoService } from './todo.service';
-
 import { Category } from './category';
 import { Priority } from './priority';
 
@@ -13,16 +11,17 @@ export class Todo {
                 public Priority: Priority,
                 public DateDue?: Date, 
                 public DbId?: number, // optional to allow latency with DB
-                private todoService?: TodoService,
                 public DetailShown?: boolean,
                 public EditActive?: boolean,
                 public SelectActive?: boolean){ }
 
+    /*
     // toJSON is automatically used by JSON.stringify
     toJSON(): TodoJSON {
         // copy all fields from `this` to an empty object and return in
         return Object.assign({}, this, {
             // convert fields that need converting
+            todo_info: this.Info,
             CategoryId: this.Category.DbId, 
             DateCreated: this.DateCreated.toString(),
             DateDone: this.DateDone.toString(),
@@ -32,22 +31,26 @@ export class Todo {
     // fromJSON is used to convert an serialized version
     // of the User to an instance of the class
     static fromJSON(json: TodoJSON|string): Todo {
+        
         if (typeof json === 'string') {
             // if it's a string, parse it first
             return JSON.parse(json, Todo.reviver);
         } else {
             // create an instance of the Todo class
             let todo = Object.create(Todo.prototype);
-            // Get category based on id
-            var category = todo.todoService.getCategories().then(cats => cats[json.CategoryId]);
+            // Set categoryId, fill other fields later in instance scope
+            var category = new Category(undefined, undefined, undefined, json.CategoryId);
         
             // copy all the fields from the json object
             Object.assign(todo, json, {
                 // convert fields that need converting
-                DateCreated: new Date(json.DateCreated),
-                DateDone: new Date(json.DateDone),
-                Category: category, 
+                Info: json.todo_info,
+                DateCreated: new Date(json.date_created),
+                DateDone: new Date(json.date_done),
+                Category: category,
             });
+
+            return todo;
         }
     }
 
@@ -56,15 +59,18 @@ export class Todo {
     static reviver(key: string, value: any): any {
         return key === "" ? Todo.fromJSON(value) : value;
     }
+    */
 }
-
+/*
 export interface TodoJSON {
-    Info: string;
-    CategoryId: number;
-    DateCreated: string;
-    IsDone: boolean;
-    DateDone: string;
-    IsArchived: boolean;
-    Priority: number;
-    DbId?: number;
+    todo_id: string;
+    person_id: string;
+    todo_info: string;
+    category_id: number;
+    priority_value: number;
+    is_done: boolean;
+    date_done: string;
+    is_archived: boolean;
+    date_created: string;
 }
+*/

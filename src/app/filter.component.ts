@@ -73,8 +73,10 @@ export class CategorySort implements OnInit{
 
 export class PropertySort{
     private todos: Todo[];
+    private error: any;
+    
     constructor(private todoService: TodoService){
-        this.todoService.getTodos().then(todos => this.todos = todos);
+        this.todoService.getTodos().subscribe(todos => this.todos = todos, error => error = this.error.message);
      }
 
     sortPriorityHL(){

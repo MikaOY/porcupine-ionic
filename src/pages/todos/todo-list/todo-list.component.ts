@@ -15,6 +15,7 @@ export class TodoList implements OnInit {
     
     private todos: Todo[]; // see mock data in todo.service.ts
     private cats: Category[];
+    private error: any; 
     
     // this sets colors for the category numbers
     ColorArray: string[] = ["#919191","#ff5c3f", "#ffb523"];
@@ -26,10 +27,8 @@ export class TodoList implements OnInit {
     }
 
     ngOnInit(): void {
-        this.todoService.getTodos().then(todos => this.todos = todos);
+        this.todoService.getTodos().subscribe(todos => todos = this.todos, error => error = this.error.message);
         this.todoService.getCategories().then(categories => this.cats = categories);
-        
-        
     }
 
     toggleDetail(todo){
