@@ -35,3 +35,20 @@
 }
 
 
+#addButton{
+    position: absolute;
+    right: 15px;
+    bottom: 15px;
+}
+
+.pRow{
+    display: table;
+}
+
+.pColumn{
+    display: table-cell;
+}
+
+.priorBar{
+    font-weight: bolder;
+}

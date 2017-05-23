@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
 import { TodoList } from './todo-list/todo-list.component'; 
 import { Todo } from '../../app/todo';
-
+import { Board } from '../../app/board';
 import { TodoService } from '../../app/todo.service';
 import { Category } from '../../app/category';
 
@@ -14,13 +14,18 @@ import { Category } from '../../app/category';
 export class TodosPage {
 
   private cats: Category[];
+  currentBoard: Board;
+  currentTodos: Todo[];
 
   constructor(private todoService: TodoService){
-        this.todoService.getCategories().then(categories => this.cats = categories);
+
+        this.todoService.getCurrentBoard().then(cBoard => this.currentBoard = cBoard).then( () => {
+            this.cats = this.currentBoard.Categories;
+            this.currentTodos = this.currentBoard.Todos;
+        });
     }
 
-  
-  
-  
-
+  changeBoard(){
+    this.todoService.changeBoard().then(cBoard => this.currentBoard = cBoard);
+  }
 }

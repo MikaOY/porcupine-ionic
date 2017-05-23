@@ -1,27 +1,30 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { TodoService } from '../../../app/todo.service';
 
 import { Todo } from '../../../app/todo';
 import { Category } from '../../../app/category';
 import { Priority } from '../../../app/priority';
+import { Board } from '../../../app/board';
+
 
 @Component({
     selector: 'todo-list',
     templateUrl: 'todo-list.html',
-
 })
 
 export class TodoList implements OnInit {
-    
-    private todos: Todo[]; // see mock data in todo.service.ts
+
+    private todos: Todo[];
     private cats: Category[];
     private error: any; 
-    
+
     // this sets colors for the category numbers
-    ColorArray: string[] = ["#919191","#ff5c3f", "#ffb523"];
+    ColorArray: string[];
+    Boards: Board[];
     
     selectedTodos: Todo[] = [];
     selectActive: boolean = false;
+    priority = Priority;
 
     constructor(private todoService: TodoService){
     }
@@ -29,13 +32,25 @@ export class TodoList implements OnInit {
     ngOnInit(): void {
         this.todoService.getTodos().subscribe(todos => todos = this.todos, error => error = this.error.message);
         this.todoService.getCategories().then(categories => this.cats = categories);
+        this.todoService.getColors().then(ColorArray => this.ColorArray = ColorArray);
+        this.todoService.getBoards().then(boards => this.Boards = boards);
+        this.todoService.getTodos().then(value => this.todos = value);
+        this.todoService.getCategories().then(value => this.cats = value);
     }
 
+    prior() : Array<string> {
+        var keys = Object.keys(this.priority);
+        return keys.slice(keys.length / 2);
+    }
+
+    todoPriority(pri: number) : Array<number> {
+        let k = pri + 1;
+        var priArray = Array(k).fill(2).map((x,i)=>i);
+        return priArray;
+    }
+    
     toggleDetail(todo){
         todo.DetailShown = !todo.DetailShown;
-        for (let todo of this.todos){
-            
-        }
     }
 
     activateEdit(todo){
@@ -95,8 +110,8 @@ export class TodoList implements OnInit {
     newTodo = new Todo(undefined, undefined, undefined, undefined, undefined, false, undefined);
     AddTodo(){
       this.addTodo = !this.addTodo;
+      
     }
-   
 
     onNewTodoFormSubmit(todo){  
         this.addTodo = !this.addTodo;
@@ -104,10 +119,4 @@ export class TodoList implements OnInit {
         this.newTodo.DateCreated = currentDate;
         //TODO: pass newTodo to server and add to user's array 
     }
-
-    
-    
 }
-
-
-

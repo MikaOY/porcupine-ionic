@@ -1,7 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { TodoService } from './todo.service';
-import { Todo } from './todo';
-import { Category } from './category';
+import { ModalController, NavController } from 'ionic-angular';
+
+import { ModalPage } from './modal-page';
+import { TodoService } from '../todo.service';
+import { Todo } from '../todo';
+import { Category } from '../category';
+import { Board } from '../board';
+import { CategoryManager } from './cat-manager/cat-manager.component';
+import { LoginPage } from '../login/login.component';
 
 @Component({ //replace with list of categories
     selector: "category-list",
@@ -13,10 +19,14 @@ import { Category } from './category';
                 <img src="../assets/alpacatar.jpeg">
             </ion-avatar>
             <h2>Mr. Paca</h2>
+            <button ion-button clear mini id="loginButton" (click)="presentLogin()">Login</button>
         </ion-item>
     </ion-list>
+
+    <div id="catContainer">
     <ion-list no-lines>
         <ion-list-header>Filter by Category</ion-list-header>
+        <button ion-button clear="true" id="addCatButton" (click)="showCatModal()">+</button>
         <ion-item *ngFor="let cat of cats">
             <ion-checkbox [(ngModel)]="cat.IsShown"></ion-checkbox>
             <ion-label>{{cat.Name}}</ion-label>
@@ -29,22 +39,35 @@ import { Category } from './category';
             </ion-label>
         </ion-item>
     </ion-list>
-    
+    </div>
     `
 })
 
 export class CategorySort implements OnInit{
     private cats: Category[];
-
-    constructor(private todoService: TodoService){
-        
+    private Boards: Board[];
+    private currentBoard: Board;
+    constructor(private todoService: TodoService, public modalCtrl: ModalController){
     }
 
      ngOnInit(): void {
-        this.todoService.getCategories().then(cats => this.cats = cats);
+        this.todoService.getCurrentBoard().then(cBoard => this.currentBoard = cBoard).then( () => {
+            this.cats = this.currentBoard.Categories;
+        });
     }
 
+    showCatModal(){
+        let catModal = this.modalCtrl.create(CategoryManager);
+        catModal.present();
+    }
+
+    presentLogin(){
+        let loginModal = this.modalCtrl.create(LoginPage);
+        loginModal.present();
+    }
 }
+
+
 
 
 @Component({
@@ -71,12 +94,14 @@ export class CategorySort implements OnInit{
     `
 })
 
-export class PropertySort{
+export class PropertySort {
+    private Boards: Board[];
+    private currentBoard: Board;
     private todos: Todo[];
     private error: any;
     
-    constructor(private todoService: TodoService){
-        this.todoService.getTodos().subscribe(todos => this.todos = todos, error => error = this.error.message);
+    constructor(private todoService: TodoService) {
+        this.todoService.getTodos().subscribe(todos => this.todos = this.currentBoard.Todos, error => error = this.error.message);
      }
 
     sortPriorityHL(){
@@ -139,11 +164,3 @@ export class PropertySort{
     }
 
 }
-
-
-
-
-
-
-
-

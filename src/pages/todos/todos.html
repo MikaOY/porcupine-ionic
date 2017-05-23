@@ -1,7 +1,19 @@
 <ion-header>
-  <ion-navbar>
-   <button menuToggle ion-button>Menu</button>
-  </ion-navbar>
+    <ion-navbar>
+        <ion-grid no-padding>
+            <ion-row align-items-center>
+                <ion-col col-2>
+                    <button center menuToggle ion-button>Menu</button>
+                </ion-col>
+                <ion-col>
+                    <ion-label text-wrap text-center>{{currentBoard.Name}}</ion-label>
+                </ion-col>
+                <ion-col col-2>
+                    <button ion-button clear (click)="changeBoard()"><ion-icon name="arrow-forward"></ion-icon></button>
+                </ion-col>
+            </ion-row>
+        </ion-grid>
+    </ion-navbar>
 </ion-header>
 
 <ion-content padding>
