@@ -13,7 +13,8 @@ export class LoginPage {
     }  
 
     login(){
-        
+        // login to server
+        this.viewCtrl.dismiss();
     }
 
     dismiss(){
