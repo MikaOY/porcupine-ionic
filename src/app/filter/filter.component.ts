@@ -1,11 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { ModalController } from 'ionic-angular';
+import { ModalController, NavController } from 'ionic-angular';
+
 import { ModalPage } from './modal-page';
 import { TodoService } from '../todo.service';
 import { Todo } from '../todo';
 import { Category } from '../category';
 import { Board } from '../board';
 import { CategoryManager } from './cat-manager/cat-manager.component';
+import { LoginPage } from '../login/login.component';
 
 @Component({ //replace with list of categories
     selector: "category-list",
@@ -17,6 +19,7 @@ import { CategoryManager } from './cat-manager/cat-manager.component';
                 <img src="../assets/alpacatar.jpeg">
             </ion-avatar>
             <h2>Mr. Paca</h2>
+            <button ion-button clear mini id="loginButton" (click)="presentLogin()">Login</button>
         </ion-item>
     </ion-list>
 
@@ -37,7 +40,6 @@ import { CategoryManager } from './cat-manager/cat-manager.component';
         </ion-item>
     </ion-list>
     </div>
-    
     `
 })
 
@@ -57,6 +59,11 @@ export class CategorySort implements OnInit{
     showCatModal(){
         let catModal = this.modalCtrl.create(CategoryManager);
         catModal.present();
+    }
+
+    presentLogin(){
+        let loginModal = this.modalCtrl.create(LoginPage);
+        loginModal.present();
     }
 }
 

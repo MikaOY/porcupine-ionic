@@ -13,10 +13,7 @@ import { Board } from '../../../app/board';
 })
 
 export class TodoList implements OnInit {
-    
-    // @Input() activeBoard: Board;
-    // @Input() todos: Todo[];
-    
+
     private todos: Todo[];
     private cats: Category[];
        

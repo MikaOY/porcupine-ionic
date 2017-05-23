@@ -5,6 +5,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 
 import { TabsPage } from '../pages/tabs/tabs';
 import { CategorySort, PropertySort } from './filter/filter.component';
+import { LoginPage } from './login/login.component';
 
 @Component({
   templateUrl: 'app.html'

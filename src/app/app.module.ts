@@ -5,6 +5,7 @@ import { ElasticModule } from 'angular2-elastic';
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 import { MyApp } from './app.component';
 
+import { LoginPage } from './login/login.component';
 import { SettingsPage } from '../pages/settings/settings';
 import { TodosPage } from '../pages/todos/todos';
 import { TabsPage } from '../pages/tabs/tabs';
@@ -31,6 +32,7 @@ import { HttpModule }    from '@angular/http';
     PropertySort,
     CategoryManager,
     AddCategory,
+    LoginPage
   ],
   imports: [
     BrowserModule,
@@ -49,7 +51,7 @@ import { HttpModule }    from '@angular/http';
     PropertySort,
     CategoryManager,
     AddCategory,
-
+    LoginPage
   ],
   providers: [
     StatusBar,

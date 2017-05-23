@@ -64,7 +64,15 @@ export class TodoService {
     }
 
     changeBoard(): Promise<Board> {
-        this.currentBoard = BOARDS[1];
+        let boardIndex = BOARDS.indexOf(this.currentBoard);
+
+        if (boardIndex + 1 == BOARDS.length){
+            this.currentBoard = BOARDS[0];
+        }
+        else{
+            this.currentBoard = BOARDS[boardIndex + 1];
+        }
+      
         return Promise.resolve(this.currentBoard);
     }
     
