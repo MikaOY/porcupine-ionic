@@ -48,10 +48,6 @@ export class TodoService {
 
     constructor(private http: Http) { }
 
-    getBoards(): Promise<Board[]> {
-        return Promise.resolve(BOARDS);
-    }
-
     getCurrentBoard(): Promise<Board> {
         return Promise.resolve(this.currentBoard);
     }
@@ -69,11 +65,6 @@ export class TodoService {
         return Promise.resolve(this.currentBoard);
     }
     
-    getCategories(): Promise<Category[]> { 
-        this.cachedCats = CATS0;
-        return Promise.resolve(CATS0);
-    }
-
     getColors(): Promise<string[]>{
         return Promise.resolve(ColorArray);
     }

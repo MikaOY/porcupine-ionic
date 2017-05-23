@@ -12,18 +12,13 @@ import { AddCategory } from './add-category.component';
 export class CategoryManager implements OnInit{
     constructor(public viewCtrl: ViewController, public params: NavParams, private todoService: TodoService, public modalCtrl: ModalController) { }
 
-    private cats: Category[];
     private ColorArray: string[];
-    private Boards: Board[];
     private currentBoard: Board;
 
     ngOnInit(): void {
   
         this.todoService.getColors().then(ColorArray => this.ColorArray = ColorArray);
-        this.todoService.getBoards().then(boards => this.Boards = boards);
-        this.todoService.getCurrentBoard().then(cBoard => this.currentBoard = cBoard).then( () => {
-            this.cats = this.currentBoard.Categories;
-        });
+        this.todoService.getCurrentBoard().then(cBoard => this.currentBoard = cBoard);
     }
 
     dismiss(){

@@ -11,7 +11,6 @@ import { ColorPicker } from './color-picker.component';
 
 export class AddCategory implements OnInit{
     constructor(public viewCntrl: ViewController,private todoService: TodoService, public navCntrl: NavController){
-
     }
     
     private ColorArray: string[];

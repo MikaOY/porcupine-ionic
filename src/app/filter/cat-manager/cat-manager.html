@@ -12,7 +12,7 @@
 
 <ion-content>
     <ion-list no-lines>
-        <button ion-item *ngFor="let cat of cats" [style.background-color]="ColorArray[cat.Color]">
+        <button ion-item *ngFor="let cat of currentBoard.Categories" [style.background-color]="ColorArray[cat.Color]">
             <span class="catText">{{cat.Name}}</span>
         </button>
         <button ion-item id="newCat" (click)="presentAddCat()">

@@ -27,7 +27,6 @@ export class TodoList implements OnInit {
     }
 
     ngOnInit(): void {
-        this.todoService.getCategories().then(categories => this.cats = categories);
         this.todoService.getColors().then(ColorArray => this.ColorArray = ColorArray);
         this.todoService.getCurrentBoard().then(value => this.currentBoard = value);
     }

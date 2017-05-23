@@ -12,17 +12,11 @@ import { Category } from '../../app/category';
   templateUrl: 'todos.html'
 })
 export class TodosPage {
-
-  private cats: Category[];
   currentBoard: Board;
-  currentTodos: Todo[];
 
   constructor(private todoService: TodoService){
 
-        this.todoService.getCurrentBoard().then(cBoard => this.currentBoard = cBoard).then( () => {
-            this.cats = this.currentBoard.Categories;
-            this.currentTodos = this.currentBoard.Todos;
-        });
+        this.todoService.getCurrentBoard().then(cBoard => this.currentBoard = cBoard);
     }
 
   changeBoard(){

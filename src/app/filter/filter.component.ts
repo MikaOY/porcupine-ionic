@@ -27,10 +27,12 @@ import { LoginPage } from '../login/login.component';
     <ion-list no-lines>
         <ion-list-header>Filter by Category</ion-list-header>
         <button ion-button clear="true" id="addCatButton" (click)="showCatModal()">+</button>
-        <ion-item *ngFor="let cat of cats">
-            <ion-checkbox [(ngModel)]="cat.IsShown"></ion-checkbox>
-            <ion-label>{{cat.Name}}</ion-label>
-        </ion-item>
+        <ng-container *ngIf="currentBoard">
+            <ion-item *ngFor="let cat of currentBoard.Categories">
+                <ion-checkbox [(ngModel)]="cat.IsShown"></ion-checkbox>
+                <ion-label>{{cat.Name}}</ion-label>
+            </ion-item>
+        </ng-container>
         <ion-item>
             <ion-checkbox></ion-checkbox>
             <ion-label>
@@ -44,16 +46,13 @@ import { LoginPage } from '../login/login.component';
 })
 
 export class CategorySort implements OnInit{
-    private cats: Category[];
-    private Boards: Board[];
     private currentBoard: Board;
+    
     constructor(private todoService: TodoService, public modalCtrl: ModalController){
     }
 
      ngOnInit(): void {
-        this.todoService.getCurrentBoard().then(cBoard => this.currentBoard = cBoard).then( () => {
-            this.cats = this.currentBoard.Categories;
-        });
+        this.todoService.getCurrentBoard().then(cBoard => this.currentBoard = cBoard);
     }
 
     showCatModal(){
@@ -95,9 +94,7 @@ export class CategorySort implements OnInit{
 })
 
 export class PropertySort {
-    private Boards: Board[];
     private currentBoard: Board;
-    private todos: Todo[];
     private error: any;
     
     constructor(private todoService: TodoService) {
@@ -105,7 +102,7 @@ export class PropertySort {
      }
 
     sortPriorityHL(){
-        var sortedTodos:Todo[] = this.todos.sort((a,b) => {
+        var sortedTodos:Todo[] = this.currentBoard.Todos.sort((a,b) => {
 
             if (a.Priority > b.Priority){
                 return -1;
@@ -121,7 +118,7 @@ export class PropertySort {
     }
 
     sortPriorityLH(){
-        var sortedTodos:Todo[] = this.todos.sort((a,b) => {
+        var sortedTodos:Todo[] = this.currentBoard.Todos.sort((a,b) => {
 
             if (a.Priority > b.Priority){
                 return 1;
@@ -136,7 +133,7 @@ export class PropertySort {
     }
 
     sortRecent(){
-        var sortedTodos:Todo[] = this.todos.sort((a,b) => {
+        var sortedTodos:Todo[] = this.currentBoard.Todos.sort((a,b) => {
             if (a.DateCreated > b.DateCreated){
                 return -1;
             }
@@ -150,7 +147,7 @@ export class PropertySort {
     }
 
     sortOldest(){
-        var sortedTodos:Todo[] = this.todos.sort((a,b) => {
+        var sortedTodos:Todo[] = this.currentBoard.Todos.sort((a,b) => {
             if (a.DateCreated > b.DateCreated){
                 return 1;
             }
