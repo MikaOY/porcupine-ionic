@@ -9,6 +9,7 @@ import { LoginPage } from './login/login.component';
 import { SettingsPage } from '../pages/settings/settings';
 import { TodosPage } from '../pages/todos/todos';
 import { TabsPage } from '../pages/tabs/tabs';
+import { UnlockPage } from './lockable/unlock-page.component';
 
 import { CategorySort, PropertySort } from './filter/filter.component';
 import { CategoryManager} from './filter/cat-manager/cat-manager.component';
@@ -32,7 +33,8 @@ import { HttpModule }    from '@angular/http';
     PropertySort,
     CategoryManager,
     AddCategory,
-    LoginPage
+    LoginPage,
+    UnlockPage
   ],
   imports: [
     BrowserModule,
@@ -51,7 +53,8 @@ import { HttpModule }    from '@angular/http';
     PropertySort,
     CategoryManager,
     AddCategory,
-    LoginPage
+    LoginPage,
+    UnlockPage
   ],
   providers: [
     StatusBar,

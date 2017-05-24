@@ -1,7 +1,12 @@
 import { Category } from './category';
 import { Priority } from './priority';
+import { Lockable } from './lockable/lockable.interface';
+import { ModalController } from 'ionic-angular';
+import { LoginPage } from './login/login.component';
 
-export class Todo {
+export class Todo implements Lockable{
+
+    
     constructor(public Info: string,
                 public Category: Category,
                 public DateCreated: Date,
@@ -13,7 +18,23 @@ export class Todo {
                 public DbId?: number, // optional to allow latency with DB
                 public DetailShown?: boolean,
                 public EditActive?: boolean,
-                public SelectActive?: boolean){ }
+                public SelectActive?: boolean,
+                public ModalCtrl?: ModalController){ 
+                }
+
+    IsLocked: boolean = false;
+    Lock(todo: Todo): true{
+        console.log(todo.Info);
+        todo.IsLocked = true;
+        todo.DetailShown = false;
+        return true;
+    }
+    Unlock(todo: Todo){
+        console.log("Unlock!!");
+        console.log(this.ModalCtrl);
+        let UnlockModal = this.ModalCtrl.create(LoginPage); //pass in additional params here
+        UnlockModal.present();
+    }
 
     /*
     // toJSON is automatically used by JSON.stringify
