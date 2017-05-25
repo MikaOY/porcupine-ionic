@@ -1,0 +1,32 @@
+.red-theme{
+    h1, h2, h3, h4, h5, h6,
+  .toolbar-title {
+    color: $red-primary;
+  }
+  .toolbar-background {
+    background-color: $red-dark;
+  }
+  ion-content {
+    background-color: $red-background;
+  }
+  ion-list {
+    background-color: $red-background;
+    #toggleButton{
+        color: $red-dark;
+    }
+    ion-item {
+      background-color: $red-background
+      
+    }
+    #addButton{
+        button{
+            background-color: $red-dark;
+        }
+    }
+  }
+  ion-header{
+      button, ion-label{
+          color: #ffffff;
+      }
+  }
+}

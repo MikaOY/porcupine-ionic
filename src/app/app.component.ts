@@ -6,20 +6,25 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { TabsPage } from '../pages/tabs/tabs';
 import { CategorySort, PropertySort } from './filter/filter.component';
 import { LoginPage } from './login/login.component';
+import { SettingsService } from './settings.service';
 
 @Component({
-  templateUrl: 'app.html'
+  templateUrl: 'app.html',
+  providers: [SettingsService]
 })
 
 export class MyApp {
   rootPage:any = TabsPage;
+  chosenTheme: string;
 
-  constructor(platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen, modalCtrl: ModalController) {
+  constructor(platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen, private settingsService: SettingsService, modalCtrl: ModalController) {
+    this.settingsService.getTheme().subscribe(val => this.chosenTheme = val);
     platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.
       statusBar.styleDefault();
       splashScreen.hide();
+      
       let loginModal = modalCtrl.create(LoginPage);
         loginModal.present();
     });

@@ -21,7 +21,8 @@ export class TodoList implements OnInit {
     
     selectedTodos: Todo[] = [];
     selectActive: boolean = false;
-    priority = Priority;
+    priority: string[] = ["Low", "Medium", "High"];
+
 
     constructor(private todoService: TodoService){
     }
@@ -32,8 +33,9 @@ export class TodoList implements OnInit {
     }
 
     prior() : Array<string> {
-        var keys = Object.keys(this.priority);
-        return keys.slice(keys.length / 2);
+        console.log("HI THERE");
+        var keys: string[] = ["Low", "Medium", "High"];
+        return keys;
     }
 
     todoPriority(pri: number) : Array<number> {

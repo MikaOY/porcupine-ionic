@@ -6,7 +6,6 @@ import { LoginPage } from './login/login.component';
 
 export class Todo implements Lockable{
 
-    
     constructor(public Info: string,
                 public Category: Category,
                 public DateCreated: Date,

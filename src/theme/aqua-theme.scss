@@ -1,0 +1,33 @@
+.aqua-theme{
+    h1, h2, h3, h4, h5, h6,
+  .toolbar-title {
+    color: $aqua-primary;
+  }
+  .toolbar-background {
+    background-color: $aqua-dark;
+  }
+  ion-content {
+    background-color: $aqua-background;
+  }
+  ion-list {
+    background-color: $aqua-background;
+    #toggleButton{
+        color: $aqua-dark;
+    }
+    ion-item {
+      background-color: $aqua-background
+      
+    }
+    #addButton{
+        button{
+            background-color: $aqua-dark;
+        }
+    }
+  }
+
+  ion-header{
+      button, ion-label{
+          color: #ffffff;
+      }
+  }
+}

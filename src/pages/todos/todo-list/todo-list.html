@@ -1,11 +1,10 @@
 
 <ion-list no-lines>
-    
     <!--what select mode looks like (tap&hold to activate)-->
     <ng-container *ngIf="selectActive === true; else selInactive">
         <ion-item-group reorder="true" (ionItemReorder)="reorderItems($event)">
             <ion-item text-wrap *ngFor="let todo of currentBoard.Todos" 
-                                [style.background-color]="todo.SelectActive ? '#d1d1d1' : '#ffffff'" 
+                                [style.background-color]="todo.SelectActive ? '#d1d1d1' : ''" 
                                 class="todoItem" (click)="activateSelect(todo)">
                 <ion-checkbox [(ngModel)]="todo.IsDone" disabled="true"></ion-checkbox>
                 <ion-label>{{todo.Info}}</ion-label>
@@ -30,9 +29,9 @@
                     <ng-template #default>
                         <ion-item-group>
                             <ion-item text-wrap class="todoItem" (press)="activateSelect(todo)" 
-                                    [style.background-color]="todo.IsLocked ? '#dbb7b3' : '#ffffff'">
+                                    [style.background-color]="todo.IsLocked ? '#dbb7b3' : ''">
                                 <ion-checkbox [(ngModel)]="todo.IsDone" (click)=itemChecked(todo.IsDone,todo)></ion-checkbox>
-                                <ion-label>{{todo.Info}}</ion-label>
+                                <ion-label><p>{{todo.Info}}</p></ion-label>
                                 <button *ngIf="!todo.IsLocked" ion-button item-right id="toggleButton" small clear (click)=toggleDetail(todo)>+</button>
                                 <button *ngIf="todo.IsLocked" ion-button item-right id="toggleButton" small clear (click)=todo.Unlock(todo)>
                                     <ion-icon name="unlock"></ion-icon>
@@ -103,7 +102,7 @@
                             <ion-item>
                                 <ion-label for="priority">Priority:</ion-label>
                                 <ion-select interface="popover" [(ngModel)]="todo.Priority" name="priority">
-                                    <ion-option *ngFor="let pri of prior()" [value]="priority[pri]">{{pri}}</ion-option>
+                                    <ion-option *ngFor="let pri of priority" [value]="priority.IndexOf(pri)">{{pri}}</ion-option>
                                 </ion-select>
                             </ion-item>
                             <button ion-button type="submit">Done</button>
@@ -169,4 +168,5 @@
         </ion-fab>
     </ng-template>
 </ion-list>
+
 

@@ -8,4 +8,12 @@
 
 <ion-content padding>
   <h1>This is settings.</h1>
+  <ion-item>
+      <ion-label>Theme</ion-label>
+      <ion-select interface="popover" (ionChange)="setTheme($event)">
+          <ion-option *ngFor="let theme of availableThemes" [value]="theme.className">
+            {{theme.displayName}}
+          </ion-option>
+     </ion-select>
+  </ion-item>
 </ion-content>
