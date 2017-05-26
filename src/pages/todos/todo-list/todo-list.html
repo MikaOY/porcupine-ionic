@@ -18,6 +18,7 @@
     <ng-template #selInactive>
         <div *ngIf="currentBoard">
         <ng-container *ngFor="let todo of currentBoard.Todos" class="inline-todo">
+            <ng-container *ngIf="!todo.IsArchived">
             <div *ngIf="todo.Category == null ? true : todo.Category.IsShown">
                 <ion-item-sliding> <!--editable text area (+ to activate)-->
                     <ion-item text-wrap class="todoItem" *ngIf="todo.EditActive; else default">
@@ -84,6 +85,7 @@
                         </ion-grid>
                         <button ion-button id="editButton" small="true" clear="true" *ngIf="todo.DetailShown" (click)=activateEdit(todo)>edit</button>
                         <button ion-button clear (click)=todo.Lock(todo)><ion-icon name="lock"></ion-icon></button>
+                        <p>{{todo.IsArchived}}</p>
                     </ng-template>
 
                     <!--the form!!! for editing (activate by editButton)-->
@@ -102,15 +104,17 @@
                             <ion-item>
                                 <ion-label for="priority">Priority:</ion-label>
                                 <ion-select interface="popover" [(ngModel)]="todo.Priority" name="priority">
-                                    <ion-option *ngFor="let pri of priority" [value]="priority.IndexOf(pri)">{{pri}}</ion-option>
+                                    <ion-option *ngFor="let pri of priority" [value]="priority.indexOf(pri)">{{pri}}</ion-option>
                                 </ion-select>
                             </ion-item>
                             <button ion-button type="submit">Done</button>
+                            <p>{{todo.Priority}}</p>
                         </form>
                     </ng-container>
 
                 </div>
             </div>
+            </ng-container>
         </ng-container>
         </div>
     </ng-template>
@@ -147,7 +151,7 @@
                 <ion-item>
                     <ion-label for="priority">Priority:</ion-label>
                     <ion-select interface="popover" [(ngModel)]="newTodo.Priority" name="Priority">
-                        <ion-option *ngFor="let pri of prior()">{{pri}}</ion-option>
+                        <ion-option *ngFor="let pri of priority">{{pri}}</ion-option>
                     </ion-select>
                 </ion-item>
                 <button ion-button type="submit">Done</button>

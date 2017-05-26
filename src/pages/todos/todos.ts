@@ -18,6 +18,16 @@ export class TodosPage {
 
         this.todoService.getCurrentBoard().then(cBoard => this.currentBoard = cBoard);
     }
+    
+    ionViewWillEnter(){ //archives todos if more than 24 hours has passed since checked
+      for (let todo of this.currentBoard.Todos){
+        let currentDate = new Date();
+        if (todo.IsDone == true && todo.IsArchived == false){
+          let timeDone = currentDate.getTime() - todo.DateDone.getTime();
+          todo.IsArchived = timeDone > 86400000 ? true : false;
+        }
+      }
+    }
 
   changeBoard(){
     this.todoService.changeBoard().then(cBoard => this.currentBoard = cBoard);

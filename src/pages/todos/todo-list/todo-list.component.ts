@@ -1,5 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { TodoService } from '../../../app/todo.service';
+import { NavController } from 'ionic-angular';
 
 import { Todo } from '../../../app/todo';
 import { Category } from '../../../app/category';
@@ -32,11 +33,13 @@ export class TodoList implements OnInit {
         this.todoService.getCurrentBoard().then(value => this.currentBoard = value);
     }
 
-    prior() : Array<string> {
-        console.log("HI THERE");
-        var keys: string[] = ["Low", "Medium", "High"];
-        return keys;
-    }
+    
+
+    // prior() : Array<string> {
+    //     console.log("HI THERE");
+    //     var keys: string[] = ["Low", "Medium", "High"];
+    //     return keys;
+    // }
 
     todoPriority(pri: number) : Array<number> {
         let k = pri + 1;
@@ -46,6 +49,7 @@ export class TodoList implements OnInit {
     
     toggleDetail(todo){
         todo.DetailShown = !todo.DetailShown;
+        console.log(this.priority.indexOf("Low"));
     }
 
     activateEdit(todo){

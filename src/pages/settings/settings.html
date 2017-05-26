@@ -7,13 +7,25 @@
 </ion-header>
 
 <ion-content padding>
-  <h1>This is settings.</h1>
+  <ion-list>
+  <ion-item-divider>General</ion-item-divider>
   <ion-item>
-      <ion-label>Theme</ion-label>
-      <ion-select interface="popover" (ionChange)="setTheme($event)">
+      <ion-icon name="color-palette"></ion-icon>
+      Theme
+      <!--<ion-select interface="popover" (ionChange)="setTheme($event)">
           <ion-option *ngFor="let theme of availableThemes" [value]="theme.className">
             {{theme.displayName}}
           </ion-option>
-     </ion-select>
+     </ion-select>-->
   </ion-item>
+  <ion-item-divider>Account</ion-item-divider>
+  <ion-item>
+      <ion-icon name="people"></ion-icon>
+      Sharing
+  </ion-item>
+  <ion-item>
+      <ion-icon name="log-in"></ion-icon>
+      Login/Logout
+  </ion-item>
+  </ion-list>
 </ion-content>

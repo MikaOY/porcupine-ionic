@@ -7,10 +7,11 @@ export class SettingsService{
     availableThemes: {className: string, displayName: string}[];
 
     constructor(){
-        this.theme = new BehaviorSubject('aqua-theme');
+        this.theme = new BehaviorSubject('');
         this.availableThemes = [
             {className: 'aqua-theme', displayName: 'Aqua'},
-            {className: 'red-theme', displayName: 'Red'}
+            {className: 'red-theme', displayName: 'Red'},
+            {className: 'null', displayName: 'Default'}
         ];
     }
 
