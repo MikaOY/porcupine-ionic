@@ -33,14 +33,6 @@ export class TodoList implements OnInit {
         this.todoService.getCurrentBoard().then(value => this.currentBoard = value);
     }
 
-    
-
-    // prior() : Array<string> {
-    //     console.log("HI THERE");
-    //     var keys: string[] = ["Low", "Medium", "High"];
-    //     return keys;
-    // }
-
     todoPriority(pri: number) : Array<number> {
         let k = pri + 1;
         var priArray = Array(k).fill(2).map((x,i)=>i);

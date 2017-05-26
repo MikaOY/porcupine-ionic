@@ -19,7 +19,6 @@ import { LoginPage } from '../login/login.component';
                 <img src="../assets/alpacatar.jpeg">
             </ion-avatar>
             <h2>Mr. Paca</h2>
-            <button ion-button clear mini id="loginButton" (click)="presentLogin()">Login</button>
         </ion-item>
     </ion-list>
 
@@ -58,11 +57,6 @@ export class CategorySort implements OnInit{
     showCatModal(){
         let catModal = this.modalCtrl.create(CategoryManager);
         catModal.present();
-    }
-
-    presentLogin(){
-        let loginModal = this.modalCtrl.create(LoginPage);
-        loginModal.present();
     }
 }
 
