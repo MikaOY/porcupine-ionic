@@ -59,7 +59,7 @@ export class TodoService {
 	public getBoards(): Promise<Board[]> {
 		console.log("requesting boards...");
 
-		let id: number = 0;
+		let id: number = 1;
 		const url = `${this.apiUrl}/board?personId=${id}`;
 		return this.http.get(url).toPromise().then((response: any) => {
 			let array: Board[] = [];
@@ -78,7 +78,7 @@ export class TodoService {
 	public getCategories(): Promise<Category[]> {
 		console.log("requesting categories...");
 
-		let id: number = 0;
+		let id: number = 1;
 		const url = `${ this.apiUrl }/category?personId=${ id }`;
 		return this.http.get(url).toPromise().then((response: any) => {
 			let array: Category[] = [];
@@ -106,7 +106,7 @@ export class TodoService {
 	public getTodos(): Promise<Todo[]> {
 		console.log("requesting todos...");
 
-		let id: number = 0;
+		let id: number = 1;
 		const url = `${ this.apiUrl }/todo?personId=${ id }`;
 		return this.http.get(url).toPromise().then((response: any) => {
 			let array: Todo[] = [];
@@ -130,6 +130,7 @@ export class TodoService {
 	}
 
 	private initCallback(res: any) {
+		console.log("It is synced");
 		this.IsSynced = true;
 	}
 
@@ -174,9 +175,11 @@ export class TodoService {
 
 	getCurrentBoard(): Promise<Board> {
 		if (this.IsSynced == true) {
+			console.log("Returning the CURRENTBOARD");
 			return Promise.resolve(this.CurrentBoard);
 		}
 		else {
+			console.log("Returning the const board");
 			return this.getBoards().then(array => array[0]).catch(this.handleError);
 		}
 	}

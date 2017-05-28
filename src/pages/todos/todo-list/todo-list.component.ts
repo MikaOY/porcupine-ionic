@@ -16,6 +16,8 @@ export class TodoList implements OnInit {
 	private error: any;
 	private todoListBoard: Board;
 	todos: Todo[];
+	cats: Category[];
+	currentBoard: Board;
 
 	// this sets colors for the category numbers
 	ColorArray: string[];
@@ -28,6 +30,10 @@ export class TodoList implements OnInit {
 
 	ngOnInit(): void {
 		this.todoService.getTodos().then(todos => this.todos = todos);
+		this.todoService.getCategories().then(cats => this.cats = cats);
+		this.todoService.getCurrentBoard().then(board => this.currentBoard = board).then(
+			() => this.currentBoard.Todos = this.todos).then(
+				() => this.currentBoard.Categories = this.cats);
 		this.todoService.getColors().then(colorArray => this.ColorArray = colorArray);
 	}
 
@@ -101,7 +107,12 @@ export class TodoList implements OnInit {
 	addTodo: boolean = false;
 	newTodo = new Todo(undefined, undefined, undefined, undefined, undefined, false, undefined);
 	AddTodo() {
+		console.log("Length of todos: " + this.todos.length);
+		for (let todo of this.currentBoard.Todos){
+				console.log(todo.Info);
+		}
 		this.addTodo = !this.addTodo;
+		
 	}
 
 	onNewTodoFormSubmit(todo) {

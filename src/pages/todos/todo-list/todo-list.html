@@ -1,6 +1,11 @@
 
 <ion-list no-lines>
-    
+	<!--<div *ngIf="currentBoard">
+    <div *ngFor="let todo of currentBoard.Todos">
+			<p>{{todo.Info}}</p>
+			<p>{{todo.Category.IsShown}}</p>
+			</div>
+	</div>-->
     <!--what select mode looks like (tap&hold to activate)-->
     <ng-container *ngIf="selectActive === true; else selInactive">
         <ion-item-group reorder="true" (ionItemReorder)="reorderItems($event)">
@@ -18,8 +23,9 @@
     <!--your typical todo look-->
     <ng-template #selInactive>
         <div *ngIf="currentBoard">
+					
         <ng-container *ngFor="let todo of currentBoard.Todos" class="inline-todo">
-            <div *ngIf="todo.Category == null ? true : todo.Category.IsShown">
+            <div *ngIf="todo.Category == null ? true : true"> <!--should be todo.Category.IsShown-->
                 <ion-item-sliding> <!--editable text area (+ to activate)-->
                     <ion-item text-wrap class="todoItem" *ngIf="todo.EditActive; else default">
                         <ion-checkbox [(ngModel)]="todo.IsDone" (click)=itemChecked(todo.IsDone,todo)></ion-checkbox>
@@ -108,6 +114,7 @@
                 </div>
             </div>
         </ng-container>
+
         </div>
     </ng-template>
 
