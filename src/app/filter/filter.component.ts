@@ -54,7 +54,7 @@ export class CategorySort implements OnInit {
 	}
 
 	ngOnInit(): void {
-		this.todoService.getCurrentBoard().then(cBoard => this.currentBoard = cBoard);
+		this.todoService.getCurrentBoard().subscribe(cBoard => this.currentBoard = cBoard);
 	}
 
 	showCatModal() {
@@ -99,7 +99,7 @@ export class PropertySort {
 	private error: any;
 
 	constructor(private todoService: TodoService) {
-		this.todoService.getCurrentBoard().then(value => this.currentBoard = value);
+		this.todoService.getCurrentBoard().subscribe(value => this.currentBoard = value);
 	}
 
 	sortPriorityHL() {

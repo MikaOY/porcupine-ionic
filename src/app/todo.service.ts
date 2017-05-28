@@ -9,29 +9,18 @@ import { Http, Response } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/share';
-import 'rxjs/add/operator/startWith';
 import 'rxjs/add/operator/toPromise';
+import 'rxjs/add/observable/fromPromise';
 
 const CATS0: Category[] = [new Category('Life', 1, new Date(2017, 4, 30), 0, 2, 0, true),
-new Category('Code', 2, new Date(2017, 3, 26), 1, 1, 2, true),
+new Category('Coding', 2, new Date(2017, 3, 26), 1, 1, 2, true),
 new Category('Unsorted', 0, null, 2, null, 0, true)];
-const CATS1: Category[] = [new Category('Pinapples', 1, new Date(2017, 4, 30), 3, null, 0, true),
-new Category('Leaf', 2, new Date(2017, 3, 26), 4, 1, 0, true),
-new Category('Unsorted', 0, null, 5, null, 1, true)];
 
-// TODO: replace with DB info
 const TODOS0: Todo[] = [new Todo('Give an alpaca a hug', CATS0[0], new Date(2017, 4, 30), false, undefined, false, Priority.Low, new Date(2016, 5, 13)),
 new Todo('Finish Porcupine', CATS0[1], new Date(2017, 4, 28), false, undefined, false, Priority.Medium),
 new Todo('Make moist brownie', CATS0[2], new Date(2017, 4, 29), true, new Date(2017, 4, 30), false, Priority.High),
-new Todo('Upload photos to google drive', CATS0[0], new Date(2017, 4, 30), false, undefined, false, Priority.Low),
+new Todo('Upload photos to Drive', CATS0[0], new Date(2017, 4, 30), false, undefined, false, Priority.Low),
 new Todo('Pet a pug', CATS0[1], new Date(2017, 4, 28), false, undefined, false, Priority.Medium)];
-
-const TODOS1: Todo[] = [new Todo('Tell an alpaca he is loved', CATS1[0], new Date(2017, 4, 30), false, undefined, false, Priority.Low, new Date(2016, 5, 13)),
-new Todo('Get some grapes from the store', CATS1[1], new Date(2017, 4, 28), false, undefined, false, Priority.Medium),
-new Todo('Draw lovehearts', CATS1[2], new Date(2017, 4, 29), true, new Date(2017, 4, 30), false, Priority.High),
-new Todo('Wash dishes', CATS1[0], new Date(2017, 4, 30), false, undefined, false, Priority.Low),
-new Todo('Code some frontend!!', CATS1[1], new Date(2017, 4, 28), false, undefined, false, Priority.Medium)];
 
 const ColorArray: string[] = ["#919191", "#ff5c3f", "#ffb523", "#6f9b53", "#1371d6", "#423e7c", "#7606cc", "#c613b4"];
 
@@ -39,22 +28,15 @@ const ColorArray: string[] = ["#919191", "#ff5c3f", "#ffb523", "#6f9b53", "#1371
 export class TodoService {
 	public IsSynced: boolean = false;
 	public CurrentBoard: Board;
-	public CachedBoards: Board[];
+	public CachedBoards: Board[] = [];
 	public CachedTodos: Todo[] = [];
 	public CachedCats: Category[] = [];
 
 	private apiUrl: string = 'http://porcupine-dope-api.azurewebsites.net';
 
-	constructor(private http: Http) { 
-		this.CachedBoards = [new Board('Test', null, null, null, null)];
-	}
+	constructor(private http: Http) { }
 
-	// HTTP functions
-
-	public initData(): Promise<void> {
-		console.log('Init running......');
-		return this.getBoards().then(this.initCallback).catch(this.handleError);
-	}
+	// public HTTP functions
 
 	public getBoards(): Promise<Board[]> {
 		console.log("requesting boards...");
@@ -89,6 +71,8 @@ export class TodoService {
 					json['category_id'],
 					json['default_order'],
 					json['default_priority']));
+
+				// Populate Categories: Category[] prop in boards
 				if (this.CachedBoards) {
 					this.CachedBoards.find((board, index, array) => json['board_id'] == board.DbId)
 						.Categories.push(array[array.length - 1]);
@@ -112,14 +96,22 @@ export class TodoService {
 			let array: Todo[] = [];
 			for (let json of response.json()) {
 				array.push(new Todo(json['todo_info'],
-					new Category('Testing', null, null, 5),
+					this.CachedCats.find((cat, index, array) => cat.DbId == json['category_id']), // find category with id
 					new Date(json['date_created']),
 					json['is_done'],
 					new Date(json['date_done']),
 					json['is_archived'],
-					Priority.Medium,
-					null,
+					Priority[Priority[json['priority_value']]],
+					null, // due date not implemented in DB yet
 					json['todo_id']));
+
+				// Populate Todos: Todo[] prop in boards
+				if (this.CachedBoards) {
+					this.CachedBoards.find((board, index, array) => {
+						let cat = this.CachedCats.find((cat, index, array) => cat.DbId == json['category_id']);
+						return board.Categories.find((bCat, index, array) => bCat == cat) !== undefined;
+					});
+				}
 			}
 
 			this.CachedTodos = array;
@@ -127,33 +119,6 @@ export class TodoService {
 			console.log('Todos retrieved!');
 			return array;
 		}).catch(this.handleError);
-	}
-
-	private initCallback(res: any) {
-		console.log("It is synced");
-		this.IsSynced = true;
-	}
-
-	private extractCategoryData(response: any): Category[] {
-		let array: Category[] = [];
-		for (let json of response.json()) {
-			array.push(new Category(json['title'],
-				json['color'],
-				new Date(json['date_created']),
-				json['category_id'],
-				json['default_order'],
-				json['default_priority']));
-			if (this.CachedBoards) {
-				this.CachedBoards.find((board, index, array) => json['board_id'] == board.DbId)
-					.Categories.push(array[array.length - 1]);
-			} else {
-				console.log('CachedBoards undefined/null!');
-			}
-		}
-
-		this.CachedCats = array;
-		console.log('Categories retrieved!');
-		return array;
 	}
 
 	private handleError(error: Response | any) {
@@ -171,16 +136,14 @@ export class TodoService {
 		return Observable.throw(errMsg);
 	}
 
-	// Internal class functions
-
-	getCurrentBoard(): Promise<Board> {
+	getCurrentBoard(): Observable<Board> {
 		if (this.IsSynced == true) {
 			console.log("Returning the CURRENTBOARD");
-			return Promise.resolve(this.CurrentBoard);
+			return Observable.fromPromise(Promise.resolve(this.CurrentBoard));
 		}
 		else {
 			console.log("Returning the const board");
-			return this.getBoards().then(array => array[0]).catch(this.handleError);
+			return Observable.fromPromise(this.getBoards().then(array => array[0]).catch(this.handleError));
 		}
 	}
 

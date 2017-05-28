@@ -18,7 +18,7 @@ export class CategoryManager implements OnInit {
 	ngOnInit(): void {
 
 		this.todoService.getColors().then(ColorArray => this.ColorArray = ColorArray);
-		this.todoService.getCurrentBoard().then(cBoard => this.currentBoard = cBoard);
+		this.todoService.getCurrentBoard().subscribe(cBoard => this.currentBoard = cBoard);
 	}
 
 	dismiss() {
