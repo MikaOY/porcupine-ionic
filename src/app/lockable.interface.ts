@@ -1,5 +1,5 @@
 export interface Lockable {
-    IsLocked: boolean;
-    Lock(): true;
-    
+	IsLocked: boolean;
+	Lock(): true;
+
 }

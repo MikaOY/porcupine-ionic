@@ -8,25 +8,25 @@ import { TodoService } from './todo.service';
 import { LoginPage } from './login/login.component';
 
 @Component({
-  templateUrl: 'app.html'
+	templateUrl: 'app.html'
 })
 
 export class MyApp {
-  rootPage: any = TabsPage;
+	rootPage: any = TabsPage;
 
-  constructor(platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen, modalCtrl: ModalController, todoService: TodoService) {
-    platform.ready().then((source) => {
-      // Okay, so the platform is ready and our plugins are available.
-      // Here you can do any higher level native things you might need.
-      if (source == 'cordova') {
-        statusBar.styleDefault();
-      }
+	constructor(platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen, modalCtrl: ModalController, todoService: TodoService) {
+		platform.ready().then((source) => {
+			// Okay, so the platform is ready and our plugins are available.
+			// Here you can do any higher level native things you might need.
+			if (source == 'cordova') {
+				statusBar.styleDefault();
+			}
 
-      // Get server data
+			// Get server data
 
-      splashScreen.hide();
-      let loginModal = modalCtrl.create(LoginPage);
-      loginModal.present();
-    });
-  }
+			splashScreen.hide();
+			let loginModal = modalCtrl.create(LoginPage);
+			loginModal.present();
+		});
+	}
 }

@@ -8,106 +8,106 @@ import { Board } from '../../../app/board';
 
 
 @Component({
-  selector: 'todo-list',
-  templateUrl: 'todo-list.html',
+	selector: 'todo-list',
+	templateUrl: 'todo-list.html',
 })
 
 export class TodoList implements OnInit {
-  private error: any;
-  private todoListBoard: Board;
-  todos: Todo[];
+	private error: any;
+	private todoListBoard: Board;
+	todos: Todo[];
 
-  // this sets colors for the category numbers
-  ColorArray: string[];
+	// this sets colors for the category numbers
+	ColorArray: string[];
 
-  selectedTodos: Todo[] = [];
-  selectActive: boolean = false;
-  priority = Priority;
+	selectedTodos: Todo[] = [];
+	selectActive: boolean = false;
+	priority = Priority;
 
-  constructor(private todoService: TodoService) { }
+	constructor(private todoService: TodoService) { }
 
-  ngOnInit(): void {
-    this.todoService.getTodos().subscribe(todos => this.todos = todos);
-    this.todoService.getColors().then(ColorArray => this.ColorArray = ColorArray);
-  }
+	ngOnInit(): void {
+		this.todoService.getTodos().subscribe(todos => this.todos = todos);
+		this.todoService.getColors().then(ColorArray => this.ColorArray = ColorArray);
+	}
 
-  prior(): Array<string> {
-    var keys = Object.keys(this.priority);
-    return keys.slice(keys.length / 2);
-  }
+	prior(): Array<string> {
+		var keys = Object.keys(this.priority);
+		return keys.slice(keys.length / 2);
+	}
 
-  todoPriority(pri: number): Array<number> {
-    let k = pri + 1;
-    var priArray = Array(k).fill(2).map((x, i) => i);
-    return priArray;
-  }
+	todoPriority(pri: number): Array<number> {
+		let k = pri + 1;
+		var priArray = Array(k).fill(2).map((x, i) => i);
+		return priArray;
+	}
 
-  toggleDetail(todo) {
-    todo.DetailShown = !todo.DetailShown;
-  }
+	toggleDetail(todo) {
+		todo.DetailShown = !todo.DetailShown;
+	}
 
-  activateEdit(todo) {
-    todo.EditActive = !todo.EditActive;
-  }
+	activateEdit(todo) {
+		todo.EditActive = !todo.EditActive;
+	}
 
-  onFormSubmit(todo) {
-    todo.EditActive = false;
-  }
+	onFormSubmit(todo) {
+		todo.EditActive = false;
+	}
 
-  itemChecked(IsDone, todo) { //run when you click the checkbox
-    if (IsDone == true) {
-      //function to find date and control archive
-      var currentTime = new Date();
-      todo.DateDone = currentTime;
-    }
-    else {
-      todo.DateDone = undefined;
-    }
-  }
+	itemChecked(IsDone, todo) { //run when you click the checkbox
+		if (IsDone == true) {
+			//function to find date and control archive
+			var currentTime = new Date();
+			todo.DateDone = currentTime;
+		}
+		else {
+			todo.DateDone = undefined;
+		}
+	}
 
-  //apparently working?
-  changePrior(val: string, todo) {
-    var pri: Priority = Priority[val];
-    todo.Priority = pri;
-  }
+	//apparently working?
+	changePrior(val: string, todo) {
+		var pri: Priority = Priority[val];
+		todo.Priority = pri;
+	}
 
-  reorderItems(indexes) {
-    let element = this.todoListBoard.Todos[indexes.from];
-    this.todoListBoard.Todos.splice(indexes.from, 1);
-    this.todoListBoard.Todos.splice(indexes.to, 0, element);
-  }
+	reorderItems(indexes) {
+		let element = this.todoListBoard.Todos[indexes.from];
+		this.todoListBoard.Todos.splice(indexes.from, 1);
+		this.todoListBoard.Todos.splice(indexes.to, 0, element);
+	}
 
-  activateSelect(todo: Todo) {
-    this.selectActive = true; //mode that controls ability to select/reorder todos
+	activateSelect(todo: Todo) {
+		this.selectActive = true; //mode that controls ability to select/reorder todos
 
-    if (todo.SelectActive === true) {
-      todo.SelectActive = false;
-    }
-    else {
-      todo.SelectActive = true;
-      this.selectedTodos.push(todo);
-    }
-  }
+		if (todo.SelectActive === true) {
+			todo.SelectActive = false;
+		}
+		else {
+			todo.SelectActive = true;
+			this.selectedTodos.push(todo);
+		}
+	}
 
-  disableSelect() {
-    this.selectActive = false;
-    for (let todo of this.todoListBoard.Todos) { //turns everything back to white color
-      todo.SelectActive = false;
-    }
-    this.selectedTodos.length = 0; //empties selectedTodos array
-  }
+	disableSelect() {
+		this.selectActive = false;
+		for (let todo of this.todoListBoard.Todos) { //turns everything back to white color
+			todo.SelectActive = false;
+		}
+		this.selectedTodos.length = 0; //empties selectedTodos array
+	}
 
-  //adding a new todo
-  addTodo: boolean = false;
-  newTodo = new Todo(undefined, undefined, undefined, undefined, undefined, false, undefined);
-  AddTodo() {
-    this.addTodo = !this.addTodo;
-  }
+	//adding a new todo
+	addTodo: boolean = false;
+	newTodo = new Todo(undefined, undefined, undefined, undefined, undefined, false, undefined);
+	AddTodo() {
+		this.addTodo = !this.addTodo;
+	}
 
-  onNewTodoFormSubmit(todo) {
-    this.addTodo = !this.addTodo;
-    var currentDate = new Date();
-    this.newTodo.DateCreated = currentDate;
-    //TODO: pass newTodo to server and add to user's array 
-  }
+	onNewTodoFormSubmit(todo) {
+		this.addTodo = !this.addTodo;
+		var currentDate = new Date();
+		this.newTodo.DateCreated = currentDate;
+		//TODO: pass newTodo to server and add to user's array 
+	}
 }

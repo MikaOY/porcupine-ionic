@@ -12,9 +12,9 @@ import { LoginPage } from '../login/login.component';
 // CATEGORY
 
 @Component({ //replace with list of categories
-    selector: "category-list",
-    providers: [TodoService],
-    template: `
+	selector: "category-list",
+	providers: [TodoService],
+	template: `
     <ion-list>
         <ion-item>
             <ion-avatar item-left id="alpacatar">
@@ -47,32 +47,32 @@ import { LoginPage } from '../login/login.component';
     `
 })
 
-export class CategorySort implements OnInit{
-    private currentBoard: Board;
-    
-    constructor(private todoService: TodoService, public modalCtrl: ModalController){
-    }
+export class CategorySort implements OnInit {
+	private currentBoard: Board;
 
-     ngOnInit(): void {
-        this.todoService.getCurrentBoard().then(cBoard => this.currentBoard = cBoard);
-    }
+	constructor(private todoService: TodoService, public modalCtrl: ModalController) {
+	}
 
-    showCatModal(){
-        let catModal = this.modalCtrl.create(CategoryManager);
-        catModal.present();
-    }
+	ngOnInit(): void {
+		this.todoService.getCurrentBoard().then(cBoard => this.currentBoard = cBoard);
+	}
 
-    presentLogin(){
-        let loginModal = this.modalCtrl.create(LoginPage);
-        loginModal.present();
-    }
+	showCatModal() {
+		let catModal = this.modalCtrl.create(CategoryManager);
+		catModal.present();
+	}
+
+	presentLogin() {
+		let loginModal = this.modalCtrl.create(LoginPage);
+		loginModal.present();
+	}
 }
 
 // PROPERTY
 
 @Component({
-    selector: "property-list",
-    template: `
+	selector: "property-list",
+	template: `
     <ion-grid no-padding>
         <ion-row nowrap>
             <ion-col>
@@ -95,70 +95,70 @@ export class CategorySort implements OnInit{
 })
 
 export class PropertySort {
-    private currentBoard: Board;
-    private error: any;
-    
-    constructor(private todoService: TodoService) {
-        this.todoService.getCurrentBoard().then(value => this.currentBoard = value);
-     }
+	private currentBoard: Board;
+	private error: any;
 
-    sortPriorityHL(){
-        var sortedTodos:Todo[] = this.currentBoard.Todos.sort((a,b) => {
+	constructor(private todoService: TodoService) {
+		this.todoService.getCurrentBoard().then(value => this.currentBoard = value);
+	}
 
-            if (a.Priority > b.Priority){
-                return -1;
-            }
+	sortPriorityHL() {
+		var sortedTodos: Todo[] = this.currentBoard.Todos.sort((a, b) => {
 
-            if (a.Priority < b.Priority){
-                return 1;
-            }
+			if (a.Priority > b.Priority) {
+				return -1;
+			}
 
-            return 0;
-        });
+			if (a.Priority < b.Priority) {
+				return 1;
+			}
 
-    }
+			return 0;
+		});
 
-    sortPriorityLH(){
-        var sortedTodos:Todo[] = this.currentBoard.Todos.sort((a,b) => {
+	}
 
-            if (a.Priority > b.Priority){
-                return 1;
-            }
+	sortPriorityLH() {
+		var sortedTodos: Todo[] = this.currentBoard.Todos.sort((a, b) => {
 
-            if (a.Priority < b.Priority){
-                return -1;
-            }
+			if (a.Priority > b.Priority) {
+				return 1;
+			}
 
-            return 0;
-        });
-    }
+			if (a.Priority < b.Priority) {
+				return -1;
+			}
 
-    sortRecent(){
-        var sortedTodos:Todo[] = this.currentBoard.Todos.sort((a,b) => {
-            if (a.DateCreated > b.DateCreated){
-                return -1;
-            }
+			return 0;
+		});
+	}
 
-            if (a.DateCreated < b.DateCreated){
-                return 1;
-            }
+	sortRecent() {
+		var sortedTodos: Todo[] = this.currentBoard.Todos.sort((a, b) => {
+			if (a.DateCreated > b.DateCreated) {
+				return -1;
+			}
 
-            return 0;
-        });
-    }
+			if (a.DateCreated < b.DateCreated) {
+				return 1;
+			}
 
-    sortOldest(){
-        var sortedTodos:Todo[] = this.currentBoard.Todos.sort((a,b) => {
-            if (a.DateCreated > b.DateCreated){
-                return 1;
-            }
+			return 0;
+		});
+	}
 
-            if (a.DateCreated < b.DateCreated){
-                return -1;
-            }
+	sortOldest() {
+		var sortedTodos: Todo[] = this.currentBoard.Todos.sort((a, b) => {
+			if (a.DateCreated > b.DateCreated) {
+				return 1;
+			}
 
-            return 0;
-        });
-    }
+			if (a.DateCreated < b.DateCreated) {
+				return -1;
+			}
+
+			return 0;
+		});
+	}
 
 }

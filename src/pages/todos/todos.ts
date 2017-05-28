@@ -8,17 +8,17 @@ import { Category } from '../../app/category';
 
 
 @Component({
-  selector: 'todos-page',
-  templateUrl: 'todos.html'
+	selector: 'todos-page',
+	templateUrl: 'todos.html'
 })
 export class TodosPage {
-  private todosBoard: Board;
+	private todosBoard: Board;
 
-  constructor(private todoService: TodoService) {
-    this.todoService.getCurrentBoard().then(cBoard => this.todosBoard = cBoard);
-  }
+	constructor(private todoService: TodoService) {
+		this.todoService.getCurrentBoard().then(cBoard => this.todosBoard = cBoard);
+	}
 
-  changeBoard() {
-    this.todoService.changeBoard().then(nBoard => this.todosBoard = nBoard);
-  }
+	changeBoard() {
+		this.todoService.changeBoard().then(nBoard => this.todosBoard = nBoard);
+	}
 }
