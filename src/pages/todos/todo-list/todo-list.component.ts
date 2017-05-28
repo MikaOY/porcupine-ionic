@@ -39,7 +39,6 @@ export class TodoList {
     
     toggleDetail(todo){
         todo.DetailShown = !todo.DetailShown;
-        console.log(this.priority.indexOf("Low"));
     }
 
     activateEdit(todo){
@@ -94,7 +93,10 @@ export class TodoList {
     }
 
     UnlockTodo(todo){
-        let UnlockModal = this.ModalCtrl.create(UnlockPage, todo); //pass in additional params here
+        let UnlockModal = this.ModalCtrl.create(UnlockPage); //pass in additional params here
+        UnlockModal.onDidDismiss(data => {
+            todo.IsLocked = data;
+        })
         UnlockModal.present();
     }
 

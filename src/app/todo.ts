@@ -24,7 +24,6 @@ export class Todo implements Lockable{
     IsLocked: boolean = false;
     
     Lock(todo: Todo): true{
-        console.log(todo.Info);
         todo.IsLocked = true;
         todo.DetailShown = false;
         return true;

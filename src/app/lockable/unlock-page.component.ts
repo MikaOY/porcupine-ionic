@@ -20,11 +20,14 @@ export class UnlockPage {
                 public params: NavParams,
                 public viewCtrl: ViewController){
         this.settingsService.getPasscode().then(val => this.userPasscode = val);
-        this.info = this.params.get('Info');
     }
     
     passcodeSuccess(){
-        this.viewCtrl.dismiss(false);
+        this.viewCtrl.dismiss(false); // sets todo.Islocked = false;
+    }
+
+    back(){
+        this.viewCtrl.dismiss(true);
     }
 
     add(num){
@@ -37,10 +40,10 @@ export class UnlockPage {
     
         if (this.passIn.length == 4){
             if (this.passIn == this.userPasscode){
-                console.log("Entered passcode");
-                console.log(this.info);
                 this.passcodeSuccess();
-                
+            }
+            else{
+                this.passIn = ' ';
             }
         }
     }

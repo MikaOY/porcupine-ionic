@@ -85,7 +85,6 @@
                         </ion-grid>
                         <button ion-button id="editButton" small="true" clear="true" *ngIf="todo.DetailShown" (click)=activateEdit(todo)>edit</button>
                         <button ion-button clear (click)=todo.Lock(todo)><ion-icon name="lock"></ion-icon></button>
-                        <p>{{todo.IsArchived}}</p>
                     </ng-template>
 
                     <!--the form!!! for editing (activate by editButton)-->
