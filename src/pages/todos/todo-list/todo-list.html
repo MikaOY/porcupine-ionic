@@ -25,7 +25,7 @@
         <div *ngIf="currentBoard">
 					
         <ng-container *ngFor="let todo of currentBoard.Todos" class="inline-todo">
-            <div *ngIf="todo.Category == null ? true : true"> <!--should be todo.Category.IsShown-->
+            <div *ngIf="todo.Category == null ? true : todo.Category.IsShown"> <!--should be todo.Category.IsShown-->
                 <ion-item-sliding> <!--editable text area (+ to activate)-->
                     <ion-item text-wrap class="todoItem" *ngIf="todo.EditActive; else default">
                         <ion-checkbox [(ngModel)]="todo.IsDone" (click)=itemChecked(todo.IsDone,todo)></ion-checkbox>
