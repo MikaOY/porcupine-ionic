@@ -18,21 +18,16 @@ export class Todo implements Lockable{
                 public DetailShown?: boolean,
                 public EditActive?: boolean,
                 public SelectActive?: boolean,
-                public ModalCtrl?: ModalController){ 
+                ){ 
                 }
 
     IsLocked: boolean = false;
+    
     Lock(todo: Todo): true{
         console.log(todo.Info);
         todo.IsLocked = true;
         todo.DetailShown = false;
         return true;
-    }
-    Unlock(todo: Todo){
-        console.log("Unlock!!");
-        console.log(this.ModalCtrl);
-        let UnlockModal = this.ModalCtrl.create(LoginPage); //pass in additional params here
-        UnlockModal.present();
     }
 
     /*

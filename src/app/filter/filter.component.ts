@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { ModalController, NavController } from 'ionic-angular';
 
 import { ModalPage } from './modal-page';
@@ -8,6 +8,7 @@ import { Category } from '../category';
 import { Board } from '../board';
 import { CategoryManager } from './cat-manager/cat-manager.component';
 import { LoginPage } from '../login/login.component';
+import { BoardManager } from './board-manager/board-manager.component';
 
 @Component({ //replace with list of categories
     selector: "category-list",
@@ -44,14 +45,12 @@ import { LoginPage } from '../login/login.component';
     `
 })
 
-export class CategorySort implements OnInit{
+export class CategorySort{
     private currentBoard: Board;
     
-    constructor(private todoService: TodoService, public modalCtrl: ModalController){
-    }
-
-     ngOnInit(): void {
-        this.todoService.getCurrentBoard().then(cBoard => this.currentBoard = cBoard);
+    constructor(private todoService: TodoService, 
+                public modalCtrl: ModalController){
+        this.todoService.getCurrentBoard().subscribe(cBoard => this.currentBoard = cBoard);
     }
 
     showCatModal(){
@@ -84,6 +83,7 @@ export class CategorySort implements OnInit{
             </ion-col>
         </ion-row>
     </ion-grid>
+    <button ion-item (click)="presentBoards()">Boards</button>
     `
 })
 
@@ -91,8 +91,9 @@ export class PropertySort {
     private currentBoard: Board;
     private error: any;
     
-    constructor(private todoService: TodoService) {
-        this.todoService.getCurrentBoard().then(value => this.currentBoard = value);
+    constructor(private todoService: TodoService,
+                public modalCtrl: ModalController) {
+        this.todoService.getCurrentBoard().subscribe(value => this.currentBoard = value);
      }
 
     sortPriorityHL(){
@@ -152,6 +153,11 @@ export class PropertySort {
 
             return 0;
         });
+    }
+
+    presentBoards(){
+        let boardsModal = this.modalCtrl.create(BoardManager);
+        boardsModal.present();
     }
 
 }

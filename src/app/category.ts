@@ -6,7 +6,6 @@ export class Category {
                 public DateCreated: Date,
                 public DbId?: number, // optional to allow latency with DB
                 public IsShown?: boolean,
-                 
                 public Order?: number, 
                 public DefaultPriority?: Priority,){
     }

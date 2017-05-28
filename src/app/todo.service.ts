@@ -12,6 +12,7 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/share';
 import 'rxjs/add/operator/startWith';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { ModalController } from 'ionic-angular';
 
 const CATS0: Category[] = [new Category('Life', 1, new Date(2017, 4, 30), 0, true), 
                             new Category('Code', 2, new Date(2017, 3, 26), 1, true),
@@ -38,7 +39,8 @@ const ColorArray: string[] = ["#919191","#ff5c3f", "#ffb523", "#6f9b53", "#1371d
 
 @Injectable()
 export class TodoService {
-    public currentBoard: Board = BOARDS[0];
+    private currentBoard: BehaviorSubject<Board>;
+    private userBoards: BehaviorSubject<Board[]>;
     
     public cachedTodos: Todo[];
     public cachedCats: Category[];
@@ -46,23 +48,30 @@ export class TodoService {
 
     selectMode: string;    
 
-    constructor(private http: Http) { }
+    constructor(private http: Http) {
+        this.currentBoard = new BehaviorSubject(BOARDS[0]);
+        this.userBoards = new BehaviorSubject(BOARDS);
+     }
 
-    getCurrentBoard(): Promise<Board> {
-        return Promise.resolve(this.currentBoard);
+    getBoards(){
+        return this.userBoards.asObservable();
     }
 
-    changeBoard(): Promise<Board> {
-        let boardIndex = BOARDS.indexOf(this.currentBoard);
+    getCurrentBoard() {
+        return this.currentBoard.asObservable();
+    }
+
+    changeBoard(currentBoard){
+        let boardIndex = BOARDS.indexOf(currentBoard);
 
         if (boardIndex + 1 == BOARDS.length){
-            this.currentBoard = BOARDS[0];
+            currentBoard = BOARDS[0];
         }
-        else{
-            this.currentBoard = BOARDS[boardIndex + 1];
+        else {
+            currentBoard = BOARDS[boardIndex + 1];
         }
       
-        return Promise.resolve(this.currentBoard);
+        this.currentBoard.next(currentBoard);
     }
     
     getColors(): Promise<string[]>{

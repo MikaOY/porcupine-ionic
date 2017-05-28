@@ -34,7 +34,7 @@
                                 <ion-checkbox [(ngModel)]="todo.IsDone" (click)=itemChecked(todo.IsDone,todo)></ion-checkbox>
                                 <ion-label><p>{{todo.Info}}</p></ion-label>
                                 <button *ngIf="!todo.IsLocked" ion-button item-right id="toggleButton" small clear (click)=toggleDetail(todo)>+</button>
-                                <button *ngIf="todo.IsLocked" ion-button item-right id="toggleButton" small clear (click)=todo.Unlock(todo)>
+                                <button *ngIf="todo.IsLocked" ion-button item-right id="toggleButton" small clear (click)="UnlockTodo(todo)">
                                     <ion-icon name="unlock"></ion-icon>
                                 </button>
                             </ion-item>

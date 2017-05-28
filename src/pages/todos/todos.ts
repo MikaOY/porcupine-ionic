@@ -6,7 +6,6 @@ import { Board } from '../../app/board';
 import { TodoService } from '../../app/todo.service';
 import { Category } from '../../app/category';
 
-
 @Component({
   selector: 'todos-page',
   templateUrl: 'todos.html'
@@ -15,8 +14,7 @@ export class TodosPage {
   currentBoard: Board;
 
   constructor(private todoService: TodoService){
-
-        this.todoService.getCurrentBoard().then(cBoard => this.currentBoard = cBoard);
+        this.todoService.getCurrentBoard().subscribe(cBoard => this.currentBoard = cBoard);
     }
     
     ionViewWillEnter(){ //archives todos if more than 24 hours has passed since checked
@@ -30,6 +28,6 @@ export class TodosPage {
     }
 
   changeBoard(){
-    this.todoService.changeBoard().then(cBoard => this.currentBoard = cBoard);
+    this.todoService.changeBoard(this.currentBoard);
   }
 }

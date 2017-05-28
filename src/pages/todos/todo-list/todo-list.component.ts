@@ -1,19 +1,19 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { TodoService } from '../../../app/todo.service';
-import { NavController } from 'ionic-angular';
+import { NavController, ModalController, NavParams } from 'ionic-angular';
 
 import { Todo } from '../../../app/todo';
 import { Category } from '../../../app/category';
 import { Priority } from '../../../app/priority';
 import { Board } from '../../../app/board';
-
+import { UnlockPage } from '../../../app/lockable/unlock-page.component';
 
 @Component({
     selector: 'todo-list',
     templateUrl: 'todo-list.html',
 })
 
-export class TodoList implements OnInit {
+export class TodoList {
     private error: any; 
     private currentBoard: Board;
 
@@ -24,13 +24,11 @@ export class TodoList implements OnInit {
     selectActive: boolean = false;
     priority: string[] = ["Low", "Medium", "High"];
 
-
-    constructor(private todoService: TodoService){
-    }
-
-    ngOnInit(): void {
+    constructor(private todoService: TodoService,
+                public params: NavParams,
+                public ModalCtrl?: ModalController,){
         this.todoService.getColors().then(ColorArray => this.ColorArray = ColorArray);
-        this.todoService.getCurrentBoard().then(value => this.currentBoard = value);
+        this.todoService.getCurrentBoard().subscribe(value => this.currentBoard = value);
     }
 
     todoPriority(pri: number) : Array<number> {
@@ -93,6 +91,11 @@ export class TodoList implements OnInit {
             todo.SelectActive = false;
         }
         this.selectedTodos.length = 0; //empties selectedTodos array
+    }
+
+    UnlockTodo(todo){
+        let UnlockModal = this.ModalCtrl.create(UnlockPage, todo); //pass in additional params here
+        UnlockModal.present();
     }
 
     //adding a new todo

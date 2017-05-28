@@ -14,6 +14,7 @@ import { UnlockPage } from './lockable/unlock-page.component';
 import { CategorySort, PropertySort } from './filter/filter.component';
 import { CategoryManager} from './filter/cat-manager/cat-manager.component';
 import { AddCategory } from './filter/cat-manager/add-category.component';
+import { BoardManager } from './filter/board-manager/board-manager.component';
  
 import { TodoList } from '../pages/todos/todo-list/todo-list.component'; 
 import { StatusBar } from '@ionic-native/status-bar';
@@ -35,7 +36,8 @@ import { HttpModule }    from '@angular/http';
     CategoryManager,
     AddCategory,
     LoginPage,
-    UnlockPage
+    UnlockPage,
+    BoardManager
   ],
   imports: [
     BrowserModule,
@@ -55,7 +57,8 @@ import { HttpModule }    from '@angular/http';
     CategoryManager,
     AddCategory,
     LoginPage,
-    UnlockPage
+    UnlockPage,
+    BoardManager
   ],
   providers: [
     StatusBar,

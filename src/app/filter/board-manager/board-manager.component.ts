@@ -1,0 +1,23 @@
+import { Component } from '@angular/core';
+import { ModalController, ViewController } from 'ionic-angular';
+import { TodoService } from '../../todo.service';
+import { Board } from '../../board';
+
+@Component ({
+    templateUrl: 'board-manager.html',
+})
+
+export class BoardManager{
+
+    userBoards: Board[];
+    constructor(public modalCtrl: ModalController,
+                public viewCtrl: ViewController,
+                public todoService: TodoService){
+        this.todoService.getBoards().subscribe(val => this.userBoards = val);
+        console.log("hi there" + this.userBoards.length);
+    }
+    
+    dismissPage(){
+        this.viewCtrl.dismiss();
+    }
+}

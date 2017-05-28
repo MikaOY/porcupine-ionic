@@ -1,4 +1,52 @@
 <ion-content>
     <h1>Unlock</h1>
+        <form>
+        <ion-grid>
+            <ion-row>
+                <ion-col>
+                    {{passIn.length > 0 ? passIn.substring(0, 1) : ' '}}
+                </ion-col>
+                <ion-col>
+                    {{passIn.length > 1 ? passIn.substring(1, 2) : ' '}}
+                </ion-col>
+                <ion-col>
+                    {{passIn.length > 2 ? passIn.substring(2, 3) : ' '}}
+                </ion-col>
+                <ion-col>
+                    {{passIn.length > 3 ? passIn.substring(3, 4) : ' '}}
+                </ion-col>
+            </ion-row>
+
+            <ion-row>
+                <ion-col *ngFor="let num of row1">
+                    <button ion-button (click)=add(num)>{{num}}</button>
+                </ion-col>
+            </ion-row>
+
+            <ion-row>
+                <ion-col *ngFor="let num of row2">
+                    <button ion-button (click)=add(num)>{{num}}</button>
+                </ion-col>
+            </ion-row>
+
+            <ion-row>
+                <ion-col *ngFor="let num of row3">
+                    <button ion-button (click)=add(num)>{{num}}</button>
+                </ion-col>
+            </ion-row>
+
+            <ion-row>
+                <ion-col>
+                </ion-col>
+                <ion-col>
+                    <button ion-button (click)=add(0)>0</button>
+                </ion-col>
+                <ion-col>
+                    <ion-icon name="arrow-round-back" (click)=delete()></ion-icon>
+                </ion-col>
+            </ion-row>
+        </ion-grid>
+        </form>
     <button ion-button clear (click)="passcodeSubmit()"><ion-icon name="unlock"></ion-icon></button>
+
 </ion-content>
