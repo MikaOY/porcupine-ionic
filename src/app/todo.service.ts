@@ -70,7 +70,8 @@ export class TodoService {
 					new Date(json['date_created']),
 					json['category_id'],
 					json['default_order'],
-					json['default_priority']));
+					json['default_priority'],
+					true));
 
 				// Populate Categories: Category[] prop in boards
 				if (this.CachedBoards) {
