@@ -110,7 +110,7 @@ export class TodoService {
 					this.CachedBoards.find((board, index, array) => {
 						let cat = this.CachedCats.find((cat, index, array) => cat.DbId == json['category_id']);
 						return board.Categories.find((bCat, index, array) => bCat == cat) !== undefined;
-					});
+					}).Todos.push(array[array.length - 1]);
 				}
 			}
 
