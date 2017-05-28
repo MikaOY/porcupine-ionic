@@ -27,8 +27,8 @@ export class TodoList implements OnInit {
 	constructor(private todoService: TodoService) { }
 
 	ngOnInit(): void {
-		this.todoService.getTodos().subscribe(todos => this.todos = todos);
-		this.todoService.getColors().then(ColorArray => this.ColorArray = ColorArray);
+		this.todoService.getTodos().then(todos => this.todos = todos);
+		this.todoService.getColors().then(colorArray => this.ColorArray = colorArray);
 	}
 
 	prior(): Array<string> {

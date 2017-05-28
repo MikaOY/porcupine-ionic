@@ -14,7 +14,11 @@ import { LoginPage } from './login/login.component';
 export class MyApp {
 	rootPage: any = TabsPage;
 
-	constructor(platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen, modalCtrl: ModalController, todoService: TodoService) {
+	constructor(platform: Platform, 
+							statusBar: StatusBar, 
+							splashScreen: SplashScreen, 
+							modalCtrl: ModalController, 
+							todoService: TodoService) {
 		platform.ready().then((source) => {
 			// Okay, so the platform is ready and our plugins are available.
 			// Here you can do any higher level native things you might need.
@@ -22,9 +26,8 @@ export class MyApp {
 				statusBar.styleDefault();
 			}
 
-			// Get server data
-
 			splashScreen.hide();
+			
 			let loginModal = modalCtrl.create(LoginPage);
 			loginModal.present();
 		});
