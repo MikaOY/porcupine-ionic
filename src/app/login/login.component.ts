@@ -17,13 +17,11 @@ export class LoginPage {
     }
 
     login(){
-        // login to server
+        // login and set user
         this.viewCtrl.dismiss();
     }
 
     register(){
         
     }
-
-    
 }

@@ -14,7 +14,8 @@ import { Board } from '../../../app/board';
 
 export class TodoList implements OnInit {
     private error: any; 
-    private currentBoard: Board;
+    private todoListBoard: Board;
+    todos: Todo[];
 
     // this sets colors for the category numbers
     ColorArray: string[];
@@ -23,12 +24,11 @@ export class TodoList implements OnInit {
     selectActive: boolean = false;
     priority = Priority;
 
-    constructor(private todoService: TodoService){
-    }
+    constructor(private todoService: TodoService) { }
 
     ngOnInit(): void {
+        this.todoService.getTodos().subscribe(todos => this.todos = todos);
         this.todoService.getColors().then(ColorArray => this.ColorArray = ColorArray);
-        this.todoService.getCurrentBoard().then(value => this.currentBoard = value);
     }
 
     prior() : Array<string> {
@@ -72,9 +72,9 @@ export class TodoList implements OnInit {
     } 
 
     reorderItems(indexes) {
-        let element = this.currentBoard.Todos[indexes.from];
-        this.currentBoard.Todos.splice(indexes.from, 1);
-        this.currentBoard.Todos.splice(indexes.to, 0, element);
+        let element = this.todoListBoard.Todos[indexes.from];
+        this.todoListBoard.Todos.splice(indexes.from, 1);
+        this.todoListBoard.Todos.splice(indexes.to, 0, element);
     }
 
     activateSelect(todo: Todo){
@@ -91,7 +91,7 @@ export class TodoList implements OnInit {
 
     disableSelect(){
         this.selectActive = false;
-        for (let todo of this.currentBoard.Todos){ //turns everything back to white color
+        for (let todo of this.todoListBoard.Todos){ //turns everything back to white color
             todo.SelectActive = false;
         }
         this.selectedTodos.length = 0; //empties selectedTodos array

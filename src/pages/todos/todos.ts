@@ -12,14 +12,13 @@ import { Category } from '../../app/category';
   templateUrl: 'todos.html'
 })
 export class TodosPage {
-  currentBoard: Board;
+  private todosBoard: Board;
 
   constructor(private todoService: TodoService){
-
-        this.todoService.getCurrentBoard().then(cBoard => this.currentBoard = cBoard);
+        this.todoService.getCurrentBoard().then(cBoard => this.todosBoard = cBoard);
     }
 
   changeBoard(){
-    this.todoService.changeBoard().then(cBoard => this.currentBoard = cBoard);
+    this.todoService.changeBoard().then(nBoard => this.todosBoard = nBoard);
   }
 }

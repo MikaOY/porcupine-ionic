@@ -11,6 +11,7 @@ import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/share';
 import 'rxjs/add/operator/startWith';
+import 'rxjs/add/operator/toPromise';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 const CATS0: Category[] = [new Category('Life', 1, new Date(2017, 4, 30), 0, true), 
@@ -32,51 +33,69 @@ const TODOS1: Todo[] = [new Todo('Tell an alpaca he is loved', CATS1[0], new Dat
                         new Todo('Wash dishes', CATS1[0], new Date(2017, 4, 30), false, undefined, false, Priority.Low),
                         new Todo('Code some frontend!!', CATS1[1], new Date(2017, 4, 28), false, undefined, false, Priority.Medium)];
 
-const BOARDS: Board[] =[new Board('Important Things in Life', TODOS0, CATS0),
-                        new Board ('More Things Todo', TODOS1, CATS1)]
 const ColorArray: string[] = ["#919191","#ff5c3f", "#ffb523", "#6f9b53", "#1371d6", "#423e7c", "#7606cc", "#c613b4"];
 
 @Injectable()
 export class TodoService {
-    public currentBoard: Board = BOARDS[0];
+    BOARDS: Board[] = [];
     
-    public cachedTodos: Todo[];
-    public cachedCats: Category[];
-    private apiUrl: string = 'http://porcupine-dope-api.azurewebsites.net';
+    public CurrentBoard: Board;
+    public CachedBoards: Board[];
+    public CachedTodos: Todo[];
+    public CachedCats: Category[];
 
-    selectMode: string;    
+    private apiUrl: string = 'http://porcupine-dope-api.azurewebsites.net';
 
     constructor(private http: Http) { }
 
+    getBoards(): Observable<Board[]> {
+        console.log("requesting boards...");
+        
+        let id: number = 0;
+        const url = `${this.apiUrl}/board?personId=${id}`;
+        return this.http.get(url).map(this.extractBoardData).catch(this.handleError);
+    }
+
     getCurrentBoard(): Promise<Board> {
-        return Promise.resolve(this.currentBoard);
+        return this.getBoards().toPromise().then(array => array[0]).catch(this.handleError);
     }
 
     changeBoard(): Promise<Board> {
-        let boardIndex = BOARDS.indexOf(this.currentBoard);
+        let boardIndex = this.BOARDS.indexOf(this.CurrentBoard);
 
-        if (boardIndex + 1 == BOARDS.length){
-            this.currentBoard = BOARDS[0];
+        if (boardIndex + 1 == this.BOARDS.length){
+            this.CurrentBoard = this.BOARDS[0];
         }
         else{
-            this.currentBoard = BOARDS[boardIndex + 1];
+            this.CurrentBoard = this.BOARDS[boardIndex + 1];
         }
       
-        return Promise.resolve(this.currentBoard);
+        return Promise.resolve(this.CurrentBoard);
     }
     
     getColors(): Promise<string[]>{
         return Promise.resolve(ColorArray);
     }
     
-    /* public getTodos(): Observable<Todo[]> {
+    public getTodos(): Observable<Todo[]> {
         const url = `${this.apiUrl}/todo/0`;
-        return this.http.get(url).map(this.extractData).catch(this.handleError);
-    } */
+        console.log("requesting todos...");
+        return this.http.get(url).map(this.extractTodoData).catch(this.handleError);
+    }
 
-    private extractData(response: any) {
-        console.log("extracting...");
-        console.log(response.json()[0]['todo_info']); 
+    private extractBoardData(response: any) {
+        let array: Board[] = [];
+        for (let json of response.json()) {
+            array.push(new Board(json['title'], TODOS0, CATS0, json['date_created'], json['board_id']));
+        }
+        
+        this.CachedBoards = array;
+        this.CurrentBoard = array[0]; 
+        return array;
+    }
+
+    private extractTodoData(response: any) {
+        console.log("extracting todos...");
 
         let array: Todo[] = [];
         for (let json of response.json()) {
@@ -92,7 +111,8 @@ export class TodoService {
             array.push(todo);
         }
 
-        this.cachedTodos = array;
+        this.CachedTodos = array;
+        this.CurrentBoard.Todos = array;
         return array;
     }
 
@@ -107,6 +127,7 @@ export class TodoService {
             errMsg = error.message ? error.message : error.toString();
         }
         console.error(errMsg); 
+        console.error('Something went wrong!'); 
         return Observable.throw(errMsg);
     }    
 }

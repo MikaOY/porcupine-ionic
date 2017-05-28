@@ -9,6 +9,8 @@ import { Board } from '../board';
 import { CategoryManager } from './cat-manager/cat-manager.component';
 import { LoginPage } from '../login/login.component';
 
+// CATEGORY
+
 @Component({ //replace with list of categories
     selector: "category-list",
     providers: [TodoService],
@@ -66,8 +68,7 @@ export class CategorySort implements OnInit{
     }
 }
 
-
-
+// PROPERTY
 
 @Component({
     selector: "property-list",
