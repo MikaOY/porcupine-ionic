@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Board } from '../../app/board';
 import { TodoService } from '../../app/todo.service';
 
@@ -6,26 +6,29 @@ import { TodoService } from '../../app/todo.service';
 	selector: 'todos-page',
 	templateUrl: 'todos.html'
 })
-export class TodosPage {
+export class TodosPage implements OnInit {
 	currentBoard: Board;
 
-  constructor(public todoService: TodoService){
-        this.todoService.getCurrentBoard().subscribe(cBoard => this.currentBoard = cBoard);
-    }
-    
-    ionViewWillEnter(){ //archives todos if more than 24 hours has passed since checked
-			if (this.currentBoard){
-				for (let todo of this.currentBoard.Todos){
-					let currentDate = new Date();
-					if (todo.IsDone == true && todo.IsArchived == false){
-						let timeDone = currentDate.getTime() - todo.DateDone.getTime();
-						todo.IsArchived = timeDone > 86400000 ? true : false;
-					}
+	constructor(public todoService: TodoService) { }
+
+	// Leave service calls in init callback!
+	ngOnInit(): void {
+		this.todoService.getCurrentBoard().subscribe(cBoard => this.currentBoard = cBoard);
+	}
+
+	ionViewWillEnter() { //archives todos if more than 24 hours has passed since checked
+		if (this.currentBoard) {
+			for (let todo of this.currentBoard.Todos) {
+				let currentDate = new Date();
+				if (todo.IsDone == true && todo.IsArchived == false) {
+					let timeDone = currentDate.getTime() - todo.DateDone.getTime();
+					todo.IsArchived = timeDone > 86400000 ? true : false;
 				}
 			}
-    }
+		}
+	}
 
-  changeBoard() {
+	changeBoard() {
 		this.todoService.changeBoard().then(nBoard => this.currentBoard = nBoard);
 	}
 }

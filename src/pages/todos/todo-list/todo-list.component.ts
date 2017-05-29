@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { TodoService } from '../../../app/todo.service';
 import { ModalController, NavParams } from 'ionic-angular';
 
@@ -13,7 +13,7 @@ import { UnlockPage } from '../../../app/lockable/unlock-page.component';
 	templateUrl: 'todo-list.html',
 })
 
-export class TodoList {
+export class TodoList implements OnInit {
 	private error: any;
 	todos: Todo[];
 	cats: Category[];
@@ -26,14 +26,15 @@ export class TodoList {
 	selectActive: boolean = false;
 	priority: string[] = ["Low", "Medium", "High"];
 
-	constructor(private todoService: TodoService,
-		public params: NavParams,
-		public ModalCtrl?: ModalController) {
+	constructor(private todoService: TodoService, public params: NavParams, public ModalCtrl?: ModalController) { }
+
+	// Leave service calls in init callback!
+	ngOnInit(): void {
+    this.todoService.getCurrentBoard().subscribe(board => this.currentBoard = board);			
 		this.todoService.getCategories().then(cats => this.cats = cats);
 		this.todoService.getTodos().then(todos => this.todos = todos);
-		this.todoService.getCurrentBoard().subscribe(board => this.currentBoard = board);
 		this.todoService.getColors().then(colorArray => this.ColorArray = colorArray);
-	}
+  }
 
 	todoPriority(pri: number): Array<number> {
 		let k = pri + 1;
