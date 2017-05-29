@@ -7,8 +7,5 @@ export class Category {
                 public DbId?: number, // optional to allow latency with DB
                 public IsShown?: boolean,
                 public Order?: number, 
-                public DefaultPriority?: Priority,){
-    }
+                public DefaultPriority?: Priority,){}
 }
-
-

@@ -1,35 +1,31 @@
-
 <div class="addCatContainer">
-    <form (ngSubmit)="onNewCatFormSubmit()" #newCatForm="ngForm">
-        <ion-item>
-            <ion-label stacked>Category Name</ion-label>
-            <ion-input clearInput [(ngModel)]="newCate.Name" name="Name"></ion-input>
-        </ion-item>
-        <ion-item *ngIf="this.colorPicker">
-            <ion-label (click)="presentColors()">Color</ion-label>
-        </ion-item>
-           
-   
-        <ion-item>
-            <ion-label>Default Priority</ion-label>
-            <ion-select interface="popover" [(ngModel)]="newCate.DefaultPriority" name="DefPriority">
-                <ion-option value="undefined">None</ion-option>
-                <ion-option *ngFor="let pri of prior()" value="{{priority[pri]}}">{{pri}}</ion-option>
-            </ion-select>
-        </ion-item>
-        <button clear ion-button type="submit"><ion-icon name="checkmark"></ion-icon></button>
-    </form>
-    <div>{{newCate.Name}}</div>
-    <div>{{newCate.DefaultPriority}}</div>
-    <div>{{newCate.Color}}</div>
-    
+	<form (ngSubmit)="onNewCatFormSubmit()" #newCatForm="ngForm">
+		<ion-item>
+			<ion-label stacked>Category Name</ion-label>
+			<ion-input clearInput [(ngModel)]="newCate.Name" name="Name"></ion-input>
+		</ion-item>
+		<ion-item *ngIf="this.colorPicker">
+			<ion-label (click)="presentColors()">Color</ion-label>
+		</ion-item>
 
+
+		<ion-item>
+			<ion-label>Default Priority</ion-label>
+			<ion-select interface="popover" [(ngModel)]="newCate.DefaultPriority" name="DefPriority">
+				<ion-option value="undefined">None</ion-option>
+				<ion-option *ngFor="let pri of prior()" value="{{priority[pri]}}">{{pri}}</ion-option>
+			</ion-select>
+		</ion-item>
+		<button clear ion-button type="submit"><ion-icon name="checkmark"></ion-icon></button>
+	</form>
+	<div>{{newCate.Name}}</div>
+	<div>{{newCate.DefaultPriority}}</div>
+	<div>{{newCate.Color}}</div>
 </div>
 
-
 <div *ngIf="!this.colorPicker" class="addCatContainer">
-    <div><button ion-button clear (click)="presentColors()">Back</button></div>
-    <ion-list no-lines>
-        <ion-item *ngFor="let color of ColorArray" [style.background-color]="color" (click)="setColor(color)">{{color}}</ion-item>
-    </ion-list>
+	<div><button ion-button clear (click)="presentColors()">Back</button></div>
+	<ion-list no-lines>
+		<ion-item *ngFor="let color of ColorArray" [style.background-color]="color" (click)="setColor(color)">{{color}}</ion-item>
+	</ion-list>
 </div>

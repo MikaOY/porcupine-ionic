@@ -1,48 +1,48 @@
 <ion-content>
-    <button ion-button (click)="back()">
+	<button ion-button (click)="back()">
         <ion-icon name="arrow-round-back"></ion-icon>
     </button>
-    <h1>Unlock</h1>
-        <ion-grid>
-            <ion-row>
-                <ion-col>
-                    <div class="passIn">{{passIn.length > 0 ? passIn.substring(0, 1) : ' '}}</div>
-                </ion-col>
-                <ion-col>
-                    <div class="passIn">{{passIn.length > 1 ? passIn.substring(1, 2) : ' '}}</div>
-                </ion-col>
-                <ion-col>
-                    <div class="passIn">{{passIn.length > 2 ? passIn.substring(2, 3) : ' '}}</div>
-                </ion-col>
-                <ion-col>
-                    <div class="passIn">{{passIn.length > 3 ? passIn.substring(3, 4) : ' '}}</div>
-                </ion-col>
-            </ion-row>
+	<h1>Unlock</h1>
+	<ion-grid>
+		<ion-row>
+			<ion-col>
+				<div class="passIn">{{passIn.length > 0 ? passIn.substring(0, 1) : ' '}}</div>
+			</ion-col>
+			<ion-col>
+				<div class="passIn">{{passIn.length > 1 ? passIn.substring(1, 2) : ' '}}</div>
+			</ion-col>
+			<ion-col>
+				<div class="passIn">{{passIn.length > 2 ? passIn.substring(2, 3) : ' '}}</div>
+			</ion-col>
+			<ion-col>
+				<div class="passIn">{{passIn.length > 3 ? passIn.substring(3, 4) : ' '}}</div>
+			</ion-col>
+		</ion-row>
 
-            <ion-row>
-                <ion-col *ngFor="let num of row1">
-                    <button ion-button (click)=add(num) class="center">{{num}}</button>
-                </ion-col>
-            </ion-row>
-            <ion-row>
-                <ion-col *ngFor="let num of row2">
-                    <button ion-button (click)=add(num) class="center">{{num}}</button>
-                </ion-col>
-            </ion-row>
-            <ion-row>
-                <ion-col *ngFor="let num of row3">
-                    <button ion-button (click)=add(num) class="center">{{num}}</button>
-                </ion-col>
-            </ion-row>
-            <ion-row>
-                <ion-col>
-                </ion-col>
-                <ion-col>
-                    <button ion-button (click)=add(0) class="center">0</button>
-                </ion-col>
-                <ion-col>
-                    <ion-icon name="arrow-round-back" (click)=delete() class="center"></ion-icon>
-                </ion-col>
-            </ion-row>
-        </ion-grid>
+		<ion-row>
+			<ion-col *ngFor="let num of row1">
+				<button ion-button (click)=add(num) class="center">{{num}}</button>
+			</ion-col>
+		</ion-row>
+		<ion-row>
+			<ion-col *ngFor="let num of row2">
+				<button ion-button (click)=add(num) class="center">{{num}}</button>
+			</ion-col>
+		</ion-row>
+		<ion-row>
+			<ion-col *ngFor="let num of row3">
+				<button ion-button (click)=add(num) class="center">{{num}}</button>
+			</ion-col>
+		</ion-row>
+		<ion-row>
+			<ion-col>
+			</ion-col>
+			<ion-col>
+				<button ion-button (click)=add(0) class="center">0</button>
+			</ion-col>
+			<ion-col>
+				<ion-icon name="arrow-round-back" (click)=delete() class="center"></ion-icon>
+			</ion-col>
+		</ion-row>
+	</ion-grid>
 </ion-content>

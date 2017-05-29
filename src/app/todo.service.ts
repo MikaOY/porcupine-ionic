@@ -11,111 +11,164 @@ import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/share';
 import 'rxjs/add/operator/startWith';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { ModalController } from 'ionic-angular';
+import 'rxjs/add/operator/toPromise';
+import 'rxjs/add/observable/fromPromise';
 
-const CATS0: Category[] = [new Category('Life', 1, new Date(2017, 4, 30), 0, true), 
-                            new Category('Code', 2, new Date(2017, 3, 26), 1, true),
-                            new Category('Unsorted', 0, null, 2, true)];
-const CATS1: Category[] = [new Category('Pinapples', 1, new Date(2017, 4, 30), 0, true), 
-                            new Category('Leaf', 2, new Date(2017, 3, 26), 1, true),
-                            new Category('Unsorted', 0, null, 2, true)];
+const CATS0: Category[] = [new Category('Life', 1, new Date(2017, 4, 30), 0, true, 0),
+new Category('Coding', 2, new Date(2017, 3, 26), 1, true, 2),
+new Category('Unsorted', 0, null, 2, true, 0)];
 
-// TODO: replace with DB info
 const TODOS0: Todo[] = [new Todo('Give an alpaca a hug', CATS0[0], new Date(2017, 4, 30), false, undefined, false, Priority.Low, new Date(2016, 5, 13)),
-                        new Todo('Finish Porcupine', CATS0[1], new Date(2017, 4, 28), false, undefined, false, Priority.Medium),
-                        new Todo('Make moist brownie', CATS0[2], new Date(2017, 4, 29), true, new Date(2017, 4, 25, 19, 57), false, Priority.High),
-                        new Todo('Upload photos to google drive', CATS0[0], new Date(2017, 4, 30), false, undefined, false, Priority.Low),
-                        new Todo('Pet a pug', CATS0[1], new Date(2017, 4, 28), false, undefined, false, Priority.Medium)];
-const TODOS1: Todo[] = [new Todo('Tell an alpaca he is loved', CATS1[0], new Date(2017, 4, 30), false, undefined, false, Priority.Low, new Date(2016, 5, 13)),
-                        new Todo('Get some grapes from the store', CATS1[1], new Date(2017, 4, 28), false, undefined, false, Priority.Medium),
-                        new Todo('Draw lovehearts', CATS1[2], new Date(2017, 4, 29), true, new Date(2017, 4, 30), false, Priority.High),
-                        new Todo('Wash dishes', CATS1[0], new Date(2017, 4, 30), false, undefined, false, Priority.Low),
-                        new Todo('Code some frontend!!', CATS1[1], new Date(2017, 4, 28), false, undefined, false, Priority.Medium)];
+new Todo('Finish Porcupine', CATS0[1], new Date(2017, 4, 28), false, undefined, false, Priority.Medium),
+new Todo('Make moist brownie', CATS0[2], new Date(2017, 4, 29), true, new Date(2017, 4, 30), false, Priority.High),
+new Todo('Upload photos to Drive', CATS0[0], new Date(2017, 4, 30), false, undefined, false, Priority.Low),
+new Todo('Pet a pug', CATS0[1], new Date(2017, 4, 28), false, undefined, false, Priority.Medium)];
 
-const BOARDS: Board[] =[new Board('Important Things in Life', TODOS0, CATS0),
-                        new Board ('More Things Todo', TODOS1, CATS1)]
-const ColorArray: string[] = ["#919191","#ff5c3f", "#ffb523", "#6f9b53", "#1371d6", "#423e7c", "#7606cc", "#c613b4"];
+const BOARDS: Board[] = [new Board('Important Things in Life', TODOS0, CATS0, undefined, undefined),
+new Board('More Things Todo', TODOS0, CATS0, undefined, undefined)]
+
+const ColorArray: string[] = ["#919191", "#ff5c3f", "#ffb523", "#6f9b53", "#1371d6", "#423e7c", "#7606cc", "#c613b4"];
 
 @Injectable()
 export class TodoService {
-    private currentBoard: BehaviorSubject<Board>;
-    private userBoards: BehaviorSubject<Board[]>;
-    
-    public cachedTodos: Todo[];
-    public cachedCats: Category[];
-    private apiUrl: string = 'http://porcupine-dope-api.azurewebsites.net';
+	public IsSynced: boolean = false;
+	public CurrentBoard: Board; //change to behaviorSubject
+	public CachedBoards: Board[] = [];
+	public CachedTodos: Todo[] = [];
+	public CachedCats: Category[] = [];
 
-    selectMode: string;    
+	private apiUrl: string = 'http://porcupine-dope-api.azurewebsites.net';
 
-    constructor(private http: Http) {
-        this.currentBoard = new BehaviorSubject(BOARDS[0]);
-        this.userBoards = new BehaviorSubject(BOARDS);
-     }
+	constructor(private http: Http) {
+		this.CurrentBoard = BOARDS[0]
+	}
 
-    getBoards(){
-        return this.userBoards.asObservable();
-    }
+	// public HTTP functions
 
-    getCurrentBoard() {
-        return this.currentBoard.asObservable();
-    }
+	public getBoards(): Promise<Board[]> {
+		console.log("requesting boards...");
 
-    changeBoard(currentBoard){
-        let boardIndex = BOARDS.indexOf(currentBoard);
+		let id: number = 1;
+		const url = `${this.apiUrl}/board?personId=${id}`;
+		return this.http.get(url).toPromise().then((response: any) => {
+			let array: Board[] = [];
+			for (let json of response.json()) {
+				array.push(new Board(json['title'], TODOS0, CATS0, json['date_created'], json['board_id']));
+			}
 
-        if (boardIndex + 1 == BOARDS.length){
-            currentBoard = BOARDS[0];
-        }
-        else {
-            currentBoard = BOARDS[boardIndex + 1];
-        }
-      
-        this.currentBoard.next(currentBoard);
-    }
-    
-    getColors(): Promise<string[]>{
-        return Promise.resolve(ColorArray);
-    }
-    
-    /* public getTodos(): Observable<Todo[]> {
-        const url = `${this.apiUrl}/todo/0`;
-        return this.http.get(url).map(this.extractData).catch(this.handleError);
-    } */
+			this.CachedBoards = array;
+			this.CurrentBoard = this.CachedBoards[0];
+			console.log('Boards retrieved!');
+			return array;
+		})
+			.catch(this.handleError);
+	}
 
-    private extractData(response: any) {
-        console.log("extracting...");
-        console.log(response.json()[0]['todo_info']); 
+	public getCategories(): Promise<Category[]> {
+		console.log("requesting categories...");
 
-        let array: Todo[] = [];
-        for (let json of response.json()) {
-            let todo = new Todo(json['todo_info'], 
-                                new Category('Testing', null, null, 5), 
-                                new Date(json['date_created']), 
-                                json['is_done'],
-                                new Date(json['date_done']),
-                                json['is_archived'],
-                                Priority.Medium,
-                                null,
-                                json['todo_id']);
-            array.push(todo);
-        }
+		let id: number = 1;
+		const url = `${this.apiUrl}/category?personId=${id}`;
+		return this.http.get(url).toPromise().then((response: any) => {
+			let array: Category[] = [];
+			for (let json of response.json()) {
+				array.push(new Category(json['title'],
+					json['color'],
+					new Date(json['date_created']),
+					json['category_id'],
+					true,
+					json['default_order'],
+					json['default_priority']));
 
-        this.cachedTodos = array;
-        return array;
-    }
+				// Populate Categories: Category[] prop in boards
+				if (this.CachedBoards) {
+					this.CachedBoards.find((board, index, array) => json['board_id'] == board.DbId)
+						.Categories.push(array[array.length - 1]);
+				} else {
+					console.log('CachedBoards undefined/null!');
+				}
+			}
 
-    private handleError (error: Response | any) {
-        // In a real world app, you might use a remote logging infrastructure
-        let errMsg: string;
-        if (error instanceof Response) {
-            const body = error.json() || '';
-            const err = body.error || JSON.stringify(body);
-            errMsg = `${error.status} - ${error.statusText || ''} ${err}`;
-        } else {
-            errMsg = error.message ? error.message : error.toString();
-        }
-        console.error(errMsg); 
-        return Observable.throw(errMsg);
-    }    
+			this.CachedCats = array;
+			console.log('Categories retrieved!');
+			return array;
+		}).catch(this.handleError);
+	}
+
+	public getTodos(): Promise<Todo[]> {
+		console.log("requesting todos...");
+
+		let id: number = 1;
+		const url = `${this.apiUrl}/todo?personId=${id}`;
+		return this.http.get(url).toPromise().then((response: any) => {
+			let array: Todo[] = [];
+			for (let json of response.json()) {
+				array.push(new Todo(json['todo_info'],
+					this.CachedCats.find((cat, index, array) => cat.DbId == json['category_id']), // find category with id
+					new Date(json['date_created']),
+					json['is_done'],
+					new Date(json['date_done']),
+					json['is_archived'],
+					Priority[Priority[json['priority_value']]],
+					null, // due date not implemented in DB yet
+					json['todo_id']));
+
+				// Populate Todos: Todo[] prop in boards
+				if (this.CachedBoards) {
+					this.CachedBoards.find((board, index, array) => {
+						let cat = this.CachedCats.find((cat, index, array) => cat.DbId == json['category_id']);
+						return board.Categories.find((bCat, index, array) => bCat == cat) !== undefined;
+					}).Todos.push(array[array.length - 1]);
+				}
+			}
+
+			this.CachedTodos = array;
+			this.CurrentBoard.Todos = array;
+			console.log('Todos retrieved!');
+			return array;
+		}).catch(this.handleError);
+	}
+
+	private handleError(error: Response | any) {
+		// In a real world app, you might use a remote logging infrastructure
+		let errMsg: string;
+		if (error instanceof Response) {
+			const body = error.json() || '';
+			const err = body.error || JSON.stringify(body);
+			errMsg = `${error.status} - ${error.statusText || ''} ${err}`;
+		} else {
+			errMsg = error.message ? error.message : error.toString();
+		}
+		console.error(errMsg);
+		console.error('Something went wrong!');
+		return Observable.throw(errMsg);
+	}
+
+	getCurrentBoard(): Observable<Board> {
+		if (this.IsSynced == true) {
+			console.log("Returning the CURRENTBOARD");
+			return Observable.fromPromise(Promise.resolve(this.CurrentBoard));
+		}
+		else {
+			console.log("Returning the const board");
+			return Observable.fromPromise(this.getBoards().then(array => array[0]).catch(this.handleError));
+		}
+	}
+
+	changeBoard(): Promise<Board> {
+		let boardIndex = this.CachedBoards.indexOf(this.CurrentBoard);
+
+		if (boardIndex + 1 == this.CachedBoards.length) {
+			this.CurrentBoard = this.CachedBoards[0];
+		}
+		else {
+			this.CurrentBoard = this.CachedBoards[boardIndex + 1];
+		}
+
+		return Promise.resolve(this.CurrentBoard);
+	}
+
+	getColors(): Promise<string[]> {
+		return Promise.resolve(ColorArray);
+	}
 }

@@ -1,22 +1,22 @@
 <ion-header>
-    <ion-toolbar>
-        <ion-title>Manage Categories</ion-title>
-        <ion-buttons start>
-            <button ion-button (click)="dismiss()">
-                <span ion-text color="primary" showWhen="ios">Cancel</span>
-                <ion-icon name="md-close" showWhen="android, windows"></ion-icon>
-            </button>
-        </ion-buttons>
-    </ion-toolbar>
+	<ion-toolbar>
+		<ion-title>Manage Categories</ion-title>
+		<ion-buttons start>
+			<button ion-button (click)="dismiss()">
+				<span ion-text color="primary" showWhen="ios">Cancel</span>
+				<ion-icon name="md-close" showWhen="android, windows"></ion-icon>
+			</button>
+		</ion-buttons>
+	</ion-toolbar>
 </ion-header>
 
 <ion-content>
-    <ion-list no-lines *ngIf="currentBoard">
-        <button ion-item *ngFor="let cat of currentBoard.Categories" [style.background-color]="ColorArray[cat.Color]">
-            <span class="catText">{{cat.Name}}</span>
-        </button>
-        <button ion-item id="newCat" (click)="presentAddCat()">
-            <span class="catText">New Category</span>
-        </button>
-    </ion-list>
+	<ion-list no-lines *ngIf="currentBoard">
+		<button ion-item *ngFor="let cat of currentBoard.Categories" [style.background-color]="ColorArray[cat.Color]">
+			<span class="catText">{{cat.Name}}</span>
+		</button>
+		<button ion-item id="newCat" (click)="presentAddCat()">
+			<span class="catText">New Category</span>
+		</button>
+	</ion-list>
 </ion-content>

@@ -3,8 +3,8 @@ import { NavController } from 'ionic-angular';
 import { SettingsService } from '../../app/settings.service';
 
 @Component({
-  selector: 'settings-page',
-  templateUrl: 'settings.html'
+	selector: 'settings-page',
+	templateUrl: 'settings.html'
 })
 export class SettingsPage {
   currentTheme: string;

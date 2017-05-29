@@ -1,19 +1,19 @@
 import { Component } from '@angular/core';
-import { ModalController, NavController } from 'ionic-angular';
+import { ModalController } from 'ionic-angular';
 
-import { ModalPage } from './modal-page';
 import { TodoService } from '../todo.service';
 import { Todo } from '../todo';
-import { Category } from '../category';
 import { Board } from '../board';
 import { CategoryManager } from './cat-manager/cat-manager.component';
 import { LoginPage } from '../login/login.component';
 import { BoardManager } from './board-manager/board-manager.component';
 
+// CATEGORY
+
 @Component({ //replace with list of categories
-    selector: "category-list",
-    providers: [TodoService],
-    template: `
+	selector: "category-list",
+	providers: [TodoService],
+	template: `
     <ion-list>
         <ion-item>
             <ion-avatar item-left id="alpacatar">
@@ -45,26 +45,34 @@ import { BoardManager } from './board-manager/board-manager.component';
     `
 })
 
-export class CategorySort{
-    private currentBoard: Board;
-    
-    constructor(private todoService: TodoService, 
-                public modalCtrl: ModalController){
-        this.todoService.getCurrentBoard().subscribe(cBoard => this.currentBoard = cBoard);
-    }
+export class CategorySort {
+	private currentBoard: Board;
 
-    showCatModal(){
-        let catModal = this.modalCtrl.create(CategoryManager);
-        catModal.present();
-    }
+	constructor(private todoService: TodoService,
+							public modalCtrl: ModalController) {
+		this.todoService.getCurrentBoard().subscribe(cBoard => this.currentBoard = cBoard);
+	}
+
+	showCatModal() {
+		let catModal = this.modalCtrl.create(CategoryManager);
+		catModal.present();
+	}
+
+	ngOnInit(): void {
+		this.todoService.getCurrentBoard().subscribe(cBoard => this.currentBoard = cBoard);
+	}
+
+	presentLogin() {
+		let loginModal = this.modalCtrl.create(LoginPage);
+		loginModal.present();
+	}
 }
 
-
-
+// PROPERTY
 
 @Component({
-    selector: "property-list",
-    template: `
+	selector: "property-list",
+	template: `
     <ion-grid no-padding>
         <ion-row nowrap>
             <ion-col>
@@ -88,76 +96,76 @@ export class CategorySort{
 })
 
 export class PropertySort {
-    private currentBoard: Board;
-    private error: any;
-    
-    constructor(private todoService: TodoService,
-                public modalCtrl: ModalController) {
-        this.todoService.getCurrentBoard().subscribe(value => this.currentBoard = value);
-     }
+	private currentBoard: Board;
+	private error: any;
 
-    sortPriorityHL(){
-        var sortedTodos:Todo[] = this.currentBoard.Todos.sort((a,b) => {
+	constructor(private todoService: TodoService,
+							public modalCtrl: ModalController) {
+		this.todoService.getCurrentBoard().subscribe(value => this.currentBoard = value);
+	}
 
-            if (a.Priority > b.Priority){
-                return -1;
-            }
+	sortPriorityHL() {
+		this.currentBoard.Todos = this.currentBoard.Todos.sort((a, b) => {
 
-            if (a.Priority < b.Priority){
-                return 1;
-            }
+			if (a.Priority > b.Priority) {
+				return -1;
+			}
 
-            return 0;
-        });
+			if (a.Priority < b.Priority) {
+				return 1;
+			}
 
-    }
+			return 0;
+		});
 
-    sortPriorityLH(){
-        var sortedTodos:Todo[] = this.currentBoard.Todos.sort((a,b) => {
+	}
 
-            if (a.Priority > b.Priority){
-                return 1;
-            }
+	sortPriorityLH() {
+		this.currentBoard.Todos = this.currentBoard.Todos.sort((a, b) => {
 
-            if (a.Priority < b.Priority){
-                return -1;
-            }
+			if (a.Priority > b.Priority) {
+				return 1;
+			}
 
-            return 0;
-        });
-    }
+			if (a.Priority < b.Priority) {
+				return -1;
+			}
 
-    sortRecent(){
-        var sortedTodos:Todo[] = this.currentBoard.Todos.sort((a,b) => {
-            if (a.DateCreated > b.DateCreated){
-                return -1;
-            }
+			return 0;
+		});
+	}
 
-            if (a.DateCreated < b.DateCreated){
-                return 1;
-            }
+	sortRecent() {
+		this.currentBoard.Todos = this.currentBoard.Todos.sort((a, b) => {
+			if (a.DateCreated > b.DateCreated) {
+				return -1;
+			}
 
-            return 0;
-        });
-    }
+			if (a.DateCreated < b.DateCreated) {
+				return 1;
+			}
 
-    sortOldest(){
-        var sortedTodos:Todo[] = this.currentBoard.Todos.sort((a,b) => {
-            if (a.DateCreated > b.DateCreated){
-                return 1;
-            }
+			return 0;
+		});
+	}
 
-            if (a.DateCreated < b.DateCreated){
-                return -1;
-            }
+	sortOldest() {
+		this.currentBoard.Todos = this.currentBoard.Todos.sort((a, b) => {
+			if (a.DateCreated > b.DateCreated) {
+				return 1;
+			}
 
-            return 0;
-        });
-    }
+			if (a.DateCreated < b.DateCreated) {
+				return -1;
+			}
 
-    presentBoards(){
-        let boardsModal = this.modalCtrl.create(BoardManager);
-        boardsModal.present();
-    }
+			return 0;
+		});
+	}
+
+	presentBoards() {
+		let boardsModal = this.modalCtrl.create(BoardManager);
+		boardsModal.present();
+	}
 
 }

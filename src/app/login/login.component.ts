@@ -2,28 +2,25 @@ import { Component } from '@angular/core';
 import { ViewController } from 'ionic-angular';
 
 
-@Component ({
-    templateUrl: 'login.html'
+@Component({
+	templateUrl: 'login.html'
 })
 
 export class LoginPage {
-    LoginCredentials = { username: '', password: '' };
-    constructor(public viewCtrl: ViewController) {
+	LoginCredentials = { username: '', password: '' };
+	constructor(public viewCtrl: ViewController) {
+	}
 
-    }  
+	bananas() {
+		this.viewCtrl.dismiss();
+	}
 
-    bananas(){
-        this.viewCtrl.dismiss();
-    }
+	login() {
+		// login and set user
+		this.viewCtrl.dismiss();
+	}
 
-    login(){
-        // login to server
-        this.viewCtrl.dismiss();
-    }
-
-    register(){
-        
-    }
-
-    
+	register() {
+		console.log("Register clicked");
+	}
 }

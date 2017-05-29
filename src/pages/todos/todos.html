@@ -6,7 +6,7 @@
                     <button center menuToggle ion-button>Menu</button>
                 </ion-col>
                 <ion-col>
-                    <ion-label text-wrap text-center>{{currentBoard.Name}}</ion-label>
+                    <ion-label text-wrap text-center *ngIf="todosBoard">{{todosBoard.Name}}</ion-label>
                 </ion-col>
                 <ion-col col-2>
                     <button ion-button clear (click)="changeBoard(currentBoard)"><ion-icon name="arrow-forward"></ion-icon></button>
