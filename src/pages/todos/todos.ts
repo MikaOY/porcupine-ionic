@@ -10,7 +10,7 @@ export class TodosPage {
 	currentBoard: Board;
 
   constructor(public todoService: TodoService){
-        this.todoService.getCurrentBoard().subscribe(cBoard => this.currentBoard = cBoard);
+        this.todoService.getCurrentBoard().subscribe(cBoard => this.currentBoard = cBoard, error => console.log("Something happened"));
     }
     
     ionViewWillEnter(){ //archives todos if more than 24 hours has passed since checked
@@ -25,7 +25,8 @@ export class TodosPage {
 			}
     }
 
-  changeBoard() {
-		this.todoService.changeBoard().then(nBoard => this.currentBoard = nBoard);
+  changeBoard(board) {
+		console.log("Current board: " + board);
+		this.todoService.changeBoard(board).then(nBoard => this.currentBoard = nBoard);
 	}
 }

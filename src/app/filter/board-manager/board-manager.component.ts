@@ -14,10 +14,14 @@ export class BoardManager {
 							public viewCtrl: ViewController,
 							public todoService: TodoService) {
 		this.todoService.getBoards().then(val => this.userBoards = val);
-		console.log("hi there" + this.userBoards.length);
 	}
 
 	dismissPage() {
 		this.viewCtrl.dismiss();
+	}
+
+	openBoard(board){
+		console.log(board.Name + " board opened");
+		this.todoService.openBoard(board);//should change CurrentBoard in ALL components
 	}
 }

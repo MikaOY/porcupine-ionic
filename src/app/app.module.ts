@@ -37,7 +37,8 @@ import { HttpModule }    from '@angular/http';
     AddCategory,
     LoginPage,
     UnlockPage,
-    BoardManager
+    BoardManager,
+		SharePage
   ],
   imports: [
     BrowserModule,
@@ -58,7 +59,8 @@ import { HttpModule }    from '@angular/http';
     AddCategory,
     LoginPage,
     UnlockPage,
-    BoardManager
+    BoardManager,
+		SharePage
   ],
   providers: [
     StatusBar,

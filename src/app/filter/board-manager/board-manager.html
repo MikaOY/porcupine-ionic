@@ -1,4 +1,9 @@
 <ion-content>
-	<h1>Hi</h1>
+	<ion-title>Boards</ion-title>
+		<ion-list>
+			<ion-item *ngFor="let board of userBoards" (click)="openBoard(board)">
+				{{board.Name}}
+			</ion-item>
+		</ion-list>
 	<button ion-button clear (click)="dismissPage()">Done</button>
 </ion-content>

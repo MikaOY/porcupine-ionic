@@ -1,3 +1,4 @@
+<ion-content padding>
 <ion-list no-lines>
 	<!--what select mode looks like (tap&hold to activate)-->
 	<ng-container *ngIf="selectActive === true; else selInactive">
@@ -87,7 +88,7 @@
 											<button ion-button clear (click)=todo.Lock(todo)><ion-icon name="lock"></ion-icon></button>
 										</ion-col>
 										<ion-col col-3>
-											<button ion-button clear (click)="share(todo)"><ion-icon name="share"></ion-icon></button>
+											<button ion-button clear (click)="shareTodo(todo)"><ion-icon name="share"></ion-icon></button>
 										</ion-col>
 									</ion-row>
 								</ion-grid>
@@ -127,7 +128,7 @@
 	</ng-template>
 
 	<!-- code for adding new todos -->
-	<div *ngIf="addTodo; else addButton">
+	<div *ngIf="addTodo">
 		<!--see addButton below-->
 		<form (ngSubmit)="onNewTodoFormSubmit()" #newTodoForm="ngForm">
 			<ion-item-sliding>
@@ -174,9 +175,8 @@
 		</div>
 	</div>
 
-	<ng-template #addButton>
-		<ion-fab id="addButton" *ngIf="selectActive === false">
+</ion-list>
+<ion-fab id="addButton">
 			<button ion-fab mini (click)=AddTodo()>+</button>
 		</ion-fab>
-	</ng-template>
-</ion-list>
+</ion-content>

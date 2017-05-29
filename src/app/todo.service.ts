@@ -161,8 +161,8 @@ export class TodoService {
 		}
 	}
 
-	changeBoard(): Promise<Board> {
-		let boardIndex = this.CachedBoards.indexOf(this.CurrentBoard);
+	changeBoard(board: Board): Promise<Board> {
+		let boardIndex = this.CachedBoards.indexOf(board);
 
 		if (boardIndex + 1 == this.CachedBoards.length) {
 			this.CurrentBoard = this.CachedBoards[0];
@@ -171,6 +171,11 @@ export class TodoService {
 			this.CurrentBoard = this.CachedBoards[boardIndex + 1];
 		}
 
+		return Promise.resolve(this.CurrentBoard);
+	}
+
+	openBoard(board: Board): Promise<Board>{
+		this.CurrentBoard = board;
 		return Promise.resolve(this.CurrentBoard);
 	}
 
