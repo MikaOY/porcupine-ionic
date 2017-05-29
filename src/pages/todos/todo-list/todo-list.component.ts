@@ -104,6 +104,10 @@ export class TodoList {
 		UnlockModal.present();
 	}
 
+	share(todo){
+
+	}
+
 	//adding a new todo
 	addTodo: boolean = false;
 	newTodo = new Todo(undefined, undefined, undefined, undefined, undefined, false, undefined);
