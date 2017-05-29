@@ -115,10 +115,13 @@ export class TodoService {
 
 				// Populate Todos: Todo[] prop in boards
 				if (this.CachedBoards) {
-					this.CachedBoards.find((board, index, array) => {
+					let board = this.CachedBoards.find((board, index, array) => {
 						let cat = this.CachedCats.find((cat, index, array) => cat.DbId == json['category_id']);
 						return board.Categories.find((bCat, index, array) => bCat == cat) !== undefined;
-					}).Todos.push(array[array.length - 1]);
+					});
+					board.Todos.push(array[array.length - 1]);
+					// Removing log statement below breaks GET!
+					console.log('Added ' + array[array.length - 1].Info + ' to ' + board.Name + ' board');
 				}
 			}
 
