@@ -7,6 +7,7 @@ import { Category } from '../../../app/category';
 import { Priority } from '../../../app/priority';
 import { Board } from '../../../app/board';
 import { UnlockPage } from '../../../app/lockable/unlock-page.component';
+import { SharePage } from './share-page/share-page.component';
 
 @Component({
 	selector: 'todo-list',
@@ -103,6 +104,12 @@ export class TodoList implements OnInit {
 			todo.IsLocked = data;
 		})
 		UnlockModal.present();
+	}
+
+	shareTodo(todo){
+		console.log("share clicked");
+		let shareModal = this.ModalCtrl.create(SharePage);
+		shareModal.present();
 	}
 
 	//adding a new todo

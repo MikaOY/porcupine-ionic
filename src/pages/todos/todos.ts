@@ -28,7 +28,8 @@ export class TodosPage implements OnInit {
 		}
 	}
 
-	changeBoard() {
-		this.todoService.changeBoard().then(nBoard => this.currentBoard = nBoard);
+	changeBoard(board) {
+		console.log("Current board: " + board);
+		this.todoService.changeBoard(board).then(nBoard => this.currentBoard = nBoard);
 	}
 }
