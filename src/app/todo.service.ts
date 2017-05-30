@@ -85,7 +85,7 @@ export class TodoService {
 				
 				console.log("filling Cat[] in CurrentBoard..." + array.length);
 				// Populate Categories: Category[] prop in boards
-				let isAssigned: boolean = false;
+				let isAssigned, hasReset: boolean = false;
 				while (isAssigned == false) {
 					if (this.CachedBoards !== null 
 						&& this.CachedBoards !== undefined 
@@ -95,6 +95,24 @@ export class TodoService {
 						this.CachedBoards.find((board, index, array) => json['board_id'] == board.DbId)
 						// add cat to Cat[] prop on board
 							.Categories.push(array[array.length - 1]);
+
+						// remove sample data ONCE
+						if (!hasReset) {
+							hasReset = true;
+							// loop through cached boards
+							this.CachedBoards.forEach(board => {
+								// loop through todos of each board
+								board.Categories.forEach(cat => {
+									// if todo is in sample array,
+									if ((CATS0.find((sample, index, array) => cat.DbId == sample.DbId) != undefined)) {
+										// delete the todo
+										console.log('Deleting sample category: ' + cat.Name);
+										let index = board.Categories.indexOf(cat);
+										board.Categories.splice(index, 1);
+									}
+								});
+							});
+						}
 						
 						isAssigned = true;
 					} else {
@@ -157,6 +175,7 @@ export class TodoService {
 									// if todo is in sample array,
 									if ((TODOS0.find((sample, index, array) => todo == sample) != undefined)) {
 										// delete the todo
+										console.log('Deleting sample todo: ' + todo.Info);
 										let index = board.Todos.indexOf(todo);
 										board.Todos.splice(index, 1);
 									}
