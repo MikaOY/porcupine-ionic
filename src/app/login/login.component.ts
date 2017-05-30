@@ -8,6 +8,7 @@ import { ViewController } from 'ionic-angular';
 
 export class LoginPage {
 	LoginCredentials = { username: '', password: '' };
+	
 	constructor(public viewCtrl: ViewController) {
 	}
 

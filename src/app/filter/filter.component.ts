@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ModalController } from 'ionic-angular';
 
 import { TodoService } from '../todo.service';
@@ -45,21 +45,19 @@ import { BoardManager } from './board-manager/board-manager.component';
     `
 })
 
-export class CategorySort {
+export class CategorySort implements OnInit{
 	private currentBoard: Board;
 
 	constructor(private todoService: TodoService,
-							public modalCtrl: ModalController) {
+							public modalCtrl: ModalController) {}
+
+	ngOnInit(): void {
 		this.todoService.getCurrentBoard().subscribe(cBoard => this.currentBoard = cBoard);
 	}
 
 	showCatModal() {
 		let catModal = this.modalCtrl.create(CategoryManager);
 		catModal.present();
-	}
-
-	ngOnInit(): void {
-		this.todoService.getCurrentBoard().subscribe(cBoard => this.currentBoard = cBoard);
 	}
 
 	presentLogin() {
@@ -95,15 +93,17 @@ export class CategorySort {
     `
 })
 
-export class PropertySort {
+export class PropertySort implements OnInit{
 	private currentBoard: Board;
 	private error: any;
 
 	constructor(private todoService: TodoService,
-							public modalCtrl: ModalController) {
+							public modalCtrl: ModalController) {}
+
+	ngOnInit(){
 		this.todoService.getCurrentBoard().subscribe(value => this.currentBoard = value);
 	}
-
+	
 	sortPriorityHL() {
 		this.currentBoard.Todos = this.currentBoard.Todos.sort((a, b) => {
 

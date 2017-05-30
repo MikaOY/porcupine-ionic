@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { SettingsService } from '../settings.service';
 import { NavParams, ViewController } from 'ionic-angular';
 import { Todo } from '../todo';
@@ -7,7 +7,7 @@ import { Todo } from '../todo';
 	templateUrl: 'unlock-page.html',
 })
 
-export class UnlockPage {
+export class UnlockPage implements OnInit {
 	passIn: string = " ";
 	userPasscode: string;
 	todo: Todo;
@@ -18,7 +18,9 @@ export class UnlockPage {
 
 	constructor(public settingsService: SettingsService,
 							public params: NavParams,
-							public viewCtrl: ViewController) {
+							public viewCtrl: ViewController) {}
+
+	ngOnInit(){
 		this.settingsService.getPasscode().then(val => this.userPasscode = val);
 	}
 
