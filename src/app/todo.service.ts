@@ -82,18 +82,17 @@ export class TodoService {
 					true,
 					json['default_order'],
 					json['default_priority']));
-				
+
 				console.log("filling Cat[] in CurrentBoard..." + array.length);
 				// Populate Categories: Category[] prop in boards
 				let isAssigned, hasReset: boolean = false;
 				while (isAssigned == false) {
-					if (this.CachedBoards !== null 
-						&& this.CachedBoards !== undefined 
+					if (this.CachedBoards != null
 						&& this.CachedBoards.length >= 0) {
-						console.log("CATS: CachedBoard = " + this.CachedBoards + " OK"); 
+						console.log("CATS: CachedBoard = " + this.CachedBoards + " OK");
 						// find board in cached where id matches cat board_id prop, 
 						this.CachedBoards.find((board, index, array) => json['board_id'] == board.DbId)
-						// add cat to Cat[] prop on board
+							// add cat to Cat[] prop on board
 							.Categories.push(array[array.length - 1]);
 
 						// remove sample data ONCE
@@ -113,7 +112,7 @@ export class TodoService {
 								});
 							});
 						}
-						
+
 						isAssigned = true;
 					} else {
 						console.log('CATS: CachedBoards unavailable, trying again...');
@@ -147,23 +146,38 @@ export class TodoService {
 					Priority[Priority[json['priority_value']]],
 					null, // due date not implemented in DB yet
 					json['todo_id']));
-				
+
 				console.log("filling Todo[] in CurrentBoard..." + array.length);
 				// Populate Todos: Todo[] prop in boards
 				let isAssigned, hasReset: boolean = false;
 				while (!isAssigned) {
-					if (this.CachedBoards !== null 
-						&& this.CachedBoards !== undefined 
+					if (this.CachedBoards != null
 						&& this.CachedBoards.length >= 0) {
+						isAssigned = true;
 						console.log("TODO: CachedBoard = " + this.CachedBoards + " OK");
 
 						// find board in cached where Cat[] contains current todo cat, 
-						this.CachedBoards.find((board, index, array) => {
-							let cat = this.CachedCats.find((cat, index, array) => cat.DbId == json['category_id']);
-							return board.Categories.find((bCat, index, array) => bCat == cat) !== undefined;
-						})
+						let isDone: boolean = false;
+						let b: Board;
+						// (keep finding until b defined)
+						while (b == null || b.DbId == undefined) {
+							b = this.CachedBoards.find((board, index, array) => {
+								let cat = this.CachedCats.find((cat, index, array) => cat.DbId == json['category_id']);
+								// (do not search until Cats[] prop on board is not empty/ null)
+								while (!isDone || board.Categories == null || board.Categories.length == 0) {
+									if (board.Categories != null || board.Categories.length > 0) {
+										return board.Categories.find((bCat, index, array) => bCat.DbId == cat.DbId) != undefined;
+									} else {
+										console.log('TODOS: Cat[] prop on ' + board.Name + ' unavailable! Waiting...');
+									}
+								}
+							});
+							if (b == null) {
+								console.log('TODO: board to add to not available!'); 
+							}
+						}
 						// add current todo to that board's Todo[]
-						.Todos.push(array[array.length - 1]);
+						b.Todos.push(array[array.length - 1]);
 
 						// remove sample data ONCE
 						if (!hasReset) {
@@ -182,8 +196,6 @@ export class TodoService {
 								});
 							});
 						}
-
-						isAssigned = true;
 					} else {
 						console.log('TODOS: CachedBoards unavailable, trying again...');
 					}
@@ -217,7 +229,7 @@ export class TodoService {
 
 	getCurrentBoard(): Observable<Board> {
 		console.log("GETting boards...");
-		return Observable.fromPromise(this.getBoards().then((array) => { return array[0]; }).catch(this.handleError));	
+		return Observable.fromPromise(this.getBoards().then((array) => { return array[0]; }).catch(this.handleError));
 	}
 
 	changeBoard(board: Board): Promise<Board> {
@@ -233,7 +245,7 @@ export class TodoService {
 		return Promise.resolve(this.CurrentBoard);
 	}
 
-	openBoard(board: Board): Promise<Board>{
+	openBoard(board: Board): Promise<Board> {
 		this.CurrentBoard = board;
 		return Promise.resolve(this.CurrentBoard);
 	}
