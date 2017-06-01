@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { TodoService } from '../../todo.service';
 import { ViewController, NavController } from 'ionic-angular';
 import { Category } from '../../category';
@@ -8,11 +8,13 @@ import { Priority } from '../../priority';
 	templateUrl: 'add-category.html'
 })
 
-export class AddCategory {
+export class AddCategory implements OnInit{
 	constructor(public viewCntrl: ViewController,
 							private todoService: TodoService, 
-							public navCntrl: NavController) {
-							this.todoService.getColors().then(ColorArray => this.ColorArray = ColorArray);
+							public navCntrl: NavController) {}
+
+	ngOnInit(){
+		this.todoService.getColors().then(ColorArray => this.ColorArray = ColorArray);
 	}
 
 	private ColorArray: string[];

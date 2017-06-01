@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Platform, ModalController } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -12,7 +12,7 @@ import { SettingsService } from './settings.service';
 	providers: [SettingsService]
 })
 
-export class MyApp {
+export class MyApp implements OnInit {
 	rootPage: any = TabsPage;
 	chosenTheme: string;
 
@@ -21,7 +21,6 @@ export class MyApp {
 							splashScreen: SplashScreen,
 							private settingsService: SettingsService,
 							modalCtrl: ModalController) {
-		this.settingsService.getTheme().subscribe(val => this.chosenTheme = val);
 		platform.ready().then((source) => {
 			// Okay, so the platform is ready and our plugins are available.
 			// Here you can do any higher level native things you might need.
@@ -33,5 +32,9 @@ export class MyApp {
 			let loginModal = modalCtrl.create(LoginPage);
 			loginModal.present();
 		});
+	}
+
+	ngOnInit(){
+		this.settingsService.getTheme().subscribe(val => this.chosenTheme = val);
 	}
 }

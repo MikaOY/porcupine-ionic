@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { ViewController } from 'ionic-angular';
+import { UserService } from '../user.service';
 
 
 @Component({
@@ -8,7 +9,9 @@ import { ViewController } from 'ionic-angular';
 
 export class LoginPage {
 	LoginCredentials = { username: '', password: '' };
-	constructor(public viewCtrl: ViewController) {
+	
+	constructor(public viewCtrl: ViewController,
+							private userService: UserService) {
 	}
 
 	bananas() {
@@ -17,7 +20,10 @@ export class LoginPage {
 
 	login() {
 		// login and set user
-		this.viewCtrl.dismiss();
+		if (this.LoginCredentials.username == 'tika' && this.LoginCredentials.password == '<3'){
+			this.userService.setUser(0);
+			this.viewCtrl.dismiss();
+		}
 	}
 
 	register() {

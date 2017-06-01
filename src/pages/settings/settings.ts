@@ -1,21 +1,29 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { NavController } from 'ionic-angular';
 import { SettingsService } from '../../app/settings.service';
+import { UserService } from '../../app/user.service';
 
 @Component({
 	selector: 'settings-page',
 	templateUrl: 'settings.html'
 })
-export class SettingsPage {
+export class SettingsPage implements OnInit {
   currentTheme: string;
   availableThemes: {className: string, displayName: string}[];
+	currentUser: number;
 
-  constructor(public navCtrl: NavController, private settingsService: SettingsService) {
-    this.settingsService.getTheme().subscribe(val => this.currentTheme = val);
+  constructor(public navCtrl: NavController, 
+							private settingsService: SettingsService,
+							private userService: UserService) {}
+
+	ngOnInit(){
+		this.userService.getUser().then(val => this.currentUser = val);
+		this.settingsService.getTheme().subscribe(val => this.currentTheme = val);
     this.availableThemes = this.settingsService.availableThemes;
-  }
+	}
 
   public setTheme(e) {
-        this.settingsService.setTheme(e);
-    }
+  	this.settingsService.setTheme(e);
+		console.log(this.currentUser);
+	}
 }
