@@ -15,17 +15,16 @@ import { SharePage } from './share-page/share-page.component';
 })
 
 export class TodoList implements OnInit {
-	private error: any;
-	todos: Todo[];
-	cats: Category[];
-	private currentBoard: Board;
+	private currentBoard: Board; 
+	private todos: Todo[];
+	private cats: Category[];
 
 	// this sets colors for the category numbers
 	ColorArray: string[];
 
 	selectedTodos: Todo[] = [];
 	selectActive: boolean = false;
-	priority: string[] = ["Low", "Medium", "High"];
+	priority: string[] = ["Low", "Medium", "High"]; 
 
 	constructor(private todoService: TodoService, public params: NavParams, public ModalCtrl?: ModalController) { }
 

@@ -4,7 +4,6 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
 import { TabsPage } from '../pages/tabs/tabs';
-import { TodoService } from './todo.service';
 import { LoginPage } from './login/login.component';
 import { SettingsService } from './settings.service';
 

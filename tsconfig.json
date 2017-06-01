@@ -12,7 +12,9 @@
     "moduleResolution": "node",
     "sourceMap": true,
     "target": "es6",
-    "noImplicitAny": false
+    "noImplicitAny": false,
+		"allowJs": true,
+		"checkJs": true
   },
   "include": [
     "src/**/*.ts"
