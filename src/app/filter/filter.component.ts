@@ -7,6 +7,7 @@ import { Board } from '../board';
 import { CategoryManager } from './cat-manager/cat-manager.component';
 import { LoginPage } from '../login/login.component';
 import { BoardManager } from './board-manager/board-manager.component';
+import { UserService } from '../user.service';
 
 // CATEGORY
 
@@ -15,11 +16,11 @@ import { BoardManager } from './board-manager/board-manager.component';
 	providers: [TodoService],
 	template: `
     <ion-list>
-        <ion-item>
+        <ion-item (click)="showId()">
             <ion-avatar item-left id="alpacatar">
                 <img src="../assets/alpacatar.jpeg">
             </ion-avatar>
-            <h2>Mr. Paca</h2>
+            <h2>Mr. Paca: {{currentUser}}</h2>
         </ion-item>
     </ion-list>
 
@@ -47,11 +48,14 @@ import { BoardManager } from './board-manager/board-manager.component';
 
 export class CategorySort implements OnInit{
 	private currentBoard: Board;
+	private currentUser: number;
 
 	constructor(private todoService: TodoService,
-							public modalCtrl: ModalController) {}
+							public modalCtrl: ModalController,
+							private userService: UserService) {}
 
 	ngOnInit(): void {
+		this.userService.getUser().then(val => this.currentUser = val);
 		this.todoService.getCurrentBoard().subscribe(cBoard => this.currentBoard = cBoard);
 	}
 
@@ -63,6 +67,11 @@ export class CategorySort implements OnInit{
 	presentLogin() {
 		let loginModal = this.modalCtrl.create(LoginPage);
 		loginModal.present();
+	}
+
+	showId(){
+		this.userService.getUser().then(val => this.currentUser = val);
+		console.log("Show Id: The current user is: " + this.currentUser);
 	}
 }
 
@@ -103,7 +112,7 @@ export class PropertySort implements OnInit{
 	ngOnInit(){
 		this.todoService.getCurrentBoard().subscribe(value => this.currentBoard = value);
 	}
-	
+
 	sortPriorityHL() {
 		this.currentBoard.Todos = this.currentBoard.Todos.sort((a, b) => {
 
