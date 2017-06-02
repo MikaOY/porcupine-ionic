@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { ModalController } from 'ionic-angular';
 
 import { TodoService } from '../todo.service';
-import { Todo } from '../todo';
 import { Board } from '../board';
 import { CategoryManager } from './cat-manager/cat-manager.component';
 import { LoginPage } from '../login/login.component';
@@ -104,7 +103,6 @@ export class CategorySort implements OnInit{
 
 export class PropertySort implements OnInit{
 	private currentBoard: Board;
-	private error: any;
 
 	constructor(private todoService: TodoService,
 							public modalCtrl: ModalController) {}
