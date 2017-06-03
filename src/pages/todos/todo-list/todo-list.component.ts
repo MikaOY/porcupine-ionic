@@ -107,7 +107,7 @@ export class TodoList implements OnInit {
 
 	shareTodo(todo){
 		console.log("share clicked");
-		let shareModal = this.ModalCtrl.create(SharePage);
+		let shareModal = this.ModalCtrl.create(SharePage, {sTodo: todo});
 		shareModal.present();
 	}
 

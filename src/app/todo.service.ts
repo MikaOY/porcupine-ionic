@@ -86,7 +86,7 @@ export class TodoService {
 					json['default_order'],
 					json['default_priority']));
 
-				console.log(array[array.length - 1].Name + ' ' + array[array.length - 1].DbId + ' ' + array[array.length - 1].BoardId);
+				console.log("getCats: " + array[array.length - 1].Name + ' ' + array[array.length - 1].DbId + ' ' + array[array.length - 1].BoardId);
 
 				// Populate Categories: Category[] prop in boards
 				let isAssigned: boolean = false;
@@ -94,7 +94,7 @@ export class TodoService {
 					while (this.CachedBoards == null
 						|| this.CachedBoards == undefined
 						|| this.CachedBoards.length == 0) {
-						console.log('CATS: CachedBoards unavailable, ' + this.CachedBoards);
+						//console.log('CATS: CachedBoards unavailable, ' + this.CachedBoards);
 					}
 
 					console.log('CATS: CachedBoard = ' + this.CachedBoards + ' OK');
@@ -164,14 +164,15 @@ export class TodoService {
 				let isAssigned: boolean = false;
 				while (!isAssigned) {
 					console.log('Assigning TODO to board: ' + array[array.length - 1].Info);
-					if (this.CachedBoards != undefined 
+					if (this.CachedBoards != undefined
 						&& this.CachedBoards != null
-						&& this.CachedCats != undefined 
+						&& this.CachedCats != undefined
 						&& this.CachedCats != null
 						&& this.CachedBoards.length >= 0
 						&& this.CachedCats.length >= 0) {
 						isAssigned = true;
 						console.log('TODO: CachedBoard and CachedCats OK');
+						console.log('cachedCats length:' + this.CachedCats.length);
 
 						// assign todo to a board
 						// 1 - find todo category
@@ -179,7 +180,7 @@ export class TodoService {
 							// Wait for CachedCats to be defined
 						}
 						let todoCat: Category = this.CachedCats.find((cat, index, array) => {
-							console.log('cat name = ' + cat.Name + ' CatId = ' + cat.DbId);
+							console.log('cat name = ' + cat.Name + ' CatId = ' + cat.DbId); //cannot read Name of undefined sometimes
 							console.log('TODO cat id = ' + json['category_id']);
 							return cat.DbId == json['category_id'];
 						});
@@ -232,12 +233,125 @@ export class TodoService {
 				}
 			}
 
-			console.log('setting public properties todos...'); 
+			console.log('setting public properties todos...');
 			this.CachedTodos = array;
 			this.CurrentBoard.Todos = array;
 			console.log('Todos retrieved!');
 			return array;
 		}).catch(this.handleError);
+	}
+
+
+
+	/* Updating DB */
+	public updateCategories(cat: Category): Promise<void> {
+		console.log('updating boards...');
+
+		let id: number = 1;
+		const url = `${this.apiUrl}/category?userId=${id}`;
+
+		return this.http.put(url,
+			`{ "userId": ${id},
+				"cateogryId": ${cat.DbId},
+				"catTitle" : ${cat.Name},
+				"catBoardId" : ${cat.BoardId},
+				"color" : ${cat.Color},
+				"catDateCreated" : ${cat.DateCreated},
+				"defaultOrder" : ${cat.Order},
+				"priorityValue": ${cat.DefaultPriority}
+			 	}`).toPromise().then((response: any) => {
+				console.log("updateCategories response:" + response.toString);
+			}).catch(this.handleError);
+	}
+
+	public updateBoards(board: Board): Promise<void> {
+		console.log('updating boards...');
+
+		let id: number = 1;
+		const url = `${this.apiUrl}/board?userId=${id}`;
+
+		return this.http.put(url,
+			`{ "userId": ${id},
+				"boardId": ${board.DbId},
+				"title" : ${board.Name},
+				"dateCreated" : ${board.DateCreated}
+			 	}`).toPromise().then((response: any) => {
+				console.log("updateBoards response:" + response.toString);
+			}).catch(this.handleError);
+	}
+
+	public updateTodos(todo: Todo): Promise<void> {
+		console.log('updating todos...');
+
+		let id: number = 1;
+		const url = `${this.apiUrl}/todo?userId=${id}`;
+
+		return this.http.put(url,
+			`{ "userId": ${id},
+				"todoId": ${todo.DbId},
+				"info" : ${todo.Info},
+				"categoryId" : ${todo.Category.DbId},
+				"priorityVal" : ${todo.Priority},
+				"isDone" : ${todo.IsDone ? 1 : 0},
+				"dateDone" : ${todo.DateDone},
+				"isArchived: ${todo.IsArchived ? 1 : 0}
+			 	}`).toPromise().then((response: any) => {
+				console.log("updateTodos response:" + response.toString);
+			}).catch(this.handleError);
+	}
+
+	public addBoard(newBoard: Board): Promise<void> {
+		console.log('adding board...');
+
+		let id: number = 1;
+		const url = `${this.apiUrl}/board?userId=${id}`;
+
+		return this.http.post(url,
+			`{"userId": ${id},
+			"title": ${newBoard.Name},
+			"dateCreated": ${newBoard.DateCreated}
+			}`).toPromise().then((response: any) => {
+				console.log("addBoard response:" + response.toString);
+			}).catch(this.handleError);
+	}
+
+	public addCategory(newCat: Category): Promise<void>{
+		console.log('adding category...');
+
+		let id: number = 1;
+		const url = `${this.apiUrl}/category?userId=${id}`;
+
+		return this.http.post(url, 
+			`{"userId": ${id},
+			"title": ${newCat.Name},
+			"color: ${newCat.Color},
+			"defaultOrder": ${newCat.Order},
+			"priorityVal": ${newCat.DefaultPriority},
+			"dateCreated": ${newCat.DateCreated},
+			"boardId": ${newCat.BoardId}
+			}`).toPromise().then((response: any)=> {
+				console.log("addCategory response:" + response.toString);
+			}).catch(this.handleError);
+	}
+
+	public addTodo(newTodo: Todo): Promise<void>{
+		console.log('adding todo...');
+
+		let id: number = 1;
+		const url = `${this.apiUrl}/todo?userId=${id}`;
+
+		return this.http.post(url, 
+			`{"userId": ${id},
+			"info": ${newTodo.Info},
+			"categoryId: ${newTodo.Category.DbId},
+			"dateCreated": ${newTodo.DateCreated},
+			"isDone": ${newTodo.IsDone},
+			"dateDone": ${newTodo.DateDone},
+			"isArchived": ${newTodo.IsArchived},
+			"priorityVal": ${newTodo.Priority}
+			}`).toPromise().then((response: any)=> {
+				console.log("addTodo response:" + response.toString);
+			}).catch(this.handleError);
 	}
 
 	/* END public HTTP functions */

@@ -1,6 +1,11 @@
-<div>
-	<ion-header>Share</ion-header>
-	<form>
-		<ion-input 
-	</form>
+<div id="container">
+	<h2>Share</h2>
+
+		<ion-list>
+		<ion-item>
+			<ion-label [(ngModel)]="shareUsername">Username:</ion-label>
+			<ion-input></ion-input>
+		</ion-item>
+		<button ion-button clear (click)="submitShare()">Done</button>
+		</ion-list>
 </div>
