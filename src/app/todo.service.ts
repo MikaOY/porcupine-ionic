@@ -44,6 +44,21 @@ export class TodoService {
 
 	/* START public HTTP functions */
 
+	public addBoard(newBoard: Board): Promise<void> {
+		console.log('adding board...');
+
+		let id: number = 1;
+		const url = `${this.apiUrl}/board?userId=${id}`;
+
+		return this.http.post(url,
+			`{"userId": ${id},
+			"title": ${newBoard.Name},
+			"dateCreated": ${newBoard.DateCreated}
+			}`).toPromise().then((response: any) => {
+				console.log("addBoard response:" + response.toString);
+			}).catch(this.handleError);
+	}
+
 	public getBoards(): Promise<Board[]> {
 		console.log('requesting boards...');
 
@@ -63,6 +78,41 @@ export class TodoService {
 			return array;
 		})
 			.catch(this.handleError);
+	}
+
+	public updateBoards(board: Board): Promise<void> {
+		console.log('updating boards...');
+
+		let id: number = 1;
+		const url = `${this.apiUrl}/board?userId=${id}`;
+
+		return this.http.put(url,
+			`{ "userId": ${id},
+				"boardId": ${board.DbId},
+				"title" : ${board.Name},
+				"dateCreated" : ${board.DateCreated}
+			 	}`).toPromise().then((response: any) => {
+				console.log("updateBoards response:" + response.toString);
+			}).catch(this.handleError);
+	}
+
+	public addCategory(newCat: Category): Promise<void> {
+		console.log('adding category...');
+
+		let id: number = 1;
+		const url = `${this.apiUrl}/category?userId=${id}`;
+
+		return this.http.post(url,
+			`{"userId": ${id},
+			"title": ${newCat.Name},
+			"color: ${newCat.Color},
+			"defaultOrder": ${newCat.Order},
+			"priorityVal": ${newCat.DefaultPriority},
+			"dateCreated": ${newCat.DateCreated},
+			"boardId": ${newCat.BoardId}
+			}`).toPromise().then((response: any) => {
+				console.log("addCategory response:" + response.toString);
+			}).catch(this.handleError);
 	}
 
 	public getCategories(): Promise<Category[]> {
@@ -135,6 +185,46 @@ export class TodoService {
 			console.log('Categories retrieved!');
 			return array;
 		}).catch(this.handleError);
+	}
+
+	public updateCategories(cat: Category): Promise<void> {
+		console.log('updating boards...');
+
+		let id: number = 1;
+		const url = `${this.apiUrl}/category?userId=${id}`;
+
+		return this.http.put(url,
+			`{ "userId": ${id},
+				"cateogryId": ${cat.DbId},
+				"catTitle" : ${cat.Name},
+				"catBoardId" : ${cat.BoardId},
+				"color" : ${cat.Color},
+				"catDateCreated" : ${cat.DateCreated},
+				"defaultOrder" : ${cat.Order},
+				"priorityValue": ${cat.DefaultPriority}
+			 	}`).toPromise().then((response: any) => {
+				console.log("updateCategories response:" + response.toString);
+			}).catch(this.handleError);
+	}
+
+	public addTodo(newTodo: Todo): Promise<void> {
+		console.log('adding todo...');
+
+		let id: number = 1;
+		const url = `${this.apiUrl}/todo?userId=${id}`;
+
+		return this.http.post(url,
+			`{"userId": ${id},
+			"info": ${newTodo.Info},
+			"categoryId: ${newTodo.Category.DbId},
+			"dateCreated": ${newTodo.DateCreated},
+			"isDone": ${newTodo.IsDone},
+			"dateDone": ${newTodo.DateDone},
+			"isArchived": ${newTodo.IsArchived},
+			"priorityVal": ${newTodo.Priority}
+			}`).toPromise().then((response: any) => {
+				console.log("addTodo response:" + response.toString);
+			}).catch(this.handleError);
 	}
 
 	public getTodos(): Promise<Todo[]> {
@@ -241,45 +331,6 @@ export class TodoService {
 		}).catch(this.handleError);
 	}
 
-
-
-	/* Updating DB */
-	public updateCategories(cat: Category): Promise<void> {
-		console.log('updating boards...');
-
-		let id: number = 1;
-		const url = `${this.apiUrl}/category?userId=${id}`;
-
-		return this.http.put(url,
-			`{ "userId": ${id},
-				"cateogryId": ${cat.DbId},
-				"catTitle" : ${cat.Name},
-				"catBoardId" : ${cat.BoardId},
-				"color" : ${cat.Color},
-				"catDateCreated" : ${cat.DateCreated},
-				"defaultOrder" : ${cat.Order},
-				"priorityValue": ${cat.DefaultPriority}
-			 	}`).toPromise().then((response: any) => {
-				console.log("updateCategories response:" + response.toString);
-			}).catch(this.handleError);
-	}
-
-	public updateBoards(board: Board): Promise<void> {
-		console.log('updating boards...');
-
-		let id: number = 1;
-		const url = `${this.apiUrl}/board?userId=${id}`;
-
-		return this.http.put(url,
-			`{ "userId": ${id},
-				"boardId": ${board.DbId},
-				"title" : ${board.Name},
-				"dateCreated" : ${board.DateCreated}
-			 	}`).toPromise().then((response: any) => {
-				console.log("updateBoards response:" + response.toString);
-			}).catch(this.handleError);
-	}
-
 	public updateTodos(todo: Todo): Promise<void> {
 		console.log('updating todos...');
 
@@ -297,60 +348,6 @@ export class TodoService {
 				"isArchived: ${todo.IsArchived ? 1 : 0}
 			 	}`).toPromise().then((response: any) => {
 				console.log("updateTodos response:" + response.toString);
-			}).catch(this.handleError);
-	}
-
-	public addBoard(newBoard: Board): Promise<void> {
-		console.log('adding board...');
-
-		let id: number = 1;
-		const url = `${this.apiUrl}/board?userId=${id}`;
-
-		return this.http.post(url,
-			`{"userId": ${id},
-			"title": ${newBoard.Name},
-			"dateCreated": ${newBoard.DateCreated}
-			}`).toPromise().then((response: any) => {
-				console.log("addBoard response:" + response.toString);
-			}).catch(this.handleError);
-	}
-
-	public addCategory(newCat: Category): Promise<void>{
-		console.log('adding category...');
-
-		let id: number = 1;
-		const url = `${this.apiUrl}/category?userId=${id}`;
-
-		return this.http.post(url, 
-			`{"userId": ${id},
-			"title": ${newCat.Name},
-			"color: ${newCat.Color},
-			"defaultOrder": ${newCat.Order},
-			"priorityVal": ${newCat.DefaultPriority},
-			"dateCreated": ${newCat.DateCreated},
-			"boardId": ${newCat.BoardId}
-			}`).toPromise().then((response: any)=> {
-				console.log("addCategory response:" + response.toString);
-			}).catch(this.handleError);
-	}
-
-	public addTodo(newTodo: Todo): Promise<void>{
-		console.log('adding todo...');
-
-		let id: number = 1;
-		const url = `${this.apiUrl}/todo?userId=${id}`;
-
-		return this.http.post(url, 
-			`{"userId": ${id},
-			"info": ${newTodo.Info},
-			"categoryId: ${newTodo.Category.DbId},
-			"dateCreated": ${newTodo.DateCreated},
-			"isDone": ${newTodo.IsDone},
-			"dateDone": ${newTodo.DateDone},
-			"isArchived": ${newTodo.IsArchived},
-			"priorityVal": ${newTodo.Priority}
-			}`).toPromise().then((response: any)=> {
-				console.log("addTodo response:" + response.toString);
 			}).catch(this.handleError);
 	}
 
