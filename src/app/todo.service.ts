@@ -48,7 +48,7 @@ export class TodoService {
 		console.log('requesting boards...');
 
 		let id: number = 1;
-		const url = `${this.apiUrl}/board?personId=${id}`;
+		const url = `${this.apiUrl}/board?userId=${id}`;
 		return this.http.get(url).toPromise().then((response: any) => {
 			console.log('processing boards...');
 			let array: Board[] = [];
@@ -69,7 +69,7 @@ export class TodoService {
 		console.log('requesting categories...');
 
 		let id: number = 1;
-		const url = `${this.apiUrl}/category?personId=${id}`;
+		const url = `${this.apiUrl}/category?userId=${id}`;
 		return this.http.get(url).toPromise().then((response: any) => {
 			console.log('processing categories...');
 
@@ -141,7 +141,7 @@ export class TodoService {
 		console.log('requesting todos...');
 
 		let id: number = 1;
-		const url = `${this.apiUrl}/todo?personId=${id}`;
+		const url = `${this.apiUrl}/todo?userId=${id}`;
 		return this.http.get(url).toPromise().then((response: any) => {
 			console.log('processing todos...');
 

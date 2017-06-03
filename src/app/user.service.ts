@@ -4,7 +4,6 @@ import { Injectable } from '@angular/core';
 export class UserService {
 	public currentUserId: number;
 
-
 	setUser(userId: number){
 		this.currentUserId = userId;
 		console.log("Service current user SET: " + this.currentUserId);
