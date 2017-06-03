@@ -175,6 +175,9 @@ export class TodoService {
 
 						// assign todo to a board
 						// 1 - find todo category
+						while (this.CachedCats == undefined) {
+							// Wait for CachedCats to be defined
+						}
 						let todoCat: Category = this.CachedCats.find((cat, index, array) => {
 							console.log('cat name = ' + cat.Name + ' CatId = ' + cat.DbId);
 							console.log('TODO cat id = ' + json['category_id']);
@@ -183,6 +186,9 @@ export class TodoService {
 						console.log('todoCat = ' + todoCat.Name);
 
 						// 2 - find board whose DbId matches cat's BoardId prop
+						while (this.CachedBoards == undefined) {
+							// Wait for CachedBoards to be defined
+						}
 						let b: Board = this.CachedBoards.find((board, index, array) => {
 							// (do not search until Cats[] prop on board is not empty/ null)
 							while (board.Categories == null || board.Categories.length == 0) {
