@@ -15,7 +15,7 @@ export class Todo implements Lockable{
                 public DetailShown?: boolean,
                 public EditActive?: boolean,
                 public SelectActive?: boolean,
-                ){}
+                ) { }
 
     IsLocked: boolean = false;
     Lock(todo: Todo): true{
