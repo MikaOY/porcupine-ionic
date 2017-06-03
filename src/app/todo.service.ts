@@ -47,7 +47,7 @@ export class TodoService {
 	public addBoard(newBoard: Board): Promise<void> {
 		console.log('adding board...');
 
-		let id: number = 1;
+		let id: number = 0;
 		const url = `${this.apiUrl}/board?userId=${id}`;
 
 		return this.http.post(url,
@@ -62,7 +62,7 @@ export class TodoService {
 	public getBoards(): Promise<Board[]> {
 		console.log('requesting boards...');
 
-		let id: number = 1;
+		let id: number = 0;
 		const url = `${this.apiUrl}/board?userId=${id}`;
 		return this.http.get(url).toPromise().then((response: any) => {
 			console.log('processing boards...');
@@ -80,10 +80,10 @@ export class TodoService {
 			.catch(this.handleError);
 	}
 
-	public updateBoards(board: Board): Promise<void> {
-		console.log('updating boards...');
+	public updateBoard(board: Board): Promise<void> {
+		console.log('updating board...');
 
-		let id: number = 1;
+		let id: number = 0;
 		const url = `${this.apiUrl}/board?userId=${id}`;
 
 		return this.http.put(url,
@@ -99,7 +99,7 @@ export class TodoService {
 	public addCategory(newCat: Category): Promise<void> {
 		console.log('adding category...');
 
-		let id: number = 1;
+		let id: number = 0;
 		const url = `${this.apiUrl}/category?userId=${id}`;
 
 		return this.http.post(url,
@@ -118,7 +118,7 @@ export class TodoService {
 	public getCategories(): Promise<Category[]> {
 		console.log('requesting categories...');
 
-		let id: number = 1;
+		let id: number = 0;
 		const url = `${this.apiUrl}/category?userId=${id}`;
 		return this.http.get(url).toPromise().then((response: any) => {
 			console.log('processing categories...');
@@ -187,10 +187,10 @@ export class TodoService {
 		}).catch(this.handleError);
 	}
 
-	public updateCategories(cat: Category): Promise<void> {
-		console.log('updating boards...');
+	public updateCategory(cat: Category): Promise<void> {
+		console.log('updating category...');
 
-		let id: number = 1;
+		let id: number = 0;
 		const url = `${this.apiUrl}/category?userId=${id}`;
 
 		return this.http.put(url,
@@ -210,7 +210,7 @@ export class TodoService {
 	public addTodo(newTodo: Todo): Promise<void> {
 		console.log('adding todo...');
 
-		let id: number = 1;
+		let id: number = 0;
 		const url = `${this.apiUrl}/todo?userId=${id}`;
 
 		return this.http.post(url,
@@ -230,7 +230,7 @@ export class TodoService {
 	public getTodos(): Promise<Todo[]> {
 		console.log('requesting todos...');
 
-		let id: number = 1;
+		let id: number = 0;
 		const url = `${this.apiUrl}/todo?userId=${id}`;
 		return this.http.get(url).toPromise().then((response: any) => {
 			console.log('processing todos...');
@@ -331,12 +331,11 @@ export class TodoService {
 		}).catch(this.handleError);
 	}
 
-	public updateTodos(todo: Todo): Promise<void> {
-		console.log('updating todos...');
+	public updateTodo(todo: Todo): Promise<void> {
+		console.log('updating todo...');
 
-		let id: number = 1;
+		let id: number = 0;
 		const url = `${this.apiUrl}/todo?userId=${id}`;
-
 		return this.http.put(url,
 			`{ "userId": ${id},
 				"todoId": ${todo.DbId},
@@ -349,6 +348,17 @@ export class TodoService {
 			 	}`).toPromise().then((response: any) => {
 				console.log("updateTodos response:" + response.toString);
 			}).catch(this.handleError);
+	}
+
+	public deleteTodo(todo: Todo) : Promise<void> {
+		console.log('deleting todo...');
+
+		let id: number = 0;
+		const url = `${this.apiUrl}/todo?userId=${id}`; // CHANGE 
+		return this.http.delete(url).toPromise().then((response: any) => {
+			console.log('TODO delete: ' + response.toString());
+		})
+		.catch(this.handleError);
 	}
 
 	/* END public HTTP functions */
