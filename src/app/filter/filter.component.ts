@@ -45,13 +45,13 @@ import { UserService } from '../user.service';
     `
 })
 
-export class CategorySort implements OnInit{
+export class CategorySort implements OnInit {
 	private currentBoard: Board;
 	private currentUser: number;
 
 	constructor(private todoService: TodoService,
-							public modalCtrl: ModalController,
-							private userService: UserService) {}
+		public modalCtrl: ModalController,
+		private userService: UserService) { }
 
 	ngOnInit(): void {
 		this.userService.getUser().then(val => this.currentUser = val);
@@ -68,7 +68,7 @@ export class CategorySort implements OnInit{
 		loginModal.present();
 	}
 
-	showId(){
+	showId() {
 		this.userService.getUser().then(val => this.currentUser = val);
 		console.log("Show Id: The current user is: " + this.currentUser);
 	}
@@ -101,14 +101,14 @@ export class CategorySort implements OnInit{
     `
 })
 
-export class PropertySort implements OnInit{
+export class PropertySort implements OnInit {
 	private currentBoard: Board;
 
 	constructor(private todoService: TodoService,
-							public modalCtrl: ModalController) {}
+		public modalCtrl: ModalController) { }
 
-	ngOnInit(){
-		this.todoService.getCurrentBoard().subscribe(value => this.currentBoard = value);
+	ngOnInit() {
+		
 	}
 
 	sortPriorityHL() {
@@ -143,17 +143,23 @@ export class PropertySort implements OnInit{
 	}
 
 	sortRecent() {
-		this.currentBoard.Todos = this.currentBoard.Todos.sort((a, b) => {
-			if (a.DateCreated > b.DateCreated) {
-				return -1;
-			}
+		this.currentBoard = this.todoService.CurrentBoard;
+		if (this.currentBoard) {
+			this.currentBoard.Todos = this.currentBoard.Todos.sort((a, b) => {
+				if (a.DateCreated > b.DateCreated) {
+					return -1;
+				}
 
-			if (a.DateCreated < b.DateCreated) {
-				return 1;
-			}
+				if (a.DateCreated < b.DateCreated) {
+					return 1;
+				}
 
-			return 0;
-		});
+				return 0;
+			});
+		}
+		else {
+			console.log("LOL CURRENT BOARD DNE");
+		}
 	}
 
 	sortOldest() {
