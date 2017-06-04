@@ -96,6 +96,17 @@ export class TodoService {
 			}).catch(this.handleError);
 	}
 
+	public deleteBoard(board: Board): Promise<void> {
+		console.log('deleting board...');
+
+		let boardId: number = 66;
+		const url = `${this.apiUrl}/board?boardId=${boardId}`;
+		return this.http.delete(url).toPromise().then((response: any) => {
+			console.log('CAT delete: ' + response.toString());
+		})
+			.catch(this.handleError);
+	}
+
 	public addCategory(newCat: Category): Promise<void> {
 		console.log('adding category...');
 
@@ -205,6 +216,17 @@ export class TodoService {
 			 	}`).toPromise().then((response: any) => {
 				console.log("updateCategories response:" + response.toString);
 			}).catch(this.handleError);
+	}
+
+	public deleteCategory(cat: Category): Promise<void> {
+		console.log('deleting category...');
+
+		let catId: number = 66;
+		const url = `${this.apiUrl}/category?categoryId=${catId}`;
+		return this.http.delete(url).toPromise().then((response: any) => {
+			console.log('CAT delete: ' + response.toString());
+		})
+			.catch(this.handleError);
 	}
 
 	public addTodo(newTodo: Todo): Promise<void> {
@@ -350,15 +372,15 @@ export class TodoService {
 			}).catch(this.handleError);
 	}
 
-	public deleteTodo(todo: Todo) : Promise<void> {
+	public deleteTodo(todo: Todo): Promise<void> {
 		console.log('deleting todo...');
 
-		let id: number = 0;
-		const url = `${this.apiUrl}/todo?userId=${id}`; // CHANGE 
+		let todoId: number = 66;
+		const url = `${this.apiUrl}/todo?todoId=${todoId}`;
 		return this.http.delete(url).toPromise().then((response: any) => {
 			console.log('TODO delete: ' + response.toString());
 		})
-		.catch(this.handleError);
+			.catch(this.handleError);
 	}
 
 	/* END public HTTP functions */
