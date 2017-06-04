@@ -50,11 +50,8 @@ export class TodoService {
 		let id: number = 0;
 		const url = `${this.apiUrl}/board?userId=${id}`;
 
-		return this.http.post(url,
-			`{"userId": ${id},
-			"title": ${newBoard.Name},
-			"dateCreated": ${newBoard.DateCreated}
-			}`).toPromise().then((response: any) => {
+		return this.http.post(url, JSON.parse('{"userId": ${id},"title": ${newBoard.Name},"dateCreated": ${newBoard.DateCreated}'))
+		.toPromise().then((response: any) => {
 				console.log("addBoard response:" + response.toString);
 			}).catch(this.handleError);
 	}
