@@ -46,6 +46,10 @@ export class TodoList implements OnInit {
 		todo.DetailShown = !todo.DetailShown;
 	}
 
+	deleteTodo(dbId){
+		this.todoService.deleteTodo(dbId);//remove from view too
+	}
+
 	activateEdit(todo) {
 		todo.EditActive = !todo.EditActive;
 	}
@@ -118,10 +122,12 @@ export class TodoList implements OnInit {
 		this.addTodo = !this.addTodo;
 	}
 
-	onNewTodoFormSubmit(todo) {
+	onNewTodoFormSubmit() {
 		this.addTodo = !this.addTodo;
 		var currentDate = new Date();
 		this.newTodo.DateCreated = currentDate;
+		console.log("todo-list new todo info:" + this.newTodo.Info);
+		this.todoService.addTodo(this.newTodo);
 		//TODO: pass newTodo to server and add to user's array 
 	}
 }

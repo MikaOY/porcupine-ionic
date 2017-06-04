@@ -54,7 +54,7 @@ export class CategorySort implements OnInit {
 		private userService: UserService) { }
 
 	ngOnInit(): void {
-		this.userService.getUser().then(val => this.currentUser = val);
+		//this.userService.getUser().then(val => this.currentUser = val);
 		this.todoService.getCurrentBoard().subscribe(cBoard => this.currentBoard = cBoard);
 	}
 
@@ -69,7 +69,7 @@ export class CategorySort implements OnInit {
 	}
 
 	showId() {
-		this.userService.getUser().then(val => this.currentUser = val);
+		//this.userService.getUser().then(val => this.currentUser = val);
 		console.log("Show Id: The current user is: " + this.currentUser);
 	}
 }
