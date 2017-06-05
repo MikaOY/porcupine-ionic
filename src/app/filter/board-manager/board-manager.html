@@ -5,5 +5,14 @@
 				{{board.Name}}
 			</ion-item>
 		</ion-list>
+		<ng-container *ngIf="showAddBoard">
+			<form (ngSubmit)="onAddBoardFormSubmit()" #addBoard>
+				<ion-item>
+					<ion-label for="name">Name</ion-label>
+					<ion-input [(ngModel)]="newBoard.Name" name="name"></ion-input>
+				</ion-item>
+				<button ion-button type="submit">Add Board</button>
+			</form>
+		</ng-container>
 	<button ion-button clear (click)="dismissPage()">Done</button>
 </ion-content>

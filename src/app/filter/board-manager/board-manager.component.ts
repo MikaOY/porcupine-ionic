@@ -10,6 +10,7 @@ import { Board } from '../../board';
 export class BoardManager implements OnInit{
 
 	userBoards: Board[];
+	showAddBoard: boolean = true;
 	constructor(public modalCtrl: ModalController,
 							public viewCtrl: ViewController,
 							public todoService: TodoService) {}
@@ -25,5 +26,11 @@ export class BoardManager implements OnInit{
 	openBoard(board){
 		console.log(board.Name + " board opened");
 		this.todoService.openBoard(board);//should change CurrentBoard in ALL components
+	}
+
+	newBoard: Board = new Board(undefined, undefined, undefined, undefined, undefined);
+	onAddBoardFormSubmit(){
+		console.log("Submit board clicked");
+		this.todoService.addBoard(this.newBoard);
 	}
 }

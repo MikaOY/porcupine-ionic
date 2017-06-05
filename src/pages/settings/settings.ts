@@ -17,13 +17,13 @@ export class SettingsPage implements OnInit {
 							private userService: UserService) {}
 
 	ngOnInit(){
-		this.userService.getUser().then(val => this.currentUser = val);
+		//this.userService.getUser().then(val => this.currentUser = val);
 		this.settingsService.getTheme().subscribe(val => this.currentTheme = val);
     this.availableThemes = this.settingsService.availableThemes;
 	}
 
   public setTheme(e) {
   	this.settingsService.setTheme(e);
-		console.log(this.currentUser);
+		//console.log(this.currentUser);
 	}
 }
