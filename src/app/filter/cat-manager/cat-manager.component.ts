@@ -30,6 +30,15 @@ export class CategoryManager implements OnInit {
 		let addCatModal = this.modalCtrl.create(AddCategory);
 		addCatModal.present();
 	}
+
+	editCatActive: boolean = false;
+	editCat(){
+		this.editCatActive = !this.editCatActive;
+	}
+
+	onEditCatSubmit(cat){
+		this.todoService.updateCategory(cat);
+	}
 }
 
 

@@ -12,8 +12,19 @@
 
 <ion-content>
 	<ion-list no-lines *ngIf="currentBoard">
-		<button ion-item *ngFor="let cat of currentBoard.Categories" [style.background-color]="ColorArray[cat.Color]">
-			<span class="catText">{{cat.Name}}</span>
+		<button ion-item *ngFor="let cat of currentBoard.Categories" [style.background-color]="ColorArray[cat.Color]" (click)="editCat()">
+			<ng-template #normalCat>
+				<span class="catText">{{cat.Name}}</span>
+			</ng-template>
+			<ng-container *ngIf="editCatActive; else normalCat">
+				<form (ngSubmit)="onEditCatSubmit(cat)" #editCatForm>
+					<ion-item>
+						<ion-label>Name</ion-label>
+						<ion-input [(ngModel)]="cat.Name" name="catName"></ion-input>
+					</ion-item>
+					<button ion-button clear type="submit">Done</button>
+				</form>
+			</ng-container>
 		</button>
 		<button ion-item id="newCat" (click)="presentAddCat()">
 			<span class="catText">New Category</span>

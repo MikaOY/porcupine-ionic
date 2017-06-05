@@ -52,6 +52,7 @@ export class TodoList implements OnInit {
 
 	activateEdit(todo) {
 		todo.EditActive = !todo.EditActive;
+		this.todoService.updateTodo(todo);
 	}
 
 	onFormSubmit(todo) {

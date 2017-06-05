@@ -1,10 +1,22 @@
 <ion-content>
 	<ion-title>Boards</ion-title>
 		<ion-list>
-			<ion-item *ngFor="let board of userBoards" (click)="openBoard(board)">
-				{{board.Name}}
-			</ion-item>
+			<ng-template #normalBoard>
+				<ion-item *ngFor="let board of userBoards" (click)="openBoard(board)">
+					{{board.Name}}
+				</ion-item>
+			</ng-template>
+			<ng-container *ngIf="editBoardActive; else normalBoard">
+				<form (ngSubmit)="onEditBoardSubmit(board)" #editBoardForm>
+					<ion-item>
+						<ion-label>Name</ion-label>
+						<ion-input [(ngModel)]="board.Name" name="boardName"></ion-input>
+					</ion-item>
+					<button ion-button clear type="submit">Done</button>
+				</form>
+			</ng-container>
 		</ion-list>
+		
 		<ng-container *ngIf="showAddBoard">
 			<form (ngSubmit)="onAddBoardFormSubmit()" #addBoard>
 				<ion-item>
