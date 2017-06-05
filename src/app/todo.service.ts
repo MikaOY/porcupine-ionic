@@ -421,39 +421,65 @@ export class TodoService {
 		return val;
 	}
 
-	public getCurrentBoard(): Observable<Board> {
+	public getCurrentBoard(): Observable<any> {
 		this.isBusy = true;
 		console.log('Getting current board...');
 
-		// Retrieve all data first, then pull current board from there
+		// Retrieve all data first, then pull current board after all concluded
+		return this.GETBoards().mergeMap(boards => this.GETCategories(boards).mergeMap(cats => this.GETTodos(cats)
+			.map(args => {
+				this.isBusy = false;
+				return this.CachedBoards[0];
+			})));
+
+		/*
 		this.GETBoards().mergeMap(boards => this.GETCategories(boards).mergeMap(cats => this.GETTodos(cats)))
 			.subscribe(args => this.isBusy = false);
 
 		let board: Board = this.CachedBoards[0];
 		return Observable.of(board);
+		*/
 	}
 
-	public getBoards(): Promise<Board[]> {
-		if (!this.isBusy) {
+	public async getBoards(): Promise<Board[]> {
+		// if already has cache, return cache
+		if (this.checkIfAvailable([this.CachedBoards])) {
+			Promise.resolve(this.CachedBoards);
+		}
+		// if haven't requested, req to return boards
+		else if (!this.isBusy) {
 			return this.getCurrentBoard().toPromise().then(args => Promise.resolve(this.CachedBoards));
-		} else {
-			Promise.reject(null);
 		}
+		await this.waitForArray(this.CachedBoards);
 	}
 
-	public getCategories(): Promise<Category[]> {
-		if (!this.isBusy) {
+	public async getCategories(): Promise<Category[]> {
+		// if already has cache, return cache
+		if (this.checkIfAvailable([this.CachedCats])) {
+			Promise.resolve(this.CachedCats);
+		}
+		// if haven't requested, req to return cats
+		else if (!this.isBusy) {
 			return this.getCurrentBoard().toPromise().then(args => Promise.resolve(this.CachedCats));
-		} else {
-			Promise.reject(null);
 		}
+		await this.waitForArray(this.CachedCats);
 	}
 
-	public getTodos(): Promise<Todo[]> {
-		if (!this.isBusy) {
+	public async getTodos(): Promise<Todo[]> {
+		// if already has cache, return cache
+		if (this.checkIfAvailable([this.CachedTodos])) {
+			Promise.resolve(this.CachedTodos);
+		}
+		// if haven't requested, req to return todos
+		else if (!this.isBusy) {
 			return this.getCurrentBoard().toPromise().then(args => Promise.resolve(this.CachedTodos));
-		} else {
-			Promise.reject(null);
+		}
+		await this.waitForArray(this.CachedTodos);
+	}
+
+	private waitForArray(array: any[]) {
+		while (!this.checkIfAvailable([array])) {
+			return array;
 		}
 	}
 

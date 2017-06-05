@@ -13,7 +13,7 @@ export class TodosPage implements OnInit {
 
 	// Leave service calls in init callback!
 	ngOnInit(): void {
-		this.todoService.getCurrentBoard().subscribe(cBoard => this.currentBoard = cBoard);
+		this.todoService.getCurrentBoard().subscribe(cBoard => this.currentBoard = cBoard as Board);
 	}
 
 	ionViewWillEnter() { //archives todos if more than 24 hours has passed since checked

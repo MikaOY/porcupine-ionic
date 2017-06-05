@@ -55,7 +55,7 @@ export class CategorySort implements OnInit {
 
 	ngOnInit(): void {
 		//this.userService.getUser().then(val => this.currentUser = val);
-		this.todoService.getCurrentBoard().subscribe(cBoard => this.currentBoard = cBoard);
+		this.todoService.getCurrentBoard().subscribe(cBoard => this.currentBoard = cBoard as Board);
 	}
 
 	showCatModal() {

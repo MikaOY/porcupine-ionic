@@ -30,7 +30,7 @@ export class TodoList implements OnInit {
 
 	// Leave service calls in init callback!
 	ngOnInit(): void {
-    this.todoService.getCurrentBoard().subscribe(board => this.currentBoard = board);			
+    this.todoService.getCurrentBoard().subscribe(board => this.currentBoard = board as Board);			
 		this.todoService.getCategories().then(cats => this.cats = cats);
 		this.todoService.getTodos().then(todos => this.todos = todos);
 		this.todoService.getColors().then(colorArray => this.ColorArray = colorArray);
