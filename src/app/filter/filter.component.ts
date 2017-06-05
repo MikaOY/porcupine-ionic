@@ -108,7 +108,7 @@ export class PropertySort implements OnInit {
 		public modalCtrl: ModalController) { }
 
 	ngOnInit() {
-		
+		this.todoService.getCurrentBoard().subscribe(board => this.currentBoard = board);
 	}
 
 	sortPriorityHL() {
