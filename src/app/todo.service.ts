@@ -66,12 +66,12 @@ export class TodoService {
 			}).catch(this.handleError);
 	}
 
-	private GETBoards(): Promise<Board[]> {
+	private GETBoards(): Observable<Board[]> {
 		console.log('requesting boards...');
 
 		let id: number = 0;
 		const url = `${this.apiUrl}/board?userId=${id}`;
-		return this.http.get(url).toPromise().then((response: any) => {
+		return this.http.get(url).map((response: any) => {
 			console.log('processing boards...');
 			let array: Board[] = [];
 			for (let json of response.json()) {
@@ -133,12 +133,12 @@ export class TodoService {
 			}).catch(this.handleError);
 	}
 
-	private GETCategories(): Promise<Category[]> {
+	private GETCategories(args?: any): Observable<Category[]> {
 		console.log('requesting categories...');
 
 		let id: number = 0;
 		const url = `${this.apiUrl}/category?userId=${id}`;
-		return this.http.get(url).toPromise().then((response: any) => {
+		return this.http.get(url).map((response: any) => {
 			console.log('processing categories...');
 
 			let array: Category[] = [];
@@ -272,12 +272,12 @@ export class TodoService {
 		}).catch(this.handleError);
 	}
 
-	private GETTodos(): Promise<Todo[]> {
+	private GETTodos(args?: any): Observable<Todo[]> {
 		console.log('requesting todos...');
 
 		let id: number = 0;
 		const url = `${this.apiUrl}/todo?userId=${id}`;
-		return this.http.get(url).toPromise().then((response: any) => {
+		return this.http.get(url).map((response: any) => {
 			console.log('processing todos...');
 
 			let array: Todo[] = [];
@@ -426,17 +426,11 @@ export class TodoService {
 	public getCurrentBoard(): Observable<Board> {
 		console.log('Getting current board...');
 
-		// Retreive all data from server
-		return Observable.fromPromise(this.GETBoards()
-			.then((boards) => {
-				this.GETCategories().catch(this.handleError);
-				return boards[0];
-			})
-			.then((board) => {
-				this.GETTodos().catch(this.handleError);
-				return board;
-			})
-			.catch(this.handleError));
+		// Retrieve all data first, then pull current board from there
+		this.GETBoards().mergeMap(boards => this.GETCategories(boards).mergeMap(cats => this.GETTodos(cats)));
+
+		let board: Board = this.CachedBoards[0];
+		return Observable.of(board);
 	}
 
 	public getBoards(): Promise<Board[]> {
