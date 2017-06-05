@@ -8,5 +8,6 @@ export class Category {
 								public BoardId?: number, // ""
                 public IsShown?: boolean,
                 public Order?: number, 
-                public DefaultPriority?: Priority,){}
+                public DefaultPriority?: Priority,
+								public EditActive?: boolean){}
 }

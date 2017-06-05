@@ -3,6 +3,7 @@ import { TodoService } from '../../todo.service';
 import { ModalController, NavParams, ViewController } from 'ionic-angular';
 import { Board } from '../../board';
 import { AddCategory } from './add-category.component';
+import { Category } from '../../category';
 
 @Component({
 	templateUrl: 'cat-manager.html'
@@ -31,9 +32,9 @@ export class CategoryManager implements OnInit {
 		addCatModal.present();
 	}
 
-	editCatActive: boolean = false;
-	editCat(){
-		this.editCatActive = !this.editCatActive;
+	
+	editCat(cat: Category){
+		cat.EditActive = !cat.EditActive;
 	}
 
 	onEditCatSubmit(cat){
