@@ -295,7 +295,6 @@ export class TodoService {
 				// Populate Todos: Todo[] prop in boards
 				let isAssigned: boolean = false;
 				while (!isAssigned) {
-					console.log('Assigning TODO to board: ' + array[array.length - 1].Info);
 					if (this.CachedBoards != undefined
 						&& this.CachedBoards != null
 						&& this.CachedCats != undefined
@@ -322,7 +321,6 @@ export class TodoService {
 							while (board.Categories == null || board.Categories.length == 0) {
 								console.log('TODOS: Cat[] prop on ' + board.Name + ' unavailable! Waiting...');
 							}
-							board.Categories.forEach((cat, index, catArray) => console.log(cat.Name + ' ' + cat.DbId));
 
 							// (board Cats[] not null, can continue with check)
 							return board.DbId == todoCat.BoardId;
