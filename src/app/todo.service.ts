@@ -427,22 +427,15 @@ export class TodoService {
 		console.log('Getting current board...');
 
 		// Retreive all data from server
-		return Observable.fromPromise(this.GETBoards().then((boards) => {
-			let catsDone, todosDone: boolean = false;
-			this.GETCategories().then((cats) => {
-				catsDone = true;
-				this.GETTodos().then((todos) => {
-					todosDone = true;
-				})
-					.catch(this.handleError);
+		return Observable.fromPromise(this.GETBoards()
+			.then((boards) => {
+				this.GETCategories().catch(this.handleError);
+				return boards[0];
 			})
-				.catch(this.handleError);
-
-			while (!catsDone || !todosDone) {
-				// Wait for cats and todos to be done
-			}
-			return boards[0];
-		})
+			.then((board) => {
+				this.GETTodos().catch(this.handleError);
+				return board;
+			})
 			.catch(this.handleError));
 	}
 
