@@ -51,7 +51,7 @@ export class TodoService {
 		const url = `${this.apiUrl}/board?userId=${id}`;
 
 		let headers = new Headers({ 'Content-Type': 'application/x-www-form-urlencoded' });
-    let options = new RequestOptions({ headers: headers });
+		let options = new RequestOptions({ headers: headers });
 
 		let body = new URLSearchParams();
 		body.set('userId', String(id));
@@ -66,7 +66,7 @@ export class TodoService {
 			}).catch(this.handleError);
 	}
 
-	public getBoards(): Promise<Board[]> {
+	private GETBoards(): Promise<Board[]> {
 		console.log('requesting boards...');
 
 		let id: number = 0;
@@ -133,7 +133,7 @@ export class TodoService {
 			}).catch(this.handleError);
 	}
 
-	public getCategories(): Promise<Category[]> {
+	private GETCategories(): Promise<Category[]> {
 		console.log('requesting categories...');
 
 		let id: number = 0;
@@ -243,7 +243,7 @@ export class TodoService {
 		const url = `${this.apiUrl}/todo?userId=${id}`;
 
 		let headers = new Headers({ 'Content-Type': 'application/json' });
-    let options = new RequestOptions({ headers: headers });
+		let options = new RequestOptions({ headers: headers });
 
 		let body = new URLSearchParams();
 		let sid: string = String(id);
@@ -255,7 +255,7 @@ export class TodoService {
 		body.set('dateDone', String(newTodo.DateDone));
 		body.set('isArchived', newTodo.IsArchived ? '1' : '0');
 		body.set('priorityVal', String(newTodo.Priority));
-		
+
 		console.log("Info being added:" + body.get('info'));
 		/*`{
 				"userId": ${id},
@@ -268,11 +268,11 @@ export class TodoService {
 				"priorityVal": ${newTodo.Priority}
 			}`*/
 		return this.http.post(url, body, options).toPromise().then((response: any) => {
-				console.log("addTodo response:" + response.toString);
-			}).catch(this.handleError);
+			console.log("addTodo response:" + response.toString);
+		}).catch(this.handleError);
 	}
 
-	public getTodos(): Promise<Todo[]> {
+	private GETTodos(): Promise<Todo[]> {
 		console.log('requesting todos...');
 
 		let id: number = 0;
@@ -423,12 +423,54 @@ export class TodoService {
 		return Observable.throw(errMsg);
 	}
 
-	getCurrentBoard(): Observable<Board> {
-		console.log('GETting boards...');
-		return Observable.fromPromise(this.getBoards().then((array) => { return array[0]; }).catch(this.handleError));
+	public getCurrentBoard(): Observable<Board> {
+		console.log('Getting current board...');
+
+		// Retreive all data from server
+		return Observable.fromPromise(this.GETBoards().then((boards) => {
+			let catsDone, todosDone: boolean = false;
+			this.GETCategories().then((cats) => {
+				catsDone = true;
+				this.GETTodos().then((todos) => {
+					todosDone = true;
+				})
+					.catch(this.handleError);
+			})
+				.catch(this.handleError);
+
+			while (!catsDone || !todosDone) {
+				// Wait for cats and todos to be done
+			}
+			return boards[0];
+		})
+			.catch(this.handleError));
 	}
 
-	changeBoard(board: Board): Promise<Board> {
+	public getBoards(): Promise<Board[]> {
+		while (this.CachedBoards == undefined
+			|| this.CachedBoards.length == 0) {
+
+		}
+		return Promise.resolve(this.CachedBoards);
+	}
+
+	public getCategories(): Promise<Category[]> {
+		while (this.CachedCats == undefined
+			|| this.CachedCats.length == 0) {
+
+		}
+		return Promise.resolve(this.CachedCats);
+	}
+
+	public getTodos(): Promise<Todo[]> {
+		while (this.CachedTodos == undefined
+			|| this.CachedTodos.length == 0) {
+
+		}
+		return Promise.resolve(this.CachedTodos);
+	}
+
+	public changeBoard(board: Board): Promise<Board> {
 		let boardIndex = this.CachedBoards.indexOf(board);
 
 		if (boardIndex + 1 == this.CachedBoards.length) {
@@ -441,12 +483,12 @@ export class TodoService {
 		return Promise.resolve(this.CurrentBoard);
 	}
 
-	openBoard(board: Board): Promise<Board> {
+	public openBoard(board: Board): Promise<Board> {
 		this.CurrentBoard = board;
 		return Promise.resolve(this.CurrentBoard);
 	}
 
-	getColors(): Promise<string[]> {
+	public getColors(): Promise<string[]> {
 		return Promise.resolve(ColorArray);
 	}
 }
