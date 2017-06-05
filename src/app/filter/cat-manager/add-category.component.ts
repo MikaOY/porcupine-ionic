@@ -33,8 +33,8 @@ export class AddCategory implements OnInit{
 
 	setColor(color) {
 		var colorIndex = this.ColorArray.indexOf(color);
-		console.log(colorIndex);
 		this.newCate.Color = colorIndex;
+		this.colorPicker = !this.colorPicker;
 	}
 
 	newCate = new Category(undefined, undefined, undefined);

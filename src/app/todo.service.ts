@@ -50,7 +50,7 @@ export class TodoService {
 		console.log('adding board...');
 
 		let id: number = 0;
-		const url = `${this.apiUrl}/board?userId=${id}`;
+		const url = `${this.apiUrl}/board`;
 
 		let headers = new Headers({ 'Content-Type': 'application/x-www-form-urlencoded' });
 		let options = new RequestOptions({ headers: headers });
@@ -248,9 +248,9 @@ export class TodoService {
 		body.set('info', newTodo.Info);
 		body.set('categoryId', String(newTodo.Category.DbId));
 		body.set('dateCreated', String(newTodo.DateCreated));
-		body.set('isDone', newTodo.IsDone ? '1' : '0');
+		body.set('isDone', (newTodo.IsDone ? '1' : '0'));
 		body.set('dateDone', String(newTodo.DateDone));
-		body.set('isArchived', newTodo.IsArchived ? '1' : '0');
+		body.set('isArchived', (newTodo.IsArchived ? '1' : '0'));
 		body.set('priorityVal', String(newTodo.Priority));
 
 		console.log("Info being added:" + body.get('info'));
@@ -264,9 +264,13 @@ export class TodoService {
 				"isArchived": ${newTodo.IsArchived},
 				"priorityVal": ${newTodo.Priority}
 			}`*/
-		return this.http.post(url, body, options).toPromise().then((response: any) => {
-			console.log("addTodo response:" + response.toString);
-		}).catch(this.handleError);
+
+		return this.http.post(url, body, options).toPromise().then(this.extractData)
+			.catch(this.handleError);
+	}
+	private extractData(res: Response) {
+		let body = res.json();
+		return body.data || {};
 	}
 
 	private GETTodos(args?: any): Observable<Todo[]> {
@@ -299,8 +303,8 @@ export class TodoService {
 						&& this.CachedBoards != null
 						&& this.CachedCats != undefined
 						&& this.CachedCats != null
-						&& this.CachedBoards.length >= 0
-						&& this.CachedCats.length >= 0) {
+						&& this.CachedBoards.length > 0
+						&& this.CachedCats.length > 0) {
 						isAssigned = true;
 
 						// assign todo to a board
@@ -369,8 +373,22 @@ export class TodoService {
 
 		let id: number = 0;
 		const url = `${this.apiUrl}/todo?userId=${id}`;
-		return this.http.put(url,
-			`{ "userId": ${id},
+
+		let headers = new Headers({ 'Content-Type': 'application/json' });
+		let options = new RequestOptions({ headers: headers });
+
+		let body = new URLSearchParams();
+		let sid: string = String(id);
+		body.set('userId', sid);
+		body.set('info', todo.Info);
+		body.set('categoryId', String(todo.Category.DbId));
+		body.set('dateCreated', String(todo.DateCreated));
+		body.set('isDone', todo.IsDone ? '1' : '0');
+		body.set('dateDone', String(todo.DateDone));
+		body.set('isArchived', todo.IsArchived ? '1' : '0');
+		body.set('priorityVal', String(todo.Priority));
+
+		/*`{ "userId": ${id},
 				"todoId": ${todo.DbId},
 				"info" : ${todo.Info},
 				"categoryId" : ${todo.Category.DbId},
@@ -378,8 +396,11 @@ export class TodoService {
 				"isDone" : ${todo.IsDone ? 1 : 0},
 				"dateDone" : ${todo.DateDone},
 				"isArchived: ${todo.IsArchived ? 1 : 0}
-			 	}`).toPromise().then((response: any) => {
-				console.log("updateTodos response:" + response.toString);
+			 	}` */
+		return this.http.put(url, body, options)
+			.toPromise()
+			.then((response: any) => {
+				console.log("updateTodos response:");
 			}).catch(this.handleError);
 	}
 

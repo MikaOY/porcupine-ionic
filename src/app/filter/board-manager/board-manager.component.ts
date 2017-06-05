@@ -33,4 +33,9 @@ export class BoardManager implements OnInit{
 		console.log("Submit board clicked");
 		this.todoService.addBoard(this.newBoard);
 	}
+
+	editBoardActive: boolean = false;
+	onEditBoardSubmit(board){
+		this.todoService.updateBoard(board);
+	}
 }
