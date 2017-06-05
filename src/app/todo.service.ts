@@ -5,7 +5,7 @@ import { Category } from './category';
 import { Priority } from './priority';
 import { Board } from './board';
 
-import { Http, Response } from '@angular/http';
+import { Http, Response, Headers, RequestOptions } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
@@ -51,7 +51,7 @@ export class TodoService {
 		const url = `${this.apiUrl}/board?userId=${id}`;
 
 		return this.http.post(url, JSON.parse('{"userId": ${id},"title": ${newBoard.Name},"dateCreated": ${newBoard.DateCreated}'))
-		.toPromise().then((response: any) => {
+			.toPromise().then((response: any) => {
 				console.log("addBoard response:" + response.toString);
 			}).catch(this.handleError);
 	}
@@ -152,7 +152,7 @@ export class TodoService {
 					while (this.CachedBoards == null
 						|| this.CachedBoards == undefined
 						|| this.CachedBoards.length == 0) {
-						//console.log('CATS: CachedBoards unavailable, ' + this.CachedBoards);
+						console.log('CATS: CachedBoards unavailable, ' + this.CachedBoards); 
 					}
 
 					console.log('CATS: CachedBoard = ' + this.CachedBoards + ' OK');
@@ -230,20 +230,23 @@ export class TodoService {
 		console.log('adding todo...');
 
 		let id: number = 0;
-		const url = `${this.apiUrl}/todo?userId=${id}`;
+		const url = `${this.apiUrl}/todo`;
 
-		return this.http.post(url,
-			`{"userId": ${id},
-			"info": ${newTodo.Info},
-			"categoryId: ${newTodo.Category.DbId},
-			"dateCreated": ${newTodo.DateCreated},
-			"isDone": ${newTodo.IsDone},
-			"dateDone": ${newTodo.DateDone},
-			"isArchived": ${newTodo.IsArchived},
-			"priorityVal": ${newTodo.Priority}
-			}`).toPromise().then((response: any) => {
-				console.log("addTodo response:" + response.toString);
-			}).catch(this.handleError);
+		let headers = new Headers({ 'Content-Type': 'application/x-www-form-urlencoded' });
+		let options = new RequestOptions({ headers: headers });
+		let body = new URLSearchParams();
+		body.set('userId', id.toString());
+		body.set('info', newTodo.Info);
+		body.set('categoryId', newTodo.Category.DbId.toString());
+		body.set('dateCreated', newTodo.DateCreated.toDateString());
+		body.set('isDone', (newTodo.IsDone ? '1' : '0'));
+		body.set('dateDone', newTodo.DateDone.toDateString());
+		body.set('isArchived', (newTodo.IsArchived ? '1' : '0'));
+		body.set('priorityVal', newTodo.Priority.toString());
+
+		return this.http.post(url, body, options).toPromise().then((response: any) => {
+			console.log("addTodo response:" + response.toString);
+		}).catch(this.handleError);
 	}
 
 	public getTodos(): Promise<Todo[]> {
@@ -277,8 +280,8 @@ export class TodoService {
 						&& this.CachedBoards != null
 						&& this.CachedCats != undefined
 						&& this.CachedCats != null
-						&& this.CachedBoards.length >= 0
-						&& this.CachedCats.length >= 0) {
+						&& this.CachedBoards.length > 0
+						&& this.CachedCats.length > 0) {
 						isAssigned = true;
 						console.log('TODO: CachedBoard and CachedCats OK');
 						console.log('cachedCats length:' + this.CachedCats.length);
