@@ -423,6 +423,16 @@ export class TodoService {
 		return Observable.throw(errMsg);
 	}
 
+	private checkIfAvailable(array: any[][]) {
+		let val: boolean = true;
+		array.forEach(element => {
+			if (!(element != undefined && element != null && element.length > 0)) {
+				val = false;
+			}
+		});
+		return val;
+	}
+
 	public getCurrentBoard(): Observable<Board> {
 		console.log('Getting current board...');
 
@@ -434,24 +444,21 @@ export class TodoService {
 	}
 
 	public getBoards(): Promise<Board[]> {
-		while (this.CachedBoards == undefined
-			|| this.CachedBoards.length == 0) {
+		while (!this.checkIfAvailable([this.CachedBoards])) {
 
 		}
 		return Promise.resolve(this.CachedBoards);
 	}
 
 	public getCategories(): Promise<Category[]> {
-		while (this.CachedCats == undefined
-			|| this.CachedCats.length == 0) {
+		while (!this.checkIfAvailable([this.CachedCats])) {
 
 		}
 		return Promise.resolve(this.CachedCats);
 	}
 
 	public getTodos(): Promise<Todo[]> {
-		while (this.CachedTodos == undefined
-			|| this.CachedTodos.length == 0) {
+		while (!this.checkIfAvailable([this.CachedTodos])) {
 
 		}
 		return Promise.resolve(this.CachedTodos);
