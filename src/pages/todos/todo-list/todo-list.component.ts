@@ -32,8 +32,9 @@ export class TodoList implements OnInit {
 	ngOnInit(): void {
     this.todoService.getCurrentBoard().subscribe(board => this.currentBoard = board as Board);			
 		this.todoService.getCategories().then(cats => this.cats = cats);
-		this.todoService.getTodos().then(todos => this.todos = todos);
+		//this.todoService.getTodos().then(todos => this.todos = todos);
 		this.todoService.getColors().then(colorArray => this.ColorArray = colorArray);
+		this.todoService.tempGetTodos().then(todos => this.todos = todos);
   }
 
 	todoPriority(pri: number): Array<number> {
@@ -52,11 +53,11 @@ export class TodoList implements OnInit {
 
 	activateEdit(todo) {
 		todo.EditActive = !todo.EditActive;
-		this.todoService.updateTodo(todo);
 	}
 
 	onFormSubmit(todo) {
 		todo.EditActive = false;
+		this.todoService.updateTodo(todo);
 	}
 
 	itemChecked(IsDone, todo) { //run when you click the checkbox
