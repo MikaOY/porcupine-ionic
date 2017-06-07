@@ -121,15 +121,29 @@ export class TodoService {
 		let id: number = 0;
 		const url = `${this.apiUrl}/category?userId=${id}`;
 
-		return this.http.post(url,
-			`{"userId": ${id},
+		let headers = new Headers({ 'Content-Type': 'application/x-www-form-urlencoded' });
+		let options = new RequestOptions({ headers: headers });
+		console.log('addcat check 1');
+		let body = new URLSearchParams();
+		body.set('userId', id.toString());
+		body.set('title', newCat.Name);
+		body.set('color', newCat.Color.toString());
+		body.set('defaultOrder', (newCat.Order ? newCat.Order.toString() : 'undefined'));
+		body.set('priorityVal', newCat.DefaultPriority.toString());
+		body.set('dateCreated', newCat.DateCreated.toDateString());
+		body.set('boardId', newCat.BoardId.toString());
+		/*`{"userId": ${id},
 			"title": ${newCat.Name},
 			"color: ${newCat.Color},
 			"defaultOrder": ${newCat.Order},
 			"priorityVal": ${newCat.DefaultPriority},
 			"dateCreated": ${newCat.DateCreated},
 			"boardId": ${newCat.BoardId}
-			}`).toPromise().then((response: any) => {
+		}` */
+		
+		console.log("ff");
+		return this.http.post(url, body, options
+			).toPromise().then((response: any) => {
 				console.log("addCategory response:" + response.toString);
 			}).catch(this.handleError);
 	}
@@ -369,6 +383,7 @@ export class TodoService {
 
 		let id: number = 0;
 		const url = `${this.apiUrl}/todo?userId=${id}`;
+		console.log('Im ere');
 		return this.http.put(url,
 			`{ "userId": ${id},
 				"todoId": ${todo.DbId},

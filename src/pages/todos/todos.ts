@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Board } from '../../app/board';
 import { TodoService } from '../../app/todo.service';
+import { Todo } from '../../app/todo';
+import { Priority } from '../../app/priority';
 
 @Component({
 	selector: 'todos-page',
@@ -31,5 +33,10 @@ export class TodosPage implements OnInit {
 	changeBoard(board) {
 		console.log("Current board: " + board);
 		this.todoService.changeBoard(board).then(nBoard => this.currentBoard = nBoard);
+	}
+
+	doSomething(){
+		var todo = new Todo("eat lots of bananas", undefined, new Date(), false, undefined, false, Priority.Low, undefined);
+		this.todoService.addTodo(todo);
 	}
 }
