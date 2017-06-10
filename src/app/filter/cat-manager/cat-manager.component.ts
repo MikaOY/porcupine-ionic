@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { TodoService } from '../../todo.service';
 import { ModalController, NavParams, ViewController } from 'ionic-angular';
-import { Board } from '../../board';
 import { AddCategory } from './add-category.component';
 import { Category } from '../../category';
 
@@ -17,11 +16,10 @@ export class CategoryManager implements OnInit {
 
 	ngOnInit(){
 		this.todoService.getColors().then(ColorArray => this.ColorArray = ColorArray);
-		this.todoService.getCurrentBoard().subscribe(cBoard => this.currentBoard = cBoard);
+		//this.todoService.getCurrentBoard().subscribe(cBoard => this.currentBoard = cBoard);
 	}
 
 	private ColorArray: string[];
-	private currentBoard: Board;
 
 	dismiss() {
 		this.viewCtrl.dismiss();

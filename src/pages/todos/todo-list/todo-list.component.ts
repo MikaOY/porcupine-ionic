@@ -16,7 +16,7 @@ import { SharePage } from './share-page/share-page.component';
 
 export class TodoList implements OnInit {
 	private currentBoard: Board; 
-	private todos: Todo[];
+	private todos: Todo[]; 
 	private cats: Category[];
 
 	// this sets colors for the category numbers
@@ -30,9 +30,9 @@ export class TodoList implements OnInit {
 
 	// Leave service calls in init callback!
 	ngOnInit(): void {
-    this.todoService.getCurrentBoard().subscribe(board => this.currentBoard = board as Board);			
+    //this.todoService.getCurrentBoard().subscribe(board => this.currentBoard = board as Board);			
 		this.todoService.getCategories().then(cats => this.cats = cats);
-		//this.todoService.getTodos().then(todos => this.todos = todos);
+		this.todoService.getTodos().then(todos => this.todos = todos);
 		this.todoService.getColors().then(colorArray => this.ColorArray = colorArray);
 		this.todoService.tempGetTodos().then(todos => this.todos = todos);
   }

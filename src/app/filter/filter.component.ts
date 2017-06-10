@@ -3,6 +3,7 @@ import { ModalController } from 'ionic-angular';
 
 import { TodoService } from '../todo.service';
 import { Board } from '../board';
+import { Category } from '../category';
 import { CategoryManager } from './cat-manager/cat-manager.component';
 import { LoginPage } from '../login/login.component';
 import { BoardManager } from './board-manager/board-manager.component';
@@ -28,7 +29,7 @@ import { UserService } from '../user.service';
         <ion-list-header>Filter by Category</ion-list-header>
         <button ion-button clear="true" id="addCatButton" (click)="showCatModal()">+</button>
         <ng-container *ngIf="currentBoard">
-            <ion-item *ngFor="let cat of currentBoard.Categories">
+            <ion-item *ngFor="let cat of cats">
                 <ion-checkbox [(ngModel)]="cat.IsShown"></ion-checkbox>
                 <ion-label>{{cat.Name}}</ion-label>
             </ion-item>
@@ -46,8 +47,8 @@ import { UserService } from '../user.service';
 })
 
 export class CategorySort implements OnInit {
-	private currentBoard: Board;
 	private currentUser: number;
+	private cats: Category[];
 
 	constructor(private todoService: TodoService,
 		public modalCtrl: ModalController,
@@ -55,7 +56,8 @@ export class CategorySort implements OnInit {
 
 	ngOnInit(): void {
 		//this.userService.getUser().then(val => this.currentUser = val);
-		this.todoService.getCurrentBoard().subscribe(cBoard => this.currentBoard = cBoard as Board);
+		//this.todoService.getCurrentBoard().subscribe(cBoard => this.currentBoard = cBoard as Board);
+		this.todoService.getCategories().then(val => this.cats = val);
 	}
 
 	showCatModal() {

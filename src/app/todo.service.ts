@@ -26,8 +26,8 @@ new Todo('Make moist brownie', CATS0[2], new Date(2017, 4, 29), true, new Date(2
 new Todo('Upload photos to Drive', CATS0[0], new Date(2017, 4, 30), false, undefined, false, Priority.Low, new Date(2016, 5, 22), 123456789),
 new Todo('Pet a pug', CATS0[1], new Date(2017, 4, 28), false, undefined, false, Priority.Medium, new Date(2016, 5, 30), 123456789)];
 
-const BOARDS: Board[] = [new Board('Important Things in Life', TODOS0.reverse(), CATS0.reverse(), undefined, undefined),
-new Board('More Things Todo', TODOS0, CATS0, undefined, undefined)];
+// const BOARDS: Board[] = [new Board('Important Things in Life', TODOS0.reverse(), CATS0.reverse(), undefined, undefined),
+// new Board('More Things Todo', TODOS0, CATS0, undefined, undefined)];
 
 const ColorArray: string[] = ['#919191', '#ff5c3f', '#ffb523', '#6f9b53', '#1371d6', '#423e7c', '#7606cc', '#c613b4'];
 
@@ -76,7 +76,9 @@ export class TodoService {
 
 		let id: number = 0;
 		const url = `${this.apiUrl}/board?userId=${id}`;
+	
 		return this.http.get(url).map((response: any) => {
+			
 			console.log('processing boards...');
 			let array: Board[] = [];
 			for (let json of response.json()) {
@@ -85,10 +87,11 @@ export class TodoService {
 
 			this.CachedBoards = array;
 			this.CurrentBoard = this.CachedBoards[0];
-			console.log('Boards retrieved!');
+			
 			return array;
-		})
+		}).share()
 			.catch(this.handleError);
+			
 	}
 
 	public updateBoard(board: Board): Promise<void> {
@@ -180,7 +183,7 @@ export class TodoService {
 					b.Categories.push(array[array.length - 1]);
 					isAssigned = true;
 
-					console.log('Assigning ' + array[array.length - 1].Name + ' to ' + b.Name);
+					//console.log('Assigning ' + array[array.length - 1].Name + ' to ' + b.Name);
 
 					// remove sample data ONCE when at last index
 					if (i == (response.json().length - 1)) {
@@ -195,7 +198,7 @@ export class TodoService {
 								// if cat is in sample array,
 								if (cat.DbId == 123456789) {
 									// delete the cat
-									console.log('Deleting sample category: ' + cat.Name);
+									//console.log('Deleting sample category: ' + cat.Name);
 									let index = board.Categories.indexOf(cat);
 									board.Categories.splice(index, 1);
 								}
@@ -293,7 +296,7 @@ export class TodoService {
 					null, // due date not implemented in DB yet
 					json['todo_id']));
 
-				console.log('filling Todo[] in CurrentBoard...' + array.length);
+				//console.log('filling Todo[] in CurrentBoard...' + array.length);
 				// Populate Todos: Todo[] prop in boards
 				let isAssigned: boolean = false;
 				while (!isAssigned) {
@@ -332,7 +335,7 @@ export class TodoService {
 						b.Todos.push(array[array.length - 1]);
 						isAssigned = true;
 
-						console.log('Assigning ' + array[array.length - 1].Info + ' to ' + b.Name);
+						//console.log('Assigning ' + array[array.length - 1].Info + ' to ' + b.Name);
 
 						// remove sample data ONCE when at last index
 						if (i == (response.json().length - 1)) {
@@ -347,7 +350,7 @@ export class TodoService {
 									// if todo is in sample array,
 									if (todo.DbId == 123456789) {
 										// delete the todo
-										console.log('Deleting sample todo: ' + todo.Info);
+										//console.log('Deleting sample todo: ' + todo.Info);
 										let index = board.Todos.indexOf(todo);
 										board.Todos.splice(index, 1);
 									}
@@ -429,13 +432,17 @@ export class TodoService {
 	public getCurrentBoard(): Observable<any> {
 		this.isBusy = true;
 		console.log('Getting current board...');
-
+		debugger;
 		// Retrieve all data first, then pull current board after all concluded
 		return this.GETBoards().mergeMap(boards => this.GETCategories(boards).mergeMap(cats => this.GETTodos(cats)
 			.map(args => {
 				this.isBusy = false;
+				console.log('current todos: ' + this.CachedBoards[0].Todos.length);
+				console.log('cucrrent cats: ' + this.CachedBoards[0].Categories.length);
+				console.log('current boards: ' + this.CachedBoards[0].Name);
+				console.table(this.CachedBoards[0].Todos);
 				return this.CachedBoards[0];
-			})));
+			}).share()));
 
 		/*
 		this.GETBoards().mergeMap(boards => this.GETCategories(boards).mergeMap(cats => this.GETTodos(cats)))
