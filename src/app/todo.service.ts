@@ -55,17 +55,19 @@ export class TodoService {
 		let id: number = 0;
 		const url = `${this.apiUrl}/board`;
 
-		let body = new URLSearchParams();
+		let body: URLSearchParams = new URLSearchParams();
 		body.set('userId', String(id));
 		body.set('title', newBoard.Name);
-		body.set('dateCreated', 'undefined');
+		body.set('dateCreated', '2017-06-12 08:00:00');
 		
-		console.log(body.get('userId'));
+		console.log(body.get('userId')) + typeof (body.get('userId'));
 		console.log(body.get('title'));
 		console.log(body.get('dateCreated'));
 		console.log("check 1");
-		return this.http.post(url, body, this.options)
-			.toPromise().then((response: any) => {
+
+		let headers = new Headers({ 'Content-Type': 'application/x-www-form-urlencoded' });
+		let options = new RequestOptions({ headers: this.headers });
+		return this.http.post(url, body, options).toPromise().then((response: any) => {
 				console.log("check 2");
 				console.log("addBoard response:" + response.toString);
 			}).catch(this.handleError);
@@ -117,7 +119,7 @@ export class TodoService {
 		let boardId: number = 66;
 		const url = `${this.apiUrl}/board?boardId=${boardId}`;
 		return this.http.delete(url).toPromise().then((response: any) => {
-			console.log('CAT delete: ' + response.toString());
+			console.log('BOARD delete: ' + response.toString());
 		})
 			.catch(this.handleError);
 	}
@@ -245,11 +247,6 @@ export class TodoService {
 			console.log('CAT delete: ' + response.toString());
 		})
 			.catch(this.handleError);
-	}
-
-	//DELETE LATERRRRRRR
-	public tempGetTodos(): Promise<Todo[]>{
-		return Promise.resolve(TODOS0);
 	}
 
 	public addTodo(newTodo: Todo): Promise<void> {
@@ -432,7 +429,6 @@ export class TodoService {
 	public getCurrentBoard(): Observable<any> {
 		this.isBusy = true;
 		console.log('Getting current board...');
-		debugger;
 		// Retrieve all data first, then pull current board after all concluded
 		return this.GETBoards().mergeMap(boards => this.GETCategories(boards).mergeMap(cats => this.GETTodos(cats)
 			.map(args => {
@@ -440,7 +436,6 @@ export class TodoService {
 				console.log('current todos: ' + this.CachedBoards[0].Todos.length);
 				console.log('cucrrent cats: ' + this.CachedBoards[0].Categories.length);
 				console.log('current boards: ' + this.CachedBoards[0].Name);
-				console.table(this.CachedBoards[0].Todos);
 				return this.CachedBoards[0];
 			}).share()));
 
@@ -454,39 +449,48 @@ export class TodoService {
 	}
 
 	public async getBoards(): Promise<Board[]> {
+		console.log('--lowercase getBoards()');
 		// if already has cache, return cache
 		if (this.checkIfAvailable([this.CachedBoards])) {
-			Promise.resolve(this.CachedBoards);
+			console.log('--getBoards: returning cached boards!');
+			return Promise.resolve(this.CachedBoards);
 		}
 		// if haven't requested, req to return boards
 		else if (!this.isBusy) {
-			return this.getCurrentBoard().toPromise().then(args => Promise.resolve(this.CachedBoards));
+			//return this.getCurrentBoard().toPromise().then(args => Promise.resolve(this.CachedBoards));
 		}
 		await this.waitForArray(this.CachedBoards);
+		console.log('--getBoards end');
 	}
 
 	public async getCategories(): Promise<Category[]> {
+		console.log('--lowercase getcategories()');
 		// if already has cache, return cache
 		if (this.checkIfAvailable([this.CachedCats])) {
-			Promise.resolve(this.CachedCats);
+			console.log('--getCategories: returning cached cats!');
+			return Promise.resolve(this.CachedCats);
 		}
 		// if haven't requested, req to return cats
 		else if (!this.isBusy) {
-			return this.getCurrentBoard().toPromise().then(args => Promise.resolve(this.CachedCats));
+			//return this.getCurrentBoard().toPromise().then(args => Promise.resolve(this.CachedCats));
 		}
 		await this.waitForArray(this.CachedCats);
+		console.log('--getCats end');
 	}
 
 	public async getTodos(): Promise<Todo[]> {
+		console.log('--lowercase getTodos()');
 		// if already has cache, return cache
 		if (this.checkIfAvailable([this.CachedTodos])) {
-			Promise.resolve(this.CachedTodos);
+			console.log('--getTodos: returning cached todos!');
+			return Promise.resolve(this.CachedTodos);
 		}
 		// if haven't requested, req to return todos
 		else if (!this.isBusy) {
-			return this.getCurrentBoard().toPromise().then(args => Promise.resolve(this.CachedTodos));
+			//return this.getCurrentBoard().toPromise().then(args => Promise.resolve(this.CachedTodos));
 		}
 		await this.waitForArray(this.CachedTodos);
+		console.log('--getTodos end');
 	}
 
 	private waitForArray(array: any[]) {

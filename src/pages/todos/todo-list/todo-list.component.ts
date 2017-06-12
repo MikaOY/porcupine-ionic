@@ -31,10 +31,11 @@ export class TodoList implements OnInit {
 	// Leave service calls in init callback!
 	ngOnInit(): void {
     //this.todoService.getCurrentBoard().subscribe(board => this.currentBoard = board as Board);			
+		setTimeout( () => {
+		console.log('getting stuff for todolist');
 		this.todoService.getCategories().then(cats => this.cats = cats);
 		this.todoService.getTodos().then(todos => this.todos = todos);
-		this.todoService.getColors().then(colorArray => this.ColorArray = colorArray);
-		this.todoService.tempGetTodos().then(todos => this.todos = todos);
+		this.todoService.getColors().then(colorArray => this.ColorArray = colorArray);}, 5000);
   }
 
 	todoPriority(pri: number): Array<number> {
@@ -122,6 +123,7 @@ export class TodoList implements OnInit {
 	newTodo = new Todo(undefined, undefined, undefined, undefined, undefined, false, undefined);
 	AddTodo() {
 		this.addTodo = !this.addTodo;
+		console.log(this.todos.length);
 	}
 
 	onNewTodoFormSubmit() {
