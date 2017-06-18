@@ -60,17 +60,32 @@ export class TodoService {
 		body.set('title', newBoard.Name);
 		body.set('dateCreated', '2017-06-12 08:00:00');
 		
-		console.log(body.get('userId')) + typeof (body.get('userId'));
+		console.log(url);
+		console.log(body.get('userId'));
 		console.log(body.get('title'));
 		console.log(body.get('dateCreated'));
 		console.log("check 1");
 
-		let headers = new Headers({ 'Content-Type': 'application/x-www-form-urlencoded' });
-		let options = new RequestOptions({ headers: this.headers });
-		return this.http.post(url, body, options).toPromise().then((response: any) => {
-				console.log("check 2");
-				console.log("addBoard response:" + response.toString);
-			}).catch(this.handleError);
+		// let body = JSON.stringify({
+		// 	"userId": id.toString(),
+		// 	"title": newBoard.Name,
+		// 	"dateCreated": '2017-06-12 08:00:00'
+		// });
+
+		let headers = new Headers();
+		headers.append('Content-Type', 'application/x-www-form-urlencoded');
+
+		console.log("addBoard about to post");
+		return this.http.post(url, body.toString(), {headers: headers})
+			.map((response: Response) => console.log(response))
+			.toPromise()
+			.catch(this.handleError);
+	}
+
+	private extractData(res: Response) {
+	let body = res.json();
+	console.log("extractData()");
+        return body.data || {};
 	}
 
 	private GETBoards(): Observable<Board[]> {
