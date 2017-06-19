@@ -80,16 +80,16 @@ export class TodoService {
 		headers.append('Content-Type', 'application/x-www-form-urlencoded');
 
 		console.log("addBoard about to post");
-		return this.http.post(url, body.toString(), {headers: headers})
+		return this.http.post(url, body.toString(), { headers: headers })
 			.map((response: Response) => console.log(response))
 			.toPromise()
 			.catch(this.handleError);
 	}
 
 	private extractData(res: Response) {
-	let body = res.json();
-	console.log("extractData()");
-        return body.data || {};
+		let body = res.json();
+		console.log("extractData()");
+		return body.data || {};
 	}
 
 	private GETBoards(): Observable<Board[]> {
@@ -97,10 +97,11 @@ export class TodoService {
 
 		let id: number = 0;
 		const url = `${this.apiUrl}/board?userId=${id}`;
-	
+
 		return this.http.get(url).map((response: any) => {
-			
+
 			console.log('processing boards...');
+
 			let array: Board[] = [];
 			for (let json of response.json()) {
 				array.push(new Board(json['title'], TODOS0, CATS0, json['date_created'], json['board_id']));
@@ -108,11 +109,11 @@ export class TodoService {
 
 			this.CachedBoards = array;
 			this.CurrentBoard = this.CachedBoards[0];
-			
+
 			return array;
 		}).share()
 			.catch(this.handleError);
-			
+
 	}
 
 	public updateBoard(board: Board): Promise<void> {
@@ -304,9 +305,19 @@ export class TodoService {
 			console.log('processing todos...');
 
 			let array: Todo[] = [];
-			let i: number = 0;
+			let i: number = 0; // loop counter
 			for (let json of response.json()) {
 				i++;
+
+				// if already has todo in cache, delete it first 
+				if (this.checkIfAvailable([this.CachedTodos])) {
+					let possibleDuplicate: Todo = this.CachedTodos.find((todo, index, buildingArray) => todo.DbId == json['todo_id']);
+					if (possibleDuplicate != undefined) {
+						this.CachedTodos.splice(this.CachedTodos.indexOf(possibleDuplicate));
+					}
+				}
+
+				// copy json data to new todo in array
 				array.push(new Todo(json['todo_info'],
 					null, // cachedCats likely null here, so set it later
 					new Date(json['date_created']),
