@@ -15,7 +15,7 @@
 
 	<!--your typical todo look-->
 	<ng-template #selInactive>
-		<div *ngIf="currentBoard">
+		<div *ngIf="todos">
 			<ng-container *ngFor="let todo of todos" class="inline-todo">
 				<ng-container *ngIf="!todo.IsArchived">
 					<div *ngIf="todo.Category == null ? true : todo.Category.IsShown">

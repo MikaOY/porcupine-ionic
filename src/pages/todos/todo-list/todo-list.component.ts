@@ -34,8 +34,11 @@ export class TodoList implements OnInit {
 		setTimeout( () => {
 		console.log('getting stuff for todolist');
 		this.todoService.getCategories().then(cats => this.cats = cats);
-		this.todoService.getTodos().then(todos => this.todos = todos);
-		this.todoService.getColors().then(colorArray => this.ColorArray = colorArray);}, 5000);
+		this.todoService.getTodos().then(todos => {this.todos = todos;
+		console.log('hi' + todos.length);
+		console.log('this todos length = ' + this.todos.length);});
+		this.todoService.getColors().then(colorArray => this.ColorArray = colorArray);
+	}, 5000);
   }
 
 	todoPriority(pri: number): Array<number> {
