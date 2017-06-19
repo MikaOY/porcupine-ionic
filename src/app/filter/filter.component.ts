@@ -3,6 +3,7 @@ import { ModalController } from 'ionic-angular';
 
 import { TodoService } from '../todo.service';
 import { Board } from '../board';
+import { Todo } from '../todo';
 import { Category } from '../category';
 import { CategoryManager } from './cat-manager/cat-manager.component';
 import { LoginPage } from '../login/login.component';
@@ -105,17 +106,20 @@ export class CategorySort implements OnInit {
 })
 
 export class PropertySort implements OnInit {
-	private currentBoard: Board;
+	private todos: Todo[];
 
 	constructor(private todoService: TodoService,
 		public modalCtrl: ModalController) { }
 
 	ngOnInit() {
-		
+		setTimeout( () => {
+			this.todoService.getTodos().then(val => this.todos = val);
+		}, 5000);
+	
 	}
 
 	sortPriorityHL() {
-		this.currentBoard.Todos = this.currentBoard.Todos.sort((a, b) => {
+		this.todos = this.todos.sort((a, b) => {
 
 			if (a.Priority > b.Priority) {
 				return -1;
@@ -131,7 +135,7 @@ export class PropertySort implements OnInit {
 	}
 
 	sortPriorityLH() {
-		this.currentBoard.Todos = this.currentBoard.Todos.sort((a, b) => {
+		this.todos = this.todos.sort((a, b) => {
 
 			if (a.Priority > b.Priority) {
 				return 1;
@@ -146,9 +150,8 @@ export class PropertySort implements OnInit {
 	}
 
 	sortRecent() {
-		this.currentBoard = this.todoService.CurrentBoard;
-		if (this.currentBoard) {
-			this.currentBoard.Todos = this.currentBoard.Todos.sort((a, b) => {
+		if (this.todos) {
+			this.todos = this.todos.sort((a, b) => {
 				if (a.DateCreated > b.DateCreated) {
 					return -1;
 				}
@@ -166,7 +169,7 @@ export class PropertySort implements OnInit {
 	}
 
 	sortOldest() {
-		this.currentBoard.Todos = this.currentBoard.Todos.sort((a, b) => {
+		this.todos = this.todos.sort((a, b) => {
 			if (a.DateCreated > b.DateCreated) {
 				return 1;
 			}

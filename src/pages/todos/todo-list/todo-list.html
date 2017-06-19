@@ -36,8 +36,8 @@
 										</ion-label>
 										<button *ngIf="!todo.IsLocked" ion-button item-right id="toggleButton" small clear (click)=toggleDetail(todo)>+</button>
 										<button *ngIf="todo.IsLocked" ion-button item-right id="toggleButton" small clear (click)="UnlockTodo(todo)">
-                                    <ion-icon name="unlock"></ion-icon>
-                                </button>
+												<ion-icon name="unlock"></ion-icon>
+										</button>
 									</ion-item>
 								</ion-item-group>
 							</ng-template>
@@ -45,17 +45,17 @@
 							<!--swipe left and right to see these buttons-->
 							<ion-item-options side="left">
 								<button ion-button id="slideCat" [style.background-color]="ColorArray[todo.Category.Color]">
-                            <div class="pRow">
-                                <div class="pColumn priorBar" *ngFor="let num of todoPriority(todo.Priority)">I</div> <!-- fix dis!! -->
-                            </div>
-                            <div>{{todo.Category.Name}}</div>
-                        </button>
+									<div class="pRow">
+											<div class="pColumn priorBar" *ngFor="let num of todoPriority(todo.Priority)">I</div> <!-- TODO: fix dis!! -->
+									</div>
+									<div>{{todo.Category.Name}}</div>
+								</button>
 							</ion-item-options>
 							<ion-item-options side="right">
 								<button ion-button id="slideDel" (click)="deleteTodo(todo.DbId)">
-                            <ion-icon name="trash"></ion-icon>
-                            Delete
-                        </button>
+									<ion-icon name="trash"></ion-icon>
+									Delete
+								</button>
 							</ion-item-options>
 						</ion-item-sliding>
 
