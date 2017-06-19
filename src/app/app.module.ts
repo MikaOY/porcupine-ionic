@@ -12,7 +12,6 @@ import { TabsPage } from '../pages/tabs/tabs';
 import { UnlockPage } from './lockable/unlock-page.component';
 
 import { CategorySort, PropertySort } from './filter/filter.component';
-import { CategoryManager } from './filter/cat-manager/cat-manager.component';
 import { AddCategory } from './filter/cat-manager/add-category.component';
 import { BoardManager } from './filter/board-manager/board-manager.component';
 import { TodoList } from '../pages/todos/todo-list/todo-list.component'; 
@@ -34,7 +33,6 @@ import { HttpModule }    from '@angular/http';
     TodoList,
     CategorySort,
     PropertySort,
-    CategoryManager,
     AddCategory,
     LoginPage,
     UnlockPage,
@@ -56,7 +54,6 @@ import { HttpModule }    from '@angular/http';
     TabsPage,
     CategorySort,
     PropertySort,
-    CategoryManager,
     AddCategory,
     LoginPage,
     UnlockPage,

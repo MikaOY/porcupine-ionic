@@ -4,6 +4,7 @@
 			<ion-label stacked>Category Name</ion-label>
 			<ion-input clearInput [(ngModel)]="newCate.Name" name="Name"></ion-input>
 		</ion-item>
+
 		<ion-item *ngIf="this.colorPicker">
 			<ion-label (click)="presentColors()" [style.background-color]="newCate.Color ? ColorArray[newCate.Color] : undefined">Color</ion-label>
 		</ion-item>
@@ -15,13 +16,20 @@
 		</div>
 
 		<ion-item>
+			<ion-label>Board Id</ion-label>
+			<ion-input [(ngModel)]="newCate.BoardId" name="catBoardId"></ion-input>
+		</ion-item>
+
+		<ion-item>
 			<ion-label>Default Priority</ion-label>
 			<ion-select interface="popover" [(ngModel)]="newCate.DefaultPriority" name="DefPriority">
 				<ion-option value="undefined">None</ion-option>
 				<ion-option *ngFor="let pri of prior()" value="{{priority[pri]}}">{{pri}}</ion-option>
 			</ion-select>
 		</ion-item>
+
 		<button clear ion-button type="submit"><ion-icon name="checkmark"></ion-icon></button>
+		<button clear ion-button type="button" (click)="closeModal()"><ion-icon name="arrow-round-back"></ion-icon></button>
 	</form>
 	<!-- TODO: remove these-->
 	<div>{{newCate.Name}}</div>

@@ -1,0 +1,50 @@
+<ion-list>
+	<ion-item (click)="showId()">
+		<ion-avatar item-left id="alpacatar">
+			<img src="../assets/alpacatar.jpeg">
+		</ion-avatar>
+		<h2>Mr. Paca: {{currentUser}}</h2>
+	</ion-item>
+</ion-list>
+
+<div id="catContainer">
+	<ion-list no-lines>
+		<ion-list-header>Filter by Category</ion-list-header>
+		<button ion-button clear="true" id="addCatButton" (click)="presentAddCat()">+</button>
+		<ng-container *ngIf="cats">
+			<ng-container *ngFor="let cat of cats">
+
+				<ion-item>
+					<ion-checkbox [(ngModel)]="cat.IsShown"></ion-checkbox>
+					<ion-label>{{cat.Name}}</ion-label>
+					<button ion-button item-right small clear (click)=editCat(cat)>
+						<ion-icon name="cog"></ion-icon>
+					</button>
+				</ion-item>
+
+				<div *ngIf="cat.EditActive">
+					<form (ngSubmit)="onEditCatSubmit(cat)" #editCatForm>
+						<ion-item>
+							<ion-label>Name</ion-label>
+							<ion-input [(ngModel)]="cat.Name" name="catName"></ion-input>
+						</ion-item>
+						<ion-item>
+							<ion-label>Board Id</ion-label>
+							<ion-input [(ngModel)]="cat.BoardId" name="catBoardId"></ion-input>
+						</ion-item>
+						<button ion-button clear type="submit">Done</button>
+						<button ion-button (click)="deleteCat(cat)">DELETE</button>
+					</form>
+				</div>
+
+			</ng-container>
+		</ng-container>
+		<ion-item>
+			<ion-checkbox></ion-checkbox>
+			<ion-label>
+				Archived
+				<ion-icon name="archive"></ion-icon>
+			</ion-label>
+		</ion-item>
+	</ion-list>
+</div>
