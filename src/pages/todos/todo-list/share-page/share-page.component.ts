@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavParams, ModalController } from 'ionic-angular';
+import { NavParams } from 'ionic-angular';
 import { Todo } from '../../../../app/todo';
 
 @Component({

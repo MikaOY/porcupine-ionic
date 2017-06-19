@@ -38,4 +38,9 @@ export class BoardManager implements OnInit{
 	onEditBoardSubmit(board){
 		this.todoService.updateBoard(board);
 	}
+
+	deleteBoard(board){
+		this.todoService.deleteBoard(board);
+		console.log('deleteboard clicked in board');
+	}
 }
