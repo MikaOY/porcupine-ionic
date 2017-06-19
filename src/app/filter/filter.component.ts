@@ -28,7 +28,7 @@ import { UserService } from '../user.service';
     <ion-list no-lines>
         <ion-list-header>Filter by Category</ion-list-header>
         <button ion-button clear="true" id="addCatButton" (click)="showCatModal()">+</button>
-        <ng-container *ngIf="currentBoard">
+        <ng-container *ngIf="cats">
             <ion-item *ngFor="let cat of cats">
                 <ion-checkbox [(ngModel)]="cat.IsShown"></ion-checkbox>
                 <ion-label>{{cat.Name}}</ion-label>
@@ -56,8 +56,9 @@ export class CategorySort implements OnInit {
 
 	ngOnInit(): void {
 		//this.userService.getUser().then(val => this.currentUser = val);
-		//this.todoService.getCurrentBoard().subscribe(cBoard => this.currentBoard = cBoard as Board);
-		this.todoService.getCategories().then(val => this.cats = val);
+		setTimeout( () => {this.todoService.getCategories().then(val => {this.cats = val}); 
+			
+		}, 5000);
 	}
 
 	showCatModal() {

@@ -466,6 +466,7 @@ export class TodoService {
 				val = false;
 			}
 		});
+		console.log('checkIfAvailable Val = ' + val);
 		return val;
 	}
 
@@ -510,7 +511,7 @@ export class TodoService {
 		console.log('--lowercase getcategories()');
 		// if already has cache, return cache
 		if (this.checkIfAvailable([this.CachedCats])) {
-			console.log('--getCategories: returning cached cats!');
+			console.log('--getCategories: returning cached cats! length = ' + this.CachedCats.length);
 			return Promise.resolve(this.CachedCats);
 		}
 		// if haven't requested, req to return cats
@@ -525,7 +526,7 @@ export class TodoService {
 		console.log('--lowercase getTodos()');
 		// if already has cache, return cache
 		if (this.checkIfAvailable([this.CachedTodos])) {
-			console.log('--getTodos: returning cached todos!');
+			console.log('--getTodos: returning cached todos! length = ' + this.CachedTodos.length);
 			return Promise.resolve(this.CachedTodos);
 		}
 		// if haven't requested, req to return todos
