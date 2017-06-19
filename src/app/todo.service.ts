@@ -41,6 +41,7 @@ export class TodoService {
 	private isBusy: boolean = false;
 
 	private apiUrl: string = 'http://porcupine-dope-api.azurewebsites.net';
+	private id: number = 0;
 
 	private headers = new Headers({ 'Content-Type': 'application/x-www-form-urlencoded' });
 	private options = new RequestOptions({ headers: this.headers });
@@ -56,11 +57,10 @@ export class TodoService {
 	public addBoard(newBoard: Board): Promise<void> {
 		console.log('adding board...');
 
-		let id: number = 0;
 		const url = `${this.apiUrl}/board`;
 
-			var details = {
-			'userId': String(id),
+		var details = {
+			'userId': String(this.id),
 			'title': newBoard.Name,
 			'dateCreated': '',
 		};
@@ -81,8 +81,7 @@ export class TodoService {
 	private GETBoards(): Observable<Board[]> {
 		console.log('requesting boards...');
 
-		let id: number = 0;
-		const url = `${this.apiUrl}/board?userId=${id}`;
+		const url = `${this.apiUrl}/board?userId=${this.id}`;
 
 		return this.http.get(url).map((response: any) => {
 
@@ -113,8 +112,7 @@ export class TodoService {
 	public updateBoard(board: Board): Promise<void> {
 		console.log('updating board...');
 
-		let id: number = 0;
-		const url = `${this.apiUrl}/board?userId=${id}`;
+		const url = `${this.apiUrl}/board?userId=${this.id}`;
 
 		let body = new URLSearchParams();
 		body.set('userId', String(id));
@@ -141,17 +139,16 @@ export class TodoService {
 	public addCategory(newCat: Category): Promise<void> {
 		console.log('adding category...');
 
-		let id: number = 0;
-			const url = `http://localhost:3000/category`;
+		const url = `http://localhost:3000/category`;
 
 		var details = {
-			'userId': String(id),
+			'userId': String(this.id),
 			'title': newCat.Name,
-			'color': newCat.Color.toString(),
-			'defaultOrder': newCat.Order ? newCat.Order.toString() : 'undefined',
-			'priorityVal': '',
+			'color': newCat.Color.toString(), 
+			'defaultOrder': newCat.Order ? newCat.Order.toString() : '',
+			'priorityVal': '', // TODO: get priority number from name
 			'dateCreated': '',
-			'boardId': newCat.BoardId.toString()
+			'boardId': '1' // TODO: get board id from input once added
 		};
 		console.log(newCat.DateCreated.toDateString());
 		console.log(newCat.DefaultPriority.toString());
@@ -171,8 +168,7 @@ export class TodoService {
 	private GETCategories(args?: any): Observable<Category[]> {
 		console.log('requesting categories...');
 
-		let id: number = 0;
-		const url = `${this.apiUrl}/category?userId=${id}`;
+		const url = `${this.apiUrl}/category?userId=${this.id}`;
 		return this.http.get(url).map((response: any) => {
 			console.log('processing categories...');
 
@@ -256,11 +252,10 @@ export class TodoService {
 	public updateCategory(cat: Category): Promise<void> {
 		console.log('updating category...');
 
-		let id: number = 0;
 		const url = `${this.apiUrl}/category`;
 
 		let body = new URLSearchParams();
-		body.set('userId', String(id));
+		body.set('userId', String(this.id));
 		body.set('categoryId', cat.DbId ? cat.DbId.toString() : 'undefined');
 		body.set('title', cat.Name);
 		body.set('boardId', cat.BoardId.toString());
@@ -277,8 +272,7 @@ export class TodoService {
 	public deleteCategory(cat: Category): Promise<void> {
 		console.log('deleting category...');
 
-		let catId: number = 66;
-		const url = `${this.apiUrl}/category?categoryId=${catId}`;
+		const url = `${this.apiUrl}/category?categoryId=${cat.DbId}`;
 		return this.http.delete(url).toPromise().then((response: any) => {
 			console.log('CAT delete: ' + response.toString());
 		})
@@ -293,17 +287,16 @@ export class TodoService {
 	public addTodo(newTodo: Todo): Promise<void> {
 		console.log('adding todo...');
 
-		let id: number = 0;
-		const url = `http://localhost:3000/todo`;
+		const url = `${this.apiUrl}/todo`;
 
 		// create req body
 		var details = {
-			'userId': String(id),
+			'userId': String(this.id),
 			'info': newTodo.Info,
-			'categoryId': newTodo.Category.DbId ? String(newTodo.Category.DbId) : 'null',
+			'categoryId': newTodo.Category.DbId ? String(newTodo.Category.DbId) : '',
 			'dateCreated': '', // TODO: convert to format like '2017-6-12 00:00:00'
 			'isDone': newTodo.IsDone ? '1' : '0',
-			'dateDone': '', 
+			'dateDone': '',
 			'isArchived': newTodo.IsArchived ? '1' : '0',
 			'priorityVal': '0', // TODO: convert priorty name to number
 		};
@@ -324,8 +317,7 @@ export class TodoService {
 	private GETTodos(args?: any): Observable<Todo[]> {
 		console.log('requesting todos...');
 
-		let id: number = 0;
-		const url = `${this.apiUrl}/todo?userId=${id}`;
+		const url = `${this.apiUrl}/todo?userId=${this.id}`;
 		return this.http.get(url).map((response: any) => {
 			console.log('processing todos...');
 
@@ -439,11 +431,10 @@ export class TodoService {
 	public updateTodo(todo: Todo): Promise<void> {
 		console.log('updating todo...');
 
-		let id: number = 0;
 		const url = `${this.apiUrl}/todo`;
 
 		let body = new URLSearchParams();
-		body.set('userId', String(id));
+		body.set('userId', String(this.id));
 		body.set('todoId', todo.DbId ? todo.DbId.toString() : 'undefined');
 		body.set('info', todo.Info);
 		body.set('categoryId', todo.Category.DbId ? todo.Category.DbId.toString() : 'undefined');
@@ -481,7 +472,7 @@ export class TodoService {
 		} else {
 			errMsg = error.message ? error.message : error.toString();
 		}
-		console.error("hi"+ errMsg);
+		console.error(errMsg);
 		console.error('Something went wrong!');
 		return Observable.throw(errMsg);
 	}

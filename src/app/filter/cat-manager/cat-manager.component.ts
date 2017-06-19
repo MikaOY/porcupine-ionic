@@ -10,11 +10,11 @@ import { Category } from '../../category';
 
 export class CategoryManager implements OnInit {
 	constructor(public viewCtrl: ViewController,
-							public params: NavParams,
-							private todoService: TodoService,
-							public modalCtrl: ModalController) {}
+		public params: NavParams,
+		private todoService: TodoService,
+		public modalCtrl: ModalController) { }
 
-	ngOnInit(){
+	ngOnInit() {
 		this.todoService.getColors().then(ColorArray => this.ColorArray = ColorArray);
 		this.todoService.getCategories().then(val => this.cats = val);
 	}
@@ -31,13 +31,16 @@ export class CategoryManager implements OnInit {
 		addCatModal.present();
 	}
 
-	
-	editCat(cat: Category){
+	editCat(cat: Category) {
 		cat.EditActive = !cat.EditActive;
 	}
 
-	onEditCatSubmit(cat){
+	onEditCatSubmit(cat) {
 		this.todoService.updateCategory(cat);
+	}
+
+	deleteCat(category: Category) {
+		this.todoService.deleteCategory(category);
 	}
 }
 

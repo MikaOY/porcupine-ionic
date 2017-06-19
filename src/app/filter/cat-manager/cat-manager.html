@@ -25,6 +25,7 @@
 						<ion-input [(ngModel)]="cat.Name" name="catName"></ion-input>
 					</ion-item>
 					<button ion-button clear type="submit">Done</button>
+					<button ion-button (click)="deleteCat(cat)">DELETE</button>
 				</form>
 			</div>
 
