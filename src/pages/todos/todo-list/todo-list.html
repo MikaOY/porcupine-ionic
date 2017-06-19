@@ -20,7 +20,7 @@
 				<ng-container *ngIf="!todo.IsArchived">
 					<div *ngIf="todo.Category == null ? true : todo.Category.IsShown">
 						<ion-item-sliding>
-							<!--editable text area (+ to activate)-->
+							<!--editable text area (edit to activate)-->
 							<ion-item text-wrap class="todoItem" *ngIf="todo.EditActive; else default">
 								<ion-checkbox [(ngModel)]="todo.IsDone" (click)=itemChecked(todo.IsDone,todo)></ion-checkbox>
 								<ion-textarea fz-elastic [(ngModel)]="todo.Info"></ion-textarea>
