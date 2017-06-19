@@ -86,11 +86,11 @@ export class TodoService {
 			.catch(this.handleError);
 	}
 
-	private extractData(res: Response) {
-	let body = res.json();
-	console.log("extractData()");
-        return body.data || {};
-	}
+	// private extractData(res: Response) {
+	// let body = res.json();
+	// console.log("extractData()");
+  //       return body.data || {};
+	// }
 
 	private GETBoards(): Observable<Board[]> {
 		console.log('requesting boards...');
@@ -503,10 +503,10 @@ export class TodoService {
 			console.log('--getCategories: returning cached cats! length = ' + this.CachedCats.length);
 			return Promise.resolve(this.CachedCats);
 		}
-		// if haven't requested, req to return cats
-		else if (!this.isBusy) {
-			//return this.getCurrentBoard().toPromise().then(args => Promise.resolve(this.CachedCats));
-		}
+		// // if haven't requested, req to return cats
+		// else if (!this.isBusy) {
+		// 	//return this.getCurrentBoard().toPromise().then(args => Promise.resolve(this.CachedCats));
+		// }
 		await this.waitForArray(this.CachedCats);
 		console.log('--getCats end');
 	}

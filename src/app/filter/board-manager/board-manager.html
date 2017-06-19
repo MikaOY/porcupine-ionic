@@ -5,6 +5,7 @@
 				<ion-item *ngFor="let board of userBoards" (click)="openBoard(board)">
 					{{board.Name}}
 					<button ion-button clear (click)="deleteBoard(board)"><ion-icon name="trash"></ion-icon></button>
+					<button ion-button clear (click)="editBoard(board)"><ion-icon name="trash"></ion-icon></button>
 				</ion-item>
 			</ng-template>
 			<ng-container *ngIf="editBoardActive; else normalBoard">

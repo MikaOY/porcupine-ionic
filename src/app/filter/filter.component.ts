@@ -11,9 +11,8 @@ import { UserService } from '../user.service';
 
 // CATEGORY
 
-@Component({ //replace with list of categories
+@Component({
 	selector: "category-list",
-	providers: [TodoService],
 	template: `
     <ion-list>
         <ion-item (click)="showId()">
@@ -29,6 +28,7 @@ import { UserService } from '../user.service';
         <ion-list-header>Filter by Category</ion-list-header>
         <button ion-button clear="true" id="addCatButton" (click)="showCatModal()">+</button>
         <ng-container *ngIf="cats">
+					<h1>WHAT</h1>
             <ion-item *ngFor="let cat of cats">
                 <ion-checkbox [(ngModel)]="cat.IsShown"></ion-checkbox>
                 <ion-label>{{cat.Name}}</ion-label>
@@ -56,8 +56,9 @@ export class CategorySort implements OnInit {
 
 	ngOnInit(): void {
 		//this.userService.getUser().then(val => this.currentUser = val);
-		setTimeout( () => {this.todoService.getCategories().then(val => {this.cats = val}); 
-			
+		
+		setTimeout( () => {
+		this.todoService.getCategories().then(val => this.cats = val); 
 		}, 5000);
 	}
 
