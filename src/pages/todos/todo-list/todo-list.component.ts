@@ -134,5 +134,6 @@ export class TodoList implements OnInit {
 		console.log("todo-list new todo info:" + this.newTodo.Info);
 		this.todoService.addTodo(this.newTodo);
 		//TODO: pass newTodo to server and add to user's array 
+		this.todos.push(this.newTodo);
 	}
 }

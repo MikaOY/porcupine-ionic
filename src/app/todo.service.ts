@@ -59,25 +59,23 @@ export class TodoService {
 		let id: number = 0;
 		const url = `${this.apiUrl}/board`;
 
-		let body: URLSearchParams = new URLSearchParams();
-		body.set('userId', String(id));
-		body.set('title', newBoard.Name);
-		body.set('dateCreated', 'undefined');
+			var details = {
+			'userId': String(id),
+			'title': newBoard.Name,
+			'dateCreated': '',
+		};
 
-		console.log(url);
-		console.log(body.get('userId'));
-		console.log(body.get('title'));
-		console.log(body.get('dateCreated'));
-		console.log("check 1");
+		let formBody = [];
+		for (var property in details) {
+			var encodedKey = encodeURIComponent(property);
+			var encodedValue = encodeURIComponent(details[property]);
+			formBody.push(encodedKey + "=" + '\'' + encodedValue + '\'');
+		}
+		let body = formBody.join("&");
 
-		let headers = new Headers();
-		headers.append('Content-Type', 'application/x-www-form-urlencoded');
-
-		console.log("addBoard about to post");
-		return this.http.post(url, body.toString(), { headers: headers })
-			.map((response: Response) => console.log(response))
-			.toPromise()
-			.catch(this.handleError);
+		return this.http.post(url, body, this.options).toPromise().then((response: any) => {
+			console.log("addBoard response:" + response.toString);
+		}).catch(this.handleError);
 	}
 
 	private GETBoards(): Observable<Board[]> {
@@ -144,23 +142,28 @@ export class TodoService {
 		console.log('adding category...');
 
 		let id: number = 0;
-		const url = `${this.apiUrl}/category`;
+			const url = `http://localhost:3000/category`;
 
-		let headers = new Headers({ 'Content-Type': 'application/x-www-form-urlencoded' });
-		let options = new RequestOptions({ headers: headers });
-		console.log('addcat check 1');
-		let body = new URLSearchParams();
-		body.set('userId', id.toString());
-		body.set('title', newCat.Name);
-		body.set('color', newCat.Color.toString());
-		body.set('defaultOrder', (newCat.Order ? newCat.Order.toString() : 'undefined'));
-		body.set('priorityVal', newCat.DefaultPriority.toString());
-		body.set('dateCreated', newCat.DateCreated.toDateString());
-		body.set('boardId', newCat.BoardId.toString());
+		var details = {
+			'userId': String(id),
+			'title': newCat.Name,
+			'color': newCat.Color.toString(),
+			'defaultOrder': newCat.Order ? newCat.Order.toString() : 'undefined',
+			'priorityVal': '',
+			'dateCreated': '',
+			'boardId': newCat.BoardId.toString()
+		};
+		console.log(newCat.DateCreated.toDateString());
+		console.log(newCat.DefaultPriority.toString());
+		let formBody = [];
+		for (var property in details) {
+			var encodedKey = encodeURIComponent(property);
+			var encodedValue = encodeURIComponent(details[property]);
+			formBody.push(encodedKey + "=" + '\'' + encodedValue + '\'');
+		}
+		let body = formBody.join("&");
 
-		console.log("ff");
-		return this.http.post(url, body, options
-		).toPromise().then((response: any) => {
+		return this.http.post(url, body, this.options).toPromise().then((response: any) => {
 			console.log("addCategory response:" + response.toString);
 		}).catch(this.handleError);
 	}
@@ -478,7 +481,7 @@ export class TodoService {
 		} else {
 			errMsg = error.message ? error.message : error.toString();
 		}
-		console.error(errMsg);
+		console.error("hi"+ errMsg);
 		console.error('Something went wrong!');
 		return Observable.throw(errMsg);
 	}

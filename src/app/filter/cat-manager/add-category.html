@@ -5,7 +5,7 @@
 			<ion-input clearInput [(ngModel)]="newCate.Name" name="Name"></ion-input>
 		</ion-item>
 		<ion-item *ngIf="this.colorPicker">
-			<ion-label (click)="presentColors()">Color</ion-label>
+			<ion-label (click)="presentColors()" [style.background-color]="newCate.Color ? ColorArray[newCate.Color] : undefined">Color</ion-label>
 		</ion-item>
 		<div *ngIf="!this.colorPicker" class="addCatContainer">
 			<div><button ion-button clear (click)="presentColors()">Back</button></div>
@@ -23,6 +23,7 @@
 		</ion-item>
 		<button clear ion-button type="submit"><ion-icon name="checkmark"></ion-icon></button>
 	</form>
+	<!-- TODO: remove these-->
 	<div>{{newCate.Name}}</div>
 	<div>{{newCate.DefaultPriority}}</div>
 	<div>{{newCate.Color}}</div>
