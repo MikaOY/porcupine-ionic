@@ -45,7 +45,11 @@ export class TodoService {
 	private headers = new Headers({ 'Content-Type': 'application/x-www-form-urlencoded' });
 	private options = new RequestOptions({ headers: this.headers });
 
-	constructor(private http: Http) { }
+	constructor(private http: Http) {
+		this.CachedBoards = [];
+		this.CachedCats = [];
+		this.CachedTodos = [];
+	}
 
 	/* START public HTTP functions */
 
@@ -59,7 +63,7 @@ export class TodoService {
 		body.set('userId', String(id));
 		body.set('title', newBoard.Name);
 		body.set('dateCreated', 'undefined');
-		
+
 		console.log(body.get('userId'));
 		console.log(body.get('title'));
 		console.log(body.get('dateCreated'));
@@ -104,8 +108,8 @@ export class TodoService {
 		body.set('dateCreated', 'undefined');
 
 		return this.http.put(url, body, this.options).toPromise().then((response: any) => {
-				console.log("updateBoards response:" + response.toString);
-			}).catch(this.handleError);
+			console.log("updateBoards response:" + response.toString);
+		}).catch(this.handleError);
 	}
 
 	public deleteBoard(board: Board): Promise<void> {
@@ -139,9 +143,9 @@ export class TodoService {
 
 		console.log("ff");
 		return this.http.post(url, body, options
-			).toPromise().then((response: any) => {
-				console.log("addCategory response:" + response.toString);
-			}).catch(this.handleError);
+		).toPromise().then((response: any) => {
+			console.log("addCategory response:" + response.toString);
+		}).catch(this.handleError);
 	}
 
 	private GETCategories(args?: any): Observable<Category[]> {
@@ -229,8 +233,8 @@ export class TodoService {
 		body.set('priorityVal', cat.DefaultPriority ? cat.DefaultPriority.toString() : 'undefined');
 
 		return this.http.put(url, body, this.options).toPromise().then((response: any) => {
-				console.log("updateCategories response:" + response.toString);
-			}).catch(this.handleError);
+			console.log("updateCategories response:" + response.toString);
+		}).catch(this.handleError);
 	}
 
 	public deleteCategory(cat: Category): Promise<void> {
@@ -245,7 +249,7 @@ export class TodoService {
 	}
 
 	//DELETE LATERRRRRRR
-	public tempGetTodos(): Promise<Todo[]>{
+	public tempGetTodos(): Promise<Todo[]> {
 		return Promise.resolve(TODOS0);
 	}
 
@@ -284,7 +288,7 @@ export class TodoService {
 			for (let json of response.json()) {
 				i++;
 				array.push(new Todo(json['todo_info'],
-					this.CachedCats.find((cat, index, array) => cat.DbId == json['category_id']), // find category with id
+					null, // cachedCats likely null here, so set it later
 					new Date(json['date_created']),
 					json['is_done'],
 					new Date(json['date_done']),
@@ -294,7 +298,7 @@ export class TodoService {
 					json['todo_id']));
 
 				console.log('filling Todo[] in CurrentBoard...' + array.length);
-				// Populate Todos: Todo[] prop in boards
+				// assign todo to a board (and category)
 				let isAssigned: boolean = false;
 				while (!isAssigned) {
 					if (this.CachedBoards != undefined
@@ -305,14 +309,15 @@ export class TodoService {
 						&& this.CachedCats.length >= 0) {
 						isAssigned = true;
 
-						// assign todo to a board
-						// 1 - find todo category
+						// 1 - find todo category (and assign)
 						while (this.CachedCats == undefined) {
 							// Wait for CachedCats to be defined
 						}
 						let todoCat: Category = this.CachedCats.find((cat, index, array) => {
 							return cat.DbId == json['category_id'];
 						});
+						array[array.length - 1].Category = todoCat;
+						console.log('Assigned CAT: ' + array[array.length - 1].Info + ' to ' + todoCat.Name);
 
 						// 2 - find board whose DbId matches cat's BoardId prop
 						while (this.CachedBoards == undefined) {
@@ -328,11 +333,19 @@ export class TodoService {
 							return board.DbId == todoCat.BoardId;
 						});
 
-						// 3 - add current todo to that board's Todo[]
-						b.Todos.push(array[array.length - 1]);
-						isAssigned = true;
+						// 3 - check if todo already in board, if NOT, add it
+						console.log('Checking todo ' + array[array.length - 1].DbId);
+						if (b.Todos.find((todo, index, bArray) => {
+							return (array[array.length - 1].Category.DbId == todo.Category.DbId)
+								&& (array[array.length - 1].DbId == todo.DbId);
+						}) == undefined) {
 
-						console.log('Assigning ' + array[array.length - 1].Info + ' to ' + b.Name);
+							// 4 - add current todo to that board's Todo[]
+							b.Todos.push(array[array.length - 1]);
+							isAssigned = true;
+
+							console.log('Assigning ' + array[array.length - 1].Info + ' to ' + b.Name);
+						}
 
 						// remove sample data ONCE when at last index
 						if (i == (response.json().length - 1)) {
@@ -384,8 +397,8 @@ export class TodoService {
 		body.set('isArchived', todo.IsArchived ? '1' : '0');
 		console.log('Im ere');
 		return this.http.put(url, body, this.options).toPromise().then((response: any) => {
-				console.log("updateTodos response:" + response.toString);
-			}).catch(this.handleError);
+			console.log("updateTodos response:" + response.toString);
+		}).catch(this.handleError);
 	}
 
 	public deleteTodo(todoId): Promise<void> {
@@ -447,7 +460,7 @@ export class TodoService {
 	}
 
 	public async getBoards(): Promise<Board[]> {
-		// if already has cache, return cache
+		// if already has cached, return cache
 		if (this.checkIfAvailable([this.CachedBoards])) {
 			Promise.resolve(this.CachedBoards);
 		}
