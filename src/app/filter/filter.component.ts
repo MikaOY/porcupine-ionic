@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { ModalController } from 'ionic-angular';
 
 import { TodoService } from '../todo.service';
-import { Board } from '../board';
 import { Todo } from '../todo';
 import { Category } from '../category';
 import { CategoryManager } from './cat-manager/cat-manager.component';
