@@ -86,12 +86,6 @@ export class TodoService {
 			.catch(this.handleError);
 	}
 
-	private extractData(res: Response) {
-		let body = res.json();
-		console.log("extractData()");
-		return body.data || {};
-	}
-
 	private GETBoards(): Observable<Board[]> {
 		console.log('requesting boards...');
 
@@ -309,14 +303,6 @@ export class TodoService {
 			for (let json of response.json()) {
 				i++;
 
-				// if already has todo in cache, delete it first 
-				if (this.checkIfAvailable([this.CachedTodos])) {
-					let possibleDuplicate: Todo = this.CachedTodos.find((todo, index, buildingArray) => todo.DbId == json['todo_id']);
-					if (possibleDuplicate != undefined) {
-						this.CachedTodos.splice(this.CachedTodos.indexOf(possibleDuplicate));
-					}
-				}
-
 				// copy json data to new todo in array
 				array.push(new Todo(json['todo_info'],
 					null, // cachedCats likely null here, so set it later
@@ -403,6 +389,16 @@ export class TodoService {
 				}
 			}
 
+			// assign built array to cache
+			// if already has todos in cache, delete them
+			array.forEach(arrayTodo => {
+				if (this.checkIfAvailable([this.CachedTodos])) {
+					let possibleDuplicate: Todo = this.CachedTodos.find((cacheTodo, cacheindex, cacheArray) => cacheTodo.DbId == arrayTodo.DbId);
+					if (possibleDuplicate != undefined) {
+						this.CachedTodos.splice(this.CachedTodos.indexOf(possibleDuplicate));
+					}
+				}
+			});
 			this.CachedTodos = array;
 			console.log('Todos retrieved!');
 			return array;
