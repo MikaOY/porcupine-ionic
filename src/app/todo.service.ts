@@ -80,39 +80,42 @@ export class TodoService {
 		headers.append('Content-Type', 'application/x-www-form-urlencoded');
 
 		console.log("addBoard about to post");
-		return this.http.post(url, body.toString(), {headers: headers})
+		return this.http.post(url, body.toString(), { headers: headers })
 			.map((response: Response) => console.log(response))
 			.toPromise()
 			.catch(this.handleError);
 	}
-
-	// private extractData(res: Response) {
-	// let body = res.json();
-	// console.log("extractData()");
-  //       return body.data || {};
-	// }
 
 	private GETBoards(): Observable<Board[]> {
 		console.log('requesting boards...');
 
 		let id: number = 0;
 		const url = `${this.apiUrl}/board?userId=${id}`;
-	
+
 		return this.http.get(url).map((response: any) => {
-			
+
 			console.log('processing boards...');
+
 			let array: Board[] = [];
 			for (let json of response.json()) {
 				array.push(new Board(json['title'], TODOS0, CATS0, json['date_created'], json['board_id']));
 			}
 
+			// assign built array to cache
+			// if already has boards in cache, delete them
+			array.forEach(arrayB => {
+				if (this.checkIfAvailable([this.CachedBoards])) {
+					let possibleDuplicate: Board = this.CachedBoards.find((cacheB, cacheIndex, cacheArray) => cacheB.DbId == arrayB.DbId);
+					if (possibleDuplicate != undefined) {
+						this.CachedBoards.splice(this.CachedBoards.indexOf(possibleDuplicate));
+					}
+				}
+			});
 			this.CachedBoards = array;
 			this.CurrentBoard = this.CachedBoards[0];
-			
 			return array;
 		}).share()
 			.catch(this.handleError);
-			
 	}
 
 	public updateBoard(board: Board): Promise<void> {
@@ -195,16 +198,23 @@ export class TodoService {
 					while (this.CachedBoards == null
 						|| this.CachedBoards == undefined
 						|| this.CachedBoards.length == 0) {
-						//console.log('CATS: CachedBoards unavailable, ' + this.CachedBoards);
 					}
 
-					// find board in cached where id matches cat board_id prop, 
+					// 2 - find board in cached where id matches cat board_id prop, 
 					let b: Board = this.CachedBoards.find((board, index, array) => json['board_id'] == board.DbId);
-					// add cat to Cat[] prop on board
-					b.Categories.push(array[array.length - 1]);
-					isAssigned = true;
 
-					//console.log('Assigning ' + array[array.length - 1].Name + ' to ' + b.Name);
+					// 3 - check if cat already in board, if NOT, add it
+					if (b.Categories.find((cat, index, bArray) => {
+						return (array[array.length - 1].DbId == cat.DbId)
+							&& (array[array.length - 1].BoardId == cat.BoardId);
+					}) == undefined) {
+
+						// 4 - add cat to Cat[] prop on board
+						b.Categories.push(array[array.length - 1]);
+						isAssigned = true;
+
+						console.log('Assigning ' + array[array.length - 1].Name + ' to ' + b.Name);
+					}
 
 					// remove sample data ONCE when at last index
 					if (i == (response.json().length - 1)) {
@@ -230,6 +240,16 @@ export class TodoService {
 				}
 			}
 
+			// assign built array to cache
+			// if already has cats in cache, delete them
+			array.forEach(arrayCat => {
+				if (this.checkIfAvailable([this.CachedCats])) {
+					let possibleDuplicate: Category = this.CachedCats.find((cacheCat, cacheIndex, cacheArray) => cacheCat.DbId == arrayCat.DbId);
+					if (possibleDuplicate != undefined) {
+						this.CachedCats.splice(this.CachedCats.indexOf(possibleDuplicate));
+					}
+				}
+			});
 			this.CachedCats = array;
 			console.log('Categories retrieved!');
 			return array;
@@ -304,9 +324,11 @@ export class TodoService {
 			console.log('processing todos...');
 
 			let array: Todo[] = [];
-			let i: number = 0;
+			let i: number = 0; // loop counter
 			for (let json of response.json()) {
 				i++;
+
+				// copy json data to new todo in array
 				array.push(new Todo(json['todo_info'],
 					null, // cachedCats likely null here, so set it later
 					new Date(json['date_created']),
@@ -336,7 +358,7 @@ export class TodoService {
 							return cat.DbId == json['category_id'];
 						});
 						array[array.length - 1].Category = todoCat;
-						console.log('Assigned CAT: ' + array[array.length - 1].Info + ' to ' + todoCat.Name);
+						console.log('Assigned TODO to CAT: ' + array[array.length - 1].Info + ' to ' + todoCat.Name);
 
 						// 2 - find board whose DbId matches cat's BoardId prop
 						while (this.CachedBoards == undefined) {
@@ -392,6 +414,16 @@ export class TodoService {
 				}
 			}
 
+			// assign built array to cache
+			// if already has todos in cache, delete them
+			array.forEach(arrayTodo => {
+				if (this.checkIfAvailable([this.CachedTodos])) {
+					let possibleDuplicate: Todo = this.CachedTodos.find((cacheTodo, cacheIndex, cacheArray) => cacheTodo.DbId == arrayTodo.DbId);
+					if (possibleDuplicate != undefined) {
+						this.CachedTodos.splice(this.CachedTodos.indexOf(possibleDuplicate));
+					}
+				}
+			});
 			this.CachedTodos = array;
 			console.log('Todos retrieved!');
 			return array;
