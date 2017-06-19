@@ -70,12 +70,6 @@ export class TodoService {
 		console.log(body.get('dateCreated'));
 		console.log("check 1");
 
-		// let body = JSON.stringify({
-		// 	"userId": id.toString(),
-		// 	"title": newBoard.Name,
-		// 	"dateCreated": '2017-06-12 08:00:00'
-		// });
-
 		let headers = new Headers();
 		headers.append('Content-Type', 'application/x-www-form-urlencoded');
 
@@ -297,19 +291,28 @@ export class TodoService {
 		console.log('adding todo...');
 
 		let id: number = 0;
-		const url = `${this.apiUrl}/todo`;
+		const url = `http://localhost:3000/todo`;
 
-		let body = new URLSearchParams();
-		body.set('userId', id.toString());
-		body.set('info', newTodo.Info);
-		body.set('categoryId', newTodo.Category.DbId ? String(newTodo.Category.DbId) : 'undefined');
-		body.set('dateCreated', String(newTodo.DateCreated));
-		body.set('isDone', newTodo.IsDone ? '1' : '0');
-		body.set('dateDone', newTodo.DateDone ? String(newTodo.DateDone) : 'undefined');
-		body.set('isArchived', newTodo.IsArchived ? '1' : '0');
-		body.set('priorityVal', String(newTodo.Priority));
+		// create req body
+		var details = {
+			'userId': String(id),
+			'info': newTodo.Info,
+			'categoryId': newTodo.Category.DbId ? String(newTodo.Category.DbId) : 'null',
+			'dateCreated': '', // TODO: convert to format like '2017-6-12 00:00:00'
+			'isDone': newTodo.IsDone ? '1' : '0',
+			'dateDone': '', 
+			'isArchived': newTodo.IsArchived ? '1' : '0',
+			'priorityVal': '0', // TODO: convert priorty name to number
+		};
 
-		console.log("Info being added:" + body.get('info'));
+		let formBody = [];
+		for (var property in details) {
+			var encodedKey = encodeURIComponent(property);
+			var encodedValue = encodeURIComponent(details[property]);
+			formBody.push(encodedKey + "=" + '\'' + encodedValue + '\'');
+		}
+		let body = formBody.join("&");
+
 		return this.http.post(url, body, this.options).toPromise().then((response: any) => {
 			console.log("addTodo response:" + response.toString);
 		}).catch(this.handleError);
