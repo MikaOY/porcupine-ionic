@@ -32,6 +32,7 @@ export class TodoList implements OnInit {
 	ngOnInit(): void {
 		setTimeout( () => {
 		console.log('getting stuff for todolist');
+		console.log('i love alpacas <3');
 		this.todoService.getCategories().then(cats => this.cats = cats);
 		this.todoService.getTodos().then(todos => this.todos = todos);
 		this.todoService.getColors().then(colorArray => this.ColorArray = colorArray);

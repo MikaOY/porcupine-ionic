@@ -10,7 +10,7 @@ import { Board } from '../../board';
 export class BoardManager implements OnInit{
 
 	userBoards: Board[];
-	showAddBoard: boolean = true;
+	showAddBoard: boolean = false;
 	constructor(public modalCtrl: ModalController,
 							public viewCtrl: ViewController,
 							public todoService: TodoService) {}
@@ -28,15 +28,25 @@ export class BoardManager implements OnInit{
 		this.todoService.openBoard(board);//should change CurrentBoard in ALL components
 	}
 
+	addBoard(){
+		this.showAddBoard = !this.showAddBoard;
+	}
+
 	newBoard: Board = new Board(undefined, undefined, undefined, undefined, undefined);
 	onAddBoardFormSubmit(){
 		console.log("Submit board clicked");
+		this.newBoard.DateCreated = new Date();
 		this.todoService.addBoard(this.newBoard);
 	}
 
-	editBoardActive: boolean = false;
+	editBoardActive(board){
+		board.editActive = !board.editActive;
+	}
+
 	onEditBoardSubmit(board){
+		console.log("Boardname: " + board.Name);
 		this.todoService.updateBoard(board);
+		board.editActive = !board.editActive;
 	}
 
 	deleteBoard(board){

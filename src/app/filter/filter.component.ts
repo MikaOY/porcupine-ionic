@@ -28,7 +28,6 @@ import { UserService } from '../user.service';
         <ion-list-header>Filter by Category</ion-list-header>
         <button ion-button clear="true" id="addCatButton" (click)="showCatModal()">+</button>
         <ng-container *ngIf="cats">
-					<h1>WHAT</h1>
             <ion-item *ngFor="let cat of cats">
                 <ion-checkbox [(ngModel)]="cat.IsShown"></ion-checkbox>
                 <ion-label>{{cat.Name}}</ion-label>

@@ -6,5 +6,6 @@ export class Board {
 							public Todos: Todo[] = [],
 							public Categories: Category[] = [],
 							public DateCreated: Date,
-							public DbId: number){}
+							public DbId: number,
+							public EditActive?: boolean,){}
 }

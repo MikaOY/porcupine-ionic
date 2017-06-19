@@ -16,10 +16,11 @@ export class CategoryManager implements OnInit {
 
 	ngOnInit(){
 		this.todoService.getColors().then(ColorArray => this.ColorArray = ColorArray);
-		//this.todoService.getCurrentBoard().subscribe(cBoard => this.currentBoard = cBoard);
+		this.todoService.getCategories().then(val => this.cats = val);
 	}
 
 	private ColorArray: string[];
+	private cats: Category[];
 
 	dismiss() {
 		this.viewCtrl.dismiss();
