@@ -101,13 +101,21 @@ export class TodoService {
 				array.push(new Board(json['title'], TODOS0, CATS0, json['date_created'], json['board_id']));
 			}
 
+			// assign built array to cache
+			// if already has boards in cache, delete them
+			array.forEach(arrayB => {
+				if (this.checkIfAvailable([this.CachedBoards])) {
+					let possibleDuplicate: Board = this.CachedBoards.find((cacheB, cacheIndex, cacheArray) => cacheB.DbId == arrayB.DbId);
+					if (possibleDuplicate != undefined) {
+						this.CachedBoards.splice(this.CachedBoards.indexOf(possibleDuplicate));
+					}
+				}
+			});
 			this.CachedBoards = array;
 			this.CurrentBoard = this.CachedBoards[0];
-
 			return array;
 		}).share()
 			.catch(this.handleError);
-
 	}
 
 	public updateBoard(board: Board): Promise<void> {
@@ -225,6 +233,16 @@ export class TodoService {
 				}
 			}
 
+			// assign built array to cache
+			// if already has cats in cache, delete them
+			array.forEach(arrayCat => {
+				if (this.checkIfAvailable([this.CachedCats])) {
+					let possibleDuplicate: Category = this.CachedCats.find((cacheCat, cacheIndex, cacheArray) => cacheCat.DbId == arrayCat.DbId);
+					if (possibleDuplicate != undefined) {
+						this.CachedCats.splice(this.CachedCats.indexOf(possibleDuplicate));
+					}
+				}
+			});
 			this.CachedCats = array;
 			console.log('Categories retrieved!');
 			return array;
@@ -333,7 +351,7 @@ export class TodoService {
 							return cat.DbId == json['category_id'];
 						});
 						array[array.length - 1].Category = todoCat;
-						console.log('Assigned CAT: ' + array[array.length - 1].Info + ' to ' + todoCat.Name);
+						console.log('Assigned TODO to CAT: ' + array[array.length - 1].Info + ' to ' + todoCat.Name);
 
 						// 2 - find board whose DbId matches cat's BoardId prop
 						while (this.CachedBoards == undefined) {
@@ -393,7 +411,7 @@ export class TodoService {
 			// if already has todos in cache, delete them
 			array.forEach(arrayTodo => {
 				if (this.checkIfAvailable([this.CachedTodos])) {
-					let possibleDuplicate: Todo = this.CachedTodos.find((cacheTodo, cacheindex, cacheArray) => cacheTodo.DbId == arrayTodo.DbId);
+					let possibleDuplicate: Todo = this.CachedTodos.find((cacheTodo, cacheIndex, cacheArray) => cacheTodo.DbId == arrayTodo.DbId);
 					if (possibleDuplicate != undefined) {
 						this.CachedTodos.splice(this.CachedTodos.indexOf(possibleDuplicate));
 					}
