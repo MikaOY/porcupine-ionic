@@ -198,16 +198,23 @@ export class TodoService {
 					while (this.CachedBoards == null
 						|| this.CachedBoards == undefined
 						|| this.CachedBoards.length == 0) {
-						//console.log('CATS: CachedBoards unavailable, ' + this.CachedBoards);
 					}
 
-					// find board in cached where id matches cat board_id prop, 
+					// 2 - find board in cached where id matches cat board_id prop, 
 					let b: Board = this.CachedBoards.find((board, index, array) => json['board_id'] == board.DbId);
-					// add cat to Cat[] prop on board
-					b.Categories.push(array[array.length - 1]);
-					isAssigned = true;
 
-					//console.log('Assigning ' + array[array.length - 1].Name + ' to ' + b.Name);
+					// 3 - check if cat already in board, if NOT, add it
+					if (b.Categories.find((cat, index, bArray) => {
+						return (array[array.length - 1].DbId == cat.DbId)
+							&& (array[array.length - 1].BoardId == cat.BoardId);
+					}) == undefined) {
+
+						// 4 - add cat to Cat[] prop on board
+						b.Categories.push(array[array.length - 1]);
+						isAssigned = true;
+
+						console.log('Assigning ' + array[array.length - 1].Name + ' to ' + b.Name);
+					}
 
 					// remove sample data ONCE when at last index
 					if (i == (response.json().length - 1)) {
