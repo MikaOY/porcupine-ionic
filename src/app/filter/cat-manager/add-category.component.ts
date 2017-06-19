@@ -46,5 +46,10 @@ export class AddCategory implements OnInit{
 		console.log("onNewCatForm Clicked");
 		//code to take the newCate and add it to database
 		this.todoService.addCategory(this.newCate);
+		
+	}
+
+	closeModal(){
+		this.viewCntrl.dismiss();
 	}
 }

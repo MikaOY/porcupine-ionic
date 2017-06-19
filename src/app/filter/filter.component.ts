@@ -5,45 +5,15 @@ import { TodoService } from '../todo.service';
 import { Board } from '../board';
 import { Todo } from '../todo';
 import { Category } from '../category';
-import { CategoryManager } from './cat-manager/cat-manager.component';
 import { LoginPage } from '../login/login.component';
 import { BoardManager } from './board-manager/board-manager.component';
 import { UserService } from '../user.service';
-
+import { AddCategory } from './cat-manager/add-category.component';
 // CATEGORY
 
 @Component({
 	selector: "category-list",
-	template: `
-    <ion-list>
-        <ion-item (click)="showId()">
-            <ion-avatar item-left id="alpacatar">
-                <img src="../assets/alpacatar.jpeg">
-            </ion-avatar>
-            <h2>Mr. Paca: {{currentUser}}</h2>
-        </ion-item>
-    </ion-list>
-
-    <div id="catContainer">
-    <ion-list no-lines>
-        <ion-list-header>Filter by Category</ion-list-header>
-        <button ion-button clear="true" id="addCatButton" (click)="showCatModal()">+</button>
-        <ng-container *ngIf="cats">
-            <ion-item *ngFor="let cat of cats">
-                <ion-checkbox [(ngModel)]="cat.IsShown"></ion-checkbox>
-                <ion-label>{{cat.Name}}</ion-label>
-            </ion-item>
-        </ng-container>
-        <ion-item>
-            <ion-checkbox></ion-checkbox>
-            <ion-label>
-                Archived
-                <ion-icon name="archive"></ion-icon>
-            </ion-label>
-        </ion-item>
-    </ion-list>
-    </div>
-    `
+	templateUrl: 'filter.html'
 })
 
 export class CategorySort implements OnInit {
@@ -56,15 +26,27 @@ export class CategorySort implements OnInit {
 
 	ngOnInit(): void {
 		//this.userService.getUser().then(val => this.currentUser = val);
-		
-		setTimeout( () => {
-		this.todoService.getCategories().then(val => this.cats = val); 
+
+		setTimeout(() => {
+			this.todoService.getCategories().then(val => this.cats = val);
 		}, 5000);
 	}
 
-	showCatModal() {
-		let catModal = this.modalCtrl.create(CategoryManager);
-		catModal.present();
+	presentAddCat() {
+		let addCatModal = this.modalCtrl.create(AddCategory);
+		addCatModal.present();
+	}
+
+	editCat(cat: Category) {
+		cat.EditActive = !cat.EditActive;
+	}
+
+	onEditCatSubmit(cat) {
+		this.todoService.updateCategory(cat);
+	}
+
+	deleteCat(category: Category) {
+		this.todoService.deleteCategory(category);
 	}
 
 	presentLogin() {
@@ -112,10 +94,10 @@ export class PropertySort implements OnInit {
 		public modalCtrl: ModalController) { }
 
 	ngOnInit() {
-		setTimeout( () => {
+		setTimeout(() => {
 			this.todoService.getTodos().then(val => this.todos = val);
 		}, 5000);
-	
+
 	}
 
 	sortPriorityHL() {

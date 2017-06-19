@@ -132,8 +132,11 @@ export class TodoList implements OnInit {
 		var currentDate = new Date();
 		this.newTodo.DateCreated = currentDate;
 		console.log("todo-list new todo info:" + this.newTodo.Info);
-		this.todoService.addTodo(this.newTodo);
-		//TODO: pass newTodo to server and add to user's array 
+		this.todoService.addTodo(this.newTodo).then( () => {
+			this.todoService.getTodos().then(val => this.todos = val);
+		});
 		this.todos.push(this.newTodo);
+		//TODO: pass newTodo to server and add to user's array 
+
 	}
 }

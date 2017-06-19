@@ -115,7 +115,7 @@ export class TodoService {
 		const url = `${this.apiUrl}/board?userId=${this.id}`;
 
 		let body = new URLSearchParams();
-		body.set('userId', String(id));
+		body.set('userId', String(this.id));
 		body.set('boardId', board.DbId ? board.DbId.toString() : 'undefined');
 		body.set('title', board.Name);
 		body.set('dateCreated', 'undefined');
