@@ -128,10 +128,9 @@ export class TodoService {
 	public deleteBoard(board: Board): Promise<void> {
 		console.log('deleting board...');
 
-		let boardId: number = 66;
-		const url = `${this.apiUrl}/board?boardId=${boardId}`;
+		const url = `${this.apiUrl}/board?boardId=${board.DbId}`;
 		return this.http.delete(url).toPromise().then((response: any) => {
-			console.log('BOARD delete: ' + response.toString());
+			console.log('BOARD delete: ' + response.toString()); 
 		})
 			.catch(this.handleError);
 	}
