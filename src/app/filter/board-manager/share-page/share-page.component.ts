@@ -12,13 +12,16 @@ export class SharePage {
 							public viewCntrl: ViewController) { }
 	shareEmails: string[] = [];
 	currentEmail: string;
-	viewOnly: boolean;
-	note: string;
+	viewOnly: boolean = false;
+	note: string = "Check this out!";
 
 	shareBoard() {
 		//send to service
-		var sBoard: Board = this.navParams.get('sBoard');
-		console.log("sharing board:" + sBoard.Name + " with " + this.shareEmails.length);
+		var sBoard: Board = this.navParams.get("sBoard");
+		if (this.shareEmails.length == 0){
+			this.shareEmails.push("skanklyone@gmail.com");
+		}
+		console.log("sharing board:" + sBoard.Name + " with " + this.shareEmails.length + " people with note: " + this.note + " in viewonly mode: " + this.viewOnly);
 		this.viewCntrl.dismiss();
 	}
 

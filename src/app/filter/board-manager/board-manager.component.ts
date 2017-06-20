@@ -52,7 +52,7 @@ export class BoardManager implements OnInit{
 
 	shareBoard(sBoard){
 		console.log("share clicked");
-		let shareModal = this.modalCtrl.create(SharePage, {sBoard: Board});
+		let shareModal = this.modalCtrl.create(SharePage, {"sBoard" : sBoard});
 		shareModal.present();
 	}
 
