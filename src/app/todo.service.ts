@@ -33,7 +33,7 @@ const ColorArray: string[] = ['#919191', '#ff5c3f', '#ffb523', '#6f9b53', '#1371
 
 @Injectable()
 export class TodoService {
-	public CurrentBoard: Board; //TODO: change to behaviorSubject
+	public CurrentBoard: Board;
 	public CachedBoards: Board[] = [];
 	public CachedTodos: Todo[] = [];
 	public CachedCats: Category[] = [];
@@ -118,7 +118,7 @@ export class TodoService {
 			'userId': String(this.id),
 			'title': board.Name,
 			'boardId': board.DbId,
-			'dateCreated': '' // TODO: format date correctly (see todo POST)
+			'dateCreated': board.DateCreated.toISOString() 
 		};
 
 		let formBody = [];
@@ -156,7 +156,7 @@ export class TodoService {
 			'defaultOrder': newCat.Order ? newCat.Order.toString() : '',
 			'priorityVal': newCat.DefaultPriority.toString(),
 			'dateCreated': '',
-			'boardId': '1' // TODO: get board id from input once added
+			'boardId': String(newCat.BoardId)
 		};
 		console.log(newCat.DateCreated.toDateString());
 		console.log(newCat.DefaultPriority.toString());
@@ -270,7 +270,7 @@ export class TodoService {
 			'defaultOrder': cat.Order ? cat.Order.toString() : '',
 			'priorityVal': cat.DefaultPriority.toString(), 
 			'dateCreated': '',
-			'boardId': '1' // TODO: get board id from input once added
+			'boardId': String(cat.DbId) 
 		};
 
 		let formBody = [];
@@ -298,11 +298,6 @@ export class TodoService {
 			.catch(this.handleError);
 	}
 
-	// TODO: DELETE LATERRRRRRR
-	public tempGetTodos(): Promise<Todo[]> {
-		return Promise.resolve(TODOS0);
-	}
-
 	public addTodo(newTodo: Todo): Promise<void> {
 		console.log('adding todo...');
 
@@ -313,8 +308,9 @@ export class TodoService {
 			'userId': String(this.id),
 			'info': newTodo.Info,
 			'categoryId': newTodo.Category.DbId ? String(newTodo.Category.DbId) : '',
-			'dateCreated': '', // TODO: convert to format like '2017-6-12 00:00:00'
+			'dateCreated': newTodo.DateCreated.toISOString(), 
 			'isDone': newTodo.IsDone ? '1' : '0',
+			'dateDue': newTodo.DateDue ? newTodo.DateDue.toISOString() : '',
 			'dateDone': '',
 			'isArchived': newTodo.IsArchived ? '1' : '0',
 			'priorityVal': newTodo.Priority.toString(),
@@ -353,7 +349,7 @@ export class TodoService {
 					new Date(json['date_done']),
 					json['is_archived'],
 					Priority[Priority[json['priority_value']]],
-					null, // due date not implemented in DB yet
+					json['date_due'],
 					json['todo_id']));
 
 				// assign todo to a board (and category)
@@ -459,6 +455,7 @@ export class TodoService {
 			'info': todo.Info,
 			'categoryId': todo.Category.DbId ? String(todo.Category.DbId) : '',
 			'isDone': todo.IsDone ? '1' : '0',
+			'dateDue': todo.DateDue ? todo.DateDue.toISOString() : '',
 			'dateDone': '',
 			'isArchived': todo.IsArchived ? '1' : '0',
 			'priorityVal': todo.Priority.toString(),
