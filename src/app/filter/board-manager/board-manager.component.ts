@@ -8,15 +8,15 @@ import { SharePage } from './share-page/share-page.component';
 	templateUrl: 'board-manager.html',
 })
 
-export class BoardManager implements OnInit{
+export class BoardManager implements OnInit {
 
 	userBoards: Board[];
 	showAddBoard: boolean = false;
 	constructor(public modalCtrl: ModalController,
-							public viewCtrl: ViewController,
-							public todoService: TodoService) {}
+		public viewCtrl: ViewController,
+		public todoService: TodoService) { }
 
-	ngOnInit(){
+	ngOnInit() {
 		this.todoService.getBoards().then(val => this.userBoards = val);
 	}
 
@@ -24,39 +24,39 @@ export class BoardManager implements OnInit{
 		this.viewCtrl.dismiss();
 	}
 
-	openBoard(board){
+	openBoard(board) {
 		console.log(board.Name + " board opened");
 		this.todoService.openBoard(board);
 	}
 
-	addBoard(){
+	addBoard() {
 		this.showAddBoard = !this.showAddBoard;
 	}
 
 	newBoard: Board = new Board("Dogs", undefined, undefined, undefined, undefined);
-	onAddBoardFormSubmit(){
+	onAddBoardFormSubmit() {
 		this.newBoard.DateCreated = new Date();
 		this.todoService.addBoard(this.newBoard);
 		this.userBoards.push(this.newBoard);
 		this.showAddBoard = !this.showAddBoard;
 	}
 
-	editBoardActive(board){
+	editBoardActive(board) {
 		board.editActive = !board.editActive;
 	}
 
-	onEditBoardSubmit(board){
+	onEditBoardSubmit(board) {
 		this.todoService.updateBoard(board);
 		board.editActive = !board.editActive;
 	}
 
-	shareBoard(sBoard){
+	shareBoard(sBoard) {
 		console.log("share clicked");
-		let shareModal = this.modalCtrl.create(SharePage, {"sBoard" : sBoard});
+		let shareModal = this.modalCtrl.create(SharePage, { "sBoard": sBoard });
 		shareModal.present();
 	}
 
-	deleteBoard(board){
+	deleteBoard(board) {
 		this.todoService.deleteBoard(board);
 		this.userBoards.splice(this.userBoards.indexOf(board), 1);
 	}

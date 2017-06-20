@@ -14,7 +14,7 @@ export class SharePage {
   sharees: Recipient[] = [];
   note: string = "Check this out!";
   containsEdit: boolean = false;
-  containsView: boolean = false;
+  containsViewOnly: boolean = false;
 
   shareBoard() {
     //send to service
@@ -29,9 +29,9 @@ export class SharePage {
   newReci: Recipient = new Recipient(undefined, false);
   addReci(reci: Recipient){
     this.sharees.push(reci);
-    if (this.containsEdit == false || this.containsView == false){
+    if (this.containsEdit == false || this.containsViewOnly== false){
       if (reci.ViewOnly == true){
-        this.containsView = true;
+        this.containsViewOnly= true;
       }
       if (reci.ViewOnly == false){
         this.containsEdit = true;
@@ -42,16 +42,17 @@ export class SharePage {
 
   removeReci(reci: Recipient){
     this.sharees.splice(this.sharees.indexOf(reci), 1);
-    
-    for (let reci of this.sharees){
-      if (reci.ViewOnly == true){
-        break;
-      }
-      else{
-        this.containsView = false;
+		this.containsViewOnly = this.doesContainViewOnly();
+  }
+
+	private doesContainViewOnly(): boolean {
+		for (let reci of this.sharees) {
+      if (reci.ViewOnly == true) {
+        return true;
       }
     }
-  }
+		return false;
+	}
 
   closeModal(){
     this.viewCntrl.dismiss();
