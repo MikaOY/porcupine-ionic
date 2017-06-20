@@ -99,7 +99,7 @@
 							<ng-container *ngIf="todo.EditActive; else default">
 								<form (ngSubmit)="onFormSubmit(todo)" #editForm="ngForm">
 									<ion-item>
-										<ion-label for="dateDue">Date:</ion-label>
+										<ion-label for="dateDue">Date Due:</ion-label>
 										<ion-datetime displayFormat="DDD MMM D, YYYY" [(ngModel)]="todo.DateDue" name="dateDue" placeholder="{{todo.DateDue | date: yEEEMMMMd}}"></ion-datetime>
 									</ion-item>
 									<ion-item>
@@ -148,7 +148,7 @@
 
 			<div id="details" class="container">
 				<ion-item>
-					<ion-label for="dateCreated">Date:</ion-label>
+					<ion-label for="dateDue">Date Due:</ion-label>
 					<ion-datetime displayFormat="DDD MMM D, YYYY" [(ngModel)]="newTodo.DateDue" name="DateDue"></ion-datetime>
 				</ion-item>
 				<ion-item>
