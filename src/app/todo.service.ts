@@ -524,9 +524,6 @@ export class TodoService {
 			return this.GETBoards().mergeMap(boards => this.GETCategories(boards).mergeMap(cats => this.GETTodos(cats)
 				.map(args => {
 					this.isBusy = false;
-					console.log('current todos: ' + this.CachedBoards[0].Todos.length);
-					console.log('current cats: ' + this.CachedBoards[0].Categories.length);
-					console.log('current boards: ' + this.CachedBoards[0].Name);
 					return this.CachedBoards[0];
 				}).share()));
 		}
