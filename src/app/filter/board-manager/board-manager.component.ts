@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ModalController, ViewController } from 'ionic-angular';
 import { TodoService } from '../../todo.service';
 import { Board } from '../../board';
+import { SharePage } from './share-page/share-page.component';
 
 @Component({
 	templateUrl: 'board-manager.html',
@@ -47,6 +48,12 @@ export class BoardManager implements OnInit{
 	onEditBoardSubmit(board){
 		this.todoService.updateBoard(board);
 		board.editActive = !board.editActive;
+	}
+
+	shareBoard(sBoard){
+		console.log("share clicked");
+		let shareModal = this.modalCtrl.create(SharePage, {sBoard: Board});
+		shareModal.present();
 	}
 
 	deleteBoard(board){

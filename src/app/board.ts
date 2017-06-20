@@ -7,5 +7,6 @@ export class Board {
 							public Categories: Category[] = [],
 							public DateCreated: Date,
 							public DbId: number,
-							public EditActive?: boolean,){}
+							public EditActive?: boolean,
+							public BoardActive?: boolean){}
 }

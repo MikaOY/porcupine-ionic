@@ -87,9 +87,6 @@
 										<ion-col col-3>
 											<button ion-button clear (click)=todo.Lock(todo)><ion-icon name="lock"></ion-icon></button>
 										</ion-col>
-										<ion-col col-3>
-											<button ion-button clear (click)="shareTodo(todo)"><ion-icon name="share"></ion-icon></button>
-										</ion-col>
 									</ion-row>
 								</ion-grid>
 								<button ion-button id="editButton" small="true" clear="true" *ngIf="todo.DetailShown" (click)=activateEdit(todo)>edit</button>

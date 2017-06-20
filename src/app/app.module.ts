@@ -15,7 +15,7 @@ import { CategorySort, PropertySort } from './filter/filter.component';
 import { AddCategory } from './filter/cat-manager/add-category.component';
 import { BoardManager } from './filter/board-manager/board-manager.component';
 import { TodoList } from '../pages/todos/todo-list/todo-list.component'; 
-import { SharePage } from '../pages/todos/todo-list/share-page/share-page.component';
+import { SharePage } from './filter/board-manager/share-page/share-page.component';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
