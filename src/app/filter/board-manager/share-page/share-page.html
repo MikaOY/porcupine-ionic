@@ -2,22 +2,38 @@
 	<ion-grid>
 		<h2>Share</h2>
 		<form (ngSubmit)="shareBoard()" #shareBoardForm="ngForm">
-			<ion-list no-lines>
-				<ion-item *ngFor="let email of shareEmails">{{email}}
-					<button clear ion-button item-right type="button" (click)="removeEmail(email)"><ion-icon name="close"></ion-icon></button>
-				</ion-item>
-			</ion-list>
 
+			<ion-item-group no-lines *ngIf="containsEdit">
+				<p class="shareLabels">Can edit</p>
+				<ng-container *ngFor="let recipient of sharees">
+					<ion-item *ngIf="recipient.ViewOnly == false">{{recipient.Email}}
+						<button clear ion-button item-right type="button" (click)="removeReci(recipient)"><ion-icon name="close"></ion-icon></button>
+					</ion-item>
+				</ng-container>
+			</ion-item-group>
+
+			<ion-item-group no-lines *ngIf="containsView">
+				<p class="shareLabels">View only</p>
+				<ng-container *ngFor="let recipient of sharees">
+				<ion-item *ngIf="recipient.ViewOnly == true">{{recipient.Email}}
+					<button clear ion-button item-right type="button" (click)="removeReci(recipient)"><ion-icon name="close"></ion-icon></button>
+				</ion-item>
+				</ng-container>
+			</ion-item-group>
+
+			<p></p>
 			<ion-item>
 				<ion-label stacked>Email</ion-label>
-				<ion-input clearInput [(ngModel)]="currentEmail" name="email"></ion-input>
-				<button clear ion-button type="button" item-right (click)="addEmail(currentEmail)"><ion-icon name="checkmark"></ion-icon></button>
+				<ion-input clearInput [(ngModel)]="newReci.Email" name="email"></ion-input>
 			</ion-item>
 
 			<ion-item>
 				<ion-label for="options">{{(viewOnly ? 'View only' : 'Can edit')}}</ion-label>
-				<ion-toggle [(ngModel)]="viewOnly" name="viewOnly"></ion-toggle>
+				<ion-toggle [(ngModel)]="newReci.ViewOnly" name="viewOnly"></ion-toggle>
 			</ion-item>
+
+			<button clear ion-button type="button" item-right (click)="addReci(newReci)"><ion-icon name="checkmark"></ion-icon></button>
+			
 			<ion-item>
 				<ion-label stacked>Write a note! (optional)</ion-label>
 				<ion-textarea fz-elastic [(ngModel)]="note" name="note"></ion-textarea>
@@ -25,6 +41,7 @@
 
 			<button ion-button clear type="button" (click)="closeModal()">Cancel</button>
 			<button ion-button item-right clear type="submit">Share</button>
+			
 		</form>
 	</ion-grid>
 </div>
