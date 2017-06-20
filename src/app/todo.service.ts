@@ -118,7 +118,7 @@ export class TodoService {
 			'userId': String(this.id),
 			'title': board.Name,
 			'boardId': board.DbId,
-			'dateCreated': board.DateCreated.toISOString() 
+			'dateCreated': board.DateCreated.toISOString()
 		};
 
 		let formBody = [];
@@ -268,9 +268,9 @@ export class TodoService {
 			'title': cat.Name,
 			'color': cat.Color.toString(),
 			'defaultOrder': cat.Order ? cat.Order.toString() : '',
-			'priorityVal': cat.DefaultPriority.toString(), 
+			'priorityVal': cat.DefaultPriority.toString(),
 			'dateCreated': '',
-			'boardId': String(cat.DbId) 
+			'boardId': String(cat.DbId)
 		};
 
 		let formBody = [];
@@ -308,7 +308,7 @@ export class TodoService {
 			'userId': String(this.id),
 			'info': newTodo.Info,
 			'categoryId': newTodo.Category.DbId ? String(newTodo.Category.DbId) : '',
-			'dateCreated': newTodo.DateCreated.toISOString(), 
+			'dateCreated': newTodo.DateCreated.toISOString(),
 			'isDone': newTodo.IsDone ? '1' : '0',
 			'dateDue': newTodo.DateDue ? newTodo.DateDue.toISOString() : '',
 			'dateDone': '',
@@ -459,7 +459,7 @@ export class TodoService {
 			'dateDone': '',
 			'isArchived': todo.IsArchived ? '1' : '0',
 			'priorityVal': todo.Priority.toString(),
-		}; 
+		};
 
 		let formBody = [];
 		for (var property in details) {
@@ -509,30 +509,31 @@ export class TodoService {
 				val = false;
 			}
 		});
-		console.log('checkIfAvailable Val = ' + val);
 		return val;
 	}
 
 	public getCurrentBoard(): Observable<any> {
-		this.isBusy = true;
-		console.log('Getting current board...');
-		// Retrieve all data first, then pull current board after all concluded
-		return this.GETBoards().mergeMap(boards => this.GETCategories(boards).mergeMap(cats => this.GETTodos(cats)
-			.map(args => {
-				this.isBusy = false;
-				console.log('current todos: ' + this.CachedBoards[0].Todos.length);
-				console.log('cucrrent cats: ' + this.CachedBoards[0].Categories.length);
-				console.log('current boards: ' + this.CachedBoards[0].Name);
-				return this.CachedBoards[0];
-			}).share()));
+		// return cached if present
+		if (this.CurrentBoard != null && this.CurrentBoard != undefined) {
+			return Observable.of(this.CurrentBoard);
+		}
+		else {
+			this.isBusy = true;
+			console.log('Getting current board...');
+			// Retrieve all data first, then pull current board after all concluded
+			return this.GETBoards().mergeMap(boards => this.GETCategories(boards).mergeMap(cats => this.GETTodos(cats)
+				.map(args => {
+					this.isBusy = false;
+					console.log('current todos: ' + this.CachedBoards[0].Todos.length);
+					console.log('current cats: ' + this.CachedBoards[0].Categories.length);
+					console.log('current boards: ' + this.CachedBoards[0].Name);
+					return this.CachedBoards[0];
+				}).share()));
+		}
+	}
 
-		/*
-		this.GETBoards().mergeMap(boards => this.GETCategories(boards).mergeMap(cats => this.GETTodos(cats)))
-			.subscribe(args => this.isBusy = false);
-
-		let board: Board = this.CachedBoards[0];
-		return Observable.of(board);
-		*/
+	public setAsCurrentBoard(board: Board) {
+		this.CurrentBoard = board;
 	}
 
 	public async getBoards(): Promise<Board[]> {
