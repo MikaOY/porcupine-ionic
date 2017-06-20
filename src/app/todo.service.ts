@@ -112,13 +112,22 @@ export class TodoService {
 	public updateBoard(board: Board): Promise<void> {
 		console.log('updating board...');
 
-		const url = `${this.apiUrl}/board?userId=${this.id}`;
+		const url = `${this.apiUrl}/board`;
 
-		let body = new URLSearchParams();
-		body.set('userId', String(this.id));
-		body.set('boardId', board.DbId ? board.DbId.toString() : 'undefined');
-		body.set('title', board.Name);
-		body.set('dateCreated', 'undefined');
+		var details = {
+			'userId': String(this.id),
+			'title': board.Name,
+			'boardId': board.DbId,
+			'dateCreated': '' // TODO: format date correctly (see todo POST)
+		};
+
+		let formBody = [];
+		for (var property in details) {
+			var encodedKey = encodeURIComponent(property);
+			var encodedValue = encodeURIComponent(details[property]);
+			formBody.push(encodedKey + "=" + '\'' + encodedValue + '\'');
+		}
+		let body = formBody.join("&");
 
 		return this.http.put(url, body, this.options).toPromise().then((response: any) => {
 			console.log("updateBoards response:" + response.toString);
@@ -130,7 +139,7 @@ export class TodoService {
 
 		const url = `${this.apiUrl}/board?boardId=${board.DbId}`;
 		return this.http.delete(url).toPromise().then((response: any) => {
-			console.log('BOARD delete: ' + response.toString()); 
+			console.log('BOARD delete: ' + response.toString());
 		})
 			.catch(this.handleError);
 	}
@@ -138,14 +147,14 @@ export class TodoService {
 	public addCategory(newCat: Category): Promise<void> {
 		console.log('adding category...');
 
-		const url = `http://localhost:3000/category`;
+		const url = `${this.apiUrl}/category`;
 
 		var details = {
 			'userId': String(this.id),
 			'title': newCat.Name,
-			'color': newCat.Color.toString(), 
+			'color': newCat.Color.toString(),
 			'defaultOrder': newCat.Order ? newCat.Order.toString() : '',
-			'priorityVal': '', // TODO: get priority number from name
+			'priorityVal': newCat.DefaultPriority.toString(),
 			'dateCreated': '',
 			'boardId': '1' // TODO: get board id from input once added
 		};
@@ -253,15 +262,26 @@ export class TodoService {
 
 		const url = `${this.apiUrl}/category`;
 
-		let body = new URLSearchParams();
-		body.set('userId', String(this.id));
-		body.set('categoryId', cat.DbId ? cat.DbId.toString() : 'undefined');
-		body.set('title', cat.Name);
-		body.set('boardId', cat.BoardId.toString());
-		body.set('color', cat.Color.toString());
-		body.set('dateCreated', 'undefined');
-		body.set('defaultOrder', cat.Order ? cat.Order.toString() : 'undefined');
-		body.set('priorityVal', cat.DefaultPriority ? cat.DefaultPriority.toString() : 'undefined');
+		var details = {
+			'userId': String(this.id),
+			'categoryId': String(cat.DbId),
+			'title': cat.Name,
+			'color': cat.Color.toString(),
+			'defaultOrder': cat.Order ? cat.Order.toString() : '',
+			'priorityVal': cat.DefaultPriority.toString(), 
+			'dateCreated': '',
+			'boardId': '1' // TODO: get board id from input once added
+		};
+
+		let formBody = [];
+		for (var property in details) {
+			var encodedKey = encodeURIComponent(property);
+			var encodedValue = encodeURIComponent(details[property]);
+			formBody.push(encodedKey + "=" + '\'' + encodedValue + '\'');
+		}
+		let body = formBody.join("&");
+
+		console.log(body);
 
 		return this.http.put(url, body, this.options).toPromise().then((response: any) => {
 			console.log("updateCategories response:" + response.toString);
@@ -297,7 +317,7 @@ export class TodoService {
 			'isDone': newTodo.IsDone ? '1' : '0',
 			'dateDone': '',
 			'isArchived': newTodo.IsArchived ? '1' : '0',
-			'priorityVal': '0', // TODO: convert priorty name to number
+			'priorityVal': newTodo.Priority.toString(),
 		};
 
 		let formBody = [];
@@ -432,17 +452,26 @@ export class TodoService {
 
 		const url = `${this.apiUrl}/todo`;
 
-		let body = new URLSearchParams();
-		body.set('userId', String(this.id));
-		body.set('todoId', todo.DbId ? todo.DbId.toString() : 'undefined');
-		body.set('info', todo.Info);
-		body.set('categoryId', todo.Category.DbId ? todo.Category.DbId.toString() : 'undefined');
-		body.set('priorityVal', todo.Priority ? todo.Priority.toString() : 'undefined');
-		body.set('dateCreated', 'undefined');
-		body.set('isDone', todo.IsDone ? '1' : '0')
-		body.set('dateDone', 'undefined');
-		body.set('isArchived', todo.IsArchived ? '1' : '0');
-		console.log('Im ere');
+		// create req body
+		var details = {
+			'userId': String(this.id),
+			'todoId': String(todo.DbId),
+			'info': todo.Info,
+			'categoryId': todo.Category.DbId ? String(todo.Category.DbId) : '',
+			'isDone': todo.IsDone ? '1' : '0',
+			'dateDone': '',
+			'isArchived': todo.IsArchived ? '1' : '0',
+			'priorityVal': todo.Priority.toString(),
+		}; 
+
+		let formBody = [];
+		for (var property in details) {
+			var encodedKey = encodeURIComponent(property);
+			var encodedValue = encodeURIComponent(details[property]);
+			formBody.push(encodedKey + "=" + '\'' + encodedValue + '\'');
+		}
+		let body = formBody.join("&");
+
 		return this.http.put(url, body, this.options).toPromise().then((response: any) => {
 			console.log("updateTodos response:" + response.toString);
 		}).catch(this.handleError);
