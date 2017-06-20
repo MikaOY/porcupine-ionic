@@ -122,7 +122,7 @@ export class TodoList implements OnInit {
 
 	//adding a new todo
 	addTodo: boolean = false;
-	newTodo = new Todo(undefined, undefined, undefined, undefined, undefined, false, undefined);
+	newTodo = new Todo(undefined, undefined, undefined, false, undefined, false, undefined, undefined, undefined, false, false, false);
 	AddTodo() {
 		this.addTodo = !this.addTodo;
 	}
@@ -131,12 +131,25 @@ export class TodoList implements OnInit {
 		this.addTodo = !this.addTodo;
 		var currentDate = new Date();
 		this.newTodo.DateCreated = currentDate;
+		if (this.newTodo.Info == undefined || this.newTodo.Info == null ){
+			this.newTodo.Info = "Kiss alpaca";
+		}
+		if (this.newTodo.Category == undefined){
+			this.newTodo.Category = this.cats ? this.cats[0] : undefined;
+		}
+		if (this.newTodo.Priority == undefined){
+			this.newTodo.Priority = Priority.Medium;
+		}
+		if (this.newTodo.DateDue == undefined){
+			this.newTodo.DateDue = new Date(2017,1,1);
+		}
 		console.log("todo-list new todo info:" + this.newTodo.Info);
 		this.todoService.addTodo(this.newTodo).then( () => {
 			this.todoService.getTodos().then(val => this.todos = val);
 		});
 		this.todos.push(this.newTodo);
 		//TODO: pass newTodo to server and add to user's array 
+		this.newTodo = new Todo("Kiss alpaca", this.cats ? this.cats[0] : undefined, undefined, false, undefined, false, Priority.Low);
 
 	}
 }

@@ -40,8 +40,11 @@ export class AddCategory implements OnInit{
 		this.colorPicker = !this.colorPicker;
 	}
 
-	newCate = new Category(undefined, undefined, undefined);
+	newCate = new Category("Love", 3, undefined, undefined, 0, true, 0, Priority.Low, false);
 	onNewCatFormSubmit() {
+		if (this.newCate.BoardId == undefined){
+			this.newCate.BoardId = this.boards ? this.boards[0].DbId : undefined;
+		}
 		var currentDate = new Date();
 		this.newCate.DateCreated = currentDate;
 		this.newCate.BoardId = 0; // change later
@@ -49,7 +52,6 @@ export class AddCategory implements OnInit{
 		//code to take the newCate and add it to database
 		this.viewCntrl.dismiss(this.newCate);
 		this.todoService.addCategory(this.newCate);
-		
 	}
 
 	closeModal(){
