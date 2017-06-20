@@ -12,7 +12,7 @@ export class SharePage {
 							public viewCntrl: ViewController) { }
 	shareEmails: string[] = [];
 	currentEmail: string;
-	viewOnly: boolean = false;
+	viewOnly: boolean = true;
 	note: string = "Check this out!";
 
 	shareBoard() {
