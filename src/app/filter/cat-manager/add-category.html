@@ -2,7 +2,7 @@
 	<form (ngSubmit)="onNewCatFormSubmit()" #newCatForm="ngForm">
 		<ion-item>
 			<ion-label stacked>Category Name</ion-label>
-			<ion-input clearInput [(ngModel)]="newCate.Name" name="Name"></ion-input>
+			<ion-input clearInput required [(ngModel)]="newCate.Name" name="name"></ion-input>
 		</ion-item>
 
 		<ion-item *ngIf="this.colorPicker">
@@ -16,8 +16,10 @@
 		</div>
 
 		<ion-item>
-			<ion-label>Board Id</ion-label>
-			<ion-input [(ngModel)]="newCate.BoardId" name="catBoardId"></ion-input>
+			<ion-label for="board">Board:</ion-label>
+			<ion-select interface="popover" [(ngModel)]="newCate.BoardId" name="boardId">
+				<ion-option *ngFor="let board of boards" [value]="board.DbId">{{board.Name}}</ion-option>
+			</ion-select>
 		</ion-item>
 
 		<ion-item>
@@ -31,6 +33,7 @@
 		<button clear ion-button type="submit"><ion-icon name="checkmark"></ion-icon></button>
 		<button clear ion-button type="button" (click)="closeModal()"><ion-icon name="arrow-round-back"></ion-icon></button>
 	</form>
+	
 	<!-- TODO: remove these-->
 	<div>{{newCate.Name}}</div>
 	<div>{{newCate.DefaultPriority}}</div>

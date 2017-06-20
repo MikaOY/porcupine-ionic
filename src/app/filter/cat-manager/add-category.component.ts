@@ -3,6 +3,7 @@ import { TodoService } from '../../todo.service';
 import { ViewController, NavController } from 'ionic-angular';
 import { Category } from '../../category';
 import { Priority } from '../../priority';
+import { Board } from '../../board';
 
 @Component({
 	templateUrl: 'add-category.html'
@@ -15,9 +16,11 @@ export class AddCategory implements OnInit{
 
 	ngOnInit(){
 		this.todoService.getColors().then(ColorArray => this.ColorArray = ColorArray);
+		this.todoService.getBoards().then(val => this.boards = val);
 	}
 
 	private ColorArray: string[];
+	private boards: Board[];
 	colorPicker: boolean = true;
 
 	priority = Priority;
@@ -44,8 +47,9 @@ export class AddCategory implements OnInit{
 		this.newCate.BoardId = 0; // change later
 		console.log("onNewCatForm Clicked");
 		//code to take the newCate and add it to database
-		this.todoService.addCategory(this.newCate);
 		this.viewCntrl.dismiss(this.newCate);
+		this.todoService.addCategory(this.newCate);
+		
 	}
 
 	closeModal(){
