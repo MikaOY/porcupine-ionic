@@ -6,8 +6,8 @@
 			<ng-template #normalBoard>
 				<ion-item>
 					{{board.Name}}
-					<button ion-button clear (click)="deleteBoard(board)"><ion-icon name="trash"></ion-icon></button>
-					<button ion-button clear (click)="editBoardActive(board)">edit</button>
+					<button ion-button clear item-right (click)="deleteBoard(board)"><ion-icon name="trash"></ion-icon></button>
+					<button ion-button clear item-right (click)="editBoardActive(board)">edit</button>
 				</ion-item>
 			</ng-template>
 

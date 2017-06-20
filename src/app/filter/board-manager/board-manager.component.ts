@@ -25,7 +25,7 @@ export class BoardManager implements OnInit{
 
 	openBoard(board){
 		console.log(board.Name + " board opened");
-		this.todoService.openBoard(board);//should change CurrentBoard in ALL components
+		this.todoService.openBoard(board);
 	}
 
 	addBoard(){
@@ -34,9 +34,10 @@ export class BoardManager implements OnInit{
 
 	newBoard: Board = new Board(undefined, undefined, undefined, undefined, undefined);
 	onAddBoardFormSubmit(){
-		console.log("Submit board clicked");
 		this.newBoard.DateCreated = new Date();
 		this.todoService.addBoard(this.newBoard);
+		this.userBoards.push(this.newBoard);
+		this.showAddBoard = !this.showAddBoard;
 	}
 
 	editBoardActive(board){
@@ -44,13 +45,12 @@ export class BoardManager implements OnInit{
 	}
 
 	onEditBoardSubmit(board){
-		console.log("Boardname: " + board.Name);
 		this.todoService.updateBoard(board);
 		board.editActive = !board.editActive;
 	}
 
 	deleteBoard(board){
 		this.todoService.deleteBoard(board);
-		console.log('deleteboard clicked in board');
+		this.userBoards.splice(this.userBoards.indexOf(board), 1);
 	}
 }

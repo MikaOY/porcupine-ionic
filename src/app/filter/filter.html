@@ -28,13 +28,18 @@
 							<ion-label>Name</ion-label>
 							<ion-input [(ngModel)]="cat.Name" name="catName"></ion-input>
 						</ion-item>
+
 						<ion-item>
-							<ion-label>Board Id</ion-label>
-							<ion-input [(ngModel)]="cat.BoardId" name="catBoardId"></ion-input>
+							<ion-label for="board">Board:</ion-label>
+							<ion-select interface="popover" [(ngModel)]="cat.BoardId" name="boardId">
+								<ion-option *ngFor="let board of boards" [value]="board.DbId">{{board.Name}}</ion-option>
+							</ion-select>
 						</ion-item>
+
 						<button ion-button clear type="submit">Done</button>
-						<button ion-button (click)="deleteCat(cat)">DELETE</button>
+						<button ion-button clear (click)="deleteCat(cat)"><ion-icon name="trash"></ion-icon></button>
 					</form>
+					<p>{{cat.BoardId}}</p>
 				</div>
 
 			</ng-container>

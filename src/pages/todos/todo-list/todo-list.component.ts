@@ -49,8 +49,9 @@ export class TodoList implements OnInit {
 		todo.DetailShown = !todo.DetailShown;
 	}
 
-	deleteTodo(dbId){
-		this.todoService.deleteTodo(dbId);//remove from view too
+	deleteTodo(todo){
+		this.todoService.deleteTodo(todo.dbId);
+		this.todos.splice(this.todos.indexOf(todo),1);
 	}
 
 	activateEdit(todo) {
@@ -124,7 +125,6 @@ export class TodoList implements OnInit {
 	newTodo = new Todo(undefined, undefined, undefined, undefined, undefined, false, undefined);
 	AddTodo() {
 		this.addTodo = !this.addTodo;
-		console.log(this.todos.length);
 	}
 
 	onNewTodoFormSubmit() {

@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { ModalController } from 'ionic-angular';
 
 import { TodoService } from '../todo.service';
-import { Board } from '../board';
 import { Todo } from '../todo';
+import { Board } from '../board';
 import { Category } from '../category';
 import { LoginPage } from '../login/login.component';
 import { BoardManager } from './board-manager/board-manager.component';
@@ -19,6 +19,7 @@ import { AddCategory } from './cat-manager/add-category.component';
 export class CategorySort implements OnInit {
 	private currentUser: number;
 	private cats: Category[];
+	private boards: Board[];
 
 	constructor(private todoService: TodoService,
 		public modalCtrl: ModalController,
@@ -29,11 +30,17 @@ export class CategorySort implements OnInit {
 
 		setTimeout(() => {
 			this.todoService.getCategories().then(val => this.cats = val);
+			this.todoService.getBoards().then(val => this.boards = val);
 		}, 5000);
 	}
 
 	presentAddCat() {
 		let addCatModal = this.modalCtrl.create(AddCategory);
+		addCatModal.onDidDismiss(data => {
+			if (data){
+				this.cats.push(data);
+			}
+		});
 		addCatModal.present();
 	}
 
@@ -43,10 +50,12 @@ export class CategorySort implements OnInit {
 
 	onEditCatSubmit(cat) {
 		this.todoService.updateCategory(cat);
+		cat.EditActive = !cat.EditActive;
 	}
 
 	deleteCat(category: Category) {
 		this.todoService.deleteCategory(category);
+		this.cats.splice(this.cats.indexOf(category),1);
 	}
 
 	presentLogin() {

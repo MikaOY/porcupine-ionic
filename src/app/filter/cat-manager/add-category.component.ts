@@ -39,14 +39,13 @@ export class AddCategory implements OnInit{
 
 	newCate = new Category(undefined, undefined, undefined);
 	onNewCatFormSubmit() {
-		this.viewCntrl.dismiss();
 		var currentDate = new Date();
 		this.newCate.DateCreated = currentDate;
 		this.newCate.BoardId = 0; // change later
 		console.log("onNewCatForm Clicked");
 		//code to take the newCate and add it to database
 		this.todoService.addCategory(this.newCate);
-		
+		this.viewCntrl.dismiss(this.newCate);
 	}
 
 	closeModal(){
