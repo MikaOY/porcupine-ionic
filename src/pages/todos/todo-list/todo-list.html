@@ -163,7 +163,8 @@
 						<ion-option *ngFor="let pri of priority">{{pri}}</ion-option>
 					</ion-select>
 				</ion-item>
-				<button ion-button type="submit">Done</button>
+				<button ion-button clear type="submit">Done</button>
+				<button ion-button clear type="button" (click)="AddTodo()">Cancel</button>
 			</div>
 		</form>
 		<div>
@@ -177,6 +178,6 @@
 
 </ion-list>
 <ion-fab id="addButton">
-			<button ion-fab mini (click)=AddTodo()>+</button>
-		</ion-fab>
+	<button ion-fab mini (click)=AddTodo()>+</button>
+</ion-fab>
 </ion-content>

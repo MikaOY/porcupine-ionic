@@ -32,7 +32,7 @@ export class BoardManager implements OnInit{
 		this.showAddBoard = !this.showAddBoard;
 	}
 
-	newBoard: Board = new Board(undefined, undefined, undefined, undefined, undefined);
+	newBoard: Board = new Board("Dogs", undefined, undefined, undefined, undefined);
 	onAddBoardFormSubmit(){
 		this.newBoard.DateCreated = new Date();
 		this.todoService.addBoard(this.newBoard);
