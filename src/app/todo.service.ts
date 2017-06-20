@@ -154,7 +154,7 @@ export class TodoService {
 			'title': newCat.Name,
 			'color': newCat.Color.toString(),
 			'defaultOrder': newCat.Order ? newCat.Order.toString() : '',
-			'priorityVal': '', // TODO: get priority number from name
+			'priorityVal': newCat.DefaultPriority.toString(),
 			'dateCreated': '',
 			'boardId': '1' // TODO: get board id from input once added
 		};
@@ -268,7 +268,7 @@ export class TodoService {
 			'title': cat.Name,
 			'color': cat.Color.toString(),
 			'defaultOrder': cat.Order ? cat.Order.toString() : '',
-			'priorityVal': '', // TODO: get priority number from name
+			'priorityVal': cat.DefaultPriority.toString(), 
 			'dateCreated': '',
 			'boardId': '1' // TODO: get board id from input once added
 		};
@@ -317,7 +317,7 @@ export class TodoService {
 			'isDone': newTodo.IsDone ? '1' : '0',
 			'dateDone': '',
 			'isArchived': newTodo.IsArchived ? '1' : '0',
-			'priorityVal': '0', // TODO: convert priorty name to number
+			'priorityVal': newTodo.Priority.toString(),
 		};
 
 		let formBody = [];
@@ -461,7 +461,7 @@ export class TodoService {
 			'isDone': todo.IsDone ? '1' : '0',
 			'dateDone': '',
 			'isArchived': todo.IsArchived ? '1' : '0',
-			'priorityVal': '0', // TODO: convert priorty name to number
+			'priorityVal': todo.Priority.toString(),
 		}; 
 
 		let formBody = [];
