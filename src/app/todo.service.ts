@@ -50,7 +50,7 @@ export class TodoService {
 		var details = {
 			'userId': String(this.id),
 			'title': newBoard.Name,
-			'dateCreated': '',
+			'dateCreated': '', 
 		};
 
 		let formBody = [];
@@ -93,6 +93,7 @@ export class TodoService {
 
 			this.CachedBoards = array;
 			this.CurrentBoard = this.CachedBoards[0];
+			console.log('Boards retrieved!');
 			return array;
 		}).share()
 			.catch(this.handleError);
@@ -107,7 +108,7 @@ export class TodoService {
 			'userId': String(this.id),
 			'title': board.Name,
 			'boardId': board.DbId,
-			'dateCreated': board.DateCreated.toISOString()
+			'dateCreated': ''//board.DateCreated.toISOString()
 		};
 
 		let formBody = [];
@@ -293,9 +294,9 @@ export class TodoService {
 			'userId': String(this.id),
 			'info': newTodo.Info,
 			'categoryId': newTodo.Category.DbId ? String(newTodo.Category.DbId) : '',
-			'dateCreated': newTodo.DateCreated.toISOString(),
+			'dateCreated': '',//newTodo.DateCreated.toISOString()
 			'isDone': newTodo.IsDone ? '1' : '0',
-			'dateDue': newTodo.DateDue ? newTodo.DateDue.toISOString() : '',
+			'dateDue': '',//newTodo.DateDue ? newTodo.DateDue.toISOString() : ''
 			'dateDone': '',
 			'isArchived': newTodo.IsArchived ? '1' : '0',
 			'priorityVal': newTodo.Priority.toString(),
@@ -445,8 +446,8 @@ export class TodoService {
 			'info': todo.Info,
 			'categoryId': todo.Category.DbId ? String(todo.Category.DbId) : '',
 			'isDone': todo.IsDone ? '1' : '0',
-			'dateDue': todo.DateDue ? todo.DateDue.toISOString() : '',
-			'dateDone': '',
+			'dateDue': '',//todo.DateDue ? todo.DateDue.toISOString() : ''
+			'dateDone': '', 
 			'isArchived': todo.IsArchived ? '1' : '0',
 			'priorityVal': todo.Priority.toString(),
 		};
