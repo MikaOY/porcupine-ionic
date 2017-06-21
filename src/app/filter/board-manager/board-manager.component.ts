@@ -20,6 +20,10 @@ export class BoardManager implements OnInit {
 		this.todoService.getBoards().then(val => this.userBoards = val);
 	}
 
+	slothBoards(): Board[] {
+		return this.todoService.slothGetBoards();
+	}
+
 	dismissPage() {
 		this.viewCtrl.dismiss();
 	}

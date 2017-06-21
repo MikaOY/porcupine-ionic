@@ -576,6 +576,36 @@ export class TodoService {
 		console.log('--getTodos end');
 	}
 
+	public slothGetBoards(): Board[]{
+		if (this.checkIfAvailable([this.CachedBoards])){
+			return this.CachedBoards;
+		}
+		else {
+			let emptyBoard: Board[] = [];
+			return emptyBoard;
+		}
+	}
+
+	public slothGetCats(): Category[]{
+		if (this.checkIfAvailable([this.CachedCats])){
+			return this.CachedCats;
+		}
+		else {
+			let emptyCats: Category[] = [];
+			return emptyCats;
+		}
+	}
+
+	public slothGetTodos():Todo[]{
+		if (this.checkIfAvailable([this.CachedTodos])){
+			return this.CachedTodos;
+		}
+		else {
+			let emptyTodos: Todo[] = [];
+			return emptyTodos;
+		}
+	}
+
 	private waitForArray(array: any[]) {
 		while (!this.checkIfAvailable([array])) {
 			return array;

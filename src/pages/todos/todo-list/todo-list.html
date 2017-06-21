@@ -3,7 +3,7 @@
 	<!--what select mode looks like (tap&hold to activate)-->
 	<ng-container *ngIf="selectActive === true; else selInactive">
 		<ion-item-group reorder="true" (ionItemReorder)="reorderItems($event)">
-			<ion-item text-wrap *ngFor="let todo of {{this.getCurrentBoard().Todos}}" [style.background-color]="todo.SelectActive ? '#d1d1d1' : ''"
+			<ion-item text-wrap *ngFor="let todo of slothTodos()" [style.background-color]="todo.SelectActive ? '#d1d1d1' : ''"
 			 class="todoItem" (click)="activateSelect(todo)">
 				<ion-checkbox [(ngModel)]="todo.IsDone" disabled="true"></ion-checkbox>
 				<ion-label>{{todo.Info}}</ion-label>
@@ -16,7 +16,7 @@
 	<!--your typical todo look-->
 	<ng-template #selInactive>
 		<div *ngIf="todos">
-			<ng-container *ngFor="let todo of {{this.getCurrentBoard().Todos}}" class="inline-todo">
+			<ng-container *ngFor="let todo of slothTodos()" class="inline-todo">
 				<ng-container *ngIf="!todo.IsArchived">
 					<div *ngIf="todo.Category == null ? true : todo.Category.IsShown">
 						<ion-item-sliding>
@@ -102,7 +102,7 @@
 									<ion-item>
 										<ion-label for="category">Category:</ion-label>
 										<ion-select interface="popover" [(ngModel)]="todo.Category" name="Category">
-											<ion-option *ngFor="let cat of {{this.getAllCats()}}" [value]="cat">{{cat.Name}}</ion-option>
+											<ion-option *ngFor="let cat of slothCats()" [value]="cat">{{cat.Name}}</ion-option>
 										</ion-select>
 									</ion-item>
 									<ion-item>
@@ -151,7 +151,7 @@
 				<ion-item>
 					<ion-label for="category">Category:</ion-label>
 					<ion-select interface="popover" [(ngModel)]="newTodo.Category" name="Category">
-						<ion-option *ngFor="let cat of {{this.getAllCats()}}" [value]="cat">{{cat.Name}}</ion-option>
+						<ion-option *ngFor="let cat of slothCats()" [value]="cat">{{cat.Name}}</ion-option>
 					</ion-select>
 				</ion-item>
 				<ion-item>
