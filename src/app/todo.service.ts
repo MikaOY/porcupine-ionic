@@ -598,6 +598,16 @@ export class TodoService {
 		}
 	}
 
+	public slothGetTodos():Todo[]{
+		if (this.checkIfAvailable([this.CachedTodos])){
+			return this.CachedTodos;
+		}
+		else {
+			let emptyTodos: Todo[] = [];
+			return emptyTodos;
+		}
+	}
+
 	private waitForArray(array: any[]) {
 		while (!this.checkIfAvailable([array])) {
 			return array;
