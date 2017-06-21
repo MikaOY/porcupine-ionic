@@ -379,7 +379,9 @@ export class TodoService {
 							while (board.Categories == null || board.Categories.length == 0) {
 								console.log('TODOS: Cat[] prop on ' + board.Name + ' unavailable! Waiting...');
 							}
-
+							if (!todoCat.BoardId) {
+								console.log('Todo cat board undefined!');
+							}
 							// (board Cats[] not null, can continue with check)
 							return board.DbId == todoCat.BoardId;
 						});
@@ -527,7 +529,7 @@ export class TodoService {
 			.catch(this.handleError);
 	}
 
-	private GETShared(): Observable<Board[]> {
+	private GETShared(args: any): Observable<Board[]> {
 		console.log('requesting shared...');
 
 		const url = `${this.apiUrl}/shared?userId=${this.id}`;
@@ -542,7 +544,7 @@ export class TodoService {
 			// check if new todo => create + add to todos
 			let boardArray: Board[] = [];
 			let catArray: Category[] = [];
-			let todoArray: Todo[] = [];
+			let todoArray: Todo[] = []; 
 			let i: number = 0;
 			for (let json of response.json()) {
 				i++;
@@ -553,6 +555,7 @@ export class TodoService {
 						&& boardArray.find((board, index, bArray) => board.DbId == json['board_id']) == undefined)) {
 
 					boardArray.push(new Board(json['board_title'], [], [], json['board_date_created'], json['board_id']));
+					console.log('Shared: Cached board ' + boardArray[boardArray.length - 1].Name);
 				}
 
 				// cats
@@ -579,6 +582,7 @@ export class TodoService {
 					// push new cat to Cats[] prop of board it belongs to AND local catsArray
 					b.Categories.push(cat);
 					catArray.push(cat);
+					console.log('Shared: Cached cat ' + b.Categories[b.Categories.length - 1].Name + ' to ' + b.Name);
 				}
 
 				// todos
@@ -614,6 +618,7 @@ export class TodoService {
 					// push new cat to Cats[] prop of board it belongs to AND local catsArray
 					b.Todos.push(todo);
 					todoArray.push(todo);
+					console.log('Shared: Cached todo ' + b.Todos[b.Todos.length - 1].Info + ' to ' + b.Name);
 				}
 			}
 
@@ -629,6 +634,15 @@ export class TodoService {
 			});
 
 			this.CachedSharedBoards = boardArray;
+			console.log('Shared retrieved!');
+			this.CachedSharedBoards.forEach(board => {
+				board.Todos.forEach(todo => {
+					console.log(board.Name + ': ' + todo.Info);
+				});
+				board.Categories.forEach(cat => {
+					console.log(board.Name + ': ' + cat.Name);
+				});
+			});
 			return boardArray;
 		}).catch(this.handleError);
 	}
@@ -669,11 +683,14 @@ export class TodoService {
 			this.isBusy = true;
 			console.log('Getting current board...');
 			// Retrieve all data first, then pull current board after all concluded
-			return this.GETBoards().mergeMap(boards => this.GETCategories(boards).mergeMap(cats => this.GETTodos(cats)
-				.map(args => {
-					this.isBusy = false;
-					return this.CachedBoards[0];
-				}).share()));
+			return this.GETBoards().mergeMap(boards =>
+				this.GETCategories(boards).mergeMap(cats =>
+					this.GETTodos(cats).mergeMap(todos =>
+						this.GETShared(todos))
+						.map(args => {
+							this.isBusy = false;
+							return this.CachedBoards[0];
+						}).share()));
 		}
 	}
 
