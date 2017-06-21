@@ -30,9 +30,12 @@ export class TodosPage implements OnInit {
 		}
 	}
 
+	slothCurrentBoard(): Board {
+		return this.todoService.slothGetCurrentBoard();
+	}
 	changeBoard(board) {
-		console.log("Current board: " + board);
-		this.todoService.changeBoard(board).then(nBoard => this.currentBoard = nBoard);
+		console.log("Current board: " + board.Name);
+		this.todoService.changeBoard(board);
 	}
 
 	doSomething(){

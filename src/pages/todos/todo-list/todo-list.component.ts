@@ -38,12 +38,8 @@ export class TodoList implements OnInit {
 		}, 5000);
 	}
 
-	slothCats(): Category[] {
-		return this.todoService.slothGetCats();
-	}
-
-	slothTodos(): Todo[] {
-		return this.todoService.slothGetTodos();
+	slothCurrentBoard(): Board {
+		return this.todoService.slothGetCurrentBoard();
 	}
 
 	todoPriority(pri: number): Array<number> {

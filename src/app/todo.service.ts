@@ -606,6 +606,17 @@ export class TodoService {
 		}
 	}
 
+	public slothGetCurrentBoard(): Board {
+		if (this.CurrentBoard != null && this.CurrentBoard != undefined){
+			return this.CurrentBoard;
+		}
+		else {
+			let emptyBoard: Board;
+			console.log("NONONON");
+			return emptyBoard;
+		}
+	}
+
 	private waitForArray(array: any[]) {
 		while (!this.checkIfAvailable([array])) {
 			return array;
