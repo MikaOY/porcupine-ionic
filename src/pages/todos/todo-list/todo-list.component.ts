@@ -16,7 +16,8 @@ import { UnlockPage } from '../../../app/lockable/unlock-page.component';
 
 export class TodoList implements OnInit {
 	private currentBoard: Board;
-
+	private cats: Category[] = [];
+	private todos: Todo[] = [];
 	// this sets colors for the category numbers
 	ColorArray: string[];
 
@@ -30,15 +31,9 @@ export class TodoList implements OnInit {
 	ngOnInit(): void {
 		setTimeout(() => {
 			this.todoService.getColors().then(colorArray => this.ColorArray = colorArray);
+			this.todoService.getTodos().then(val => this.todos = val);
+			this.todoService.getCategories().then(val => this.cats = val);
 		}, 5000);
-	}
-
-	getCurrentBoard(): Observable<Board> {
-		return this.todoService.getCurrentBoard();
-	}
-
-	getAllCats(): Promise<Category[]> {
-		return this.todoService.getCategories();
 	}
 
 	todoPriority(pri: number): Array<number> {
@@ -132,9 +127,8 @@ export class TodoList implements OnInit {
 			this.newTodo.Info = "Kiss alpaca";
 		}
 		if (this.newTodo.Category == undefined) {
-			let cats: Category[];
-			this.getAllCats().then(categories => cats = categories);
-			this.newTodo.Category = cats ? cats[0] : undefined;
+			
+			this.newTodo.Category = this.cats ? this.cats[0] : undefined;
 		}
 		if (this.newTodo.Priority == undefined) {
 			this.newTodo.Priority = Priority.Medium;
@@ -145,7 +139,6 @@ export class TodoList implements OnInit {
 
 		this.todoService.addTodo(this.newTodo);
 		// reset form
-		this.newTodo = new Todo("Kiss alpaca", this.getAllCats() ? this.getAllCats()[0]
-			: undefined, undefined, false, undefined, false, Priority.Low);
+		this.newTodo = new Todo("Kiss alpaca", undefined, undefined, false, undefined, false, Priority.Low);
 	}
 }

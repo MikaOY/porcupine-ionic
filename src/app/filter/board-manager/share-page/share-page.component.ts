@@ -9,7 +9,7 @@ import { ViewController } from 'ionic-angular';
 
 export class SharePage {
 	constructor(public navParams: NavParams,
-							public viewCntrl: ViewController) { }
+		public viewCntrl: ViewController) { }
 	shareEmails: string[] = [];
 	currentEmail: string;
 	viewOnly: boolean = true;
@@ -18,23 +18,23 @@ export class SharePage {
 	shareBoard() {
 		//send to service
 		var sBoard: Board = this.navParams.get("sBoard");
-		if (this.shareEmails.length == 0){
+		if (this.shareEmails.length == 0) {
 			this.shareEmails.push("skanklyone@gmail.com");
 		}
 		console.log("sharing board:" + sBoard.Name + " with " + this.shareEmails.length + " people with note: " + this.note + " in viewonly mode: " + this.viewOnly);
 		this.viewCntrl.dismiss();
 	}
 
-	addEmail(currentEmail){
+	addEmail(currentEmail) {
 		this.shareEmails.push(currentEmail);
 		this.currentEmail = "";
 	}
 
-	removeEmail(email){
+	removeEmail(email) {
 		this.shareEmails.splice(this.shareEmails.indexOf(email), 1);
 	}
 
-	closeModal(){
+	closeModal() {
 		this.viewCntrl.dismiss();
 	}
 }
