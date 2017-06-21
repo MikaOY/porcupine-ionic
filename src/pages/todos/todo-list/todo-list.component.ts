@@ -57,7 +57,7 @@ export class TodoList implements OnInit {
 	}
 
 	deleteTodo(todo) {
-		this.todoService.deleteTodo(todo.dbId);
+		this.todoService.deleteObject(todo);
 		this.todos.splice(this.todos.indexOf(todo), 1);
 	}
 

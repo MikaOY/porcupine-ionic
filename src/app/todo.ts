@@ -1,8 +1,9 @@
 import { Category } from './category';
 import { Priority } from './priority';
+import { DbCompatible } from './db-compatible.interface';
 import { Lockable } from './lockable/lockable.interface';
 
-export class Todo implements Lockable{
+export class Todo implements Lockable, DbCompatible {
     constructor(public Info: string,
                 public Category: Category,
                 public DateCreated: Date,
