@@ -50,7 +50,7 @@ export class TodoService {
 		var details = {
 			'userId': String(this.id),
 			'title': newBoard.Name,
-			'dateCreated': '', 
+			'dateCreated': '',
 		};
 
 		let formBody = [];
@@ -276,7 +276,7 @@ export class TodoService {
 	// actual delete
 	private deleteCategory(cat: Category): Promise<void> {
 		console.log('deleting category...');
-		
+
 		const url = `${this.apiUrl}/category?categoryId=${cat.DbId}`;
 		return this.http.delete(url).toPromise().then((response: any) => {
 			console.log('CAT delete: ' + response.toString());
@@ -311,7 +311,7 @@ export class TodoService {
 			formBody.push(encodedKey + "=" + '\'' + encodedValue + '\'');
 		}
 		let body = formBody.join("&");
-		console.log(body); 
+		console.log(body);
 
 		return this.http.post(url, body, this.options).toPromise().then((response: any) => {
 			console.log("addTodo response:" + response.toString);
@@ -450,7 +450,7 @@ export class TodoService {
 			'categoryId': todo.Category.DbId ? String(todo.Category.DbId) : '',
 			'isDone': todo.IsDone ? '1' : '0',
 			'dateDue': '',//todo.DateDue ? todo.DateDue.toISOString() : ''
-			'dateDone': '', 
+			'dateDone': '',
 			'isArchived': todo.IsArchived ? '1' : '0',
 			'priorityVal': '0',//todo.Priority.toString(),
 		};
@@ -473,8 +473,8 @@ export class TodoService {
 
 		// create req body
 		let idName: string = obj.constructor.name.toLowerCase() + 'Id';
-		console.log('deleting...' + idName); 
-		
+		console.log('deleting...' + idName);
+
 		var details = {
 			'userId': String(this.id),
 			[idName]: String(obj.DbId)
@@ -487,7 +487,21 @@ export class TodoService {
 			formBody.push(encodedKey + "=" + '\'' + encodedValue + '\'');
 		}
 		let body = formBody.join("&");
-		console.log(body);
+
+		// delete obj from cache 
+		switch (idName) {
+			case 'todoId':
+				this.CurrentBoard.Todos.splice(this.CurrentBoard.Todos.indexOf(obj as Todo));
+				this.CachedTodos.splice(this.CachedTodos.indexOf(obj as Todo));
+				break;
+			case 'categoryId':
+				this.CurrentBoard.Categories.splice(this.CurrentBoard.Categories.indexOf(obj as Category));
+				this.CachedCats.splice(this.CachedCats.indexOf(obj as Category));
+				break;
+			case 'boardId':
+				this.CachedBoards.splice(this.CachedBoards.indexOf(obj as Board));
+				break;
+		}
 
 		this.http.put(url, body, this.options).toPromise().then((response: any) => {
 			console.log("delete " + idName + " response: " + response.toString);
@@ -574,7 +588,7 @@ export class TodoService {
 						Priority[Priority[json['todo_priority']]],
 						json['todo_id'],
 						json['date_due']);
-					
+
 					// find cat todo belongs to
 					let c: Category = catArray.find((cat, index, arrayC) => cat.DbId == json['category_id_todo']);
 					if (c == undefined) {
