@@ -15,6 +15,7 @@ export class TodosPage implements OnInit {
 
 	// Leave service calls in init callback!
 	ngOnInit(): void {
+		//leave this and currentBoard to initialize all app caches
 		this.todoService.getCurrentBoard().subscribe(cBoard => this.currentBoard = cBoard as Board);
 	}
 
@@ -33,6 +34,7 @@ export class TodosPage implements OnInit {
 	slothCurrentBoard(): Board {
 		return this.todoService.slothGetCurrentBoard();
 	}
+
 	changeBoard(board) {
 		console.log("Current board: " + board.Name);
 		this.todoService.nextBoard(board);

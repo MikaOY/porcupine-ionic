@@ -9,7 +9,6 @@ import { LoginPage } from '../login/login.component';
 import { BoardManager } from './board-manager/board-manager.component';
 import { UserService } from '../user.service';
 import { AddCategory } from './cat-manager/add-category.component';
-// CATEGORY
 
 @Component({
 	selector: "category-list",
@@ -18,8 +17,9 @@ import { AddCategory } from './cat-manager/add-category.component';
 
 export class CategorySort implements OnInit {
 	private currentUser: number;
-	private cats: Category[];
 	private boards: Board[];
+
+	justWait: boolean = false;
 
 	constructor(private todoService: TodoService,
 		public modalCtrl: ModalController,
@@ -29,7 +29,7 @@ export class CategorySort implements OnInit {
 		//this.userService.getUser().then(val => this.currentUser = val);
 
 		setTimeout(() => {
-			this.todoService.getCategories().then(val => this.cats = val);
+			this.justWait = true;
 			this.todoService.getBoards().then(val => this.boards = val);
 		}, 5000);
 	}
@@ -47,7 +47,7 @@ export class CategorySort implements OnInit {
 		let addCatModal = this.modalCtrl.create(AddCategory);
 		addCatModal.onDidDismiss(data => {
 			if (data){
-				this.cats.push(data);
+				//this.cats.push(data);
 			}
 		});
 		addCatModal.present();
@@ -64,7 +64,7 @@ export class CategorySort implements OnInit {
 
 	deleteCat(category: Category) {
 		this.todoService.deleteObject(category);
-		this.cats.splice(this.cats.indexOf(category),1);
+		//this.cats.splice(this.cats.indexOf(category),1);
 	}
 
 	presentLogin() {

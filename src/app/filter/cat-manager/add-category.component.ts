@@ -44,7 +44,7 @@ export class AddCategory implements OnInit{
 		this.colorPicker = !this.colorPicker;
 	}
 
-	newCate = new Category("Love", 3, undefined, undefined, 0, Priority.Low, true, false); 
+	newCate = new Category("Love", undefined, undefined, undefined, 0, Priority.Low, true, false); 
 	onNewCatFormSubmit() {
 		if (this.newCate.BoardId == undefined){
 			this.newCate.BoardId = this.boards ? this.boards[0].DbId : undefined;
