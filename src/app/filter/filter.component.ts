@@ -17,7 +17,6 @@ import { AddCategory } from './cat-manager/add-category.component';
 
 export class CategorySort implements OnInit {
 	private currentUser: number;
-
 	justWait: boolean = false;
 
 	constructor(private todoService: TodoService,
@@ -39,7 +38,6 @@ export class CategorySort implements OnInit {
 	slothCurrentBoard(): Board {
 		return this.todoService.slothGetCurrentBoard();
 	}
-
 
 	presentAddCat() {
 		let addCatModal = this.modalCtrl.create(AddCategory);
