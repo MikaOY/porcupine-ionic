@@ -28,7 +28,7 @@ export class BoardManager implements OnInit {
 		this.viewCtrl.dismiss();
 	}
 
-	openBoard(board) {
+	openBoard(board: Board) {
 		console.log(board.Name + " board opened");
 		this.todoService.openBoard(board);
 	}
@@ -45,22 +45,23 @@ export class BoardManager implements OnInit {
 		this.showAddBoard = !this.showAddBoard;
 	}
 
-	editBoardActive(board) {
-		board.editActive = !board.editActive;
+	editBoardActive(board: Board) {
+		board.IsEditActive = !board.IsEditActive;
 	}
 
-	onEditBoardSubmit(board) {
+	onEditBoardSubmit(board: Board) {
 		this.todoService.updateBoard(board);
-		board.editActive = !board.editActive;
+		board.IsEditActive = !board.IsEditActive;
 	}
 
-	shareBoard(sBoard) {
+	shareBoard(sBoard: Board) {
 		console.log("share clicked");
 		let shareModal = this.modalCtrl.create(SharePage, { "sBoard": sBoard });
 		shareModal.present();
 	}
 
-	deleteBoard(board) {
+	deleteBoard(board: Board) {
+		console.log("board Db Id" + board.DbId);
 		this.todoService.deleteObject(board);
 		this.userBoards.splice(this.userBoards.indexOf(board), 1);
 	}
