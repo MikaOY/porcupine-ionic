@@ -1,6 +1,7 @@
 import { Priority } from './priority';
+import { DbCompatible } from './db-compatible.interface';
 
-export class Category {
+export class Category implements DbCompatible {
     constructor(public Name: string, 
                 public Color: number, // index in a Color array
                 public DateCreated: Date,

@@ -1,7 +1,8 @@
 import { Todo } from './todo';
 import { Category } from './category';
+import { DbCompatible } from './db-compatible.interface';
 
-export class Board {
+export class Board implements DbCompatible {
 	constructor(public Name: string,
 							public Todos: Todo[] = [],
 							public Categories: Category[] = [],

@@ -61,7 +61,7 @@ export class BoardManager implements OnInit {
 	}
 
 	deleteBoard(board) {
-		this.todoService.deleteBoard(board);
+		this.todoService.deleteObject(board);
 		this.userBoards.splice(this.userBoards.indexOf(board), 1);
 	}
 }

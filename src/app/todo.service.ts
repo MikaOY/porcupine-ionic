@@ -4,6 +4,7 @@ import { Todo } from './todo';
 import { Category } from './category';
 import { Priority } from './priority';
 import { Board } from './board';
+import { DbCompatible } from './db-compatible.interface';
 
 import { Http, Response, RequestOptions, Headers } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
@@ -13,21 +14,6 @@ import 'rxjs/add/operator/share';
 import 'rxjs/add/operator/startWith';
 import 'rxjs/add/operator/toPromise';
 import 'rxjs/add/observable/fromPromise';
-
-
-// Samples DbId set to 123456789 for easy removal 
-const CATS0: Category[] = [new Category('Life', 1, new Date(2017, 4, 30), 123456789, 0, 0, true, false),
-new Category('Coding', 2, new Date(2017, 3, 26), 123456789, 0, 2, true, false),
-new Category('Unsorted', 0, null, 123456789, 0, 0, true, false)];
-
-const TODOS0: Todo[] = [new Todo('Give an alpaca a hug', CATS0[0], new Date(2017, 4, 30), false, undefined, false, Priority.Low, 123456789),
-new Todo('Finish Porcupine', CATS0[1], new Date(2017, 4, 28), false, undefined, false, Priority.Medium, 123456789), 
-new Todo('Make moist brownie', CATS0[2], new Date(2017, 4, 29), true, new Date(2017, 4, 30), false, Priority.High, 123456789),
-new Todo('Upload photos to Drive', CATS0[0], new Date(2017, 4, 30), false, undefined, false, Priority.Low, 123456789),
-new Todo('Pet a pug', CATS0[1], new Date(2017, 4, 28), false, undefined, false, Priority.Medium, 123456789)];
-
-// const BOARDS: Board[] = [new Board('Important Things in Life', TODOS0.reverse(), CATS0.reverse(), undefined, undefined),
-// new Board('More Things Todo', TODOS0, CATS0, undefined, undefined)];
 
 const ColorArray: string[] = ['#919191', '#ff5c3f', '#ffb523', '#6f9b53', '#1371d6', '#423e7c', '#7606cc', '#c613b4'];
 
@@ -89,7 +75,7 @@ export class TodoService {
 
 			let array: Board[] = [];
 			for (let json of response.json()) {
-				array.push(new Board(json['board_title'], TODOS0, CATS0, json['board_date_created'], json['board_id']));
+				array.push(new Board(json['board_title'], [], [], json['board_date_created'], json['board_id']));
 			}
 
 			// assign built array to cache
@@ -102,6 +88,7 @@ export class TodoService {
 					}
 				}
 			});
+
 			this.CachedBoards = array;
 			this.CurrentBoard = this.CachedBoards[0];
 			return array;
@@ -134,7 +121,8 @@ export class TodoService {
 		}).catch(this.handleError);
 	}
 
-	public deleteBoard(board: Board): Promise<void> {
+	// actual delete
+	private deleteBoard(board: Board): Promise<void> {
 		console.log('deleting board...');
 
 		const url = `${this.apiUrl}/board?boardId=${board.DbId}`;
@@ -282,7 +270,8 @@ export class TodoService {
 		}).catch(this.handleError);
 	}
 
-	public deleteCategory(cat: Category): Promise<void> {
+	// actual delete
+	private deleteCategory(cat: Category): Promise<void> {
 		console.log('deleting category...');
 
 		const url = `${this.apiUrl}/category?categoryId=${cat.DbId}`;
@@ -428,8 +417,16 @@ export class TodoService {
 					}
 				}
 			});
+
 			this.CachedTodos = array;
 			console.log('Todos retrieved!');
+
+			this.CachedBoards.forEach(board => {
+				board.Todos.forEach(todo => {
+					console.log(board.Name + ': ' + todo.Info);
+				});
+			});
+
 			return array;
 		}).catch(this.handleError);
 	}
@@ -465,11 +462,37 @@ export class TodoService {
 		}).catch(this.handleError);
 	}
 
-	public deleteTodo(todoId): Promise<void> {
+	public deleteObject(obj: DbCompatible) {
 		console.log('deleting todo...');
 
-		//let todoId: number = 66;
-		const url = `${this.apiUrl}/todo?todoId=${todoId}`;
+		const url = `${this.apiUrl}/${obj.constructor.name.toLowerCase()}/delete`;
+		console.log(url);
+
+		// create req body
+		let idName: string = obj.constructor.name.toLowerCase() + 'Id';
+		var details = {
+			'userId': String(this.id),
+			[idName]: String(obj.DbId)
+		};
+
+		let formBody = [];
+		for (var property in details) {
+			var encodedKey = encodeURIComponent(property);
+			var encodedValue = encodeURIComponent(details[property]);
+			formBody.push(encodedKey + "=" + '\'' + encodedValue + '\'');
+		}
+		let body = formBody.join("&");
+		console.log(body);
+
+		this.http.put(url, body, this.options).toPromise().then((response: any) => {
+			console.log("deleteTodos response:" + response.toString);
+		}).catch(this.handleError);
+	}
+
+	// actual delete
+	private deleteTodo(todo: Todo): Promise<void> {
+		const url = `${this.apiUrl}/todo?todoId=${todo.DbId}`;
+
 		return this.http.delete(url).toPromise().then((response: any) => {
 			console.log('TODO delete: ' + response.toString());
 		})
@@ -566,8 +589,8 @@ export class TodoService {
 		console.log('--getTodos no cache');
 	}
 
-	public slothGetBoards(): Board[]{
-		if (this.checkIfAvailable([this.CachedBoards])){
+	public slothGetBoards(): Board[] {
+		if (this.checkIfAvailable([this.CachedBoards])) {
 			return this.CachedBoards;
 		}
 		else {
@@ -576,8 +599,8 @@ export class TodoService {
 		}
 	}
 
-	public slothGetCats(): Category[]{
-		if (this.checkIfAvailable([this.CachedCats])){
+	public slothGetCats(): Category[] {
+		if (this.checkIfAvailable([this.CachedCats])) {
 			return this.CachedCats;
 		}
 		else {
@@ -586,8 +609,8 @@ export class TodoService {
 		}
 	}
 
-	public slothGetTodos():Todo[]{
-		if (this.checkIfAvailable([this.CachedTodos])){
+	public slothGetTodos(): Todo[] {
+		if (this.checkIfAvailable([this.CachedTodos])) {
 			return this.CachedTodos;
 		}
 		else {
