@@ -469,13 +469,12 @@ export class TodoService {
 	}
 
 	public deleteObject(obj: DbCompatible) {
-		console.log('deleting todo...');
-
 		const url = `${this.apiUrl}/${obj.constructor.name.toLowerCase()}/delete`;
-		console.log(url);
 
 		// create req body
 		let idName: string = obj.constructor.name.toLowerCase() + 'Id';
+		console.log('deleting...' + idName); 
+		
 		var details = {
 			'userId': String(this.id),
 			[idName]: String(obj.DbId)
@@ -491,7 +490,7 @@ export class TodoService {
 		console.log(body);
 
 		this.http.put(url, body, this.options).toPromise().then((response: any) => {
-			console.log("deleteTodos response:" + response.toString);
+			console.log("delete " + idName + " response: " + response.toString);
 		}).catch(this.handleError);
 	}
 
