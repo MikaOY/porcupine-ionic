@@ -41,7 +41,6 @@ export class BoardManager implements OnInit {
 	onAddBoardFormSubmit() {
 		this.newBoard.DateCreated = new Date();
 		this.todoService.addBoard(this.newBoard);
-		this.userBoards.push(this.newBoard);
 		this.showAddBoard = !this.showAddBoard;
 	}
 
@@ -63,6 +62,5 @@ export class BoardManager implements OnInit {
 	deleteBoard(board: Board) {
 		console.log("board Db Id" + board.DbId);
 		this.todoService.deleteObject(board);
-		this.userBoards.splice(this.userBoards.indexOf(board), 1);
 	}
 }

@@ -62,7 +62,6 @@ export class CategorySort implements OnInit {
 
 	deleteCat(category: Category) {
 		this.todoService.deleteObject(category);
-		//this.cats.splice(this.cats.indexOf(category),1);
 	}
 
 	presentLogin() {

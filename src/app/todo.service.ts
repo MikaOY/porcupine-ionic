@@ -45,6 +45,8 @@ export class TodoService {
 	public addBoard(newBoard: Board): Promise<void> {
 		console.log('adding board...');
 
+		this.CachedBoards.push(newBoard);
+
 		const url = `${this.apiUrl}/board`;
 
 		var details = {
@@ -138,6 +140,9 @@ export class TodoService {
 	public addCategory(newCat: Category): Promise<void> {
 		console.log('adding category...');
 
+		this.CurrentBoard.Categories.push(newCat);
+		this.CachedCats.push(newCat);
+
 		const url = `${this.apiUrl}/category`;
 
 		var details = {
@@ -156,6 +161,8 @@ export class TodoService {
 			formBody.push(encodedKey + "=" + '\'' + encodedValue + '\'');
 		}
 		let body = formBody.join("&");
+
+		console.log(body);
 
 		return this.http.post(url, body, this.options).toPromise().then((response: any) => {
 			console.log("addCategory response:" + response.toString);
@@ -288,7 +295,7 @@ export class TodoService {
 		console.log('adding todo...');
 
 		this.CurrentBoard.Todos.push(newTodo);
-		//this.CachedTodos.push(newTodo);
+		this.CachedTodos.push(newTodo);
 
 		const url = `${this.apiUrl}/todo`;
 

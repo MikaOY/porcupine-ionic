@@ -51,7 +51,6 @@ export class AddCategory implements OnInit{
 		}
 		var currentDate = new Date();
 		this.newCate.DateCreated = currentDate;
-		this.newCate.BoardId = 0; // change later
 		console.log("onNewCatForm Clicked");
 		//code to take the newCate and add it to database
 		this.viewCntrl.dismiss(this.newCate);
