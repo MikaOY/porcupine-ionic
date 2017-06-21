@@ -17,7 +17,6 @@ import { AddCategory } from './cat-manager/add-category.component';
 
 export class CategorySort implements OnInit {
 	private currentUser: number;
-	private boards: Board[];
 
 	justWait: boolean = false;
 
@@ -30,7 +29,6 @@ export class CategorySort implements OnInit {
 
 		setTimeout(() => {
 			this.justWait = true;
-			this.todoService.getBoards().then(val => this.boards = val);
 		}, 5000);
 	}
 
