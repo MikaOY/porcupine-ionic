@@ -21,16 +21,18 @@ const ColorArray: string[] = ['#919191', '#ff5c3f', '#ffb523', '#6f9b53', '#1371
 export class TodoService {
 	public CurrentBoard: Board;
 	public CachedBoards: Board[] = [];
-	public CachedTodos: Todo[] = [];
 	public CachedCats: Category[] = [];
+	public CachedTodos: Todo[] = [];
 
-	private isBusy: boolean = false;
+	public CachedSharedBoards: Board[] = [];
 
 	private apiUrl: string = 'http://porcupine-dope-api.azurewebsites.net';
 	private id: number = 0;
 
 	private headers = new Headers({ 'Content-Type': 'application/x-www-form-urlencoded' });
 	private options = new RequestOptions({ headers: this.headers });
+
+	private isBusy: boolean = false;
 
 	constructor(private http: Http) {
 		this.CachedBoards = [];
@@ -145,7 +147,7 @@ export class TodoService {
 			'dateCreated': '',
 			'boardId': String(newCat.BoardId)
 		};
-	
+
 		let formBody = [];
 		for (var property in details) {
 			var encodedKey = encodeURIComponent(property);
@@ -499,7 +501,113 @@ export class TodoService {
 			.catch(this.handleError);
 	}
 
-	/* END public HTTP functions */
+	private GETShared(): Observable<Board[]> {
+		console.log('requesting shared...');
+
+		const url = `${this.apiUrl}/shared?userId=${this.id}`;
+
+		return this.http.get(url).map((response: any) => {
+
+			console.log('processing shared...');
+
+			// for each row, 
+			// check if new board => create + add to boards
+			// check if new cat => create + add to cats
+			// check if new todo => create + add to todos
+			let boardArray: Board[] = [];
+			let catArray: Category[] = [];
+			let todoArray: Todo[] = [];
+			let i: number = 0;
+			for (let json of response.json()) {
+				i++;
+				// boards
+				// add board to cache if first index, or if boards available and doesn't have it already
+				if ((i == 1) ||
+					(this.checkIfAvailable([boardArray])
+						&& boardArray.find((board, index, bArray) => board.DbId == json['board_id']) == undefined)) {
+
+					boardArray.push(new Board(json['board_title'], [], [], json['board_date_created'], json['board_id']));
+				}
+
+				// cats
+				// (see boards above)
+				if ((i == 1) ||
+					(this.checkIfAvailable([catArray])
+						&& catArray.find((cat, index, arrayB) => cat.DbId == json['category_id']) == undefined)) {
+
+					// find board that category belongs to
+					let b: Board = boardArray.find((boardB, index, arrayC) => boardB.DbId == json['board_id_category']);
+					if (b == undefined) {
+						console.log('Shared: Did not find board for cat!')
+					}
+					// create cat based on json data
+					let cat = new Category(json['category_title'],
+						json['color'],
+						new Date(json['category_date_created']),
+						json['category_id'],
+						json['board_id_category'],
+						json['category_priority'],
+						true,
+						false);
+
+					// push new cat to Cats[] prop of board it belongs to AND local catsArray
+					b.Categories.push(cat);
+					catArray.push(cat);
+				}
+
+				// todos
+				// (see boards above)
+				if ((i == 1) ||
+					(this.checkIfAvailable([todoArray])
+						&& todoArray.find((todo, index, arrayT) => todo.DbId == json['todo_id']) == undefined)) {
+
+					// create todo based on json data
+					let todo = new Todo(json['todo_info'],
+						null, // cachedCats likely null here, so set it later
+						new Date(json['todo_date_created']),
+						json['is_done'],
+						new Date(json['date_done']),
+						json['is_archived'],
+						Priority[Priority[json['todo_priority']]],
+						json['todo_id'],
+						json['date_due']);
+					
+					// find cat todo belongs to
+					let c: Category = catArray.find((cat, index, arrayC) => cat.DbId == json['category_id_todo']);
+					if (c == undefined) {
+						console.log('Shared: Did not find cat for todo!')
+					}
+					todo.Category = c;
+
+					// find board that todo's cat belongs to
+					let b: Board = boardArray.find((boardB, index, arrayB) => boardB.DbId == todo.Category.BoardId);
+					if (b == undefined) {
+						console.log('Shared: Did not find board for cat of todo!')
+					}
+
+					// push new cat to Cats[] prop of board it belongs to AND local catsArray
+					b.Todos.push(todo);
+					todoArray.push(todo);
+				}
+			}
+
+			// assign built array to cache
+			// if already has boards in cache, delete them
+			boardArray.forEach(arrayB => {
+				if (this.checkIfAvailable([this.CachedSharedBoards])) {
+					let possibleDuplicate: Board = this.CachedSharedBoards.find((cacheB, cacheIndex, cacheArray) => cacheB.DbId == arrayB.DbId);
+					if (possibleDuplicate != undefined) {
+						this.CachedSharedBoards.splice(this.CachedSharedBoards.indexOf(possibleDuplicate));
+					}
+				}
+			});
+
+			this.CachedSharedBoards = boardArray;
+			return boardArray;
+		}).catch(this.handleError);
+	}
+
+	/* END HTTP functions */
 
 	private handleError(error: Response | any) {
 		// In a real world app, you might use a remote logging infrastructure
@@ -620,16 +728,17 @@ export class TodoService {
 	}
 
 	public slothGetCurrentBoard(): Board {
-		if (this.CurrentBoard != null && this.CurrentBoard != undefined){
+		if (this.CurrentBoard != null && this.CurrentBoard != undefined) {
 			return this.CurrentBoard;
 		}
 		else {
 			let emptyBoard: Board;
-			console.log("NONONON");
+			console.log("NONONONO: slothGetCurrentBoard returning empty board!");
 			return emptyBoard;
 		}
 	}
 
+	// only returns when given array is available
 	private waitForArray(array: any[]) {
 		while (!this.checkIfAvailable([array])) {
 			return array;
@@ -644,13 +753,6 @@ export class TodoService {
 		}
 		else {
 			this.CurrentBoard = this.CachedBoards[boardIndex + 1];
-		}
-		for (let todo of this.CurrentBoard.Todos){
-			if (todo.Info == "Hah it works!!"){
-				console.log("Todo archived:" + todo.IsArchived);
-				console.log(todo.Category);
-				console.log(todo.IsDone);
-			}
 		}
 		return Promise.resolve(this.CurrentBoard);
 	}
