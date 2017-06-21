@@ -22,7 +22,7 @@
 					</button>
 				</ion-item>
 
-				<div *ngIf="cat.EditActive">
+				<div *ngIf="cat.IsEditActive">
 					<form (ngSubmit)="onEditCatSubmit(cat)" #editCatForm>
 						<ion-item>
 							<ion-label>Name</ion-label>

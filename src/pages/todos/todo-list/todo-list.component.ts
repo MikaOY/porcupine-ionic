@@ -56,11 +56,11 @@ export class TodoList implements OnInit {
 	}
 
 	activateEdit(todo) {
-		todo.EditActive = !todo.EditActive;
+		todo.IsEditActive = !todo.IsEditActive;
 	}
 
 	onFormSubmit(todo) {
-		todo.EditActive = false;
+		todo.IsEditActive = false;
 		this.todoService.updateTodo(todo);
 	}
 
@@ -146,6 +146,7 @@ export class TodoList implements OnInit {
 		this.todoService.addTodo(this.newTodo);
 		// reset form
 		this.newTodo = new Todo("Kiss alpaca", this.getAllCats() ? this.getAllCats()[0]
-			: undefined, undefined, false, undefined, false, Priority.Low);
+			: undefined, undefined, false, undefined, false, Priority.Low, undefined); 
+			// DB id can be undefined because server generates auto 
 	}
 }

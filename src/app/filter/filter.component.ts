@@ -45,12 +45,12 @@ export class CategorySort implements OnInit {
 	}
 
 	editCat(cat: Category) {
-		cat.EditActive = !cat.EditActive;
+		cat.IsEditActive = !cat.IsEditActive;
 	}
 
 	onEditCatSubmit(cat) {
 		this.todoService.updateCategory(cat);
-		cat.EditActive = !cat.EditActive;
+		cat.IsEditActive = !cat.IsEditActive;
 	}
 
 	deleteCat(category: Category) {

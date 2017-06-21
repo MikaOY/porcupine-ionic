@@ -10,10 +10,10 @@ export class Todo implements Lockable{
                 public DateDone: Date,
                 public IsArchived: boolean,
                 public Priority: Priority,
+                public DbId: number, 
                 public DateDue?: Date, 
-                public DbId?: number, // optional to allow latency with DB
                 public DetailShown?: boolean,
-                public EditActive?: boolean,
+                public IsEditActive?: boolean,
                 public SelectActive?: boolean,
                 ) { }
 

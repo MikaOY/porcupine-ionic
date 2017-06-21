@@ -16,15 +16,15 @@ import 'rxjs/add/observable/fromPromise';
 
 
 // Samples DbId set to 123456789 for easy removal 
-const CATS0: Category[] = [new Category('Life', 1, new Date(2017, 4, 30), 123456789, 0, true, 0),
-new Category('Coding', 2, new Date(2017, 3, 26), 123456789, 0, true, 2),
-new Category('Unsorted', 0, null, 123456789, 0, true, 0)];
+const CATS0: Category[] = [new Category('Life', 1, new Date(2017, 4, 30), 123456789, 0, 0, true, false),
+new Category('Coding', 2, new Date(2017, 3, 26), 123456789, 0, 2, true, false),
+new Category('Unsorted', 0, null, 123456789, 0, 0, true, false)];
 
-const TODOS0: Todo[] = [new Todo('Give an alpaca a hug', CATS0[0], new Date(2017, 4, 30), false, undefined, false, Priority.Low, new Date(2016, 5, 13), 123456789),
-new Todo('Finish Porcupine', CATS0[1], new Date(2017, 4, 28), false, undefined, false, Priority.Medium, null, 123456789),
-new Todo('Make moist brownie', CATS0[2], new Date(2017, 4, 29), true, new Date(2017, 4, 30), false, Priority.High, null, 123456789),
-new Todo('Upload photos to Drive', CATS0[0], new Date(2017, 4, 30), false, undefined, false, Priority.Low, new Date(2016, 5, 22), 123456789),
-new Todo('Pet a pug', CATS0[1], new Date(2017, 4, 28), false, undefined, false, Priority.Medium, new Date(2016, 5, 30), 123456789)];
+const TODOS0: Todo[] = [new Todo('Give an alpaca a hug', CATS0[0], new Date(2017, 4, 30), false, undefined, false, Priority.Low, 123456789),
+new Todo('Finish Porcupine', CATS0[1], new Date(2017, 4, 28), false, undefined, false, Priority.Medium, 123456789),
+new Todo('Make moist brownie', CATS0[2], new Date(2017, 4, 29), true, new Date(2017, 4, 30), false, Priority.High, 123456789),
+new Todo('Upload photos to Drive', CATS0[0], new Date(2017, 4, 30), false, undefined, false, Priority.Low, 123456789),
+new Todo('Pet a pug', CATS0[1], new Date(2017, 4, 28), false, undefined, false, Priority.Medium, 123456789)];
 
 // const BOARDS: Board[] = [new Board('Important Things in Life', TODOS0.reverse(), CATS0.reverse(), undefined, undefined),
 // new Board('More Things Todo', TODOS0, CATS0, undefined, undefined)];
@@ -153,7 +153,6 @@ export class TodoService {
 			'userId': String(this.id),
 			'title': newCat.Name,
 			'color': newCat.Color.toString(),
-			'defaultOrder': newCat.Order ? newCat.Order.toString() : '',
 			'priorityVal': newCat.DefaultPriority.toString(),
 			'dateCreated': '',
 			'boardId': String(newCat.BoardId)
@@ -189,9 +188,9 @@ export class TodoService {
 					new Date(json['date_created']),
 					json['category_id'],
 					json['board_id'],
+					json['default_priority'],
 					true,
-					json['default_order'],
-					json['default_priority']));
+					false));
 
 				// Populate Categories: Category[] prop in boards
 				let isAssigned: boolean = false;
@@ -267,7 +266,6 @@ export class TodoService {
 			'categoryId': String(cat.DbId),
 			'title': cat.Name,
 			'color': cat.Color.toString(),
-			'defaultOrder': cat.Order ? cat.Order.toString() : '',
 			'priorityVal': cat.DefaultPriority.toString(),
 			'dateCreated': '',
 			'boardId': String(cat.DbId)
@@ -349,8 +347,8 @@ export class TodoService {
 					new Date(json['date_done']),
 					json['is_archived'],
 					Priority[Priority[json['priority_value']]],
-					json['date_due'],
-					json['todo_id']));
+					json['todo_id'],
+					json['date_due']));
 
 				// assign todo to a board (and category)
 				let isAssigned: boolean = false;
