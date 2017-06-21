@@ -21,7 +21,7 @@ new Category('Coding', 2, new Date(2017, 3, 26), 123456789, 0, 2, true, false),
 new Category('Unsorted', 0, null, 123456789, 0, 0, true, false)];
 
 const TODOS0: Todo[] = [new Todo('Give an alpaca a hug', CATS0[0], new Date(2017, 4, 30), false, undefined, false, Priority.Low, 123456789),
-new Todo('Finish Porcupine', CATS0[1], new Date(2017, 4, 28), false, undefined, false, Priority.Medium, 123456789),
+new Todo('Finish Porcupine', CATS0[1], new Date(2017, 4, 28), false, undefined, false, Priority.Medium, 123456789), 
 new Todo('Make moist brownie', CATS0[2], new Date(2017, 4, 29), true, new Date(2017, 4, 30), false, Priority.High, 123456789),
 new Todo('Upload photos to Drive', CATS0[0], new Date(2017, 4, 30), false, undefined, false, Priority.Low, 123456789),
 new Todo('Pet a pug', CATS0[1], new Date(2017, 4, 28), false, undefined, false, Priority.Medium, 123456789)];
@@ -89,7 +89,7 @@ export class TodoService {
 
 			let array: Board[] = [];
 			for (let json of response.json()) {
-				array.push(new Board(json['title'], TODOS0, CATS0, json['date_created'], json['board_id']));
+				array.push(new Board(json['board_title'], TODOS0, CATS0, json['board_date_created'], json['board_id']));
 			}
 
 			// assign built array to cache
@@ -183,12 +183,12 @@ export class TodoService {
 			let i: number = 0;
 			for (let json of response.json()) {
 				i++;
-				array.push(new Category(json['title'],
+				array.push(new Category(json['category_title'],
 					json['color'],
-					new Date(json['date_created']),
+					new Date(json['category_date_created']),
 					json['category_id'],
-					json['board_id'],
-					json['default_priority'],
+					json['board_id_category'],
+					json['category_priority'],
 					true,
 					false));
 
@@ -201,7 +201,7 @@ export class TodoService {
 					}
 
 					// 2 - find board in cached where id matches cat board_id prop, 
-					let b: Board = this.CachedBoards.find((board, index, array) => json['board_id'] == board.DbId);
+					let b: Board = this.CachedBoards.find((board, index, array) => json['board_id_category'] == board.DbId);
 
 					// 3 - check if cat already in board, if NOT, add it
 					if (b.Categories.find((cat, index, bArray) => {
@@ -342,11 +342,11 @@ export class TodoService {
 				// copy json data to new todo in array
 				array.push(new Todo(json['todo_info'],
 					null, // cachedCats likely null here, so set it later
-					new Date(json['date_created']),
+					new Date(json['todo_date_created']),
 					json['is_done'],
 					new Date(json['date_done']),
 					json['is_archived'],
-					Priority[Priority[json['priority_value']]],
+					Priority[Priority[json['todo_priority']]],
 					json['todo_id'],
 					json['date_due']));
 
@@ -366,7 +366,7 @@ export class TodoService {
 							// Wait for CachedCats to be defined
 						}
 						let todoCat: Category = this.CachedCats.find((cat, index, array) => {
-							return cat.DbId == json['category_id'];
+							return cat.DbId == json['category_id_todo'];
 						});
 						array[array.length - 1].Category = todoCat;
 						console.log('Assigned TODO to CAT: ' + array[array.length - 1].Info + ' to ' + todoCat.Name);
