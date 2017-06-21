@@ -15,8 +15,7 @@ import { UnlockPage } from '../../../app/lockable/unlock-page.component';
 
 export class TodoList implements OnInit {
 	private currentBoard: Board;
-	private todos: Todo[];
-	private cats: Category[];
+	
 	randomZZ: boolean = false;
 
 	// this sets colors for the category numbers
@@ -31,9 +30,7 @@ export class TodoList implements OnInit {
 	// Leave service calls in init callback!
 	ngOnInit(): void {
 		setTimeout(() => {
-			//this.todoService.getCategories().then(cats => this.cats = cats);
 			this.randomZZ = true;
-			this.todoService.getTodos().then(todos => this.todos = todos);
 			this.todoService.getColors().then(colorArray => this.ColorArray = colorArray);
 		}, 5000);
 	}
@@ -54,7 +51,7 @@ export class TodoList implements OnInit {
 
 	deleteTodo(todo) {
 		this.todoService.deleteObject(todo);
-		this.todos.splice(this.todos.indexOf(todo), 1);
+		//this.todos.splice(this.todos.indexOf(todo), 1);
 	}
 
 	activateEdit(todo) {
@@ -132,7 +129,7 @@ export class TodoList implements OnInit {
 			this.newTodo.Info = "Kiss alpaca";
 		}
 		if (this.newTodo.Category == undefined) {
-			this.newTodo.Category = this.cats ? this.cats[0] : undefined;
+			this.newTodo.Category = this.slothCurrentBoard().Categories[0];
 		}
 		if (this.newTodo.Priority == undefined) {
 			this.newTodo.Priority = Priority.Medium;
@@ -141,14 +138,10 @@ export class TodoList implements OnInit {
 			this.newTodo.DateDue = new Date(2017, 1, 1);
 		}
 		console.log("todo-list new todo info:" + this.newTodo.Info);
-		this.todoService.addTodo(this.newTodo).then(() => {
-			this.todoService.getTodos().then(val => this.todos = val);
-		});
-		this.todos.push(this.newTodo);
 
 		this.todoService.addTodo(this.newTodo);
 		// reset form
-		this.newTodo = new Todo("Kiss alpaca", this.cats ? this.cats[0] : undefined, undefined, false, undefined, false, Priority.Low, undefined);
+		this.newTodo = new Todo("Kiss alpaca", this.slothCurrentBoard().Categories[0], undefined, false, undefined, false, Priority.Low, undefined);
 		// DB id can be undefined because server generates auto 
 	}
 }
