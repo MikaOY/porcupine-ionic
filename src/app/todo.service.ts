@@ -744,11 +744,6 @@ export class TodoService {
 		return Promise.resolve(this.CurrentBoard);
 	}
 
-	public openBoard(board: Board): Promise<Board> {
-		this.CurrentBoard = board;
-		return Promise.resolve(this.CurrentBoard);
-	}
-
 	public getColors(): Promise<string[]> {
 		return Promise.resolve(ColorArray);
 	}

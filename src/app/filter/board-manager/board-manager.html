@@ -4,12 +4,12 @@
 		<ng-container *ngFor="let board of slothBoards()">
 
 			<ng-template #normalBoard>
-				<ion-item>
+				<button ion-item (click)="openBoard(board)">
 					{{board.Name}}
 					<button ion-button clear item-right (click)="deleteBoard(board)"><ion-icon name="trash"></ion-icon></button>
 					<button ion-button clear item-right (click)="editBoardActive(board)"><ion-icon name="create"></ion-icon></button>
 					<button ion-button clear item-right (click)="shareBoard(board)"><ion-icon name="share"></ion-icon></button>
-				</ion-item>
+				</button>
 			</ng-template>
 
 			<ng-container *ngIf="board.editActive; else normalBoard">

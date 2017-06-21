@@ -29,7 +29,8 @@ export class BoardManager implements OnInit {
 
 	openBoard(board: Board) {
 		console.log(board.Name + " board opened");
-		this.todoService.openBoard(board);
+		this.todoService.setAsCurrentBoard(board);
+		this.viewCtrl.dismiss();
 	}
 
 	addBoard() {
