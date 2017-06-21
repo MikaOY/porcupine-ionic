@@ -644,12 +644,6 @@ export class TodoService {
 			this.CurrentBoard = this.CachedBoards[boardIndex + 1];
 		}
 
-		this.CachedBoards.forEach(board => {
-			board.Todos.forEach(todo => {
-				console.log(board.Name + ': ' + todo.Info);
-			});
-		});
-
 		return Promise.resolve(this.CurrentBoard);
 	}
 
