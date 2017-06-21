@@ -276,7 +276,7 @@ export class TodoService {
 	// actual delete
 	private deleteCategory(cat: Category): Promise<void> {
 		console.log('deleting category...');
-
+		
 		const url = `${this.apiUrl}/category?categoryId=${cat.DbId}`;
 		return this.http.delete(url).toPromise().then((response: any) => {
 			console.log('CAT delete: ' + response.toString());
@@ -286,6 +286,9 @@ export class TodoService {
 
 	public addTodo(newTodo: Todo): Promise<void> {
 		console.log('adding todo...');
+
+		this.CurrentBoard.Todos.push(newTodo);
+		//this.CachedTodos.push(newTodo);
 
 		const url = `${this.apiUrl}/todo`;
 
