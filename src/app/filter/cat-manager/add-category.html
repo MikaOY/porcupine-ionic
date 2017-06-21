@@ -18,7 +18,7 @@
 		<ion-item>
 			<ion-label for="board">Board:</ion-label>
 			<ion-select interface="popover" [(ngModel)]="newCate.BoardId" name="boardId">
-				<ion-option *ngFor="let board of boards" [value]="board.DbId">{{board.Name}}</ion-option>
+				<ion-option *ngFor="let board of slothBoards()" [value]="board.DbId">{{board.Name}}</ion-option>
 			</ion-select>
 		</ion-item>
 

@@ -23,6 +23,10 @@ export class AddCategory implements OnInit{
 	private boards: Board[];
 	colorPicker: boolean = true;
 
+	slothBoards(): Board[] {
+		return this.todoService.slothGetBoards();
+	}
+	
 	priority = Priority;
 	prior(): Array<string> {
 		var keys = Object.keys(this.priority);
