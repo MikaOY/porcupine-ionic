@@ -157,8 +157,7 @@ export class TodoService {
 			'dateCreated': '',
 			'boardId': String(newCat.BoardId)
 		};
-		console.log(newCat.DateCreated.toDateString());
-		console.log(newCat.DefaultPriority.toString());
+	
 		let formBody = [];
 		for (var property in details) {
 			var encodedKey = encodeURIComponent(property);
@@ -213,7 +212,6 @@ export class TodoService {
 						b.Categories.push(array[array.length - 1]);
 						isAssigned = true;
 
-						console.log('Assigning ' + array[array.length - 1].Name + ' to ' + b.Name);
 					}
 
 					// remove sample data ONCE when at last index
@@ -278,8 +276,6 @@ export class TodoService {
 			formBody.push(encodedKey + "=" + '\'' + encodedValue + '\'');
 		}
 		let body = formBody.join("&");
-
-		console.log(body);
 
 		return this.http.put(url, body, this.options).toPromise().then((response: any) => {
 			console.log("updateCategories response:" + response.toString);
@@ -369,7 +365,6 @@ export class TodoService {
 							return cat.DbId == json['category_id_todo'];
 						});
 						array[array.length - 1].Category = todoCat;
-						console.log('Assigned TODO to CAT: ' + array[array.length - 1].Info + ' to ' + todoCat.Name);
 
 						// 2 - find board whose DbId matches cat's BoardId prop
 						while (this.CachedBoards == undefined) {
@@ -386,7 +381,6 @@ export class TodoService {
 						});
 
 						// 3 - check if todo already in board, if NOT, add it
-						console.log('Checking todo ' + array[array.length - 1].DbId);
 						if (b.Todos.find((todo, index, bArray) => {
 							return (array[array.length - 1].Category.DbId == todo.Category.DbId)
 								&& (array[array.length - 1].DbId == todo.DbId);
@@ -396,7 +390,6 @@ export class TodoService {
 							b.Todos.push(array[array.length - 1]);
 							isAssigned = true;
 
-							console.log('Assigning ' + array[array.length - 1].Info + ' to ' + b.Name);
 						}
 
 						// remove sample data ONCE when at last index
@@ -532,7 +525,6 @@ export class TodoService {
 	}
 
 	public async getBoards(): Promise<Board[]> {
-		console.log('--lowercase getBoards()');
 		// if already has cache, return cache
 		if (this.checkIfAvailable([this.CachedBoards])) {
 			console.log('--getBoards: returning cached boards!');
@@ -543,11 +535,10 @@ export class TodoService {
 			//return this.getCurrentBoard().toPromise().then(args => Promise.resolve(this.CachedBoards));
 		}
 		await this.waitForArray(this.CachedBoards);
-		console.log('--getBoards end');
+		console.log('--getBoards no cache');
 	}
 
 	public async getCategories(): Promise<Category[]> {
-		console.log('--lowercase getcategories()');
 		// if already has cache, return cache
 		if (this.checkIfAvailable([this.CachedCats])) {
 			console.log('--getCategories: returning cached cats! length = ' + this.CachedCats.length);
@@ -558,11 +549,10 @@ export class TodoService {
 		// 	//return this.getCurrentBoard().toPromise().then(args => Promise.resolve(this.CachedCats));
 		// }
 		await this.waitForArray(this.CachedCats);
-		console.log('--getCats end');
+		console.log('--getCats no cache');
 	}
 
 	public async getTodos(): Promise<Todo[]> {
-		console.log('--lowercase getTodos()');
 		// if already has cache, return cache
 		if (this.checkIfAvailable([this.CachedTodos])) {
 			console.log('--getTodos: returning cached todos! length = ' + this.CachedTodos.length);
@@ -573,7 +563,7 @@ export class TodoService {
 			//return this.getCurrentBoard().toPromise().then(args => Promise.resolve(this.CachedTodos));
 		}
 		await this.waitForArray(this.CachedTodos);
-		console.log('--getTodos end');
+		console.log('--getTodos no cache');
 	}
 
 	public slothGetBoards(): Board[]{
@@ -623,7 +613,7 @@ export class TodoService {
 		}
 	}
 
-	public changeBoard(board: Board): Promise<Board> {
+	public nextBoard(board: Board): Promise<Board> {
 		let boardIndex = this.CachedBoards.indexOf(board);
 
 		if (boardIndex + 1 == this.CachedBoards.length) {
@@ -632,7 +622,13 @@ export class TodoService {
 		else {
 			this.CurrentBoard = this.CachedBoards[boardIndex + 1];
 		}
-
+		for (let todo of this.CurrentBoard.Todos){
+			if (todo.Info == "Hah it works!!"){
+				console.log("Todo archived:" + todo.IsArchived);
+				console.log(todo.Category);
+				console.log(todo.IsDone);
+			}
+		}
 		return Promise.resolve(this.CurrentBoard);
 	}
 

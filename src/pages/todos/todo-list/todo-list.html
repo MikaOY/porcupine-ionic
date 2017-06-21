@@ -1,5 +1,9 @@
 <ion-content padding>
+
+
+
 <ion-list no-lines>
+		
 	<!--what select mode looks like (tap&hold to activate)-->
 	<ng-container *ngIf="selectActive === true; else selInactive">
 		<ion-item-group reorder="true" (ionItemReorder)="reorderItems($event)">
@@ -16,6 +20,7 @@
 	<!--your typical todo look-->
 	<ng-template #selInactive>
 		<div *ngIf="todos">
+					
 			<ng-container *ngFor="let todo of slothCurrentBoard().Todos" class="inline-todo">
 				<ng-container *ngIf="!todo.IsArchived">
 					<div *ngIf="todo.Category == null ? true : todo.Category.IsShown">
@@ -120,7 +125,7 @@
 					</div>
 				</ng-container>
 			</ng-container>
-
+			<h1>{{slothCurrentBoard()?.Name}}</h1>
 		</div>
 	</ng-template>
 

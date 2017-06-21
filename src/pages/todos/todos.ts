@@ -35,7 +35,7 @@ export class TodosPage implements OnInit {
 	}
 	changeBoard(board) {
 		console.log("Current board: " + board.Name);
-		this.todoService.changeBoard(board);
+		this.todoService.nextBoard(board);
 	}
 
 	doSomething(){
