@@ -588,6 +588,16 @@ export class TodoService {
 		}
 	}
 
+	public slothGetCats(): Category[]{
+		if (this.checkIfAvailable([this.CachedCats])){
+			return this.CachedCats;
+		}
+		else {
+			let emptyCats: Category[] = [];
+			return emptyCats;
+		}
+	}
+
 	private waitForArray(array: any[]) {
 		while (!this.checkIfAvailable([array])) {
 			return array;

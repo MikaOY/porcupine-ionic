@@ -38,6 +38,10 @@ export class TodoList implements OnInit {
 	}, 5000);
   }
 
+	slothCats(): Category[] {
+		return this.todoService.slothGetCats();
+	}
+
 	todoPriority(pri: number): Array<number> {
 		let k = pri + 1;
 		var priArray = Array(k).fill(2).map((x, i) => i);

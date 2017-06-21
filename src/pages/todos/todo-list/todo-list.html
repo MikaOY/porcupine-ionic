@@ -102,7 +102,7 @@
 									<ion-item>
 										<ion-label for="category">Category:</ion-label>
 										<ion-select interface="popover" [(ngModel)]="todo.Category" name="Category">
-											<ion-option *ngFor="let cat of cats" [value]="cat">{{cat.Name}}</ion-option>
+											<ion-option *ngFor="let cat of slothCats()" [value]="cat">{{cat.Name}}</ion-option>
 										</ion-select>
 									</ion-item>
 									<ion-item>
@@ -151,7 +151,7 @@
 				<ion-item>
 					<ion-label for="category">Category:</ion-label>
 					<ion-select interface="popover" [(ngModel)]="newTodo.Category" name="Category">
-						<ion-option *ngFor="let cat of cats" [value]="cat">{{cat.Name}}</ion-option>
+						<ion-option *ngFor="let cat of slothCats()" [value]="cat">{{cat.Name}}</ion-option>
 					</ion-select>
 				</ion-item>
 				<ion-item>

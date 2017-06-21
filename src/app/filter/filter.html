@@ -12,7 +12,7 @@
 		<ion-list-header>Filter by Category</ion-list-header>
 		<button ion-button clear="true" id="addCatButton" (click)="presentAddCat()">+</button>
 		<ng-container *ngIf="cats">
-			<ng-container *ngFor="let cat of cats">
+			<ng-container *ngFor="let cat of slothCats()">
 
 				<ion-item>
 					<ion-checkbox [(ngModel)]="cat.IsShown"></ion-checkbox>
