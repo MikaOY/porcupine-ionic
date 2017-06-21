@@ -38,9 +38,10 @@ export class CategorySort implements OnInit {
 		return this.todoService.slothGetBoards();
 	}
 	
-	slothCats(): Category[] {
-		return this.todoService.slothGetCats();
+	slothCurrentBoard(): Board {
+		return this.todoService.slothGetCurrentBoard();
 	}
+
 
 	presentAddCat() {
 		let addCatModal = this.modalCtrl.create(AddCategory);
