@@ -381,9 +381,11 @@ export class TodoService {
 							}
 
 							// (board Cats[] not null, can continue with check)
+							console.log("Is the todoCat defined?" + todoCat == undefined);
 							return board.DbId == todoCat.BoardId;
 						});
 
+						//console.log("Passed it");
 						// 3 - check if todo already in board, if NOT, add it
 						if (b.Todos.find((todo, index, bArray) => {
 							return (array[array.length - 1].Category.DbId == todo.Category.DbId)
@@ -395,7 +397,7 @@ export class TodoService {
 							isAssigned = true;
 
 						}
-
+						//console.log("Passed 3");
 						// remove sample data ONCE when at last index
 						if (i == (response.json().length - 1)) {
 							while (this.CachedBoards == null) {
@@ -421,7 +423,7 @@ export class TodoService {
 					}
 				}
 			}
-
+			console.log("Abupt to assign stuff");
 			// assign built array to cache
 			// if already has todos in cache, delete them
 			array.forEach(arrayTodo => {
@@ -471,6 +473,7 @@ export class TodoService {
 			formBody.push(encodedKey + "=" + '\'' + encodedValue + '\'');
 		}
 		let body = formBody.join("&");
+		console.log(body);
 
 		return this.http.put(url, body, this.options).toPromise().then((response: any) => {
 			console.log("updateTodos response:" + response.toString);

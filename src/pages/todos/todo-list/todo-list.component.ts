@@ -45,24 +45,25 @@ export class TodoList implements OnInit {
 		return priArray;
 	}
 
-	toggleDetail(todo) {
+	toggleDetail(todo: Todo) {
 		todo.DetailShown = !todo.DetailShown;
 	}
 
-	deleteTodo(todo) {
+	deleteTodo(todo: Todo) {
 		this.todoService.deleteObject(todo);
 	}
 
-	activateEdit(todo) {
+	activateEdit(todo: Todo) {
 		todo.IsEditActive = !todo.IsEditActive;
 	}
 
-	onFormSubmit(todo) {
+	onFormSubmit(todo: Todo) {
 		todo.IsEditActive = false;
+		console.log(todo.DbId);
 		this.todoService.updateTodo(todo);
 	}
 
-	itemChecked(IsDone, todo) { //run when you click the checkbox
+	itemChecked(IsDone: boolean, todo: Todo) { //run when you click the checkbox
 		if (IsDone == true) {
 			//function to find date and control archive
 			var currentTime = new Date();
@@ -74,7 +75,7 @@ export class TodoList implements OnInit {
 	}
 
 	//apparently working?
-	changePrior(val: string, todo) {
+	changePrior(val: string, todo: Todo) {
 		var pri: Priority = Priority[val];
 		todo.Priority = pri;
 	}
@@ -105,7 +106,7 @@ export class TodoList implements OnInit {
 		this.selectedTodos.length = 0; //empties selectedTodos array
 	}
 
-	UnlockTodo(todo) {
+	UnlockTodo(todo: Todo) {
 		let UnlockModal = this.ModalCtrl.create(UnlockPage); //pass in additional params here
 		UnlockModal.onDidDismiss(data => {
 			todo.IsLocked = data;
