@@ -144,7 +144,7 @@ export class TodoService {
 			'userId': String(this.id),
 			'title': newCat.Name,
 			'color': newCat.Color.toString(),
-			'priorityVal': newCat.DefaultPriority.toString(),
+			'priorityVal': '0',//newCat.DefaultPriority.toString(),
 			'dateCreated': '',
 			'boardId': String(newCat.BoardId)
 		};
@@ -255,7 +255,7 @@ export class TodoService {
 			'categoryId': String(cat.DbId),
 			'title': cat.Name,
 			'color': cat.Color.toString(),
-			'priorityVal': cat.DefaultPriority.toString(),
+			'priorityVal': '0', // TODO cat.DefaultPriority.toString(),
 			'dateCreated': '',
 			'boardId': String(cat.DbId)
 		};
@@ -288,7 +288,6 @@ export class TodoService {
 		console.log('adding todo...');
 
 		this.CurrentBoard.Todos.push(newTodo);
-		//this.CachedTodos.push(newTodo);
 
 		const url = `${this.apiUrl}/todo`;
 
@@ -302,7 +301,7 @@ export class TodoService {
 			'dateDue': '',//newTodo.DateDue ? newTodo.DateDue.toISOString() : ''
 			'dateDone': '',
 			'isArchived': newTodo.IsArchived ? '1' : '0',
-			'priorityVal': newTodo.Priority.toString(),
+			'priorityVal': '0', // TODO
 		};
 
 		let formBody = [];
@@ -312,6 +311,7 @@ export class TodoService {
 			formBody.push(encodedKey + "=" + '\'' + encodedValue + '\'');
 		}
 		let body = formBody.join("&");
+		console.log(body); 
 
 		return this.http.post(url, body, this.options).toPromise().then((response: any) => {
 			console.log("addTodo response:" + response.toString);
@@ -452,7 +452,7 @@ export class TodoService {
 			'dateDue': '',//todo.DateDue ? todo.DateDue.toISOString() : ''
 			'dateDone': '', 
 			'isArchived': todo.IsArchived ? '1' : '0',
-			'priorityVal': todo.Priority.toString(),
+			'priorityVal': '0',//todo.Priority.toString(),
 		};
 
 		let formBody = [];
