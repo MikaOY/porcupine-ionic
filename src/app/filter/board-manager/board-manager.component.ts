@@ -10,14 +10,13 @@ import { SharePage } from './share-page/share-page.component';
 
 export class BoardManager implements OnInit {
 
-	userBoards: Board[];
 	showAddBoard: boolean = false;
 	constructor(public modalCtrl: ModalController,
 		public viewCtrl: ViewController,
 		public todoService: TodoService) { }
 
 	ngOnInit() {
-		this.todoService.getBoards().then(val => this.userBoards = val);
+		
 	}
 
 	slothBoards(): Board[] {
@@ -30,7 +29,8 @@ export class BoardManager implements OnInit {
 
 	openBoard(board: Board) {
 		console.log(board.Name + " board opened");
-		this.todoService.openBoard(board);
+		this.todoService.setAsCurrentBoard(board);
+		this.viewCtrl.dismiss();
 	}
 
 	addBoard() {

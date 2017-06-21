@@ -16,11 +16,9 @@ export class AddCategory implements OnInit{
 
 	ngOnInit(){
 		this.todoService.getColors().then(ColorArray => this.ColorArray = ColorArray);
-		this.todoService.getBoards().then(val => this.boards = val);
 	}
 
 	private ColorArray: string[];
-	private boards: Board[];
 	colorPicker: boolean = true;
 
 	slothBoards(): Board[] {
@@ -47,7 +45,7 @@ export class AddCategory implements OnInit{
 	newCate = new Category("Love", undefined, undefined, undefined, 0, Priority.Low, true, false); 
 	onNewCatFormSubmit() {
 		if (this.newCate.BoardId == undefined){
-			this.newCate.BoardId = this.boards ? this.boards[0].DbId : undefined;
+			this.newCate.BoardId = this.slothBoards ? this.slothBoards[0].DbId : undefined;
 		}
 		var currentDate = new Date();
 		this.newCate.DateCreated = currentDate;

@@ -20,8 +20,8 @@ export class TodosPage implements OnInit {
 	}
 
 	ionViewWillEnter() { //archives todos if more than 24 hours has passed since checked
-		if (this.currentBoard) {
-			for (let todo of this.currentBoard.Todos) {
+		if (this.slothCurrentBoard()) {
+			for (let todo of this.slothCurrentBoard().Todos) {
 				let currentDate = new Date();
 				if (todo.IsDone == true && todo.IsArchived == false) {
 					let timeDone = currentDate.getTime() - todo.DateDone.getTime();
@@ -35,7 +35,7 @@ export class TodosPage implements OnInit {
 		return this.todoService.slothGetCurrentBoard();
 	}
 
-	changeBoard(board) {
+	changeBoard(board: Board) {
 		console.log("Current board: " + board.Name);
 		this.todoService.nextBoard(board);
 	}

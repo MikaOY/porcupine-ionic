@@ -17,7 +17,6 @@ import { AddCategory } from './cat-manager/add-category.component';
 
 export class CategorySort implements OnInit {
 	private currentUser: number;
-
 	justWait: boolean = false;
 
 	constructor(private todoService: TodoService,
@@ -39,7 +38,6 @@ export class CategorySort implements OnInit {
 	slothCurrentBoard(): Board {
 		return this.todoService.slothGetCurrentBoard();
 	}
-
 
 	presentAddCat() {
 		let addCatModal = this.modalCtrl.create(AddCategory);
@@ -103,20 +101,23 @@ export class CategorySort implements OnInit {
 })
 
 export class PropertySort implements OnInit {
-	private todos: Todo[];
 
 	constructor(private todoService: TodoService,
 		public modalCtrl: ModalController) { }
 
 	ngOnInit() {
 		setTimeout(() => {
-			this.todoService.getTodos().then(val => this.todos = val);
+			
 		}, 5000);
 
 	}
 
+	slothTodos(): Todo[] {
+		return this.todoService.slothGetTodos();
+	}
+
 	sortPriorityHL() {
-		this.todos = this.todos.sort((a, b) => {
+		let sortedTodos = this.slothTodos().sort((a, b) => {
 
 			if (a.Priority > b.Priority) {
 				return -1;
@@ -132,7 +133,7 @@ export class PropertySort implements OnInit {
 	}
 
 	sortPriorityLH() {
-		this.todos = this.todos.sort((a, b) => {
+		let sortedTodos= this.slothTodos().sort((a, b) => {
 
 			if (a.Priority > b.Priority) {
 				return 1;
@@ -147,8 +148,7 @@ export class PropertySort implements OnInit {
 	}
 
 	sortRecent() {
-		if (this.todos) {
-			this.todos = this.todos.sort((a, b) => {
+			let sortedTodos = this.slothTodos().sort((a, b) => {
 				if (a.DateCreated > b.DateCreated) {
 					return -1;
 				}
@@ -159,14 +159,10 @@ export class PropertySort implements OnInit {
 
 				return 0;
 			});
-		}
-		else {
-			console.log("LOL CURRENT BOARD DNE");
-		}
 	}
 
 	sortOldest() {
-		this.todos = this.todos.sort((a, b) => {
+		let sortedTodos = this.slothTodos().sort((a, b) => {
 			if (a.DateCreated > b.DateCreated) {
 				return 1;
 			}

@@ -383,9 +383,11 @@ export class TodoService {
 								console.log('Todo cat board undefined!');
 							}
 							// (board Cats[] not null, can continue with check)
+							console.log("Is the todoCat defined?" + todoCat == undefined);
 							return board.DbId == todoCat.BoardId;
 						});
 
+						//console.log("Passed it");
 						// 3 - check if todo already in board, if NOT, add it
 						if (b.Todos.find((todo, index, bArray) => {
 							return (array[array.length - 1].Category.DbId == todo.Category.DbId)
@@ -397,7 +399,7 @@ export class TodoService {
 							isAssigned = true;
 
 						}
-
+						//console.log("Passed 3");
 						// remove sample data ONCE when at last index
 						if (i == (response.json().length - 1)) {
 							while (this.CachedBoards == null) {
@@ -423,7 +425,7 @@ export class TodoService {
 					}
 				}
 			}
-
+			console.log("Abupt to assign stuff");
 			// assign built array to cache
 			// if already has todos in cache, delete them
 			array.forEach(arrayTodo => {
@@ -473,6 +475,7 @@ export class TodoService {
 			formBody.push(encodedKey + "=" + '\'' + encodedValue + '\'');
 		}
 		let body = formBody.join("&");
+		console.log(body);
 
 		return this.http.put(url, body, this.options).toPromise().then((response: any) => {
 			console.log("updateTodos response:" + response.toString);
@@ -697,49 +700,7 @@ export class TodoService {
 	public setAsCurrentBoard(board: Board) {
 		this.CurrentBoard = board;
 	}
-
-	public async getBoards(): Promise<Board[]> {
-		// if already has cache, return cache
-		if (this.checkIfAvailable([this.CachedBoards])) {
-			console.log('--getBoards: returning cached boards!');
-			return Promise.resolve(this.CachedBoards);
-		}
-		// if haven't requested, req to return boards
-		else if (!this.isBusy) {
-			//return this.getCurrentBoard().toPromise().then(args => Promise.resolve(this.CachedBoards));
-		}
-		await this.waitForArray(this.CachedBoards);
-		console.log('--getBoards no cache');
-	}
-
-	public async getCategories(): Promise<Category[]> {
-		// if already has cache, return cache
-		if (this.checkIfAvailable([this.CachedCats])) {
-			console.log('--getCategories: returning cached cats! length = ' + this.CachedCats.length);
-			return Promise.resolve(this.CachedCats);
-		}
-		// // if haven't requested, req to return cats
-		// else if (!this.isBusy) {
-		// 	//return this.getCurrentBoard().toPromise().then(args => Promise.resolve(this.CachedCats));
-		// }
-		await this.waitForArray(this.CachedCats);
-		console.log('--getCats no cache');
-	}
-
-	public async getTodos(): Promise<Todo[]> {
-		// if already has cache, return cache
-		if (this.checkIfAvailable([this.CachedTodos])) {
-			console.log('--getTodos: returning cached todos! length = ' + this.CachedTodos.length);
-			return Promise.resolve(this.CachedTodos);
-		}
-		// if haven't requested, req to return todos
-		else if (!this.isBusy) {
-			//return this.getCurrentBoard().toPromise().then(args => Promise.resolve(this.CachedTodos));
-		}
-		await this.waitForArray(this.CachedTodos);
-		console.log('--getTodos no cache');
-	}
-
+	
 	public slothGetBoards(): Board[] {
 		if (this.checkIfAvailable([this.CachedBoards])) {
 			return this.CachedBoards;
@@ -797,11 +758,6 @@ export class TodoService {
 		else {
 			this.CurrentBoard = this.CachedBoards[boardIndex + 1];
 		}
-		return Promise.resolve(this.CurrentBoard);
-	}
-
-	public openBoard(board: Board): Promise<Board> {
-		this.CurrentBoard = board;
 		return Promise.resolve(this.CurrentBoard);
 	}
 
