@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { TodoService } from '../../../app/todo.service';
 import { ModalController, NavParams } from 'ionic-angular';
-import { Observable } from 'rxjs/Observable';
 
 import { Todo } from '../../../app/todo';
 import { Category } from '../../../app/category';
@@ -15,26 +14,29 @@ import { UnlockPage } from '../../../app/lockable/unlock-page.component';
 })
 
 export class TodoList implements OnInit {
-	private currentBoard: Board;
-	private cats: Category[] = [];
-	private todos: Todo[] = [];
+	private currentBoard: Board; 
+	private todos: Todo[]; 
+	private cats: Category[];
+
 	// this sets colors for the category numbers
 	ColorArray: string[];
 
 	selectedTodos: Todo[] = [];
 	selectActive: boolean = false;
-	priority: string[] = ["Low", "Medium", "High"];
+	priority: string[] = ["Low", "Medium", "High"]; 
 
 	constructor(private todoService: TodoService, public params: NavParams, public ModalCtrl?: ModalController) { }
 
 	// Leave service calls in init callback!
 	ngOnInit(): void {
-		setTimeout(() => {
-			this.todoService.getColors().then(colorArray => this.ColorArray = colorArray);
-			this.todoService.getTodos().then(val => this.todos = val);
-			this.todoService.getCategories().then(val => this.cats = val);
-		}, 5000);
-	}
+		setTimeout( () => {
+		console.log('getting stuff for todolist');
+		console.log('i love alpacas <3');
+		this.todoService.getCategories().then(cats => this.cats = cats);
+		this.todoService.getTodos().then(todos => this.todos = todos);
+		this.todoService.getColors().then(colorArray => this.ColorArray = colorArray);
+	}, 5000);
+  }
 
 	todoPriority(pri: number): Array<number> {
 		let k = pri + 1;
@@ -46,8 +48,9 @@ export class TodoList implements OnInit {
 		todo.DetailShown = !todo.DetailShown;
 	}
 
-	deleteTodo(todo) {
+	deleteTodo(todo){
 		this.todoService.deleteTodo(todo.dbId);
+		this.todos.splice(this.todos.indexOf(todo),1);
 	}
 
 	activateEdit(todo) {
@@ -121,24 +124,25 @@ export class TodoList implements OnInit {
 		this.addTodo = !this.addTodo;
 		var currentDate = new Date();
 		this.newTodo.DateCreated = currentDate;
-
-		// TODO: substitute defaults below with AI
-		if (this.newTodo.Info == undefined || this.newTodo.Info == null) {
+		if (this.newTodo.Info == undefined || this.newTodo.Info == null ){
 			this.newTodo.Info = "Kiss alpaca";
 		}
-		if (this.newTodo.Category == undefined) {
-			
+		if (this.newTodo.Category == undefined){
 			this.newTodo.Category = this.cats ? this.cats[0] : undefined;
 		}
-		if (this.newTodo.Priority == undefined) {
+		if (this.newTodo.Priority == undefined){
 			this.newTodo.Priority = Priority.Medium;
 		}
-		if (this.newTodo.DateDue == undefined) {
-			this.newTodo.DateDue = new Date(2017, 1, 1);
+		if (this.newTodo.DateDue == undefined){
+			this.newTodo.DateDue = new Date(2017,1,1);
 		}
+		console.log("todo-list new todo info:" + this.newTodo.Info);
+		this.todoService.addTodo(this.newTodo).then( () => {
+			this.todoService.getTodos().then(val => this.todos = val);
+		});
+		this.todos.push(this.newTodo);
+		//TODO: pass newTodo to server and add to user's array 
+		this.newTodo = new Todo("Kiss alpaca", this.cats ? this.cats[0] : undefined, undefined, false, undefined, false, Priority.Low);
 
-		this.todoService.addTodo(this.newTodo);
-		// reset form
-		this.newTodo = new Todo("Kiss alpaca", undefined, undefined, false, undefined, false, Priority.Low);
 	}
 }

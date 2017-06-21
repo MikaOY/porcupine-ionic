@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-
 import { Board } from '../../app/board';
 import { TodoService } from '../../app/todo.service';
 import { Todo } from '../../app/todo';
@@ -10,16 +9,16 @@ import { Priority } from '../../app/priority';
 	templateUrl: 'todos.html'
 })
 export class TodosPage implements OnInit {
+	currentBoard: Board;
 
 	constructor(public todoService: TodoService) { }
-	currentBoard: Board;
+
 	// Leave service calls in init callback!
 	ngOnInit(): void {
-		this.todoService.getCurrentBoard().subscribe(board => this.currentBoard = board);
+		this.todoService.getCurrentBoard().subscribe(cBoard => this.currentBoard = cBoard as Board);
 	}
 
-	// archives todos if more than 24 hours has passed since checked
-	ionViewWillEnter() {
+	ionViewWillEnter() { //archives todos if more than 24 hours has passed since checked
 		if (this.currentBoard) {
 			for (let todo of this.currentBoard.Todos) {
 				let currentDate = new Date();
@@ -31,8 +30,13 @@ export class TodosPage implements OnInit {
 		}
 	}
 
-	changeBoard(board: Board) {
-		console.log("Changing from current board: " + board.Name);
-		this.todoService.changeBoard(board);
+	changeBoard(board) {
+		console.log("Current board: " + board);
+		this.todoService.changeBoard(board).then(nBoard => this.currentBoard = nBoard);
+	}
+
+	doSomething(){
+		var todo = new Todo("eat lots of bananas", undefined, new Date(), false, undefined, false, Priority.Low, undefined);
+		this.todoService.addTodo(todo);
 	}
 }
