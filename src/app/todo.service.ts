@@ -683,49 +683,7 @@ export class TodoService {
 	public setAsCurrentBoard(board: Board) {
 		this.CurrentBoard = board;
 	}
-
-	public async getBoards(): Promise<Board[]> {
-		// if already has cache, return cache
-		if (this.checkIfAvailable([this.CachedBoards])) {
-			console.log('--getBoards: returning cached boards!');
-			return Promise.resolve(this.CachedBoards);
-		}
-		// if haven't requested, req to return boards
-		else if (!this.isBusy) {
-			//return this.getCurrentBoard().toPromise().then(args => Promise.resolve(this.CachedBoards));
-		}
-		await this.waitForArray(this.CachedBoards);
-		console.log('--getBoards no cache');
-	}
-
-	public async getCategories(): Promise<Category[]> {
-		// if already has cache, return cache
-		if (this.checkIfAvailable([this.CachedCats])) {
-			console.log('--getCategories: returning cached cats! length = ' + this.CachedCats.length);
-			return Promise.resolve(this.CachedCats);
-		}
-		// // if haven't requested, req to return cats
-		// else if (!this.isBusy) {
-		// 	//return this.getCurrentBoard().toPromise().then(args => Promise.resolve(this.CachedCats));
-		// }
-		await this.waitForArray(this.CachedCats);
-		console.log('--getCats no cache');
-	}
-
-	public async getTodos(): Promise<Todo[]> {
-		// if already has cache, return cache
-		if (this.checkIfAvailable([this.CachedTodos])) {
-			console.log('--getTodos: returning cached todos! length = ' + this.CachedTodos.length);
-			return Promise.resolve(this.CachedTodos);
-		}
-		// if haven't requested, req to return todos
-		else if (!this.isBusy) {
-			//return this.getCurrentBoard().toPromise().then(args => Promise.resolve(this.CachedTodos));
-		}
-		await this.waitForArray(this.CachedTodos);
-		console.log('--getTodos no cache');
-	}
-
+	
 	public slothGetBoards(): Board[] {
 		if (this.checkIfAvailable([this.CachedBoards])) {
 			return this.CachedBoards;
