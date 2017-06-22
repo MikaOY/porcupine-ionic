@@ -1,5 +1,6 @@
-<ion-content>
+<ion-content padding>
 	<ion-title>Boards</ion-title>
+	<p class="boardLabel">My Boards</p>
 	<ion-list>
 		<ng-container *ngFor="let board of slothBoards()">
 
@@ -19,6 +20,26 @@
 			<button ion-button clear (click)="onEditBoardSubmit(board)">Done</button>
 			</ng-container>
 
+		</ng-container>
+	</ion-list>
+
+	<p class="boardLabel">Shared With Me</p>
+	<ion-list>
+		<ng-container *ngFor="let board of slothSharedBoards()">
+			<ng-template #normalBoard>
+				<button ion-item (click)="openBoard(board)">
+					{{board.Name}}
+					<button ion-button clear item-right (click)="deleteSharedBoard(board)"><ion-icon name="trash"></ion-icon></button>
+					<button ion-button clear item-right (click)="editBoardActive(board)"><ion-icon name="create"></ion-icon></button>
+					<button ion-button clear item-right (click)="shareBoard(board)"><ion-icon name="share"></ion-icon></button>
+				</button>
+			</ng-template>
+			<ng-container *ngIf="board.editActive; else normalBoard">
+				<ion-item text-wrap class="todoItem">
+					<ion-input [(ngModel)]="board.Name"></ion-input>
+				</ion-item>
+				<button ion-button clear (click)="onEditSharedBoardSubmit(board)">Done</button>
+			</ng-container>
 		</ng-container>
 	</ion-list>
 

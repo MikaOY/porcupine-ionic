@@ -705,6 +705,16 @@ export class TodoService {
 		}
 	}
 
+	public slothGetSharedBoards(): Board[]{
+		if (this.checkIfAvailable([this.CachedSharedBoards])) {
+			return this.CachedSharedBoards;
+		}
+		else {
+			let emptyBoard: Board[] = [];
+			return emptyBoard;
+		}
+	}
+
 	public slothGetCats(): Category[] {
 		if (this.checkIfAvailable([this.CachedCats])) {
 			return this.CachedCats;

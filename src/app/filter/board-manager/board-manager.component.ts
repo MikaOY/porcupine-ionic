@@ -23,6 +23,10 @@ export class BoardManager implements OnInit {
 		return this.todoService.slothGetBoards();
 	}
 
+	slothSharedBoards(): Board[]{
+		return this.todoService.slothGetSharedBoards();
+	}
+
 	dismissPage() {
 		this.viewCtrl.dismiss();
 	}
@@ -33,15 +37,14 @@ export class BoardManager implements OnInit {
 		this.viewCtrl.dismiss();
 	}
 
-	addBoard() {
-		this.showAddBoard = !this.showAddBoard;
+	deleteBoard(board: Board) {
+		console.log("board Db Id" + board.DbId);
+		this.todoService.deleteObject(board);
 	}
 
-	newBoard: Board = new Board("Dogs", undefined, undefined, undefined, undefined);
-	onAddBoardFormSubmit() {
-		this.newBoard.DateCreated = new Date();
-		this.todoService.addBoard(this.newBoard);
-		this.showAddBoard = !this.showAddBoard;
+	deleteSharedBoard(board: Board) {
+		console.log("board Db Id" + board.DbId);
+		//TODO: delete
 	}
 
 	editBoardActive(board: Board) {
@@ -53,14 +56,25 @@ export class BoardManager implements OnInit {
 		board.IsEditActive = !board.IsEditActive;
 	}
 
+	onEditSharedBoardSubmit(board: Board) {
+		//TODO: update
+		board.IsEditActive = !board.IsEditActive;
+	}
+
 	shareBoard(sBoard: Board) {
 		console.log("share clicked");
 		let shareModal = this.modalCtrl.create(SharePage, { "sBoard": sBoard });
 		shareModal.present();
 	}
 
-	deleteBoard(board: Board) {
-		console.log("board Db Id" + board.DbId);
-		this.todoService.deleteObject(board);
+	addBoard() {
+		this.showAddBoard = !this.showAddBoard;
+	}
+
+	newBoard: Board = new Board("Dogs", undefined, undefined, undefined, undefined);
+	onAddBoardFormSubmit() {
+		this.newBoard.DateCreated = new Date();
+		this.todoService.addBoard(this.newBoard);
+		this.showAddBoard = !this.showAddBoard;
 	}
 }
