@@ -553,7 +553,8 @@ export class TodoService {
 					(this.checkIfAvailable([boardArray])
 						&& boardArray.find((board, index, bArray) => board.DbId == json['board_id']) == undefined)) {
 
-					boardArray.push(new Board(json['board_title'], [], [], json['board_date_created'], json['board_id']));
+					boardArray.push(new Board(json['board_title'], [], [], json['board_date_created'], json['board_id'], 
+						json['is_view_only'] as boolean, json['sharer_id'], json['owner_id']));
 				}
 
 				// cats
