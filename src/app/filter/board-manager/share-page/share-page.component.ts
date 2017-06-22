@@ -14,7 +14,6 @@ export class SharePage {
 							public viewCntrl: ViewController,
 							public todoService: TodoService) { }
 
-	testArray: Recipient[] = [new Recipient("hi there", true), new Recipient("Karen", false), new Recipient("Dave", true), new Recipient("Marge", false)];
 	sharees: Recipient[] = [];
 	note: string = 'Check this out!';
 	containsEdit: boolean = false;
@@ -23,9 +22,8 @@ export class SharePage {
 	newReci: Recipient = new Recipient(undefined, false);
 	sBoard: Board = this.navParams.get("sBoard");
 
-	sharedWithBoards(): Recipient[]{
-		//return this.todoService.getSharedWithReci(this.sBoard);
-		return this.testArray;
+	sharedWithBoards(){
+		return this.todoService.getSharedWithReci(this.sBoard);
 	}
 
 	shareBoard() {
