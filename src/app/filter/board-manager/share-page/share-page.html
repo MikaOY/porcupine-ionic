@@ -1,17 +1,6 @@
 <ion-content no-padding>
 	<h3>{{sBoard?.Name}} Board: Manage Sharing</h3>
-	<ng-container *ngFor="let reci of sharedWithBoards()">
-		<div class="reciLabels">
-			<ion-row>
-				<ion-col>
-					<p>{{reci.Email}} {{reci.IsViewOnly ? '(view only)' : '(can edit)'}}</p>
-				</ion-col>
-				<ion-col>
-					<button clear ion-button type="button" (click)="unshareBoard(reci)"><ion-icon name="close"></ion-icon></button>
-				</ion-col>
-			</ion-row>
-		</div>
-	</ng-container>
+	
 	<ion-grid no-padding>
 		<ion-row>
 			<ion-col>
@@ -23,9 +12,18 @@
 		</ion-row>
 		<ion-row>
 			<ion-col>
-				<div class="reciLabels" *ngFor="let reci of sharedWithBoards()">
-					<p>{{reci.Email}} {{reci.IsViewOnly ? '(view only)' : '(can edit)'}}</p>
-				</div>
+				<ng-container *ngFor="let reci of sharedWithBoards()">
+					<div class="reciLabels">
+						<ion-row>
+							<ion-col>
+								<p>{{reci.Email}} {{reci.IsViewOnly ? '(view only)' : '(can edit)'}}</p>
+							</ion-col>
+							<ion-col col-2>
+								<button clear ion-button type="button" (click)="unshareBoard(reci)"><ion-icon name="close"></ion-icon></button>
+							</ion-col>
+						</ion-row>
+					</div>
+				</ng-container>
 			</ion-col>
 		</ion-row>
 	</ion-grid>
