@@ -13,18 +13,18 @@ export class SharePage {
 		public viewCntrl: ViewController) { }
 
 	sharees: Recipient[] = [];
-	note: string = "Check this out!";
+	note: string = 'Check this out!';
 	containsEdit: boolean = false;
 	containsViewOnly: boolean = false;
 	newReci: Recipient = new Recipient(undefined, false);
 
 	shareBoard() {
-		//send to service
-		var sBoard: Board = this.navParams.get("sBoard");
+		// TODO: send to service
+		var sBoard: Board = this.navParams.get('sBoard');
 		if (this.sharees.length == 0) {
-			this.sharees.push(new Recipient("skanklyone@gmail.com", true));
+			this.sharees.push(new Recipient('plump@piglet.com', true));
 		}
-		console.log("sharing board:" + sBoard.Name + " with " + this.sharees.length + " people with note: " + this.note);
+		console.log('sharing board:' + sBoard.Name + ' with ' + this.sharees.length + ' people with note: ' + this.note);
 		this.viewCntrl.dismiss();
 	}
 

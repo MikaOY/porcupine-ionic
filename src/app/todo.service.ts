@@ -26,7 +26,7 @@ export class TodoService {
 
 	public CachedSharedBoards: Board[] = [];
 
-	private apiUrl: string = 'http://porcupine-dope-api.azurewebsites.net';
+	private apiUrl: string = 'http://porcupine-dope-api.azurewebsites.net'; 
 	private id: number = 0;
 
 	private headers = new Headers({ 'Content-Type': 'application/x-www-form-urlencoded' });
@@ -528,6 +528,8 @@ export class TodoService {
 			.catch(this.handleError);
 	}
 
+	// SHARED
+
 	private GETShared(args: any): Observable<Board[]> {
 		console.log('requesting shared...');
 
@@ -632,7 +634,7 @@ export class TodoService {
 
 			this.CachedSharedBoards = boardArray;
 			console.log('Shared retrieved!');
-
+			/*
 			this.CachedSharedBoards.forEach(board => {
 				board.Todos.forEach(todo => {
 					console.log(board.Name + ': (TODO) ' + todo.Info);
@@ -641,6 +643,7 @@ export class TodoService {
 					console.log(board.Name + ': (CAT) ' + cat.Name);
 				});
 			});
+			*/
 			return boardArray;
 		}).catch(this.handleError);
 	}
