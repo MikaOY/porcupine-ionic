@@ -5,6 +5,7 @@ import { Category } from './category';
 import { Priority } from './priority';
 import { Board } from './board';
 import { DbCompatible } from './db-compatible.interface';
+import { Recipient } from './recipient';
 
 import { Http, Response, RequestOptions, Headers } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
@@ -782,5 +783,19 @@ export class TodoService {
 
 	public getColors(): Promise<string[]> {
 		return Promise.resolve(ColorArray);
+	}
+
+	//Sharing boards functions
+	public getSharedWithReci(board: Board): Recipient[] {
+		//returns all recipients (Email + IsViewOnly) the board has been shared with
+		return 
+	}
+
+	public unshareBoard(user: Recipient, board: Board) {
+		//removes board from user's sharedBoards array and unshares board
+	}
+
+	public shareBoard(sharees: Recipient[], board: Board, note?: string){
+		//adds board to each sharee's sharedBoards and send note or something like that
 	}
 }

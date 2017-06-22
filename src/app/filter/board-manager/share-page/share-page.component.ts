@@ -3,6 +3,7 @@ import { NavParams } from 'ionic-angular';
 import { Board } from '../../../board';
 import { Recipient } from '../../../recipient';
 import { ViewController } from 'ionic-angular';
+import { TodoService } from '../../../todo.service';
 
 @Component({
 	templateUrl: 'share-page.html',
@@ -10,7 +11,8 @@ import { ViewController } from 'ionic-angular';
 
 export class SharePage {
 	constructor(public navParams: NavParams,
-		public viewCntrl: ViewController) { }
+							public viewCntrl: ViewController,
+							public todoService: TodoService) { }
 
 	sharees: Recipient[] = [];
 	note: string = "Check this out!";
@@ -19,8 +21,9 @@ export class SharePage {
 	newReci: Recipient = new Recipient(undefined, false);
 
 	shareBoard() {
-		//send to service
 		var sBoard: Board = this.navParams.get("sBoard");
+		this.todoService.shareBoard(this.sharees, sBoard, this.note);
+		
 		if (this.sharees.length == 0) {
 			this.sharees.push(new Recipient("skanklyone@gmail.com", true));
 		}
@@ -31,10 +34,10 @@ export class SharePage {
 	addReci(reci: Recipient) {
 		this.sharees.push(reci);
 		if (this.containsEdit == false || this.containsViewOnly == false) {
-			if (reci.ViewOnly == true) {
+			if (reci.IsViewOnly == true) {
 				this.containsViewOnly = true;
 			}
-			if (reci.ViewOnly == false) {
+			if (reci.IsViewOnly == false) {
 				this.containsEdit = true;
 			}
 		}
@@ -48,7 +51,7 @@ export class SharePage {
 
 	private doesContainViewOnly(): boolean {
 		for (let reci of this.sharees) {
-			if (reci.ViewOnly == true) {
+			if (reci.IsViewOnly == true) {
 				return true;
 			}
 		}
