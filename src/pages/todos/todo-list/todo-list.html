@@ -32,7 +32,7 @@
 							<ng-template #default>
 								<ion-item-group>
 									<ion-item text-wrap class="todoItem" (press)="activateSelect(todo)" [style.background-color]="todo.IsLocked ? '#dbb7b3' : ''">
-										<ion-checkbox [(ngModel)]="todo.IsDone" (click)=itemChecked(todo.IsDone,todo)></ion-checkbox>
+										<ion-checkbox [(ngModel)]="todo.IsDone" (ionChange)="itemChecked(todo.IsDone,todo)"></ion-checkbox>
 										<ion-label>
 											<p>{{todo.Info}}</p>
 										</ion-label>

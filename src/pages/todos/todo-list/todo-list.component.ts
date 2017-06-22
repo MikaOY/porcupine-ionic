@@ -71,7 +71,8 @@ export class TodoList implements OnInit {
 		else {
 			todo.DateDone = undefined;
 		}
-		}
+	}
+	
 	}
 
 	//apparently working?
