@@ -48,6 +48,7 @@ export class BoardManager implements OnInit {
 	}
 
 	editBoardActive(board: Board) {
+		console.log('what');
 		board.IsEditActive = !board.IsEditActive;
 	}
 

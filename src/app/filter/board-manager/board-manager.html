@@ -13,7 +13,7 @@
 				</button>
 			</ng-template>
 
-			<ng-container *ngIf="board.editActive; else normalBoard">
+			<ng-container *ngIf="board.IsEditActive; else normalBoard">
 			<ion-item text-wrap class="todoItem">
 				<ion-input [(ngModel)]="board.Name"></ion-input>
 			</ion-item>
@@ -34,9 +34,10 @@
 					<button ion-button clear item-right (click)="shareBoard(board)"><ion-icon name="share"></ion-icon></button>
 				</button>
 			</ng-template>
-			<ng-container *ngIf="board.editActive; else normalBoard">
+			<ng-container *ngIf="board.IsEditActive; else normalBoard">
 				<ion-item text-wrap class="todoItem">
 					<ion-input [(ngModel)]="board.Name"></ion-input>
+					<button ion-button clear (click)=board.Lock(todo)><ion-icon name="lock"></ion-icon></button>
 				</ion-item>
 				<button ion-button clear (click)="onEditSharedBoardSubmit(board)">Done</button>
 			</ng-container>
