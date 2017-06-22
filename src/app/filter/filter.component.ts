@@ -83,15 +83,15 @@ export class CategorySort implements OnInit {
             <ion-col>
                 <ion-list no-lines>
                     <ion-list-header>Priority</ion-list-header>
-                    <button ion-item menuClose (click)="sortPriorityHL()">!!! to !</button>
-                    <button ion-item menuClose (click)="sortPriorityLH()">! to !!!</button>
+                    <button ion-item menuClose (click)="sortTodos('HighToLow')">!!! to !</button>
+                    <button ion-item menuClose (click)="sortTodos('LowToHigh')">! to !!!</button>
                 </ion-list>
             </ion-col>
             <ion-col>
                 <ion-list no-lines>
                     <ion-list-header>Date</ion-list-header>
-                    <button ion-item menuClose (click)="sortRecent()">Most Recent</button>
-                    <button ion-item menuClose (click)="sortOldest()">Oldest</button>
+                    <button ion-item menuClose (click)="sortTodos('Recent')">Most Recent</button>
+                    <button ion-item menuClose (click)="sortTodos('Oldest')">Oldest</button>
                 </ion-list>
             </ion-col>
         </ion-row>
@@ -112,31 +112,36 @@ export class PropertySort implements OnInit {
 
 	}
 
-	slothTodos(): Todo[] {
-		return this.todoService.slothGetTodos();
+	slothCurrentBoard(): Board {
+		return this.todoService.slothGetCurrentBoard();
 	}
 
-	sortTodos(mode){
-		let sortedTodos = this.slothTodos().sort((a, b) => {
-			switch(mode){
+	sortTodos(mode: string) {
+		let sortedTodos = this.slothCurrentBoard().Todos.sort((a, b) => {
+			console.log("mode:" + mode);
+			switch(mode) {
 				case 'HighToLow':
 					if (a.Priority > b.Priority) 
 						return -1;
 					if (a.Priority < b.Priority) 
 						return 1;
 					return 0;
+
 				case 'LowToHigh':
+					console.log("low to high");
 					if (a.Priority > b.Priority) 
 						return 1;
 					if (a.Priority < b.Priority) 
 						return -1;
 					return 0;
+
 				case 'Recent':
 					if (a.DateCreated > b.DateCreated)
 						return -1;
 					if (a.DateCreated < b.DateCreated)
 						return 1;
 					return 0;
+
 				case 'Oldest':
 					if (a.DateCreated > b.DateCreated)
 						return 1;
@@ -144,66 +149,10 @@ export class PropertySort implements OnInit {
 						return -1;
 					return 0;
 			}
-		}
-	}
-
-	sortPriorityHL() {
-		let sortedTodos = this.slothTodos().sort((a, b) => {
-
-			if (a.Priority > b.Priority) {
-				return -1;
-			}
-
-			if (a.Priority < b.Priority) {
-				return 1;
-			}
-
-			return 0;
 		});
-
-	}
-
-	sortPriorityLH() {
-		let sortedTodos= this.slothTodos().sort((a, b) => {
-
-			if (a.Priority > b.Priority) {
-				return 1;
-			}
-
-			if (a.Priority < b.Priority) {
-				return -1;
-			}
-
-			return 0;
-		});
-	}
-
-	sortRecent() {
-			let sortedTodos = this.slothTodos().sort((a, b) => {
-				if (a.DateCreated > b.DateCreated) {
-					return -1;
-				}
-
-				if (a.DateCreated < b.DateCreated) {
-					return 1;
-				}
-
-				return 0;
-			});
-	}
-
-	sortOldest() {
-		let sortedTodos = this.slothTodos().sort((a, b) => {
-			if (a.DateCreated > b.DateCreated) {
-				return 1;
-			}
-
-			if (a.DateCreated < b.DateCreated) {
-				return -1;
-			}
-
-			return 0;
-		});
+		console.log(sortedTodos[0].Info);
+		console.log("hi");
+		this.todoService.sortTodos(sortedTodos);
 	}
 
 	presentBoards() {

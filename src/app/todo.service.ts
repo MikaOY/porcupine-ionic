@@ -744,6 +744,10 @@ export class TodoService {
 		return Promise.resolve(this.CurrentBoard);
 	}
 
+	public sortTodos(sortedTodos: Todo[]){
+		this.CurrentBoard.Todos = sortedTodos;
+	}
+
 	public getColors(): Promise<string[]> {
 		return Promise.resolve(ColorArray);
 	}
