@@ -37,7 +37,7 @@ export class UserService {
 	getUserByEmail(email: string): Promise<User> {
 		console.log('getting user by email');
 
-		const url = `${this.apiUrl}/person?email=%27${email}%27`;
+		const url = `${this.apiUrl}/user?email=%27${email}%27`;
 		return this.http.get(url).toPromise().then((response: any) => {
 			console.log('processing user by email');
 
@@ -51,13 +51,13 @@ export class UserService {
 	getUserById(id: number): Promise<User> {
 		console.log('getting user by id');
 
-		const url = `${this.apiUrl}/person?id=${id}`;
+		const url = `${this.apiUrl}/user?id=${id}`;
 		return this.http.get(url).toPromise().then((response: any) => {
 			console.log('processing user by id');
 
 			let user: User = this.processIntoUser(response);
 
-			console.log('User by id retrieved!');
+			console.log('User by id retrieved!'); 
 			return user;
 		});
 	}
