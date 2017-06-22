@@ -1,18 +1,18 @@
-<div id="container">
-  <ion-grid>
-    <h2>Share</h2>
-    <form (ngSubmit)="shareBoard()" #shareBoardForm="ngForm">
+<ion-content>
+	<h2>Manage Sharing</h2>
 
-      <ion-item-group no-lines *ngIf="containsEdit">
-        <p class="shareLabels">Can edit</p>
+	<div id="addReciContainer">
+		<ion-item-group no-lines *ngIf="containsEdit">
+    	<p class="shareLabels">Can edit</p>
         <ng-container *ngFor="let recipient of sharees">
-          <ion-item *ngIf="recipient.ViewOnly == false">{{recipient.Email}}
+          <ion-item *ngIf="recipient.ViewOnly == false">
+					{{recipient.Email}}
             <button clear ion-button item-right type="button" (click)="removeReci(recipient)"><ion-icon name="close"></ion-icon></button>
           </ion-item>
         </ng-container>
       </ion-item-group>
 
-      <ion-item-group no-lines *ngIf="containsView">
+      <ion-item-group no-lines *ngIf="containsViewOnly">
         <p class="shareLabels">View only</p>
         <ng-container *ngFor="let recipient of sharees">
         <ion-item *ngIf="recipient.ViewOnly == true">{{recipient.Email}}
@@ -21,18 +21,21 @@
         </ng-container>
       </ion-item-group>
 
-      <p></p>
-      <ion-item>
-        <ion-label stacked>Email</ion-label>
-        <ion-input clearInput [(ngModel)]="newReci.Email" name="email"></ion-input>
-      </ion-item>
+    <form (ngSubmit)="shareBoard()" #shareBoardForm="ngForm">
+      
 
       <ion-item>
-        <ion-label for="options">{{(viewOnly ? 'View only' : 'Can edit')}}</ion-label>
+        <ion-label for="options">{{(newReci.ViewOnly ? 'View only' : 'Can edit')}}</ion-label>
         <ion-toggle [(ngModel)]="newReci.ViewOnly" name="viewOnly"></ion-toggle>
       </ion-item>
+			<ion-item>
+        <ion-label stacked>Email</ion-label>
+        <ion-input clearInput [(ngModel)]="newReci.Email" name="email"></ion-input>
+				<button clear ion-button type="button" item-right (click)="addReci(newReci)"><ion-icon name="checkmark"></ion-icon></button>
+      </ion-item>
 
-      <button clear ion-button type="button" item-right (click)="addReci(newReci)"><ion-icon name="checkmark"></ion-icon></button>
+
+      
       
       <ion-item>
         <ion-label stacked>Write a note! (optional)</ion-label>
@@ -41,7 +44,6 @@
 
       <button ion-button clear type="button" (click)="closeModal()">Cancel</button>
       <button ion-button item-right clear type="submit">Share</button>
-      
     </form>
-  </ion-grid>
-</div>
+	</div>
+</ion-content>
