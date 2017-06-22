@@ -1,6 +1,19 @@
 <ion-content no-padding>
 	<h3>{{sBoard?.Name}} Board: Manage Sharing</h3>
-	<ion-grid>
+	<ng-container *ngFor="let reci of sharedWithBoards()">
+				<div class="reciLabels">
+					<ion-row>
+						<ion-col>
+							<p>{{reci.Email}} {{reci.IsViewOnly ? '(view only)' : '(can edit)'}}</p>
+						</ion-col>
+						<ion-col>
+							<button clear ion-button type="button" (click)="unshareBoard(reci)"><ion-icon name="close"></ion-icon></button>
+						</ion-col>
+					<ion-row>
+				</div>
+				
+				</ng-container>
+	<ion-grid no-padding>
 		<ion-row>
 			<ion-col>
 				<p>Shared With</p>
@@ -11,25 +24,27 @@
 		</ion-row>
 		<ion-row>
 			<ion-col>
-				<ng-container *ngFor="let reci of sharedWithBoards()">
-					<div class="reciList">
-						<p>{{reci.Email}} ({{reci.IsViewOnly ? 'view only' : 'can edit'}})</p>
+				<div class="reciLabels" *ngFor="let reci of sharedWithBoards()">
+					<p>{{reci.Email}} {{reci.IsViewOnly ? '(view only)' : '(can edit)'}}</p>
+				</div>
+				
+				<div class="reciLabels">
+					</div><div class="reciLabels">
 					</div>
-				</ng-container>
 			</ion-col>
 		</ion-row>
 	</ion-grid>
 	<div id="addReciContainer" *ngIf="isAddReciActive">
 		<ng-container *ngIf="containsEdit">
 			<p class="shareLabels">Can edit</p>
-			<ion-item-group no-lines>
+			<ion-list no-lines>
         <ng-container *ngFor="let recipient of sharees">
-          <ion-item *ngIf="recipient.IsViewOnly == false">
+          <ion-item *ngIf="recipient.IsViewOnly == false">
 						{{recipient.Email}}
             <button clear ion-button item-right type="button" (click)="removeReci(recipient)"><ion-icon name="close"></ion-icon></button>
           </ion-item>
         </ng-container>
-      </ion-item-group>
+      </ion-list>
 		</ng-container>
 
 		<ng-container *ngIf="containsViewOnly">

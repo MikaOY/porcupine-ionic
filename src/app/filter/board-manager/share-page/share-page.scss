@@ -1,11 +1,14 @@
-#container{
-	height: auto;
-	width: auto;
-	background-color: #efefef;
-	padding: 15px;
-}
-
 #addReciContainer{
 	background-color: #efefef;
-	padding: 15px;
+}
+
+.reciLabels{
+	background-color: #edf4ff;
+	padding: 0px;
+	margin: 0px;
+	height: 50px;
+}
+
+ion-grid {
+	padding: 0px;
 }

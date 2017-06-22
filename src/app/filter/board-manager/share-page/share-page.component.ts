@@ -14,6 +14,7 @@ export class SharePage {
 							public viewCntrl: ViewController,
 							public todoService: TodoService) { }
 
+	//testArray: Recipient[] = [new Recipient("hi there", true), new Recipient("Karen", false), new Recipient("Dave", true), new Recipient("Marge", false)];
 	sharees: Recipient[] = [];
 	note: string = 'Check this out!';
 	containsEdit: boolean = false;
@@ -23,8 +24,7 @@ export class SharePage {
 	sBoard: Board = this.navParams.get("sBoard");
 
 	sharedWithBoards(): Recipient[]{
-		//return this.todoService.getSharedWithReci(this.sBoard);
-		return 
+		return this.todoService.getSharedWithReci(this.sBoard);
 	}
 	shareBoard() {
 		this.todoService.shareBoard(this.sharees, this.sBoard, this.note);
@@ -36,7 +36,11 @@ export class SharePage {
 		this.viewCntrl.dismiss();
 	}
 
-	addReciActive(){
+	unshareBoard(reci: Recipient){
+		this.todoService.unshareBoard(reci, this.sBoard);
+	}
+
+	addReciActive() {
 		this.isAddReciActive = !this.isAddReciActive;
 	}
 
@@ -55,7 +59,7 @@ export class SharePage {
 	}
 
 	removeReci(reci: Recipient) {
-		this.sharees.splice(this.sharees.indexOf(reci), 1);
+		this.sharees.splice(this.sharees.indexOf(reci), 1); //remove from temp
 		this.containsViewOnly = this.doesContainViewOnly();
 	}
 
