@@ -529,126 +529,6 @@ export class TodoService {
 			.catch(this.handleError);
 	}
 
-	// SHARED
-
-	private GETShared(args: any): Observable<Board[]> {
-		console.log('requesting shared...');
-
-		const url = `${this.apiUrl}/shared?userId=${this.id}`;
-
-		return this.http.get(url).map((response: any) => {
-
-			console.log('processing shared...');
-
-			// for each row, 
-			// check if new board => create + add to boards
-			// check if new cat => create + add to cats
-			// check if new todo => create + add to todos
-			let boardArray: Board[] = [];
-			let catArray: Category[] = [];
-			let todoArray: Todo[] = [];
-			let i: number = 0;
-			for (let json of response.json()) {
-				i++;
-				// boards
-				// add board to cache if first index, or if boards available and doesn't have it already
-				if ((i == 1) ||
-					(this.checkIfAvailable([boardArray])
-						&& boardArray.find((board, index, bArray) => board.DbId == json['board_id']) == undefined)) {
-
-					boardArray.push(new Board(json['board_title'], [], [], json['board_date_created'], json['board_id'],
-						json['is_view_only'] as boolean, json['sharer_id'], json['owner_id']));
-				}
-
-				// cats
-				// (see boards above)
-				if ((i == 1) ||
-					(this.checkIfAvailable([catArray])
-						&& catArray.find((cat, index, arrayB) => cat.DbId == json['category_id']) == undefined)) {
-
-					// find board that category belongs to
-					let b: Board = boardArray.find((boardB, index, arrayC) => boardB.DbId == json['board_id_category']);
-					if (b == undefined) {
-						console.log('Shared: Did not find board for cat!')
-					}
-					// create cat based on json data
-					let cat = new Category(json['category_title'],
-						json['color'],
-						new Date(json['category_date_created']),
-						json['category_id'],
-						json['board_id_category'],
-						json['category_priority'],
-						true,
-						false);
-
-					// push new cat to Cats[] prop of board it belongs to AND local catsArray
-					b.Categories.push(cat);
-					catArray.push(cat);
-				}
-
-				// todos
-				// (see boards above)
-				if ((i == 1) ||
-					(this.checkIfAvailable([todoArray])
-						&& todoArray.find((todo, index, arrayT) => todo.DbId == json['todo_id']) == undefined)) {
-
-					// create todo based on json data
-					let todo = new Todo(json['todo_info'],
-						null, // cachedCats likely null here, so set it later
-						new Date(json['todo_date_created']),
-						json['is_done'],
-						new Date(json['date_done']),
-						json['is_archived'],
-						Priority[Priority[json['todo_priority']]],
-						json['todo_id'],
-						json['date_due']);
-
-					// find cat todo belongs to
-					let c: Category = catArray.find((cat, index, arrayC) => cat.DbId == json['category_id_todo']);
-					if (c == undefined) {
-						console.log('Shared: Did not find cat for todo!' + todo.Info);
-					}
-					todo.Category = c;
-
-					// find board that todo's cat belongs to
-					let b: Board = boardArray.find((boardB, index, arrayB) => boardB.DbId == todo.Category.BoardId);
-					if (b == undefined) {
-						console.log('Shared: Did not find board for cat of todo!' + todo.Info)
-					}
-
-					// push new cat to Cats[] prop of board it belongs to AND local catsArray
-					b.Todos.push(todo);
-					todoArray.push(todo);
-				}
-			}
-
-			// assign built array to cache
-			// if already has boards in cache, delete them
-			boardArray.forEach(arrayB => {
-				if (this.checkIfAvailable([this.CachedSharedBoards])) {
-					let possibleDuplicate: Board = this.CachedSharedBoards.find((cacheB, cacheIndex, cacheArray) => cacheB.DbId == arrayB.DbId);
-					if (possibleDuplicate != undefined) {
-						this.CachedSharedBoards.splice(this.CachedSharedBoards.indexOf(possibleDuplicate));
-					}
-				}
-			});
-
-			this.CachedSharedBoards = boardArray;
-			console.log('Shared retrieved!');
-			/*
-			this.CachedSharedBoards.forEach(board => {
-				board.Todos.forEach(todo => {
-					console.log(board.Name + ': (TODO) ' + todo.Info);
-				});
-				board.Categories.forEach(cat => {
-					console.log(board.Name + ': (CAT) ' + cat.Name);
-				});
-			});
-			*/
-			return boardArray;
-		}).catch(this.handleError);
-	}
-
 	/* END HTTP functions */
 
 	private handleError(error: Response | any) {
@@ -788,6 +668,8 @@ export class TodoService {
 		return Promise.resolve(ColorArray);
 	}
 
+	/* SHARING */
+
 	public shareBoard(sharees: Recipient[], board: Board, note?: string) {
 		console.log('Sharing board in service')
 
@@ -823,13 +705,155 @@ export class TodoService {
 		});
 	}
 
-	public unshareBoard(user: Recipient, board: Board) {
-		//removes board from user's sharedBoards array and unshares board
+	private GETShared(args: any): Observable<Board[]> {
+		console.log('requesting shared...');
+
+		const url = `${this.apiUrl}/shared?userId=${this.id}`;
+
+		return this.http.get(url).map((response: any) => {
+
+			console.log('processing shared...');
+
+			// for each row, 
+			// check if new board => create + add to boards
+			// check if new cat => create + add to cats
+			// check if new todo => create + add to todos
+			let boardArray: Board[] = [];
+			let catArray: Category[] = [];
+			let todoArray: Todo[] = [];
+			let i: number = 0;
+			for (let json of response.json()) {
+				i++;
+				// boards
+				// add board to cache if first index, or if boards available and doesn't have it already
+				if ((i == 1) ||
+					(this.checkIfAvailable([boardArray])
+						&& boardArray.find((board, index, bArray) => board.DbId == json['board_id']) == undefined)) {
+
+					boardArray.push(new Board(json['board_title'], [], [], json['board_date_created'], json['board_id'],
+						json['is_view_only'] as boolean, json['sharer_id'], json['owner_id']));
+				}
+
+				// cats
+				// (see boards above)
+				if ((i == 1) ||
+					(this.checkIfAvailable([catArray])
+						&& catArray.find((cat, index, arrayB) => cat.DbId == json['category_id']) == undefined)) {
+
+					// find board that category belongs to
+					let b: Board = boardArray.find((boardB, index, arrayC) => boardB.DbId == json['board_id_category']);
+					if (b == undefined) {
+						console.log('Shared: Did not find board for cat!')
+					}
+					// create cat based on json data
+					let cat = new Category(json['category_title'],
+						json['color'],
+						new Date(json['category_date_created']),
+						json['category_id'],
+						json['board_id_category'],
+						json['category_priority'],
+						true,
+						false);
+
+					// push new cat to Cats[] prop of board it belongs to AND local catsArray
+					b.Categories.push(cat);
+					catArray.push(cat);
+				}
+
+				// todos
+				// (see boards above)
+				if ((i == 1) ||
+					(this.checkIfAvailable([todoArray])
+						&& todoArray.find((todo, index, arrayT) => todo.DbId == json['todo_id']) == undefined)) {
+
+					// create todo based on json data
+					let todo = new Todo(json['todo_info'],
+						null, // cachedCats likely null here, so set it later
+						new Date(json['todo_date_created']),
+						json['is_done'],
+						new Date(json['date_done']),
+						json['is_archived'],
+						Priority[Priority[json['todo_priority']]],
+						json['todo_id'],
+						json['date_due']);
+
+					// find cat todo belongs to
+					let c: Category = catArray.find((cat, index, arrayC) => cat.DbId == json['category_id_todo']);
+					if (c == undefined) {
+						console.log('Shared: Did not find cat for todo!' + todo.Info);
+					}
+					todo.Category = c;
+
+					// find board that todo's cat belongs to
+					let b: Board = boardArray.find((boardB, index, arrayB) => boardB.DbId == todo.Category.BoardId);
+					if (b == undefined) {
+						console.log('Shared: Did not find board for cat of todo!' + todo.Info)
+					}
+
+					// push new cat to Cats[] prop of board it belongs to AND local catsArray
+					b.Todos.push(todo);
+					todoArray.push(todo);
+				}
+			}
+
+			// assign built array to cache
+			// if already has boards in cache, delete them
+			boardArray.forEach(arrayB => {
+				if (this.checkIfAvailable([this.CachedSharedBoards])) {
+					let possibleDuplicate: Board = this.CachedSharedBoards.find((cacheB, cacheIndex, cacheArray) => cacheB.DbId == arrayB.DbId);
+					if (possibleDuplicate != undefined) {
+						this.CachedSharedBoards.splice(this.CachedSharedBoards.indexOf(possibleDuplicate));
+					}
+				}
+			});
+
+			this.CachedSharedBoards = boardArray;
+			console.log('Shared retrieved!');
+			/*
+			this.CachedSharedBoards.forEach(board => {
+				board.Todos.forEach(todo => {
+					console.log(board.Name + ': (TODO) ' + todo.Info);
+				});
+				board.Categories.forEach(cat => {
+					console.log(board.Name + ': (CAT) ' + cat.Name);
+				});
+			});
+			*/
+			return boardArray;
+		}).catch(this.handleError);
 	}
 
-	//Sharing boards functions
-	public getSharedWithReci(board: Board): Recipient[] {
-		//returns all recipients (Email + IsViewOnly) the board has been shared with
-		return
+	public unshareBoard(reci: Recipient, board: Board) {
+		console.log('unsharing board...');
+
+		this.userService.getUserByEmail(reci.Email).then((user) => {
+			// first check if user CAN unshare recipient
+			if (board.IsViewOnly) {
+				console.log('Board view only! Cannot unshare!');
+			} else {
+				// unshare if can
+				const url = `${this.apiUrl}/share?boardId=${board.DbId}&recipientId=${user.DbId}&userId=${this.id}`;
+
+				return this.http.delete(url).toPromise().then((response: any) => {
+					console.log('Unshared board ' + board.Name + ' with ' + user.email + response.toString());
+				})
+					.catch(this.handleError);
+			}
+		});
+	}
+
+	public getSharedWithReci(board: Board) {
+		console.log('getting board recipients...');
+
+		const url = `${this.apiUrl}/shared?boardId=${board.DbId}`;
+		this.http.get(url).map((response: any) => {
+			console.log('Processing board recipients...');
+			let array: Recipient[] = [];
+			for (let json of response.json()) {
+				array.push(new Recipient(json['person_email'], json['is_view_only']));
+			}
+			console.log('Board recipients retrieved!');
+			return array; 
+		});
 	}
 }
