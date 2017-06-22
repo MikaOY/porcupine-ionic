@@ -626,7 +626,6 @@ export class TodoService {
 		}
 		else {
 			let emptyBoard: Board;
-			console.log('NONONONO: slothGetCurrentBoard returning empty board!');
 			return emptyBoard;
 		}
 	}

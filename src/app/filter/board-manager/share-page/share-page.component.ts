@@ -14,24 +14,39 @@ export class SharePage {
 							public viewCntrl: ViewController,
 							public todoService: TodoService) { }
 
+	testArray: Recipient[] = [new Recipient("hi there", true), new Recipient("Karen", false), new Recipient("Dave", true), new Recipient("Marge", false)];
 	sharees: Recipient[] = [];
 	note: string = 'Check this out!';
 	containsEdit: boolean = false;
 	containsViewOnly: boolean = false;
+	isAddReciActive: boolean = false;
 	newReci: Recipient = new Recipient(undefined, false);
+	sBoard: Board = this.navParams.get("sBoard");
+
+	sharedWithBoards(): Recipient[]{
+		//return this.todoService.getSharedWithReci(this.sBoard);
+		return this.testArray;
+	}
 
 	shareBoard() {
-		var sBoard: Board = this.navParams.get("sBoard");
-		this.todoService.shareBoard(this.sharees, sBoard, this.note);
-		
+		this.todoService.shareBoard(this.sharees, this.sBoard, this.note);
 		if (this.sharees.length == 0) {
 			this.sharees.push(new Recipient('plump@piglet.com', true));
 		}
-		console.log('sharing board:' + sBoard.Name + ' with ' + this.sharees.length + ' people with note: ' + this.note);
+		console.log('sharing board:' + this.sBoard.Name + ' with ' + this.sharees.length + ' people with note: ' + this.note);
 		this.viewCntrl.dismiss();
 	}
 
+	unshareBoard(reci: Recipient){
+		this.todoService.unshareBoard(reci, this.sBoard);
+	}
+
+	addReciActive() {
+		this.isAddReciActive = !this.isAddReciActive;
+	}
+
 	addReci(reci: Recipient) {
+		console.log("new reci name: " + reci.Email + " viewOnly: " + reci.IsViewOnly);
 		this.sharees.push(reci);
 		if (this.containsEdit == false || this.containsViewOnly == false) {
 			if (reci.IsViewOnly == true) {
@@ -45,7 +60,7 @@ export class SharePage {
 	}
 
 	removeReci(reci: Recipient) {
-		this.sharees.splice(this.sharees.indexOf(reci), 1);
+		this.sharees.splice(this.sharees.indexOf(reci), 1); //remove from temp
 		this.containsViewOnly = this.doesContainViewOnly();
 	}
 
