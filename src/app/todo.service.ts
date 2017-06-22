@@ -59,12 +59,12 @@ export class TodoService {
 		for (var property in details) {
 			var encodedKey = encodeURIComponent(property);
 			var encodedValue = encodeURIComponent(details[property]);
-			formBody.push(encodedKey + "=" + '\'' + encodedValue + '\'');
+			formBody.push(encodedKey + '=' + '\'' + encodedValue + '\'');
 		}
-		let body = formBody.join("&");
+		let body = formBody.join('&');
 
 		return this.http.post(url, body, this.options).toPromise().then((response: any) => {
-			console.log("addBoard response:" + response.toString);
+			console.log('addBoard response:' + response.toString);
 		}).catch(this.handleError);
 	}
 
@@ -117,12 +117,12 @@ export class TodoService {
 		for (var property in details) {
 			var encodedKey = encodeURIComponent(property);
 			var encodedValue = encodeURIComponent(details[property]);
-			formBody.push(encodedKey + "=" + '\'' + encodedValue + '\'');
+			formBody.push(encodedKey + '=' + '\'' + encodedValue + '\'');
 		}
-		let body = formBody.join("&");
+		let body = formBody.join('&');
 
 		return this.http.put(url, body, this.options).toPromise().then((response: any) => {
-			console.log("updateBoards response:" + response.toString);
+			console.log('updateBoards response:' + response.toString);
 		}).catch(this.handleError);
 	}
 
@@ -158,14 +158,14 @@ export class TodoService {
 		for (var property in details) {
 			var encodedKey = encodeURIComponent(property);
 			var encodedValue = encodeURIComponent(details[property]);
-			formBody.push(encodedKey + "=" + '\'' + encodedValue + '\'');
+			formBody.push(encodedKey + '=' + '\'' + encodedValue + '\'');
 		}
-		let body = formBody.join("&");
+		let body = formBody.join('&');
 
 		console.log(body);
 
 		return this.http.post(url, body, this.options).toPromise().then((response: any) => {
-			console.log("addCategory response:" + response.toString);
+			console.log('addCategory response:' + response.toString);
 		}).catch(this.handleError);
 	}
 
@@ -271,12 +271,12 @@ export class TodoService {
 		for (var property in details) {
 			var encodedKey = encodeURIComponent(property);
 			var encodedValue = encodeURIComponent(details[property]);
-			formBody.push(encodedKey + "=" + '\'' + encodedValue + '\'');
+			formBody.push(encodedKey + '=' + '\'' + encodedValue + '\'');
 		}
-		let body = formBody.join("&");
+		let body = formBody.join('&');
 
 		return this.http.put(url, body, this.options).toPromise().then((response: any) => {
-			console.log("updateCategories response:" + response.toString);
+			console.log('updateCategories response:' + response.toString);
 		}).catch(this.handleError);
 	}
 
@@ -317,13 +317,13 @@ export class TodoService {
 		for (var property in details) {
 			var encodedKey = encodeURIComponent(property);
 			var encodedValue = encodeURIComponent(details[property]);
-			formBody.push(encodedKey + "=" + '\'' + encodedValue + '\'');
+			formBody.push(encodedKey + '=' + '\'' + encodedValue + '\'');
 		}
-		let body = formBody.join("&");
+		let body = formBody.join('&');
 		console.log(body);
 
 		return this.http.post(url, body, this.options).toPromise().then((response: any) => {
-			console.log("addTodo response:" + response.toString);
+			console.log('addTodo response:' + response.toString);
 		}).catch(this.handleError);
 	}
 
@@ -374,18 +374,16 @@ export class TodoService {
 						while (this.CachedBoards == undefined) {
 							// Wait for CachedBoards to be defined
 						}
-						let b: Board = this.CachedBoards.find((board, index, array) => {
+						let b: Board = this.CachedBoards.find((board, index, bArray) => {
 							// (do not search until Cats[] prop on board is not empty/ null)
 							while (board.Categories == null || board.Categories.length == 0) {
 								console.log('TODOS: Cat[] prop on ' + board.Name + ' unavailable! Waiting...');
 							}
-
-							// (board Cats[] not null, can continue with check)
-							console.log("Is the todoCat defined?" + todoCat == undefined);
+							// board Cats[] not null, can continue with check
 							return board.DbId == todoCat.BoardId;
 						});
 
-						//console.log("Passed it");
+						//console.log('Passed it');
 						// 3 - check if todo already in board, if NOT, add it
 						if (b.Todos.find((todo, index, bArray) => {
 							return (array[array.length - 1].Category.DbId == todo.Category.DbId)
@@ -397,7 +395,7 @@ export class TodoService {
 							isAssigned = true;
 
 						}
-						//console.log("Passed 3");
+						//console.log('Passed 3');
 						// remove sample data ONCE when at last index
 						if (i == (response.json().length - 1)) {
 							while (this.CachedBoards == null) {
@@ -423,7 +421,7 @@ export class TodoService {
 					}
 				}
 			}
-			console.log("Abupt to assign stuff");
+
 			// assign built array to cache
 			// if already has todos in cache, delete them
 			array.forEach(arrayTodo => {
@@ -470,13 +468,13 @@ export class TodoService {
 		for (var property in details) {
 			var encodedKey = encodeURIComponent(property);
 			var encodedValue = encodeURIComponent(details[property]);
-			formBody.push(encodedKey + "=" + '\'' + encodedValue + '\'');
+			formBody.push(encodedKey + '=' + '\'' + encodedValue + '\'');
 		}
-		let body = formBody.join("&");
+		let body = formBody.join('&');
 		console.log(body);
 
 		return this.http.put(url, body, this.options).toPromise().then((response: any) => {
-			console.log("updateTodos response:" + response.toString);
+			console.log('updateTodos response:' + response.toString);
 		}).catch(this.handleError);
 	}
 
@@ -496,9 +494,9 @@ export class TodoService {
 		for (var property in details) {
 			var encodedKey = encodeURIComponent(property);
 			var encodedValue = encodeURIComponent(details[property]);
-			formBody.push(encodedKey + "=" + '\'' + encodedValue + '\'');
+			formBody.push(encodedKey + '=' + '\'' + encodedValue + '\'');
 		}
-		let body = formBody.join("&");
+		let body = formBody.join('&');
 
 		// delete obj from cache 
 		switch (idName) {
@@ -516,7 +514,7 @@ export class TodoService {
 		}
 
 		this.http.put(url, body, this.options).toPromise().then((response: any) => {
-			console.log("delete " + idName + " response: " + response.toString);
+			console.log('delete ' + idName + ' response: ' + response.toString);
 		}).catch(this.handleError);
 	}
 
@@ -530,7 +528,7 @@ export class TodoService {
 			.catch(this.handleError);
 	}
 
-	private GETShared(): Observable<Board[]> {
+	private GETShared(args: any): Observable<Board[]> {
 		console.log('requesting shared...');
 
 		const url = `${this.apiUrl}/shared?userId=${this.id}`;
@@ -545,7 +543,7 @@ export class TodoService {
 			// check if new todo => create + add to todos
 			let boardArray: Board[] = [];
 			let catArray: Category[] = [];
-			let todoArray: Todo[] = [];
+			let todoArray: Todo[] = []; 
 			let i: number = 0;
 			for (let json of response.json()) {
 				i++;
@@ -604,14 +602,14 @@ export class TodoService {
 					// find cat todo belongs to
 					let c: Category = catArray.find((cat, index, arrayC) => cat.DbId == json['category_id_todo']);
 					if (c == undefined) {
-						console.log('Shared: Did not find cat for todo!')
+						console.log('Shared: Did not find cat for todo!' + todo.Info);
 					}
 					todo.Category = c;
 
 					// find board that todo's cat belongs to
 					let b: Board = boardArray.find((boardB, index, arrayB) => boardB.DbId == todo.Category.BoardId);
 					if (b == undefined) {
-						console.log('Shared: Did not find board for cat of todo!')
+						console.log('Shared: Did not find board for cat of todo!' + todo.Info)
 					}
 
 					// push new cat to Cats[] prop of board it belongs to AND local catsArray
@@ -632,6 +630,16 @@ export class TodoService {
 			});
 
 			this.CachedSharedBoards = boardArray;
+			console.log('Shared retrieved!');
+
+			this.CachedSharedBoards.forEach(board => {
+				board.Todos.forEach(todo => {
+					console.log(board.Name + ': (TODO) ' + todo.Info);
+				});
+				board.Categories.forEach(cat => {
+					console.log(board.Name + ': (CAT) ' + cat.Name);
+				});
+			});
 			return boardArray;
 		}).catch(this.handleError);
 	}
@@ -672,11 +680,14 @@ export class TodoService {
 			this.isBusy = true;
 			console.log('Getting current board...');
 			// Retrieve all data first, then pull current board after all concluded
-			return this.GETBoards().mergeMap(boards => this.GETCategories(boards).mergeMap(cats => this.GETTodos(cats)
-				.map(args => {
-					this.isBusy = false;
-					return this.CachedBoards[0];
-				}).share()));
+			return this.GETBoards().mergeMap(boards =>
+				this.GETCategories(boards).mergeMap(cats =>
+					this.GETTodos(cats).mergeMap(todos =>
+						this.GETShared(todos))
+						.map(args => {
+							this.isBusy = false;
+							return this.CachedBoards[0];
+						}).share()));
 		}
 	}
 
@@ -720,7 +731,7 @@ export class TodoService {
 		}
 		else {
 			let emptyBoard: Board;
-			console.log("NONONONO: slothGetCurrentBoard returning empty board!");
+			console.log('NONONONO: slothGetCurrentBoard returning empty board!');
 			return emptyBoard;
 		}
 	}
