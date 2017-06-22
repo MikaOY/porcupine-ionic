@@ -26,9 +26,9 @@ export class SharePage {
 	sharedWithBoards(): Recipient[]{
 		return this.todoService.getSharedWithReci(this.sBoard);
 	}
+
 	shareBoard() {
 		this.todoService.shareBoard(this.sharees, this.sBoard, this.note);
-		
 		if (this.sharees.length == 0) {
 			this.sharees.push(new Recipient('plump@piglet.com', true));
 		}
