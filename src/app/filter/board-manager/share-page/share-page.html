@@ -1,42 +1,59 @@
-<ion-content>
-	<h2>Manage Sharing</h2>
-
-	<div id="addReciContainer">
-		<ion-item-group no-lines *ngIf="containsEdit">
-    	<p class="shareLabels">Can edit</p>
+<ion-content no-padding>
+	<h3>{{sBoard?.Name}} Board: Manage Sharing</h3>
+	<ion-grid>
+		<ion-row>
+			<ion-col>
+				<p>Shared With</p>
+			</ion-col>
+			<ion-col col-2>
+				<button ion-button clear *ngIf="!isAddReciActive" (click)="addReciActive()">+</button>
+			</ion-col>
+		</ion-row>
+		<ion-row>
+			<ion-col>
+				<ng-container *ngFor="let reci of sharedWithBoards()">
+					<div class="reciList">
+						<p>{{reci.Email}} ({{reci.IsViewOnly ? 'view only' : 'can edit'}})</p>
+					</div>
+				</ng-container>
+			</ion-col>
+		</ion-row>
+	</ion-grid>
+	<div id="addReciContainer" *ngIf="isAddReciActive">
+		<ng-container *ngIf="containsEdit">
+			<p class="shareLabels">Can edit</p>
+			<ion-item-group no-lines>
         <ng-container *ngFor="let recipient of sharees">
-          <ion-item *ngIf="recipient.ViewOnly == false">
-					{{recipient.Email}}
+          <ion-item *ngIf="recipient.IsViewOnly == false">
+						{{recipient.Email}}
             <button clear ion-button item-right type="button" (click)="removeReci(recipient)"><ion-icon name="close"></ion-icon></button>
           </ion-item>
         </ng-container>
       </ion-item-group>
+		</ng-container>
 
-      <ion-item-group no-lines *ngIf="containsViewOnly">
-        <p class="shareLabels">View only</p>
+		<ng-container *ngIf="containsViewOnly">
+			<p class="shareLabels">View only</p>
+      <ion-item-group no-lines>
         <ng-container *ngFor="let recipient of sharees">
-        <ion-item *ngIf="recipient.ViewOnly == true">{{recipient.Email}}
+        <ion-item *ngIf="recipient.IsViewOnly == true">
+					{{recipient.Email}}
           <button clear ion-button item-right type="button" (click)="removeReci(recipient)"><ion-icon name="close"></ion-icon></button>
         </ion-item>
         </ng-container>
       </ion-item-group>
+		</ng-container>
 
     <form (ngSubmit)="shareBoard()" #shareBoardForm="ngForm">
-      
-
       <ion-item>
-        <ion-label for="options">{{(newReci.ViewOnly ? 'View only' : 'Can edit')}}</ion-label>
-        <ion-toggle [(ngModel)]="newReci.ViewOnly" name="viewOnly"></ion-toggle>
+        <ion-label for="options">{{(newReci.IsViewOnly ? 'View only' : 'Can edit')}}</ion-label>
+        <ion-toggle [(ngModel)]="newReci.IsViewOnly" name="viewOnly"></ion-toggle>
       </ion-item>
 			<ion-item>
         <ion-label stacked>Email</ion-label>
         <ion-input clearInput [(ngModel)]="newReci.Email" name="email"></ion-input>
 				<button clear ion-button type="button" item-right (click)="addReci(newReci)"><ion-icon name="checkmark"></ion-icon></button>
       </ion-item>
-
-
-      
-      
       <ion-item>
         <ion-label stacked>Write a note! (optional)</ion-label>
         <ion-textarea fz-elastic [(ngModel)]="note" name="note"></ion-textarea>

@@ -18,20 +18,30 @@ export class SharePage {
 	note: string = 'Check this out!';
 	containsEdit: boolean = false;
 	containsViewOnly: boolean = false;
+	isAddReciActive: boolean = false;
 	newReci: Recipient = new Recipient(undefined, false);
+	sBoard: Board = this.navParams.get("sBoard");
 
+	sharedWithBoards(): Recipient[]{
+		//return this.todoService.getSharedWithReci(this.sBoard);
+		return 
+	}
 	shareBoard() {
-		var sBoard: Board = this.navParams.get("sBoard");
-		this.todoService.shareBoard(this.sharees, sBoard, this.note);
+		this.todoService.shareBoard(this.sharees, this.sBoard, this.note);
 		
 		if (this.sharees.length == 0) {
 			this.sharees.push(new Recipient('plump@piglet.com', true));
 		}
-		console.log('sharing board:' + sBoard.Name + ' with ' + this.sharees.length + ' people with note: ' + this.note);
+		console.log('sharing board:' + this.sBoard.Name + ' with ' + this.sharees.length + ' people with note: ' + this.note);
 		this.viewCntrl.dismiss();
 	}
 
+	addReciActive(){
+		this.isAddReciActive = !this.isAddReciActive;
+	}
+
 	addReci(reci: Recipient) {
+		console.log("new reci name: " + reci.Email + " viewOnly: " + reci.IsViewOnly);
 		this.sharees.push(reci);
 		if (this.containsEdit == false || this.containsViewOnly == false) {
 			if (reci.IsViewOnly == true) {
