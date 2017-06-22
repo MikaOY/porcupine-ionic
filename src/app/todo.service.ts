@@ -754,16 +754,26 @@ export class TodoService {
 		}
 	}
 
-	public nextBoard(board: Board): Promise<Board> {
-		let boardIndex = this.CachedBoards.indexOf(board);
-
-		if (boardIndex + 1 == this.CachedBoards.length) {
-			this.CurrentBoard = this.CachedBoards[0];
+	public nextBoard(board: Board) {
+		var boardIndex: number;
+		if (board.SharerId == undefined && board.OwnerId == undefined) {
+			boardIndex = this.CachedBoards.indexOf(board);
+			if (boardIndex + 1 == this.CachedBoards.length) {
+				this.CurrentBoard = this.CachedSharedBoards[0];
+			}
+			else {
+				this.CurrentBoard = this.CachedBoards[boardIndex + 1];
+			}
 		}
 		else {
-			this.CurrentBoard = this.CachedBoards[boardIndex + 1];
+			boardIndex = this.CachedSharedBoards.indexOf(board);
+			if (boardIndex + 1 == this.CachedSharedBoards.length) {
+				this.CurrentBoard = this.CachedBoards[0];
+			}
+			else {
+				this.CurrentBoard = this.CachedSharedBoards[boardIndex + 1];
+			}
 		}
-		return Promise.resolve(this.CurrentBoard);
 	}
 
 	public sortTodos(sortedTodos: Todo[]){

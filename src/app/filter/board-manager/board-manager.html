@@ -30,7 +30,7 @@
 				<button ion-item (click)="openBoard(board)">
 					{{board.Name}}
 					<button ion-button clear item-right (click)="deleteSharedBoard(board)"><ion-icon name="trash"></ion-icon></button>
-					<button ion-button clear item-right (click)="editBoardActive(board)"><ion-icon name="create"></ion-icon></button>
+					<button ion-button clear item-right *ngIf="!board.IsViewOnly" (click)="editBoardActive(board)"><ion-icon name="create"></ion-icon></button>
 					<button ion-button clear item-right (click)="shareBoard(board)"><ion-icon name="share"></ion-icon></button>
 				</button>
 			</ng-template>
