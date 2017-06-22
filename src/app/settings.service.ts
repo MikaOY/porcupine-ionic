@@ -26,6 +26,7 @@ export class SettingsService {
 	}
 
 	getPasscode(): Promise<string> {
+		//TODO: fetch this user's passcode and return it
 		return Promise.resolve(this.passcode);
 	}
 }

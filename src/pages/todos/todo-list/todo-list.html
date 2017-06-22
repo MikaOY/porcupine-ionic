@@ -1,5 +1,9 @@
 <ion-content padding>
-<ion-list no-lines>
+<div *ngIf="slothCurrentBoard()?.IsLocked">
+	<h4>This board is locked</h4>
+	<button ion-button clear (click)="unlockBoard(slothCurrentBoard())">Unlock Board</button>
+</div>
+<ion-list no-lines *ngIf="!slothCurrentBoard()?.IsLocked">
 		
 	<!--what select mode looks like (tap&hold to activate)-->
 	<ng-container *ngIf="selectActive === true; else selInactive">

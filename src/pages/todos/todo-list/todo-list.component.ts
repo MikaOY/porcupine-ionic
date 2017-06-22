@@ -109,6 +109,15 @@ export class TodoList implements OnInit {
 		this.selectedTodos.length = 0; //empties selectedTodos array
 	}
 
+	unlockBoard(board: Board) {
+		let UnlockModal = this.ModalCtrl.create(UnlockPage); 
+		UnlockModal.onDidDismiss(data => {
+			board.IsLocked = data;
+		})
+		UnlockModal.present();
+	}
+
+	//probably delete later
 	UnlockTodo(todo: Todo) {
 		let UnlockModal = this.ModalCtrl.create(UnlockPage); //pass in additional params here
 		UnlockModal.onDidDismiss(data => {
