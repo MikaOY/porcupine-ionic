@@ -85,13 +85,13 @@
 										<ion-col>{{priority[todo.Priority]}}</ion-col>
 									</ion-row>
 
-									<ion-row>
+									<ion-row *ngIf="!slothCurrentBoard()?.IsViewOnly">
 										<ion-col col-3>
 											<button ion-button clear (click)=todo.Lock(todo)><ion-icon name="lock"></ion-icon></button>
 										</ion-col>
 									</ion-row>
 								</ion-grid>
-								<button ion-button id="editButton" small="true" clear="true" *ngIf="todo.DetailShown" (click)=activateEdit(todo)>edit</button>
+								<button ion-button id="editButton" small="true" clear="true" *ngIf="!slothCurrentBoard()?.IsViewOnly" (click)=activateEdit(todo)>edit</button>
 							</ng-template>
 
 							<!--the form!!! for editing (activate by editButton)-->
@@ -175,7 +175,7 @@
 	</div>
 
 </ion-list>
-<ion-fab id="addButton">
+<ion-fab id="addButton" *ngIf="!slothCurrentBoard()?.IsViewOnly">
 	<button ion-fab mini (click)=AddTodo()>+</button>
 </ion-fab>
 </ion-content>
