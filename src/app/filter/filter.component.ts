@@ -116,6 +116,37 @@ export class PropertySort implements OnInit {
 		return this.todoService.slothGetTodos();
 	}
 
+	sortTodos(mode){
+		let sortedTodos = this.slothTodos().sort((a, b) => {
+			switch(mode){
+				case 'HighToLow':
+					if (a.Priority > b.Priority) 
+						return -1;
+					if (a.Priority < b.Priority) 
+						return 1;
+					return 0;
+				case 'LowToHigh':
+					if (a.Priority > b.Priority) 
+						return 1;
+					if (a.Priority < b.Priority) 
+						return -1;
+					return 0;
+				case 'Recent':
+					if (a.DateCreated > b.DateCreated)
+						return -1;
+					if (a.DateCreated < b.DateCreated)
+						return 1;
+					return 0;
+				case 'Oldest':
+					if (a.DateCreated > b.DateCreated)
+						return 1;
+					if (a.DateCreated < b.DateCreated)
+						return -1;
+					return 0;
+			}
+		}
+	}
+
 	sortPriorityHL() {
 		let sortedTodos = this.slothTodos().sort((a, b) => {
 
