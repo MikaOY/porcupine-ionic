@@ -14,7 +14,7 @@ import { UnlockPage } from '../../../app/lockable/unlock-page.component';
 })
 
 export class TodoList implements OnInit {
-	randomZZ: boolean = false;
+	justWait: boolean = false;
 
 	// this sets colors for the category numbers
 	ColorArray: string[];
@@ -28,7 +28,7 @@ export class TodoList implements OnInit {
 	// Leave service calls in init callback!
 	ngOnInit(): void {
 		setTimeout(() => {
-			this.randomZZ = true;
+			this.justWait = true;
 			this.todoService.getColors().then(colorArray => this.ColorArray = colorArray);
 		}, 5000);
 	}
@@ -63,16 +63,15 @@ export class TodoList implements OnInit {
 
 	itemChecked(IsDone: boolean, todo: Todo) { //run when you click the checkbox
 		if (this.slothCurrentBoard().IsViewOnly != true) {
-		if (IsDone == true) {
-			//function to find date and control archive
-			var currentTime = new Date();
-			todo.DateDone = currentTime;
+			if (IsDone == true) {
+				//function to find date and control archive
+				var currentTime = new Date();
+				todo.DateDone = currentTime;
+			}
+			else {
+				todo.DateDone = undefined;
+			}
 		}
-		else {
-			todo.DateDone = undefined;
-		}
-	}
-	
 	}
 
 	//apparently working?
@@ -113,15 +112,6 @@ export class TodoList implements OnInit {
 		let UnlockModal = this.ModalCtrl.create(UnlockPage); 
 		UnlockModal.onDidDismiss(data => {
 			board.IsLocked = data;
-		})
-		UnlockModal.present();
-	}
-
-	//probably delete later
-	UnlockTodo(todo: Todo) {
-		let UnlockModal = this.ModalCtrl.create(UnlockPage); //pass in additional params here
-		UnlockModal.onDidDismiss(data => {
-			todo.IsLocked = data;
 		})
 		UnlockModal.present();
 	}

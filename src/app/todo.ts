@@ -3,7 +3,7 @@ import { Priority } from './priority';
 import { DbCompatible } from './db-compatible.interface';
 import { Lockable } from './lockable/lockable.interface';
 
-export class Todo implements Lockable, DbCompatible {
+export class Todo implements DbCompatible {
     constructor(public Info: string,
                 public Category: Category,
                 public DateCreated: Date,
@@ -17,12 +17,6 @@ export class Todo implements Lockable, DbCompatible {
                 public IsEditActive?: boolean,
                 public SelectActive?: boolean,
                 ) { }
-
-    IsLocked: boolean = false;
-    Lock(todo: Todo): true{
-        todo.IsLocked = true;
-        todo.DetailShown = false;
-        return true;
     }
 
 	/*
@@ -70,7 +64,7 @@ export class Todo implements Lockable, DbCompatible {
 			return key === "" ? Todo.fromJSON(value) : value;
 	}
 	*/
-}
+
 /*
 export interface TodoJSON {
     todo_id: string;
