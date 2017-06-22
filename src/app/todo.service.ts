@@ -4,6 +4,7 @@ import { Todo } from './todo';
 import { Category } from './category';
 import { Priority } from './priority';
 import { Board } from './board';
+import { UserService } from './user.service';
 import { DbCompatible } from './db-compatible.interface';
 import { Recipient } from './recipient';
 
@@ -27,7 +28,7 @@ export class TodoService {
 
 	public CachedSharedBoards: Board[] = [];
 
-	private apiUrl: string = 'http://porcupine-dope-api.azurewebsites.net'; 
+	private apiUrl: string = 'http://porcupine-dope-api.azurewebsites.net';
 	private id: number = 0;
 
 	private headers = new Headers({ 'Content-Type': 'application/x-www-form-urlencoded' });
@@ -35,7 +36,7 @@ export class TodoService {
 
 	private isBusy: boolean = false;
 
-	constructor(private http: Http) {
+	constructor(private http: Http, private userService: UserService) {
 		this.CachedBoards = [];
 		this.CachedCats = [];
 		this.CachedTodos = [];
@@ -80,7 +81,7 @@ export class TodoService {
 
 			let array: Board[] = [];
 			for (let json of response.json()) {
-				array.push(new Board(json['board_title'], [], [], json['board_date_created'], json['board_id']));
+				array.push(new Board(json['board_title'], [], [], json['board_date_created'], json['board_id'], undefined, undefined, json['person_id_board']));
 			}
 
 			// assign built array to cache
@@ -297,7 +298,6 @@ export class TodoService {
 
 		this.CurrentBoard.Todos.push(newTodo);
 		this.CachedTodos.push(newTodo);
-
 
 		const url = `${this.apiUrl}/todo`;
 
@@ -546,7 +546,7 @@ export class TodoService {
 			// check if new todo => create + add to todos
 			let boardArray: Board[] = [];
 			let catArray: Category[] = [];
-			let todoArray: Todo[] = []; 
+			let todoArray: Todo[] = [];
 			let i: number = 0;
 			for (let json of response.json()) {
 				i++;
@@ -556,7 +556,7 @@ export class TodoService {
 					(this.checkIfAvailable([boardArray])
 						&& boardArray.find((board, index, bArray) => board.DbId == json['board_id']) == undefined)) {
 
-					boardArray.push(new Board(json['board_title'], [], [], json['board_date_created'], json['board_id'], 
+					boardArray.push(new Board(json['board_title'], [], [], json['board_date_created'], json['board_id'],
 						json['is_view_only'] as boolean, json['sharer_id'], json['owner_id']));
 				}
 
@@ -699,7 +699,7 @@ export class TodoService {
 	public setAsCurrentBoard(board: Board) {
 		this.CurrentBoard = board;
 	}
-	
+
 	public slothGetBoards(): Board[] {
 		if (this.checkIfAvailable([this.CachedBoards])) {
 			return this.CachedBoards;
@@ -710,7 +710,7 @@ export class TodoService {
 		}
 	}
 
-	public slothGetSharedBoards(): Board[]{
+	public slothGetSharedBoards(): Board[] {
 		if (this.checkIfAvailable([this.CachedSharedBoards])) {
 			return this.CachedSharedBoards;
 		}
@@ -780,7 +780,7 @@ export class TodoService {
 		}
 	}
 
-	public sortTodos(sortedTodos: Todo[]){
+	public sortTodos(sortedTodos: Todo[]) {
 		this.CurrentBoard.Todos = sortedTodos;
 	}
 
@@ -788,17 +788,48 @@ export class TodoService {
 		return Promise.resolve(ColorArray);
 	}
 
-	//Sharing boards functions
-	public getSharedWithReci(board: Board): Recipient[] {
-		//returns all recipients (Email + IsViewOnly) the board has been shared with
-		return 
+	public shareBoard(sharees: Recipient[], board: Board, note?: string) {
+		console.log('Sharing board in service')
+
+		// TODO: send note to recipients
+		const url = `${this.apiUrl}/shared`;
+
+		sharees.forEach(sharee => {
+			// get user by email first
+			this.userService.getUserByEmail(sharee.Email).then((user) => {
+				// then create req body
+				var details = {
+					'boardId': String(board.DbId),
+					'recipientId': user.DbId,
+					'isViewOnly': sharee.IsViewOnly ? '1' : '0',
+					'note': note ? note : '',
+					'sharerId': String(this.id),
+					'ownerId': String(board.OwnerId)
+				};
+
+				let formBody = [];
+				for (var property in details) {
+					var encodedKey = encodeURIComponent(property);
+					var encodedValue = encodeURIComponent(details[property]);
+					formBody.push(encodedKey + '=' + '\'' + encodedValue + '\'');
+				}
+				let body = formBody.join('&');
+				console.log(body);
+
+				this.http.post(url, body, this.options).toPromise().then((response: any) => {
+					console.log('share to response:' + response.toString);
+				}).catch(this.handleError);
+			});
+		});
 	}
 
 	public unshareBoard(user: Recipient, board: Board) {
 		//removes board from user's sharedBoards array and unshares board
 	}
 
-	public shareBoard(sharees: Recipient[], board: Board, note?: string){
-		//adds board to each sharee's sharedBoards and send note or something like that
+	//Sharing boards functions
+	public getSharedWithReci(board: Board): Recipient[] {
+		//returns all recipients (Email + IsViewOnly) the board has been shared with
+		return
 	}
 }
