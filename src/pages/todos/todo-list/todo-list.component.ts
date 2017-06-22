@@ -62,6 +62,7 @@ export class TodoList implements OnInit {
 	}
 
 	itemChecked(IsDone: boolean, todo: Todo) { //run when you click the checkbox
+		if (this.slothCurrentBoard().IsViewOnly != true) {
 		if (IsDone == true) {
 			//function to find date and control archive
 			var currentTime = new Date();
@@ -69,6 +70,7 @@ export class TodoList implements OnInit {
 		}
 		else {
 			todo.DateDone = undefined;
+		}
 		}
 	}
 
@@ -85,6 +87,7 @@ export class TodoList implements OnInit {
 	}
 
 	activateSelect(todo: Todo) {
+		if (this.slothCurrentBoard().IsViewOnly != true){
 		this.selectActive = true; //mode that controls ability to select/reorder todos
 
 		if (todo.SelectActive === true) {
@@ -93,6 +96,7 @@ export class TodoList implements OnInit {
 		else {
 			todo.SelectActive = true;
 			this.selectedTodos.push(todo);
+		}
 		}
 	}
 
