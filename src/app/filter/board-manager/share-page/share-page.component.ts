@@ -23,7 +23,7 @@ export class SharePage {
 	containsEdit: boolean = false;
 	containsViewOnly: boolean = false;
 	isAddReciActive: boolean = false;
-	newPerm: Permission = new Permission(undefined, false);
+	newPerm: Permission = new Permission(new User(undefined, undefined, undefined, undefined, undefined), false);
 	sBoard: Board = this.navParams.get("sBoard");
 
 	getBoardPerms() {
@@ -53,6 +53,7 @@ export class SharePage {
 
 	addReciActive() {
 		this.isAddReciActive = !this.isAddReciActive;
+		console.log("isAddReciActive? " + this.isAddReciActive);
 	}
 
 	addPerm(perm: Permission) {
@@ -68,7 +69,7 @@ export class SharePage {
 						this.containsEdit = true;
 					}
 				}
-				this.newPerm = new Permission(undefined, false);
+				this.newPerm = new Permission(new User(undefined, undefined, undefined, undefined, undefined), false);
 			} else {
 				// alert the user of his/her mistake
 				let alert = this.alertCtrl.create({
