@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Platform, ModalController } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
-import { AuthService } from './auth.service';
+import { UserService } from './user.service';
 
 import { TabsPage } from '../pages/tabs/tabs';
 import { LoginPage } from './login/login.component';
@@ -24,7 +24,7 @@ export class MyApp implements OnInit {
 							statusBar: StatusBar,
 							splashScreen: SplashScreen,
 							public modalCtrl: ModalController,
-							public auth: AuthService,
+							public userService: UserService,
 							private settingsService: SettingsService,
 							) {
 		platform.ready().then((source) => {
@@ -34,9 +34,9 @@ export class MyApp implements OnInit {
 				statusBar.styleDefault();
 				splashScreen.hide();
 			}
-			this.auth.startupTokenRefresh();
-			if (this.auth.authenticated() == false){
-				this.auth.login();
+			
+			if (this.userService.authenticated() == false){
+				this.userService.login();
 			}
 		});
 	}

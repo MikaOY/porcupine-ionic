@@ -5,7 +5,6 @@ import { ElasticModule } from 'angular2-elastic';
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 import { MyApp } from './app.component';
 
-import { LoginPage } from './login/login.component';
 import { SettingsPage } from '../pages/settings/settings';
 import { TodosPage } from '../pages/todos/todos';
 import { TabsPage } from '../pages/tabs/tabs';
@@ -23,7 +22,6 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { TodoService } from './todo.service';
 import { SettingsService } from './settings.service';
 import { UserService } from './user.service';
-import { AuthService } from './auth.service';
 import { HttpModule }    from '@angular/http';
 
 import { Http, RequestOptions } from '@angular/http';
@@ -43,7 +41,6 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     CategorySort,
     PropertySort,
     AddCategory,
-    LoginPage,
     UnlockPage,
     BoardManager,
 		SharePage,
@@ -65,7 +62,6 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     CategorySort,
     PropertySort,
     AddCategory,
-    LoginPage,
     UnlockPage,
     BoardManager,
 		SharePage,
@@ -78,7 +74,6 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     TodoService,
     SettingsService,
 		UserService,
-		AuthService,
 		{
       provide: AuthHttp,
       useFactory: authHttpServiceFactory,
