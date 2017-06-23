@@ -1,8 +1,10 @@
 import { Component } from '@angular/core';
 import { NavParams } from 'ionic-angular';
 import { Board } from '../../../board';
-import { Recipient } from '../../../recipient';
 import { ViewController } from 'ionic-angular';
+
+import { Permission } from '../../../permission';
+import { User } from '../../../user';
 import { TodoService } from '../../../todo.service';
 
 @Component({
@@ -11,60 +13,61 @@ import { TodoService } from '../../../todo.service';
 
 export class SharePage {
 	constructor(public navParams: NavParams,
-							public viewCntrl: ViewController,
-							public todoService: TodoService) { }
+		public viewCntrl: ViewController,
+		public todoService: TodoService) { }
 
-	sharees: Recipient[] = [];
+	sharees: Permission[] = [];
 	note: string = 'Check this out!';
 	containsEdit: boolean = false;
 	containsViewOnly: boolean = false;
 	isAddReciActive: boolean = false;
-	newReci: Recipient = new Recipient(undefined, false);
+	newPerm: Permission = new Permission(undefined, false);
 	sBoard: Board = this.navParams.get("sBoard");
 
-	sharedWithBoards(){
-		return this.todoService.getSharedWithReci(this.sBoard);
+	getBoardPerms() {
+		return this.todoService.slothGetBoardPerms(this.sBoard);
 	}
 
 	shareBoard() {
 		this.todoService.shareBoard(this.sharees, this.sBoard, this.note);
+		// TODO: remove default 
 		if (this.sharees.length == 0) {
-			this.sharees.push(new Recipient('plump@piglet.com', true));
+			this.sharees.push(new Permission(new User(undefined, undefined, undefined, undefined, 'plump@piglet.com'), true));
 		}
 		console.log('sharing board:' + this.sBoard.Name + ' with ' + this.sharees.length + ' people with note: ' + this.note);
 		this.viewCntrl.dismiss();
 	}
 
-	unshareBoard(reci: Recipient){
-		this.todoService.unshareBoard(reci, this.sBoard);
+	unshareBoard(perm: Permission) {
+		this.todoService.unshareBoard(perm, this.sBoard);
 	}
 
 	addReciActive() {
 		this.isAddReciActive = !this.isAddReciActive;
 	}
 
-	addReci(reci: Recipient) {
-		console.log("new reci name: " + reci.Email + " viewOnly: " + reci.IsViewOnly);
-		this.sharees.push(reci);
+	addPerm(perm: Permission) {
+		console.log("new reci name: " + perm.User.Email + " viewOnly: " + perm.IsViewOnly);
+		this.sharees.push(perm);
 		if (this.containsEdit == false || this.containsViewOnly == false) {
-			if (reci.IsViewOnly == true) {
+			if (perm.IsViewOnly == true) {
 				this.containsViewOnly = true;
 			}
-			if (reci.IsViewOnly == false) {
+			if (perm.IsViewOnly == false) {
 				this.containsEdit = true;
 			}
 		}
-		this.newReci = new Recipient(undefined, false);
+		this.newPerm = new Permission(undefined, false);
 	}
 
-	removeReci(reci: Recipient) {
-		this.sharees.splice(this.sharees.indexOf(reci), 1); //remove from temp
+	removePerm(perm: Permission) {
+		this.sharees.splice(this.sharees.indexOf(perm), 1); //remove from temp
 		this.containsViewOnly = this.doesContainViewOnly();
 	}
 
 	private doesContainViewOnly(): boolean {
-		for (let reci of this.sharees) {
-			if (reci.IsViewOnly == true) {
+		for (let perm of this.sharees) {
+			if (perm.IsViewOnly == true) {
 				return true;
 			}
 		}
