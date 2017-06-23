@@ -13,6 +13,10 @@ export class UserService {
 	private headers = new Headers({ 'Content-Type': 'application/x-www-form-urlencoded' });
 	// private options = new RequestOptions({ headers: this.headers });
 
+	// password hashing
+	private bcrypt: any = require('bcrypt');
+	private saltRounds = 10;
+
 	constructor(private http: Http) { }
 
 	setUser(userId: number) {
@@ -20,7 +24,10 @@ export class UserService {
 		console.log("Service current user SET: " + this.currentUserId);
 	}
 
-	getUser(): Promise<number> { //TODO: should get currentUser
+	getUser(): Promise<number> { 
+		// TODO: get user by authOId
+		
+
 		var user: number;
 		if (this.currentUserId != undefined) {
 			user = this.currentUserId;
@@ -56,7 +63,7 @@ export class UserService {
 
 			let user: User = this.processIntoUser(response);
 
-			console.log('User by id retrieved!'); 
+			console.log('User by id retrieved!');
 			return user;
 		});
 	}
