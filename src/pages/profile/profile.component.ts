@@ -16,8 +16,7 @@ export class ProfilePage {
 	}
 
 	checkAuthenticated() {
-		console.log("Check auth: " + this.auth.authenticated());
-		console.log("Check 2 = " + this.isAuthenticated());
+	
 	}
 
 	closeModal(){

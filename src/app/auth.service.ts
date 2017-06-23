@@ -21,8 +21,6 @@ export class AuthService {
 	isAuthenticated: boolean = false;
 
 	refreshSubscription: any;
-	
-	
 
   constructor(private authHttp: AuthHttp) {
     // If there is a profile saved in local storage
@@ -32,7 +30,7 @@ export class AuthService {
       console.log(error);
     });
 
-		/*this.lock.on("authenticated", authResult => {
+		this.lock.on("authenticated", authResult => {
       this.lock.getProfile(authResult.idToken, (error, profile) => {
         if (error) {
           alert(error);
@@ -44,7 +42,7 @@ export class AuthService {
         this.user = profile;
 				console.log('do this run');
       });
-    });*/
+    });
   }
 
   public authenticated(): boolean {
