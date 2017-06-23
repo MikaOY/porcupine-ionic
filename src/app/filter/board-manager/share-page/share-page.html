@@ -1,4 +1,5 @@
 <ion-content no-padding>
+	<button ion-button clear (click)="closeModal()">back</button>
 	<h3>{{sBoard?.Name}} Board: Manage Sharing</h3>
 	
 	<ion-grid no-padding>
@@ -16,7 +17,7 @@
 					<div class="reciLabels">
 						<ion-row>
 							<ion-col>
-								<p>{{perm.User.Email}} {{perm.IsViewOnly ? '(view only)' : '(can edit)'}}</p>
+								<p>{{perm.User?.Email}} {{perm.IsViewOnly ? '(view only)' : '(can edit)'}}</p>
 							</ion-col>
 							<ion-col col-2>
 								<button clear ion-button type="button" (click)="unshareBoard(perm)"><ion-icon name="close"></ion-icon></button>
@@ -33,7 +34,7 @@
 			<ion-list no-lines>
         <ng-container *ngFor="let permission of sharees">
           <ion-item *ngIf="permission.IsViewOnly == false">
-						{{permission.User.Email}}
+						{{permission.User?.Email}}
             <button clear ion-button item-right type="button" (click)="removePerm(permission)"><ion-icon name="close"></ion-icon></button>
           </ion-item>
         </ng-container>
@@ -45,7 +46,7 @@
       <ion-item-group no-lines>
         <ng-container *ngFor="let permission of sharees">
         <ion-item *ngIf="permission.IsViewOnly == true">
-					{{permission.User.Email}}
+					{{permission.User?.Email}}
           <button clear ion-button item-right type="button" (click)="removePerm(permission)"><ion-icon name="close"></ion-icon></button>
         </ion-item>
         </ng-container>
@@ -67,7 +68,7 @@
         <ion-textarea fz-elastic [(ngModel)]="note" name="note"></ion-textarea>
       </ion-item>
 
-      <button ion-button clear type="button" (click)="closeModal()">Cancel</button>
+      <button ion-button clear type="button" (click)="addReciActive()">Cancel</button>
       <button ion-button item-right clear type="submit">Share</button>
     </form>
 	</div>
