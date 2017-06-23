@@ -48,7 +48,7 @@ export class UserService {
     });
 	}
 
-	public getAuthToken() {
+	public getAuthToken(): Promise<string> {
 		console.log("authtokengetclicked!");
 		var request = require("request");
 		var authTokenBody;
@@ -57,15 +57,14 @@ export class UserService {
 			headers: { 'content-type': 'application/json' },
 			body: '{"client_id":"6SH0ceK2xnoSlkfMbl2rv0ZHp7szmLJr","client_secret":"BiBHTw-8w0VbbQXCE8PgXU3o8ptwk1wudE3fkAYQ3dbn-cdDR8VoCdZU5fmuNo-K","audience":"http://porcupine-dope-api.azurewebsites.net","grant_type":"client_credentials"}' };
 
-		request(options, function (error, response, body) {
+		return request(options, function (error, response, body) {
 			if (error) throw new Error(error);
 			authTokenBody = JSON.parse(body);
 			
 			console.log("Something's coming back!!");
-			console.log(authTokenBody.access_token);
-	
+			//console.log(authTokenBody.access_token);
+			return authTokenBody.access_token;
 		});
-		return authTokenBody.access_token;
 	}
 
 	public authenticated(): boolean {

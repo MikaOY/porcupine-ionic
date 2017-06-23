@@ -67,7 +67,16 @@ export class TodoService {
 		}
 		let body = formBody.join('&');
 
-		return this.http.post(url, body, this.options).toPromise().then((response: any) => {
+		let accessToken;
+		let authOptions = this.options;
+
+		this.userService.getAuthToken().then((res: any) => {
+			accessToken = res;
+			console.log(accessToken);
+			authOptions.headers.append('authorization', accessToken);
+		}).catch(this.handleError);
+		console.log("about to post:" + authOptions.headers);
+		return this.http.post(url, body, authOptions).toPromise().then((response: any) => {
 			console.log('addBoard response:' + response.toString());
 		}).catch(this.handleError);
 	}
