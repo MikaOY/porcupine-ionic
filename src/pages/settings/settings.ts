@@ -32,11 +32,6 @@ export class SettingsPage implements OnInit {
 		//console.log(this.currentUser);
 	}
 
-	openProfile() {
-		let profile = this.modalCtrl.create(ProfilePage);
-		profile.present();
-	}
-
 	restoreAll() {
 		this.todoService.raiseTheDead();
 	}

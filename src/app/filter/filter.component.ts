@@ -4,7 +4,6 @@ import { ModalController } from 'ionic-angular';
 import { TodoService } from '../todo.service';
 import { Board } from '../board';
 import { Category } from '../category';
-import { LoginPage } from '../login/login.component';
 import { BoardManager } from './board-manager/board-manager.component';
 import { UserService } from '../user.service';
 import { AddCategory } from './cat-manager/add-category.component';
@@ -60,11 +59,6 @@ export class CategorySort implements OnInit {
 
 	deleteCat(category: Category) {
 		this.todoService.deleteObject(category);
-	}
-
-	presentLogin() {
-		let loginModal = this.modalCtrl.create(LoginPage);
-		loginModal.present();
 	}
 
 	showId() {

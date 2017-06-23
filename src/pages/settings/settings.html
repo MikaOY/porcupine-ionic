@@ -1,35 +1,32 @@
 <ion-header>
-  <ion-navbar>
-    <ion-title>
-      Settings
-    </ion-title>
-  </ion-navbar>
+	<ion-navbar>
+		<ion-title>
+			Settings
+		</ion-title>
+	</ion-navbar>
 </ion-header>
 
 <ion-content padding>
 	<button ion-button (click)="restoreAll()"><ion-icon name="body"></ion-icon><span></span>Raise the dead</button>
-  <ion-list>
-  <ion-item-divider>General</ion-item-divider>
-  <ion-item>
-      <ion-icon name="color-palette"></ion-icon>
-      Theme
-      <ion-select interface="popover" (ionChange)="setTheme($event)">
-          <ion-option *ngFor="let theme of availableThemes" [value]="theme.className">
-            {{theme.displayName}}
-          </ion-option>
-     </ion-select>
-  </ion-item>
-  <ion-item-divider>Account</ion-item-divider>
-  <ion-item>
-      <ion-icon name="people"></ion-icon>
-      Sharing
-  </ion-item>
-  <ion-item>
-      <ion-icon name="log-in"></ion-icon>
-      Login/Logout
-  </ion-item>
-	<ion-item (click)="openProfile()">
-      Profile
-  </ion-item>
-  </ion-list>
+	<ion-list>
+		<ion-item-divider>General</ion-item-divider>
+		<ion-item>
+			<ion-icon name="color-palette"></ion-icon>
+			Theme
+			<ion-select interface="popover" (ionChange)="setTheme($event)">
+				<ion-option *ngFor="let theme of availableThemes" [value]="theme.className">
+					{{theme.displayName}}
+				</ion-option>
+			</ion-select>
+		</ion-item>
+		<ion-item-divider>Account</ion-item-divider>
+		<ion-item>
+			<ion-icon name="people"></ion-icon>
+			Sharing
+		</ion-item>
+		<button ion-item (click)="userService.logout()">
+			<ion-icon name="log-out"></ion-icon>
+			Logout
+		</button>
+	</ion-list>
 </ion-content>
