@@ -7,6 +7,8 @@ import { TabsPage } from '../pages/tabs/tabs';
 import { LoginPage } from './login/login.component';
 import { SettingsService } from './settings.service';
 
+import Auth0Cordova from '@auth0/cordova';
+
 @Component({
 	templateUrl: 'app.html',
 	providers: [SettingsService]
@@ -29,8 +31,11 @@ export class MyApp implements OnInit {
 				splashScreen.hide();
 			}
 
-			let loginModal = modalCtrl.create(LoginPage);
-			loginModal.present();
+			(<any>window).handleOpenURL = (url) => {
+        Auth0Cordova.onRedirectUri(url);
+      };
+
+			
 		});
 	}
 
