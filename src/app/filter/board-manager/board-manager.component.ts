@@ -3,6 +3,7 @@ import { ModalController, ViewController } from 'ionic-angular';
 import { TodoService } from '../../todo.service';
 import { Board } from '../../board';
 import { SharePage } from './share-page/share-page.component';
+import { UnlockPage } from '../../lockable/unlock-page.component';
 
 @Component({
 	templateUrl: 'board-manager.html',
@@ -48,6 +49,7 @@ export class BoardManager implements OnInit {
 	}
 
 	editBoardActive(board: Board) {
+		console.log('what');
 		board.IsEditActive = !board.IsEditActive;
 	}
 
@@ -65,6 +67,19 @@ export class BoardManager implements OnInit {
 		console.log("share clicked");
 		let shareModal = this.modalCtrl.create(SharePage, { "sBoard": sBoard });
 		shareModal.present();
+	}
+
+	lockBoard(board: Board){
+		board.Lock(board);
+		board.IsEditActive = !board.IsEditActive;
+	}
+
+	UnlockBoard(board: Board) {
+		let UnlockModal = this.modalCtrl.create(UnlockPage); 
+		UnlockModal.onDidDismiss(data => {
+			board.IsLocked = data;
+		})
+		UnlockModal.present();
 	}
 
 	addBoard() {

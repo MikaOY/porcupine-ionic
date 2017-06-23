@@ -1,8 +1,9 @@
 import { Todo } from './todo';
 import { Category } from './category';
 import { DbCompatible } from './db-compatible.interface';
+import { Lockable } from './lockable/lockable.interface';
 
-export class Board implements DbCompatible {
+export class Board implements Lockable, DbCompatible {
 	constructor(public Name: string,
 							public Todos: Todo[] = [],
 							public Categories: Category[] = [],
@@ -13,4 +14,10 @@ export class Board implements DbCompatible {
 							public OwnerId?: number, // sharing
 							public IsEditActive?: boolean,
 							public BoardActive?: boolean){}
+
+		IsLocked: boolean = false;
+    Lock(board: Board): true {
+        board.IsLocked = true;
+        return true;
+		}
 }

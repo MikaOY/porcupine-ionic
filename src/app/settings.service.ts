@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs/Rx';
+import { UserService } from './user.service';
 
 @Injectable()
 export class SettingsService {
@@ -7,7 +8,7 @@ export class SettingsService {
 	availableThemes: { className: string, displayName: string }[];
 	passcode: string;
 
-	constructor() {
+	constructor(public userService: UserService) {
 		this.theme = new BehaviorSubject('null'); // theme default value
 		this.availableThemes = [
 			{ className: 'aqua-theme', displayName: 'Aqua' },
@@ -26,6 +27,9 @@ export class SettingsService {
 	}
 
 	getPasscode(): Promise<string> {
+		var user;
+		this.userService.getUser().then(val => user = val);
+		//TODO: fetch this user's passcode and return it
 		return Promise.resolve(this.passcode);
 	}
 }

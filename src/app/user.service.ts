@@ -21,7 +21,7 @@ export class UserService {
 		console.log("Service current user SET: " + this.currentUserId);
 	}
 
-	getUser(): Promise<number> {
+	getUser(): Promise<number> { //TODO: should get currentUser
 		var user: number;
 		if (this.currentUserId != undefined) {
 			user = this.currentUserId;
