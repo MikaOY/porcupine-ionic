@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../app/auth.service';
+import { ViewController } from 'ionic-angular';
 
 @Component({
 	selector: 'profile-page',
@@ -7,5 +8,19 @@ import { AuthService } from '../../app/auth.service';
 })
 export class ProfilePage {
 
-	constructor(private auth: AuthService) {}
+	constructor(public auth: AuthService,
+							public viewCtrl: ViewController) {}
+
+	isAuthenticated(): boolean {
+		return this.auth.authenticated();
+	}
+
+	checkAuthenticated() {
+		console.log("Check auth: " + this.auth.authenticated());
+		console.log("Check 2 = " + this.isAuthenticated());
+	}
+
+	closeModal(){
+		this.viewCtrl.dismiss();
+	}
 }

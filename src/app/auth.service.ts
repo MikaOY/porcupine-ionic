@@ -17,7 +17,11 @@ export class AuthService {
   local: Storage = new Storage(localStorage);
   user: Object;
 
+	//TODO: make this unnecessary
+	isAuthenticated: boolean = false;
+
 	refreshSubscription: any;
+	
 	
 
   constructor(private authHttp: AuthHttp) {
@@ -27,11 +31,26 @@ export class AuthService {
     }).catch(error => {
       console.log(error);
     });
+
+		/*this.lock.on("authenticated", authResult => {
+      this.lock.getProfile(authResult.idToken, (error, profile) => {
+        if (error) {
+          alert(error);
+          return;
+        }
+
+        this.local.set('id_token', authResult.idToken);
+        this.local.set('profile', JSON.stringify(profile));
+        this.user = profile;
+				console.log('do this run');
+      });
+    });*/
   }
 
-  public authenticated() {
+  public authenticated(): boolean {
     // Check if there's an unexpired JWT
-    return tokenNotExpired();
+    //return tokenNotExpired(); //TODO: tokenNotExpired fix
+		return this.isAuthenticated;
   }
 
   public login() {
@@ -51,7 +70,10 @@ export class AuthService {
       this.local.set('id_token', token);
       this.local.set('refresh_token', refreshToken);
       this.user = profile;
-			this.scheduleRefresh(); //refresh token
+			this.isAuthenticated = true;
+			console.log("It logged in???");
+			console.log("is authenticated: " + this.isAuthenticated);
+			//this.scheduleRefresh(); //refresh token
     });    
   }
 

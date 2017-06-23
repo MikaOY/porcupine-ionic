@@ -1,12 +1,13 @@
-<ion-navbar>
-	<ion-title>Profile</ion-title>
-</ion-navbar>
+<ion-content>
+<ion-title>Profile</ion-title>
+<button ion-button clear (click)="closeModal()">Back</button>
 
-<ion-content padding *ngIf="!auth.authenticated()">
+<ion-content padding *ngIf="!isAuthenticated()">
 	<button ion-button clear (click)="auth.login()">Login</button>
+	<button ion-button clear (click)="checkAuthenticated()">hello</button>
 </ion-content>
 
-<ion-content padding *ngIf="auth.authenticated()">
+<ion-content padding *ngIf="isAuthenticated()">
 	<ion-card>
 		<ion-item *ngIf="auth.user">
 			<ion-avatar item-left>
@@ -17,4 +18,6 @@
 		</ion-item>
 	</ion-card>
 	<button ion-button clear (click)="auth.logout()">Logout</button>
+</ion-content>
+
 </ion-content>
