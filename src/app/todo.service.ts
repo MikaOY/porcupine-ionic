@@ -87,17 +87,33 @@ export class TodoService {
 		const url = `${this.apiUrl}/board?userId=${this.id}`;
 		console.log(url);
 
-		let accessToken;
-		let authOptions = this.options;
-
-		this.userService.getAuthToken().then((res: any) => {
+		console.log(this.userService.getAuthToken());
+		
+		
+		/*this.userService.getAuthToken().then((res: any) => {
 			accessToken = res;
 			console.log(accessToken);
-			authOptions.headers.append('authorization', accessToken);
-		
-		console.log("about to post:" + authOptions.headers);
+			let authPath: string = 'Bearer' + accessToken;
+			var request = require("request");
 
-		return this.http.get(url).map((response: any) => {
+			var options = { method: 'GET',
+				url: url,
+				headers: { authorization: authPath } };
+
+			request(options, function (error, response, body) {
+				if (error) throw new Error(error);
+
+				console.log(body);
+			});
+		});*/
+			
+			/*
+			//authOptions.headers.append('authorization', accessToken);
+			var headers = new Headers({ 'Content-Type': 'application/x-www-form-urlencoded' ,
+																	'authorization': accessToken});
+			var options = new RequestOptions({ headers: headers });
+		
+		return this.http.get(url, options).map((response: any) => {
 
 			console.log('processing boards...');
 
@@ -130,7 +146,7 @@ export class TodoService {
 		}).share()
 			.catch(this.handleError);
 
-			}).catch(this.handleError);
+			}).catch(this.handleError);*/
 	}
 	
 

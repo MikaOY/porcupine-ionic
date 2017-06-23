@@ -1,8 +1,9 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Inject } from '@angular/core';
 import { Http, RequestOptions, Headers } from '@angular/http';
 import { Storage } from '@ionic/storage';
 import { AuthHttp, JwtHelper, tokenNotExpired } from 'angular2-jwt';
 import { User } from './user';
+import { TodoService } from './todo.service';
 
 declare var Auth0Lock: any;
 
@@ -14,6 +15,7 @@ export class UserService {
   lock = new Auth0Lock(this.clientId, this.auth0Domain);
   local: Storage = new Storage(localStorage);
   user: Object;
+	accessToken: string;
 
 	//TODO: make this unnecessary
 	isAuthenticated: boolean = false;
@@ -26,7 +28,8 @@ export class UserService {
 	// private options = new RequestOptions({ headers: this.headers });
 
 	constructor(private http: Http,
-							private authHttp: AuthHttp) { 
+							private authHttp: AuthHttp,
+							@Inject(TodoService) private todoService: TodoService) { 
 		this.local.get('profile').then(profile => {
       this.user = JSON.parse(profile);
     }).catch(error => {
@@ -48,23 +51,24 @@ export class UserService {
     });
 	}
 
-	public getAuthToken(): Promise<string> {
-		console.log("authtokengetclicked!");
-		var request = require("request");
-		var authTokenBody;
-		var options = { method: 'POST',
-			url: 'https://porcupine.au.auth0.com/oauth/token',
-			headers: { 'content-type': 'application/json' },
-			body: '{"client_id":"6SH0ceK2xnoSlkfMbl2rv0ZHp7szmLJr","client_secret":"BiBHTw-8w0VbbQXCE8PgXU3o8ptwk1wudE3fkAYQ3dbn-cdDR8VoCdZU5fmuNo-K","audience":"http://porcupine-dope-api.azurewebsites.net","grant_type":"client_credentials"}' };
+	private getStorageVariable(name) {
+		return JSON.parse(window.localStorage.getItem(name));
+  }
 
-		return request(options, function (error, response, body) {
-			if (error) throw new Error(error);
-			authTokenBody = JSON.parse(body);
-			
-			console.log("Something's coming back!!");
-			//console.log(authTokenBody.access_token);
-			return authTokenBody.access_token;
-		});
+  private setStorageVariable(name, data) {
+    window.localStorage.setItem(name, JSON.stringify(data));
+  }
+
+	private setAccessToken(token) {
+    this.accessToken = token;
+    this.setStorageVariable('access_token', token);
+  }
+
+	public getAuthToken() {
+		console.log("authtokengetclicked!");
+		if (this.authenticated()){
+		return this.getStorageVariable('access_token');
+		}
 	}
 
 	public authenticated(): boolean {
@@ -89,10 +93,12 @@ export class UserService {
       this.local.set('profile', JSON.stringify(profile));
       this.local.set('id_token', token);
       this.local.set('refresh_token', refreshToken);
+			this.setAccessToken(accessToken);
       this.user = profile;
 			this.isAuthenticated = true;
 			console.log("It logged in???");
-			console.log("is authenticated: " + this.isAuthenticated);
+			console.log("is authenticated: " + profile);
+			this.todoService.getCurrentBoard().subscribe(cBoard => console.log("YAY"));
     });    
   }
 
