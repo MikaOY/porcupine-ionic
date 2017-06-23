@@ -6,7 +6,6 @@ import { UserService } from './user.service';
 export class SettingsService {
 	private theme: BehaviorSubject<string>;
 	availableThemes: { className: string, displayName: string }[];
-	passcode: string;
 
 	constructor(public userService: UserService) {
 		this.theme = new BehaviorSubject('null'); // theme default value
@@ -15,7 +14,6 @@ export class SettingsService {
 			{ className: 'red-theme', displayName: 'Red' },
 			{ className: 'null', displayName: 'Default' }
 		];
-		this.passcode = "1234";
 	}
 
 	setTheme(val) {
@@ -27,9 +25,9 @@ export class SettingsService {
 	}
 
 	getPasscode(): Promise<string> {
-		var user;
-		this.userService.getUser().then(val => user = val);
-		//TODO: fetch this user's passcode and return it
-		return Promise.resolve(this.passcode);
+		// method below assumes user data already retreived at login
+		return this.userService.getUser().then((user) => {
+			return user.PasswordHash;
+		});
 	}
 }

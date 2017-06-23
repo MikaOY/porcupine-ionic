@@ -3,35 +3,42 @@ import { Http, RequestOptions, Headers } from '@angular/http';
 
 import { User } from './user';
 
+import * as bcrypt from '../../node_modules/bcrypt';
+
 @Injectable()
 export class UserService {
 
 	private currentUser: User;
-
+        
 	private apiUrl: string = 'http://porcupine-dope-api.azurewebsites.net';
 	private headers = new Headers({ 'Content-Type': 'application/x-www-form-urlencoded' });
 	// private options = new RequestOptions({ headers: this.headers });
 
 	// password hashing
-	private bcrypt: any = require('bcrypt');
 	private saltRounds = 10;
 
-	constructor(private http: Http) { }
+	constructor(private http: Http) {
+		this.setPassword('1234'); 
+	}
 
-	getUser(authOId: string, forceGet?: boolean): Promise<number> {
+	getUser(authOId?: string, forceGet?: boolean): Promise<User> {
 		if (this.currentUser == undefined || (forceGet != undefined && forceGet == true)) {
-			return this.getUserById(authOId).then((user) => {
-				this.currentUser = user;
-				return user.DbId;
-			});
+			if (authOId == undefined) {
+				Promise.reject('AuthO id not given to getUser method!');
+			} else {
+				return this.getUserById(authOId).then((user) => {
+					this.currentUser = user;
+					return user;
+				});
+			}
 		} else {
-			return Promise.resolve(this.currentUser.DbId);
+			return Promise.resolve(this.currentUser);
 		}
 	}
 
 	setPassword(plainP: string) {
 		let daHash;
-		this.bcrypt.hash(plainP, this.saltRounds, function (err, hash) {
+		bcrypt.hash(plainP, this.saltRounds, function (err, hash) {
 			daHash = hash;
 			console.log('Updating password!');
 
@@ -54,14 +61,15 @@ export class UserService {
 
 			return this.http.put(url, body, this.options).toPromise().then((response: any) => {
 				this.currentUser.PasswordHash = daHash;
-				console.log('updateBoards response:' + response.toString());
+				console.log(this.currentUser.PasswordHash);
+				console.log('Update user response: ' + response.toString());
 			}).catch(this.handleError);
 		});
 	}
 
 	checkPassword(plainP: string): boolean {
 		let bool: boolean = false;
-		this.bcrypt.compare(plainP, this.currentUser.PasswordHash, (err, res) => {
+		bcrypt.compare(plainP, this.currentUser.PasswordHash, (err, res) => {
 			bool = res;
 		});
 		return bool;
