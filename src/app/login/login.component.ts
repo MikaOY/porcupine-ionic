@@ -14,7 +14,7 @@ export class LoginPage {
 							private userService: UserService) {
 	}
 
-	bananas() {
+	/*bananas() {
 		this.viewCtrl.dismiss();
 	}
 
@@ -28,5 +28,5 @@ export class LoginPage {
 
 	register() {
 		console.log("Register clicked");
-	}
+	}*/
 }

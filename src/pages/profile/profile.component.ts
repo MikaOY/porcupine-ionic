@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthService } from '../../app/auth.service';
+import { UserService } from '../../app/user.service';
 import { ViewController } from 'ionic-angular';
 
 @Component({
@@ -7,5 +7,5 @@ import { ViewController } from 'ionic-angular';
 	templateUrl: 'profile.html'
 })
 export class ProfilePage {
-	constructor(public auth: AuthService) {}
+	constructor(public userService: UserService) {}
 }
