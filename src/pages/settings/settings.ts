@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { NavController } from 'ionic-angular';
 import { SettingsService } from '../../app/settings.service';
 import { UserService } from '../../app/user.service';
-import { ProfilePage } from '../profile/profile.component';
 import { ModalController } from 'ionic-angular';
 import { TodoService } from '../../app/todo.service';
 

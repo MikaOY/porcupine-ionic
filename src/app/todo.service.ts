@@ -43,7 +43,7 @@ export class TodoService {
 		this.CachedCats = [];
 		this.CachedTodos = [];
 	}
-
+	
 	/* START public HTTP functions */
 
 	public addBoard(newBoard: Board): Promise<void> {

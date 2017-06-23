@@ -3,6 +3,7 @@ import { Board } from '../../app/board';
 import { TodoService } from '../../app/todo.service';
 import { Todo } from '../../app/todo';
 import { Priority } from '../../app/priority';
+import { UserService } from '../../app/user.service';
 
 @Component({
 	selector: 'todos-page',
@@ -11,7 +12,8 @@ import { Priority } from '../../app/priority';
 export class TodosPage implements OnInit {
 	currentBoard: Board;
 
-	constructor(public todoService: TodoService) { }
+	constructor(public todoService: TodoService,
+							public userService: UserService) { }
 
 	// Leave service calls in init callback!
 	ngOnInit(): void {
@@ -38,6 +40,7 @@ export class TodosPage implements OnInit {
 	changeBoard(board: Board) {
 		console.log("Current board: " + board.Name);
 		this.todoService.nextBoard(board);
+		this.userService.getAuthToken();
 	}
 
 	doSomething(){

@@ -7,7 +7,6 @@ import { Category } from '../category';
 import { BoardManager } from './board-manager/board-manager.component';
 import { UserService } from '../user.service';
 import { AddCategory } from './cat-manager/add-category.component';
-import { ProfilePage } from '../../pages/profile/profile.component';
 
 @Component({
 	selector: 'category-list',
