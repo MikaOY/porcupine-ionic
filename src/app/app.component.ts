@@ -35,8 +35,9 @@ export class MyApp implements OnInit {
 				splashScreen.hide();
 			}
 			this.auth.startupTokenRefresh();
-			let loginModal = modalCtrl.create(LoginPage);
-			loginModal.present();
+			if (this.auth.authenticated() == false){
+				this.auth.login();
+			}
 		});
 	}
 
