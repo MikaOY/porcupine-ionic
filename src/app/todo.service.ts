@@ -4,9 +4,9 @@ import { Todo } from './todo';
 import { Category } from './category';
 import { Priority } from './priority';
 import { Board } from './board';
-import { UserService } from './user.service';
+import { User } from './user';
+import { Permission } from './permission';
 import { DbCompatible } from './db-compatible.interface';
-import { Recipient } from './recipient';
 
 import { Http, Response, RequestOptions, Headers } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
@@ -16,6 +16,8 @@ import 'rxjs/add/operator/share';
 import 'rxjs/add/operator/startWith';
 import 'rxjs/add/operator/toPromise';
 import 'rxjs/add/observable/fromPromise';
+
+import { UserService } from './user.service';
 
 const ColorArray: string[] = ['#919191', '#ff5c3f', '#ffb523', '#6f9b53', '#1371d6', '#423e7c', '#7606cc', '#c613b4'];
 
@@ -66,7 +68,7 @@ export class TodoService {
 		let body = formBody.join('&');
 
 		return this.http.post(url, body, this.options).toPromise().then((response: any) => {
-			console.log('addBoard response:' + response.toString);
+			console.log('addBoard response:' + response.toString());
 		}).catch(this.handleError);
 	}
 
@@ -74,6 +76,7 @@ export class TodoService {
 		console.log('requesting boards...');
 
 		const url = `${this.apiUrl}/board?userId=${this.id}`;
+		console.log(url);
 
 		return this.http.get(url).map((response: any) => {
 
@@ -81,7 +84,13 @@ export class TodoService {
 
 			let array: Board[] = [];
 			for (let json of response.json()) {
-				array.push(new Board(json['board_title'], [], [], json['board_date_created'], json['board_id'], undefined, undefined, json['person_id_board']));
+				array.push(new Board(json['board_title'], [], [], json['board_date_created'],
+					json['board_id'], undefined, undefined, json['person_id_board']));
+
+				// populate Permissions[] in board
+				this.GETBoardPerms(array[array.length - 1]).then((perms) => {
+					array[array.length - 1].Permissions = perms;
+				});
 			}
 
 			// assign built array to cache
@@ -124,7 +133,7 @@ export class TodoService {
 		let body = formBody.join('&');
 
 		return this.http.put(url, body, this.options).toPromise().then((response: any) => {
-			console.log('updateBoards response:' + response.toString);
+			console.log('updateBoards response:' + response.toString());
 		}).catch(this.handleError);
 	}
 
@@ -167,7 +176,7 @@ export class TodoService {
 		console.log(body);
 
 		return this.http.post(url, body, this.options).toPromise().then((response: any) => {
-			console.log('addCategory response:' + response.toString);
+			console.log('addCategory response:' + response.toString());
 		}).catch(this.handleError);
 	}
 
@@ -278,7 +287,7 @@ export class TodoService {
 		let body = formBody.join('&');
 
 		return this.http.put(url, body, this.options).toPromise().then((response: any) => {
-			console.log('updateCategories response:' + response.toString);
+			console.log('updateCategories response:' + response.toString());
 		}).catch(this.handleError);
 	}
 
@@ -324,7 +333,7 @@ export class TodoService {
 		console.log(body);
 
 		return this.http.post(url, body, this.options).toPromise().then((response: any) => {
-			console.log('addTodo response:' + response.toString);
+			console.log('addTodo response:' + response.toString());
 		}).catch(this.handleError);
 	}
 
@@ -475,10 +484,21 @@ export class TodoService {
 		console.log(body);
 
 		return this.http.put(url, body, this.options).toPromise().then((response: any) => {
-			console.log('updateTodos response:' + response.toString);
+			console.log('updateTodos response:' + response.toString());
 		}).catch(this.handleError);
 	}
 
+	// actual delete
+	private deleteTodo(todo: Todo): Promise<void> {
+		const url = `${this.apiUrl}/todo?todoId=${todo.DbId}`;
+
+		return this.http.delete(url).toPromise().then((response: any) => {
+			console.log('TODO delete: ' + response.toString());
+		})
+			.catch(this.handleError);
+	}
+
+	// delete method that just updates prop
 	public deleteObject(obj: DbCompatible) {
 		const url = `${this.apiUrl}/${obj.constructor.name.toLowerCase()}/delete`;
 
@@ -515,161 +535,56 @@ export class TodoService {
 		}
 
 		this.http.put(url, body, this.options).toPromise().then((response: any) => {
-			console.log('delete ' + idName + ' response: ' + response.toString);
+			console.log('delete ' + idName + ' response: ' + response.toString());
 		}).catch(this.handleError);
 	}
 
-	// actual delete
-	private deleteTodo(todo: Todo): Promise<void> {
-		const url = `${this.apiUrl}/todo?todoId=${todo.DbId}`;
+	public restoreObject(obj: DbCompatible): Promise<void> {
+		const url = `${this.apiUrl}/${obj.constructor.name.toLowerCase()}/restore`;
+		console.log(url);
 
-		return this.http.delete(url).toPromise().then((response: any) => {
-			console.log('TODO delete: ' + response.toString());
-		})
-			.catch(this.handleError);
+		// create req body
+		let idName: string = obj.constructor.name.toLowerCase() + 'Id';
+		console.log('restoring...' + idName);
+
+		var details = {
+			'userId': String(this.id),
+			[idName]: String(obj.DbId)
+		};
+
+		let formBody = [];
+		for (var property in details) {
+			var encodedKey = encodeURIComponent(property);
+			var encodedValue = encodeURIComponent(details[property]);
+			formBody.push(encodedKey + '=' + '\'' + encodedValue + '\'');
+		}
+		let body = formBody.join('&');
+		console.log(body);
+
+		return this.http.put(url, body, this.options).toPromise().then((response: any) => {
+			console.log('Restore ' + idName + ' ' + obj.DbId + ' ' + response.toString());
+
+			// refresh cache by getting all data again
+			this.getCurrentBoard();
+			return;
+		}).catch(this.handleError);
 	}
 
-	/* END HTTP functions */
+	// TODO: remove for prod
+	public raiseTheDead() {
+		const url = `${this.apiUrl}/restore/all`;
 
-	private handleError(error: Response | any) {
-		// In a real world app, you might use a remote logging infrastructure
-		let errMsg: string;
-		if (error instanceof Response) {
-			const body = error.json() || '';
-			const err = body.error || JSON.stringify(body);
-			errMsg = `${error.status} - ${error.statusText || ''} ${err}`;
-		} else {
-			errMsg = error.message ? error.message : error.toString();
-		}
-		console.error(errMsg);
-		console.error('Something went wrong!');
-		return Observable.throw(errMsg);
+		let body: string = '';
+		return this.http.put(url, body, this.options).toPromise().then((response: any) => {
+			console.log('Restore all: ' + response.toString()); 
+
+			// refresh cache by getting all data again
+			this.getCurrentBoard(true);
+			return;
+		}).catch(this.handleError);
 	}
 
-	private checkIfAvailable(array: any[][]) {
-		let val: boolean = true;
-		array.forEach(element => {
-			if (!(element != undefined && element != null && element.length > 0)) {
-				val = false;
-			}
-		});
-		return val;
-	}
-
-	public getCurrentBoard(): Observable<any> {
-		// return cached if present
-		if (this.CurrentBoard != null && this.CurrentBoard != undefined) {
-			return Observable.of(this.CurrentBoard);
-		}
-		else {
-			this.isBusy = true;
-			console.log('Getting current board...');
-			// Retrieve all data first, then pull current board after all concluded
-			return this.GETBoards().mergeMap(boards =>
-				this.GETCategories(boards).mergeMap(cats =>
-					this.GETTodos(cats).mergeMap(todos =>
-						this.GETShared(todos))
-						.map(args => {
-							this.isBusy = false;
-							return this.CachedBoards[0];
-						}).share()));
-		}
-	}
-
-	public setAsCurrentBoard(board: Board) {
-		this.CurrentBoard = board;
-	}
-
-	public slothGetBoards(): Board[] {
-		if (this.checkIfAvailable([this.CachedBoards])) {
-			return this.CachedBoards;
-		}
-		else {
-			let emptyBoard: Board[] = [];
-			return emptyBoard;
-		}
-	}
-
-	public slothGetSharedBoards(): Board[] {
-		if (this.checkIfAvailable([this.CachedSharedBoards])) {
-			return this.CachedSharedBoards;
-		}
-		else {
-			let emptyBoard: Board[] = [];
-			return emptyBoard;
-		}
-	}
-
-	public slothGetCats(): Category[] {
-		if (this.checkIfAvailable([this.CachedCats])) {
-			return this.CachedCats;
-		}
-		else {
-			let emptyCats: Category[] = [];
-			return emptyCats;
-		}
-	}
-
-	public slothGetTodos(): Todo[] {
-		if (this.checkIfAvailable([this.CachedTodos])) {
-			return this.CachedTodos;
-		}
-		else {
-			let emptyTodos: Todo[] = [];
-			return emptyTodos;
-		}
-	}
-
-	public slothGetCurrentBoard(): Board {
-		if (this.CurrentBoard != null && this.CurrentBoard != undefined) {
-			return this.CurrentBoard;
-		}
-		else {
-			let emptyBoard: Board;
-			return emptyBoard;
-		}
-	}
-
-	// only returns when given array is available
-	private waitForArray(array: any[]) {
-		while (!this.checkIfAvailable([array])) {
-			return array;
-		}
-	}
-
-	public nextBoard(board: Board) {
-		var boardIndex: number;
-		if (board.SharerId == undefined && board.OwnerId == undefined) {
-			boardIndex = this.CachedBoards.indexOf(board);
-			if (boardIndex + 1 == this.CachedBoards.length) {
-				this.CurrentBoard = this.CachedSharedBoards[0];
-			}
-			else {
-				this.CurrentBoard = this.CachedBoards[boardIndex + 1];
-			}
-		}
-		else {
-			boardIndex = this.CachedSharedBoards.indexOf(board);
-			if (boardIndex + 1 == this.CachedSharedBoards.length) {
-				this.CurrentBoard = this.CachedBoards[0];
-			}
-			else {
-				this.CurrentBoard = this.CachedSharedBoards[boardIndex + 1];
-			}
-		}
-	}
-
-	public sortTodos(sortedTodos: Todo[]) {
-		this.CurrentBoard.Todos = sortedTodos;
-	}
-
-	public getColors(): Promise<string[]> {
-		return Promise.resolve(ColorArray);
-	}
-
-	/* SHARING */
-
-	public shareBoard(sharees: Recipient[], board: Board, note?: string) {
+	public shareBoard(sharees: Permission[], board: Board, note?: string) {
 		console.log('Sharing board in service')
 
 		// TODO: send note to recipients
@@ -677,7 +592,7 @@ export class TodoService {
 
 		sharees.forEach(sharee => {
 			// get user by email first
-			this.userService.getUserByEmail(sharee.Email).then((user) => {
+			this.userService.getUserByEmail(sharee.User.Email).then((user) => {
 				// then create req body
 				var details = {
 					'boardId': String(board.DbId),
@@ -698,7 +613,8 @@ export class TodoService {
 				console.log(body);
 
 				this.http.post(url, body, this.options).toPromise().then((response: any) => {
-					console.log('share to response:' + response.toString);
+					console.log('share to response:' + response.toString());
+					return;
 				}).catch(this.handleError);
 			});
 		});
@@ -822,37 +738,192 @@ export class TodoService {
 		}).catch(this.handleError);
 	}
 
-	public unshareBoard(reci: Recipient, board: Board) {
+	public unshareBoard(perm: Permission, board: Board) {
 		console.log('unsharing board...');
 
-		this.userService.getUserByEmail(reci.Email).then((user) => {
+		this.userService.getUserByEmail(perm.User.Email).then((user) => {
 			// first check if user CAN unshare recipient
 			if (board.IsViewOnly) {
 				console.log('Board view only! Cannot unshare!');
 			} else {
 				// unshare if can
-				const url = `${this.apiUrl}/share?boardId=${board.DbId}&recipientId=${user.DbId}&userId=${this.id}`;
+				const url = `${this.apiUrl}/shared?boardId=${board.DbId}&recipientId=${user.DbId}&userId=${this.id}`;
+				console.log(url);
 
 				return this.http.delete(url).toPromise().then((response: any) => {
-					console.log('Unshared board ' + board.Name + ' with ' + user.email + response.toString());
+					console.log('Unshared board ' + board.Name + ' with ' + user.Email + response.toString());
 				})
 					.catch(this.handleError);
 			}
 		});
 	}
 
-	public getSharedWithReci(board: Board) {
-		console.log('getting board recipients...');
+	public GETBoardPerms(board: Board): Promise<Permission[]> {
+		console.log('getting board permissions...');
 
 		const url = `${this.apiUrl}/shared?boardId=${board.DbId}`;
-		this.http.get(url).map((response: any) => {
-			console.log('Processing board recipients...');
-			let array: Recipient[] = [];
+		return this.http.get(url).toPromise().then((response: any) => {
+			console.log('Processing board permissions...');
+			let array: Permission[] = [];
 			for (let json of response.json()) {
-				array.push(new Recipient(json['person_email'], json['is_view_only']));
+				array.push(new Permission(new User(json['person_id'], json['fname'], json['lname'], json['username'], json['person_email']),
+					json['is_view_only']));
 			}
-			console.log('Board recipients retrieved!');
-			return array; 
+			console.log('Board permissions retrieved!');
+			array.forEach((perm) => {
+				console.log(perm.User.Email);
+			});
+			return array;
 		});
+	}
+
+	/* END HTTP functions */
+
+	private handleError(error: Response | any) {
+		// In a real world app, you might use a remote logging infrastructure
+		let errMsg: string;
+		if (error instanceof Response) {
+			const body = error.json() || '';
+			const err = body.error || JSON.stringify(body);
+			errMsg = `${error.status} - ${error.statusText || ''} ${err}`;
+		} else {
+			errMsg = error.message ? error.message : error.toString();
+		}
+		console.error(errMsg);
+		console.error('Something went wrong!');
+		return Observable.throw(errMsg);
+	}
+
+	private checkIfAvailable(array: any[][]) {
+		let val: boolean = true;
+		array.forEach(element => {
+			if (!(element != undefined && element != null && element.length > 0)) {
+				val = false;
+			}
+		});
+		return val;
+	}
+
+	public getCurrentBoard(isForce?: boolean): Observable<any> {
+		let doRetrieve = true;
+		// return cached if present
+		if (this.CurrentBoard != null && this.CurrentBoard != undefined) {
+			doRetrieve = false;
+		}
+		if (isForce != undefined && isForce == true) {
+			doRetrieve = true;
+		}
+
+		if (doRetrieve == true) {
+			this.isBusy = true;
+			console.log('Getting current board...');
+			// Retrieve all data first, then pull current board after all concluded
+			return this.GETBoards().mergeMap(boards =>
+				this.GETCategories(boards).mergeMap(cats =>
+					this.GETTodos(cats).mergeMap(todos =>
+						this.GETShared(todos))
+						.map(args => {
+							this.isBusy = false;
+							return this.CachedBoards[0];
+						}).share()));
+		} else {
+			return Observable.of(this.CurrentBoard);
+		}
+	}
+
+	public setAsCurrentBoard(board: Board) {
+		this.CurrentBoard = board;
+	}
+
+	public slothGetBoards(): Board[] {
+		if (this.checkIfAvailable([this.CachedBoards])) {
+			return this.CachedBoards;
+		}
+		else {
+			let emptyBoard: Board[] = [];
+			return emptyBoard;
+		}
+	}
+
+	public slothGetSharedBoards(): Board[] {
+		if (this.checkIfAvailable([this.CachedSharedBoards])) {
+			return this.CachedSharedBoards;
+		}
+		else {
+			let emptyBoard: Board[] = [];
+			return emptyBoard;
+		}
+	}
+
+	public slothGetCats(): Category[] {
+		if (this.checkIfAvailable([this.CachedCats])) {
+			return this.CachedCats;
+		}
+		else {
+			let emptyCats: Category[] = [];
+			return emptyCats;
+		}
+	}
+
+	public slothGetTodos(): Todo[] {
+		if (this.checkIfAvailable([this.CachedTodos])) {
+			return this.CachedTodos;
+		}
+		else {
+			let emptyTodos: Todo[] = [];
+			return emptyTodos;
+		}
+	}
+
+	public slothGetCurrentBoard(): Board {
+		if (this.CurrentBoard != null && this.CurrentBoard != undefined) {
+			return this.CurrentBoard;
+		}
+		else {
+			let emptyBoard: Board;
+			return emptyBoard;
+		}
+	}
+
+	public slothGetBoardPerms(board: Board): Permission[] {
+		// if board exists and permissions are defined
+		let daBoard: Board = this.CachedBoards.find((b, index, bArray) => b.DbId == board.DbId);
+		if (daBoard != undefined && daBoard.Permissions != undefined && daBoard.Permissions.length > 0) {
+			return daBoard.Permissions;
+		}
+		else {
+			let emptyPerms: Permission[];
+			return emptyPerms;
+		}
+	}
+
+	public nextBoard(board: Board) {
+		var boardIndex: number;
+		if (board.SharerId == undefined && board.OwnerId == undefined) {
+			boardIndex = this.CachedBoards.indexOf(board);
+			if (boardIndex + 1 == this.CachedBoards.length) {
+				this.CurrentBoard = this.CachedSharedBoards[0];
+			}
+			else {
+				this.CurrentBoard = this.CachedBoards[boardIndex + 1];
+			}
+		}
+		else {
+			boardIndex = this.CachedSharedBoards.indexOf(board);
+			if (boardIndex + 1 == this.CachedSharedBoards.length) {
+				this.CurrentBoard = this.CachedBoards[0];
+			}
+			else {
+				this.CurrentBoard = this.CachedSharedBoards[boardIndex + 1];
+			}
+		}
+	}
+
+	public sortTodos(sortedTodos: Todo[]) {
+		this.CurrentBoard.Todos = sortedTodos;
+	}
+
+	public getColors(): Promise<string[]> {
+		return Promise.resolve(ColorArray);
 	}
 }
