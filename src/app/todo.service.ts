@@ -81,7 +81,7 @@ export class TodoService {
 		}).catch(this.handleError);
 	}
 
-	private GETBoards(): Observable<Board[]> {
+	private GETBoards(): any {
 		console.log('requesting boards...');
 
 		const url = `${this.apiUrl}/board?userId=${this.id}`;
@@ -94,9 +94,9 @@ export class TodoService {
 			accessToken = res;
 			console.log(accessToken);
 			authOptions.headers.append('authorization', accessToken);
-		}).catch(this.handleError);
-		console.log("about to post:" + authOptions.headers);
 		
+		console.log("about to post:" + authOptions.headers);
+
 		return this.http.get(url).map((response: any) => {
 
 			console.log('processing boards...');
@@ -129,7 +129,10 @@ export class TodoService {
 			return array;
 		}).share()
 			.catch(this.handleError);
+
+			}).catch(this.handleError);
 	}
+	
 
 	public updateBoard(board: Board): Promise<void> {
 		console.log('updating board...');
