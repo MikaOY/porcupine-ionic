@@ -16,6 +16,8 @@ export class AuthService {
   lock = new Auth0Lock(this.clientId, this.auth0Domain);
   local: Storage = new Storage(localStorage);
   user: Object;
+
+	
 	
 
   constructor(private authHttp: AuthHttp) {

@@ -2,7 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { NavController } from 'ionic-angular';
 import { SettingsService } from '../../app/settings.service';
 import { UserService } from '../../app/user.service';
-import { AuthService } from '../../app/auth.service';
+import { ProfilePage } from '../profile/profile.component';
+import { ModalController } from 'ionic-angular';
 
 @Component({
 	selector: 'settings-page',
@@ -14,8 +15,9 @@ export class SettingsPage implements OnInit {
 	currentUser: number;
 
   constructor(public navCtrl: NavController, 
-							private settingsService: SettingsService,
-							private userService: UserService) {}
+							public settingsService: SettingsService,
+							public userService: UserService,
+							public modalCtrl: ModalController) {}
 
 	ngOnInit(){
 		//this.userService.getUser().then(val => this.currentUser = val);
@@ -26,5 +28,10 @@ export class SettingsPage implements OnInit {
   public setTheme(e) {
   	this.settingsService.setTheme(e);
 		//console.log(this.currentUser);
+	}
+
+	openProfile(){
+		let profile = this.modalCtrl.create(ProfilePage);
+		profile.present();
 	}
 }

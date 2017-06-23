@@ -16,6 +16,7 @@ import { AddCategory } from './filter/cat-manager/add-category.component';
 import { BoardManager } from './filter/board-manager/board-manager.component';
 import { TodoList } from '../pages/todos/todo-list/todo-list.component'; 
 import { SharePage } from './filter/board-manager/share-page/share-page.component';
+import { ProfilePage } from '../pages/profile/profile.component';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -24,6 +25,13 @@ import { SettingsService } from './settings.service';
 import { UserService } from './user.service';
 import { AuthService } from './auth.service';
 import { HttpModule }    from '@angular/http';
+
+import { Http, RequestOptions } from '@angular/http';
+import { AuthHttp, AuthConfig } from 'angular2-jwt';
+
+export function authHttpServiceFactory(http: Http, options: RequestOptions) {
+  return new AuthHttp(new AuthConfig(), http, options);
+}
 
 @NgModule({
   declarations: [
@@ -38,7 +46,8 @@ import { HttpModule }    from '@angular/http';
     LoginPage,
     UnlockPage,
     BoardManager,
-		SharePage
+		SharePage,
+		ProfilePage
   ],
   imports: [
     BrowserModule,
@@ -59,7 +68,8 @@ import { HttpModule }    from '@angular/http';
     LoginPage,
     UnlockPage,
     BoardManager,
-		SharePage
+		SharePage,
+		ProfilePage
   ],
   providers: [
     StatusBar,
@@ -68,7 +78,12 @@ import { HttpModule }    from '@angular/http';
     TodoService,
     SettingsService,
 		UserService,
-		AuthService
+		AuthService,
+		{
+      provide: AuthHttp,
+      useFactory: authHttpServiceFactory,
+      deps: [Http, RequestOptions]
+    }
   ]
 })
 export class AppModule { }
