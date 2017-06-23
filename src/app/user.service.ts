@@ -15,11 +15,6 @@ export class UserService {
 
 	constructor(private http: Http) { }
 
-	setUser(userId: number) {
-		this.currentUserId = userId;
-		console.log("Service current user SET: " + this.currentUserId);
-	}
-
 	getUser(): Promise<number> { //TODO: should get currentUser
 		var user: number;
 		if (this.currentUserId != undefined) {
