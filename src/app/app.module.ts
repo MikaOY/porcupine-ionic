@@ -22,6 +22,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { TodoService } from './todo.service';
 import { SettingsService } from './settings.service';
 import { UserService } from './user.service';
+import { AuthService } from './auth.service';
 import { HttpModule }    from '@angular/http';
 
 @NgModule({
@@ -66,7 +67,8 @@ import { HttpModule }    from '@angular/http';
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     TodoService,
     SettingsService,
-		UserService
+		UserService,
+		AuthService
   ]
 })
 export class AppModule { }

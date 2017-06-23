@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { NavController } from 'ionic-angular';
 import { SettingsService } from '../../app/settings.service';
 import { UserService } from '../../app/user.service';
+import { AuthService } from '../../app/auth.service';
 
 @Component({
 	selector: 'settings-page',

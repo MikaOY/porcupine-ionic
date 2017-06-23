@@ -7,9 +7,12 @@ import { TabsPage } from '../pages/tabs/tabs';
 import { LoginPage } from './login/login.component';
 import { SettingsService } from './settings.service';
 
+
 @Component({
 	templateUrl: 'app.html',
-	providers: [SettingsService]
+	providers: [SettingsService, 
+  
+	]
 })
 
 export class MyApp implements OnInit {
