@@ -1,5 +1,7 @@
 import { Todo } from './todo';
 import { Category } from './category';
+import { Permission } from './permission';
+
 import { DbCompatible } from './db-compatible.interface';
 import { Lockable } from './lockable/lockable.interface';
 
@@ -12,6 +14,7 @@ export class Board implements Lockable, DbCompatible {
 							public IsViewOnly?: boolean, // sharing
 							public SharerId?: number, // sharing
 							public OwnerId?: number, // sharing
+							public Permissions?: Permission[], // sharing
 							public IsEditActive?: boolean,
 							public BoardActive?: boolean){}
 

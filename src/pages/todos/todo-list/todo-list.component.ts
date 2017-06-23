@@ -3,7 +3,6 @@ import { TodoService } from '../../../app/todo.service';
 import { ModalController, NavParams } from 'ionic-angular';
 
 import { Todo } from '../../../app/todo';
-import { Category } from '../../../app/category';
 import { Priority } from '../../../app/priority';
 import { Board } from '../../../app/board';
 import { UnlockPage } from '../../../app/lockable/unlock-page.component';

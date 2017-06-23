@@ -1,4 +1,5 @@
 <ion-content no-padding>
+	<button ion-button clear (click)="closeModal()">back</button>
 	<h3>{{sBoard?.Name}} Board: Manage Sharing</h3>
 	
 	<ion-grid no-padding>
@@ -12,14 +13,14 @@
 		</ion-row>
 		<ion-row>
 			<ion-col>
-				<ng-container *ngFor="let reci of sharedWithBoards()">
+				<ng-container *ngFor="let perm of getBoardPerms()">
 					<div class="reciLabels">
 						<ion-row>
 							<ion-col>
-								<p>{{reci.Email}} {{reci.IsViewOnly ? '(view only)' : '(can edit)'}}</p>
+								<p>{{perm.User?.Email}} {{perm.IsViewOnly ? '(view only)' : '(can edit)'}}</p>
 							</ion-col>
 							<ion-col col-2>
-								<button clear ion-button type="button" (click)="unshareBoard(reci)"><ion-icon name="close"></ion-icon></button>
+								<button clear ion-button type="button" (click)="unshareBoard(perm)"><ion-icon name="close"></ion-icon></button>
 							</ion-col>
 						</ion-row>
 					</div>
@@ -31,10 +32,10 @@
 		<ng-container *ngIf="containsEdit">
 			<p class="shareLabels">Can edit</p>
 			<ion-list no-lines>
-        <ng-container *ngFor="let recipient of sharees">
-          <ion-item *ngIf="recipient.IsViewOnly == false">
-						{{recipient.Email}}
-            <button clear ion-button item-right type="button" (click)="removeReci(recipient)"><ion-icon name="close"></ion-icon></button>
+        <ng-container *ngFor="let permission of sharees">
+          <ion-item *ngIf="permission.IsViewOnly == false">
+						{{permission.User?.Email}}
+            <button clear ion-button item-right type="button" (click)="removePerm(permission)"><ion-icon name="close"></ion-icon></button>
           </ion-item>
         </ng-container>
       </ion-list>
@@ -43,10 +44,10 @@
 		<ng-container *ngIf="containsViewOnly">
 			<p class="shareLabels">View only</p>
       <ion-item-group no-lines>
-        <ng-container *ngFor="let recipient of sharees">
-        <ion-item *ngIf="recipient.IsViewOnly == true">
-					{{recipient.Email}}
-          <button clear ion-button item-right type="button" (click)="removeReci(recipient)"><ion-icon name="close"></ion-icon></button>
+        <ng-container *ngFor="let permission of sharees">
+        <ion-item *ngIf="permission.IsViewOnly == true">
+					{{permission.User?.Email}}
+          <button clear ion-button item-right type="button" (click)="removePerm(permission)"><ion-icon name="close"></ion-icon></button>
         </ion-item>
         </ng-container>
       </ion-item-group>
@@ -54,20 +55,20 @@
 
     <form (ngSubmit)="shareBoard()" #shareBoardForm="ngForm">
       <ion-item>
-        <ion-label for="options">{{(newReci.IsViewOnly ? 'View only' : 'Can edit')}}</ion-label>
-        <ion-toggle [(ngModel)]="newReci.IsViewOnly" name="viewOnly"></ion-toggle>
+        <ion-label for="options">{{(newPerm.IsViewOnly ? 'View only' : 'Can edit')}}</ion-label>
+        <ion-toggle [(ngModel)]="newPerm.IsViewOnly" name="viewOnly"></ion-toggle>
       </ion-item>
 			<ion-item>
         <ion-label stacked>Email</ion-label>
-        <ion-input clearInput [(ngModel)]="newReci.Email" name="email"></ion-input>
-				<button clear ion-button type="button" item-right (click)="addReci(newReci)"><ion-icon name="checkmark"></ion-icon></button>
+        <ion-input clearInput [(ngModel)]="newPerm.User.Email" name="email"></ion-input>
+				<button clear ion-button type="button" item-right (click)="addPerm(newPerm)"><ion-icon name="checkmark"></ion-icon></button>
       </ion-item>
       <ion-item>
         <ion-label stacked>Write a note! (optional)</ion-label>
         <ion-textarea fz-elastic [(ngModel)]="note" name="note"></ion-textarea>
       </ion-item>
 
-      <button ion-button clear type="button" (click)="closeModal()">Cancel</button>
+      <button ion-button clear type="button" (click)="addReciActive()">Cancel</button>
       <button ion-button item-right clear type="submit">Share</button>
     </form>
 	</div>
