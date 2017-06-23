@@ -5,5 +5,6 @@ export class User implements DbCompatible {
                 public FirstName: string,
 								public LastName: string,
 								public Username: string,
-								public Email: string) { }
+								public Email: string,
+								public PasswordHash?: string) { }
 }

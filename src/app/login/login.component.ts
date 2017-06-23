@@ -19,11 +19,7 @@ export class LoginPage {
 	}
 
 	login() {
-		// login and set user
-		if (this.LoginCredentials.username == 'tika' && this.LoginCredentials.password == '<3'){
-			this.userService.setUser(0);
-			this.viewCtrl.dismiss();
-		}
+		this.viewCtrl.dismiss();
 	}
 
 	register() {
