@@ -68,7 +68,7 @@ export class TodoService {
 		let body = formBody.join('&');
 
 		return this.http.post(url, body, this.options).toPromise().then((response: any) => {
-			console.log('addBoard response:' + response.toString);
+			console.log('addBoard response:' + response.toString());
 		}).catch(this.handleError);
 	}
 
@@ -76,6 +76,7 @@ export class TodoService {
 		console.log('requesting boards...');
 
 		const url = `${this.apiUrl}/board?userId=${this.id}`;
+		console.log(url);
 
 		return this.http.get(url).map((response: any) => {
 
@@ -132,7 +133,7 @@ export class TodoService {
 		let body = formBody.join('&');
 
 		return this.http.put(url, body, this.options).toPromise().then((response: any) => {
-			console.log('updateBoards response:' + response.toString);
+			console.log('updateBoards response:' + response.toString());
 		}).catch(this.handleError);
 	}
 
@@ -175,7 +176,7 @@ export class TodoService {
 		console.log(body);
 
 		return this.http.post(url, body, this.options).toPromise().then((response: any) => {
-			console.log('addCategory response:' + response.toString);
+			console.log('addCategory response:' + response.toString());
 		}).catch(this.handleError);
 	}
 
@@ -286,7 +287,7 @@ export class TodoService {
 		let body = formBody.join('&');
 
 		return this.http.put(url, body, this.options).toPromise().then((response: any) => {
-			console.log('updateCategories response:' + response.toString);
+			console.log('updateCategories response:' + response.toString());
 		}).catch(this.handleError);
 	}
 
@@ -332,7 +333,7 @@ export class TodoService {
 		console.log(body);
 
 		return this.http.post(url, body, this.options).toPromise().then((response: any) => {
-			console.log('addTodo response:' + response.toString);
+			console.log('addTodo response:' + response.toString());
 		}).catch(this.handleError);
 	}
 
@@ -483,10 +484,21 @@ export class TodoService {
 		console.log(body);
 
 		return this.http.put(url, body, this.options).toPromise().then((response: any) => {
-			console.log('updateTodos response:' + response.toString);
+			console.log('updateTodos response:' + response.toString());
 		}).catch(this.handleError);
 	}
 
+	// actual delete
+	private deleteTodo(todo: Todo): Promise<void> {
+		const url = `${this.apiUrl}/todo?todoId=${todo.DbId}`;
+
+		return this.http.delete(url).toPromise().then((response: any) => {
+			console.log('TODO delete: ' + response.toString());
+		})
+			.catch(this.handleError);
+	}
+
+	// delete method that just updates prop
 	public deleteObject(obj: DbCompatible) {
 		const url = `${this.apiUrl}/${obj.constructor.name.toLowerCase()}/delete`;
 
@@ -523,18 +535,53 @@ export class TodoService {
 		}
 
 		this.http.put(url, body, this.options).toPromise().then((response: any) => {
-			console.log('delete ' + idName + ' response: ' + response.toString);
+			console.log('delete ' + idName + ' response: ' + response.toString());
 		}).catch(this.handleError);
 	}
 
-	// actual delete
-	private deleteTodo(todo: Todo): Promise<void> {
-		const url = `${this.apiUrl}/todo?todoId=${todo.DbId}`;
+	public restoreObject(obj: DbCompatible): Promise<void> {
+		const url = `${this.apiUrl}/${obj.constructor.name.toLowerCase()}/restore`;
+		console.log(url);
 
-		return this.http.delete(url).toPromise().then((response: any) => {
-			console.log('TODO delete: ' + response.toString());
-		})
-			.catch(this.handleError);
+		// create req body
+		let idName: string = obj.constructor.name.toLowerCase() + 'Id';
+		console.log('restoring...' + idName);
+
+		var details = {
+			'userId': String(this.id),
+			[idName]: String(obj.DbId)
+		};
+
+		let formBody = [];
+		for (var property in details) {
+			var encodedKey = encodeURIComponent(property);
+			var encodedValue = encodeURIComponent(details[property]);
+			formBody.push(encodedKey + '=' + '\'' + encodedValue + '\'');
+		}
+		let body = formBody.join('&');
+		console.log(body);
+
+		return this.http.put(url, body, this.options).toPromise().then((response: any) => {
+			console.log('Restore ' + idName + ' ' + obj.DbId + ' ' + response.toString());
+
+			// refresh cache by getting all data again
+			this.getCurrentBoard();
+			return;
+		}).catch(this.handleError);
+	}
+
+	// TODO: remove for prod
+	public raiseTheDead() {
+		const url = `${this.apiUrl}/restore/all`;
+
+		let body: string = '';
+		return this.http.put(url, body, this.options).toPromise().then((response: any) => {
+			console.log('Restore all: ' + response.toString()); 
+
+			// refresh cache by getting all data again
+			this.getCurrentBoard(true);
+			return;
+		}).catch(this.handleError);
 	}
 
 	public shareBoard(sharees: Permission[], board: Board, note?: string) {
@@ -566,7 +613,8 @@ export class TodoService {
 				console.log(body);
 
 				this.http.post(url, body, this.options).toPromise().then((response: any) => {
-					console.log('share to response:' + response.toString);
+					console.log('share to response:' + response.toString());
+					return;
 				}).catch(this.handleError);
 			});
 		});
@@ -756,12 +804,17 @@ export class TodoService {
 		return val;
 	}
 
-	public getCurrentBoard(): Observable<any> {
+	public getCurrentBoard(isForce?: boolean): Observable<any> {
+		let doRetrieve = true;
 		// return cached if present
 		if (this.CurrentBoard != null && this.CurrentBoard != undefined) {
-			return Observable.of(this.CurrentBoard);
+			doRetrieve = false;
 		}
-		else {
+		if (isForce != undefined && isForce == true) {
+			doRetrieve = true;
+		}
+
+		if (doRetrieve == true) {
 			this.isBusy = true;
 			console.log('Getting current board...');
 			// Retrieve all data first, then pull current board after all concluded
@@ -773,6 +826,8 @@ export class TodoService {
 							this.isBusy = false;
 							return this.CachedBoards[0];
 						}).share()));
+		} else {
+			return Observable.of(this.CurrentBoard);
 		}
 	}
 

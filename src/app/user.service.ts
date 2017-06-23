@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Http, Response, RequestOptions, Headers } from '@angular/http';
+import { Http, RequestOptions, Headers } from '@angular/http';
 
 import { User } from './user';
 
@@ -9,10 +9,9 @@ export class UserService {
 	public currentUserId: number;
 
 	private apiUrl: string = 'http://porcupine-dope-api.azurewebsites.net';
-	private id: number = 0;
 
 	private headers = new Headers({ 'Content-Type': 'application/x-www-form-urlencoded' });
-	private options = new RequestOptions({ headers: this.headers });
+	// private options = new RequestOptions({ headers: this.headers });
 
 	constructor(private http: Http) { }
 

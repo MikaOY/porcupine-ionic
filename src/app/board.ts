@@ -1,6 +1,5 @@
 import { Todo } from './todo';
 import { Category } from './category';
-import { User } from './user';
 import { Permission } from './permission';
 
 import { DbCompatible } from './db-compatible.interface';
