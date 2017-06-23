@@ -87,6 +87,16 @@ export class TodoService {
 		const url = `${this.apiUrl}/board?userId=${this.id}`;
 		console.log(url);
 
+		let accessToken;
+		let authOptions = this.options;
+
+		this.userService.getAuthToken().then((res: any) => {
+			accessToken = res;
+			console.log(accessToken);
+			authOptions.headers.append('authorization', accessToken);
+		}).catch(this.handleError);
+		console.log("about to post:" + authOptions.headers);
+		
 		return this.http.get(url).map((response: any) => {
 
 			console.log('processing boards...');
