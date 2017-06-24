@@ -35,7 +35,7 @@ export class MyApp implements OnInit {
 				splashScreen.hide();
 			}
 			
-			if (this.userService.authenticated() == false){
+			if (this.userService.checkIfAuthenticated() == false){
 				this.userService.login();
 			}
 		});
