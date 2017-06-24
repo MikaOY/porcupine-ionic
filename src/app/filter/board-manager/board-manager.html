@@ -4,12 +4,20 @@
 	<ion-list>
 		<ng-container *ngFor="let board of slothBoards()">
 			<ng-template #normalBoard>
-				<button ion-item (click)="openBoard(board)" [style.background-color]="board.IsLocked ? '#dbb7b3' : ''">
+				<button ion-item [style.background-color]="board.IsLocked ? '#dbb7b3' : ''" (click)="openBoard(board)">
 					{{board.Name}}
-					<button *ngIf="board.IsLocked" ion-button item-right small clear (click)="UnlockBoard(board)"><ion-icon name="unlock"></ion-icon></button>
-					<button ion-button clear item-right *ngIf="!board.IsLocked" (click)="deleteBoard(board)"><ion-icon name="trash"></ion-icon></button>
-					<button ion-button clear item-right *ngIf="!board.IsLocked" (click)="editBoardActive(board)"><ion-icon name="create"></ion-icon></button>
-					<button ion-button clear item-right *ngIf="!board.IsLocked" (click)="shareBoard(board)"><ion-icon name="share"></ion-icon></button>
+					<button *ngIf="board.IsLocked" ion-button item-right small clear (click)="unlockBoard(board)">
+						<ion-icon name="unlock"></ion-icon>
+					</button>
+					<button ion-button clear item-right *ngIf="!board.IsLocked" (click)="deleteBoard(board)">
+						<ion-icon name="trash"></ion-icon>
+					</button>
+					<button ion-button clear item-right *ngIf="!board.IsLocked" (click)="editBoardActive(board)">
+						<ion-icon name="create"></ion-icon>
+					</button>
+					<button ion-button clear item-right *ngIf="!board.IsLocked" (click)="shareBoard(board)">
+						<ion-icon name="share"></ion-icon>
+					</button>
 				</button>
 			</ng-template>
 			<ng-container *ngIf="board.IsEditActive; else normalBoard">
@@ -26,12 +34,20 @@
 	<ion-list>
 		<ng-container *ngFor="let board of slothSharedBoards()">
 			<ng-template #normalBoard>
-				<button ion-item (click)="openBoard(board)" [style.background-color]="board.IsLocked ? '#dbb7b3' : ''">
+				<button ion-item [style.background-color]="board.IsLocked ? '#dbb7b3' : ''" (click)="openBoard(board)">
 					{{board.Name}}
-					<button *ngIf="board.IsLocked" ion-button item-right small clear (click)="UnlockBoard(board)"><ion-icon name="unlock"></ion-icon></button>
-					<button ion-button clear item-right *ngIf="!board.IsLocked" (click)="deleteSharedBoard(board)"><ion-icon name="trash"></ion-icon></button>
-					<button ion-button clear item-right *ngIf="!board.IsViewOnly || !board.IsLocked" (click)="editBoardActive(board)"><ion-icon name="create"></ion-icon></button>
-					<button ion-button clear item-right *ngIf="!board.IsLocked" (click)="shareBoard(board)"><ion-icon name="share"></ion-icon></button>
+					<button ion-button item-right small clear *ngIf="board.IsLocked" (click)="UnlockBoard(board)">
+						<ion-icon name="unlock"></ion-icon>
+					</button>
+					<button ion-button clear item-right *ngIf="!board.IsLocked" (click)="deleteSharedBoard(board)">
+						<ion-icon name="trash"></ion-icon>
+					</button>
+					<button ion-button clear item-right *ngIf="!board.IsViewOnly || !board.IsLocked" (click)="editBoardActive(board)">
+						<ion-icon name="create"></ion-icon>
+					</button>
+					<button ion-button clear item-right *ngIf="!board.IsLocked" (click)="shareBoard(board)">
+						<ion-icon name="share"></ion-icon>
+					</button>
 				</button>
 			</ng-template>
 			<ng-container *ngIf="board.IsEditActive; else normalBoard">
@@ -55,5 +71,5 @@
 			<button ion-button clear type="submit">Okay</button>
 		</form>
 	</ng-container>
-	<button ion-button clear (click)="dismissPage()">Done</button>
+	<button ion-button clear (click)="viewCtrl.dismiss()">Done</button>
 </ion-content>

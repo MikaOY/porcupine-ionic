@@ -26,10 +26,6 @@ export class BoardManager {
 		return this.todoService.slothGetSharedBoards();
 	}
 
-	dismissPage() {
-		this.viewCtrl.dismiss();
-	}
-
 	openBoard(board: Board) {
 		this.todoService.setAsCurrentBoard(board);
 		this.viewCtrl.dismiss();
@@ -67,7 +63,7 @@ export class BoardManager {
 		board.IsEditActive = !board.IsEditActive;
 	}
 
-	UnlockBoard(board: Board) {
+	unlockBoard(board: Board) {
 		let UnlockModal = this.modalCtrl.create(UnlockPage); 
 		UnlockModal.onDidDismiss(data => {
 			board.IsLocked = data;
