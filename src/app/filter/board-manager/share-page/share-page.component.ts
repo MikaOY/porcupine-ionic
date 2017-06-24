@@ -14,9 +14,9 @@ import { TodoService } from '../../../todo.service';
 
 export class SharePage {
 	constructor(public navParams: NavParams,
-		public viewCntrl: ViewController,
-		private alertCtrl: AlertController,
-		public todoService: TodoService) { }
+							public viewCntrl: ViewController,
+							private alertCtrl: AlertController,
+							public todoService: TodoService) { }
 
 	sharees: Permission[] = [];
 	note: string = 'Check this out!';
@@ -24,7 +24,7 @@ export class SharePage {
 	containsViewOnly: boolean = false;
 	isAddReciActive: boolean = false;
 	newPerm: Permission = new Permission(new User(undefined, undefined, undefined, undefined, undefined), false);
-	sBoard: Board = this.navParams.get("sBoard");
+	sBoard: Board = this.navParams.get('sBoard');
 
 	getBoardPerms() {
 		return this.todoService.slothGetBoardPerms(this.sBoard);
@@ -53,7 +53,7 @@ export class SharePage {
 
 	addReciActive() {
 		this.isAddReciActive = !this.isAddReciActive;
-		console.log("isAddReciActive? " + this.isAddReciActive);
+		console.log('isAddReciActive? ' + this.isAddReciActive);
 	}
 
 	addPerm(perm: Permission) {
