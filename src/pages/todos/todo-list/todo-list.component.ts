@@ -19,6 +19,9 @@ export class TodoList implements OnInit {
 	isSelectActive: boolean = false;
 	priority: string[] = ['Low', 'Medium', 'High'];
 
+	isAddTodoActive: boolean = false;
+	newTodo = new Todo(undefined, undefined, undefined, false, undefined, false, undefined, undefined, undefined, false, false, false);
+
 	constructor(private todoService: TodoService, 
 							public params: NavParams, 
 							public ModalCtrl?: ModalController) { }
@@ -51,7 +54,7 @@ export class TodoList implements OnInit {
 		todo.IsEditActive = !todo.IsEditActive;
 	}
 
-	onFormSubmit(todo: Todo) {
+	onEditFormSubmit(todo: Todo) {
 		todo.IsEditActive = false;
 		this.todoService.updateTodo(todo);
 	}
@@ -70,10 +73,6 @@ export class TodoList implements OnInit {
 		else {
 			// TODO: if currentBoard is viewonly, don't check the box
 		}
-	}
-
-	changePrior(val: string, todo: Todo) {
-		todo.Priority = Priority[val];
 	}
 
 	reorderItems(indexes) {
@@ -99,10 +98,11 @@ export class TodoList implements OnInit {
 
 	disableSelect() {
 		this.isSelectActive = false;
-		for (let todo of this.slothCurrentBoard().Todos) { //turns everything back to white color
+		// turns everything back to white color
+		for (let todo of this.slothCurrentBoard().Todos) { 
 			todo.IsSelectActive = false;
 		}
-		this.selectedTodos.length = 0; //empties selectedTodos array
+		this.selectedTodos.length = 0;
 	}
 
 	unlockBoard(board: Board) {
@@ -114,14 +114,12 @@ export class TodoList implements OnInit {
 	}
 
 	// adding a new todo
-	addTodo: boolean = false;
-	newTodo = new Todo(undefined, undefined, undefined, false, undefined, false, undefined, undefined, undefined, false, false, false);
-	AddTodo() {
-		this.addTodo = !this.addTodo;
+	addTodo() {
+		this.isAddTodoActive = !this.isAddTodoActive;
 	}
 
 	onNewTodoFormSubmit() {
-		this.addTodo = !this.addTodo;
+		this.isAddTodoActive = !this.isAddTodoActive;
 		var currentDate = new Date();
 		this.newTodo.DateCreated = currentDate;
 		if (this.newTodo.Info == undefined || this.newTodo.Info == null) {
