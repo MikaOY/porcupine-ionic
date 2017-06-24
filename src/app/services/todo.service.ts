@@ -1,13 +1,4 @@
 import { Injectable } from '@angular/core';
-
-import { Todo } from './todo';
-import { Category } from './category';
-import { Priority } from './priority';
-import { Board } from './board';
-import { User } from './user';
-import { Permission } from './permission';
-import { DbCompatible } from './db-compatible.interface';
-
 import { Http, Response, RequestOptions, Headers } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/catch';
@@ -17,6 +8,13 @@ import 'rxjs/add/operator/startWith';
 import 'rxjs/add/operator/toPromise';
 import 'rxjs/add/observable/fromPromise';
 
+import { Todo } from '../classes/todo';
+import { Category } from '../classes/category';
+import { Priority } from '../classes/priority';
+import { Board } from '../classes/board';
+import { User } from '../classes/user';
+import { Permission } from '../classes/permission';
+import { DbCompatible } from '../interfaces/db-compatible.interface';
 import { UserService } from './user.service';
 
 const ColorArray: string[] = ['#919191', '#ff5c3f', '#ffb523', '#6f9b53', '#1371d6', '#423e7c', '#7606cc', '#c613b4'];

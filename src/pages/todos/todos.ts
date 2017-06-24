@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Board } from '../../app/board';
-import { TodoService } from '../../app/todo.service';
+import { Board } from '../../app/classes/board';
+import { TodoService } from '../../app/services/todo.service';
 
 @Component({
 	selector: 'todos-page',

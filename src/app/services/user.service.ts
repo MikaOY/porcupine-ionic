@@ -2,7 +2,8 @@ import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
 import { Storage } from '@ionic/storage';
 import { AuthHttp, JwtHelper } from 'angular2-jwt';
-import { User } from './user';
+
+import { User } from '../classes/user';
 
 declare var Auth0Lock: any;
 

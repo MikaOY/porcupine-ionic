@@ -2,10 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { Platform, ModalController } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
-import { UserService } from './user.service';
+import { UserService } from './services/user.service';
 
 import { TabsPage } from '../pages/tabs/tabs';
-import { SettingsService } from './settings.service';
+import { SettingsService } from './services/settings.service';
 
 
 @Component({

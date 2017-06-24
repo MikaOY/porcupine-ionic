@@ -1,12 +1,12 @@
 import { Component } from '@angular/core';
 import { NavParams } from 'ionic-angular';
-import { Board } from '../../../board';
 import { ViewController } from 'ionic-angular';
 import { AlertController } from 'ionic-angular';
 
-import { Permission } from '../../../permission';
-import { User } from '../../../user';
-import { TodoService } from '../../../todo.service';
+import { Board } from '../../../../app/classes/board';
+import { Permission } from '../../../../app/classes/permission';
+import { User } from '../../../../app/classes/user';
+import { TodoService } from '../../../../app/services/todo.service';
 
 @Component({
 	templateUrl: 'share-page.html',

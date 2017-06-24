@@ -1,6 +1,6 @@
 import { Category } from './category';
 import { Priority } from './priority';
-import { DbCompatible } from './db-compatible.interface';
+import { DbCompatible } from '../interfaces/db-compatible.interface';
 
 export class Todo implements DbCompatible {
     constructor(public Info: string,

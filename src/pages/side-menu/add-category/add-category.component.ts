@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { TodoService } from '../../todo.service';
 import { ViewController, NavController } from 'ionic-angular';
-import { Category } from '../../category';
-import { Priority } from '../../priority';
-import { Board } from '../../board';
+
+import { TodoService } from '../../../app/services/todo.service';
+import { Category } from '../../../app/classes/category';
+import { Priority } from '../../../app/classes/priority';
+import { Board } from '../../../app/classes/board';
 
 @Component({
 	templateUrl: 'add-category.html'

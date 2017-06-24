@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { SettingsService } from '../settings.service';
 import { NavParams, ViewController } from 'ionic-angular';
-import { Todo } from '../todo';
+
+import { SettingsService } from '../../../../app/services/settings.service';
+import { Todo } from '../../../../app/classes/todo';
 
 @Component({
 	templateUrl: 'unlock-page.html',

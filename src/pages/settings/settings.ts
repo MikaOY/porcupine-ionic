@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { NavController } from 'ionic-angular';
-import { SettingsService } from '../../app/settings.service';
-import { UserService } from '../../app/user.service';
 import { ModalController } from 'ionic-angular';
-import { TodoService } from '../../app/todo.service';
+
+import { SettingsService } from '../../app/services/settings.service';
+import { UserService } from '../../app/services/user.service';
+import { TodoService } from '../../app/services/todo.service';
 
 @Component({
 	selector: 'settings-page',

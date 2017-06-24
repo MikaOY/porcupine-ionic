@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
 import { ModalController, ViewController } from 'ionic-angular';
-import { TodoService } from '../../todo.service';
-import { Board } from '../../board';
+
+import { TodoService } from '../../../app/services/todo.service';
+import { Board } from '../../../app/classes/board';
 import { SharePage } from './share-page/share-page.component';
-import { UnlockPage } from '../../lockable/unlock-page.component';
+import { UnlockPage } from './unlock-page/unlock-page.component';
 
 @Component({
 	templateUrl: 'board-manager.html',

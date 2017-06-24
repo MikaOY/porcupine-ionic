@@ -1,4 +1,4 @@
-import { DbCompatible } from './db-compatible.interface';
+import { DbCompatible } from '../interfaces/db-compatible.interface';
 
 export class User implements DbCompatible {
 	constructor(public DbId: number,

@@ -1,16 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import { ModalController } from 'ionic-angular';
 
-import { TodoService } from '../todo.service';
-import { Board } from '../board';
-import { Category } from '../category';
+import { TodoService } from '../../app/services/todo.service';
+import { Board } from '../../app/classes/board';
+import { Category } from '../../app/classes/category';
 import { BoardManager } from './board-manager/board-manager.component';
-import { UserService } from '../user.service';
-import { AddCategory } from './cat-manager/add-category.component';
+import { UserService } from '../../app/services/user.service';
+import { AddCategory } from './add-category/add-category.component';
 
 @Component({
 	selector: 'category-list',
-	templateUrl: 'filter.html'
+	templateUrl: 'side-menu.html'
 })
 
 export class CategorySort implements OnInit {

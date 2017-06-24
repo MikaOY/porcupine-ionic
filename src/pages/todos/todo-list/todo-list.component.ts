@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { TodoService } from '../../../app/todo.service';
 import { ModalController, NavParams } from 'ionic-angular';
 
-import { Todo } from '../../../app/todo';
-import { Priority } from '../../../app/priority';
-import { Board } from '../../../app/board';
-import { UnlockPage } from '../../../app/lockable/unlock-page.component';
+import { TodoService } from '../../../app/services/todo.service';
+import { Todo } from '../../../app/classes/todo';
+import { Priority } from '../../../app/classes/priority';
+import { Board } from '../../../app/classes/board';
+import { UnlockPage } from '../../side-menu/board-manager/unlock-page/unlock-page.component';
 
 @Component({
 	selector: 'todo-list',
