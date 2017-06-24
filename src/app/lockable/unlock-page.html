@@ -21,27 +21,27 @@
 
 		<ion-row>
 			<ion-col *ngFor="let num of row1">
-				<button ion-button (click)=add(num) class="center">{{num}}</button>
+				<button ion-button class="center" (click)="add(num)">{{num}}</button>
 			</ion-col>
 		</ion-row>
 		<ion-row>
 			<ion-col *ngFor="let num of row2">
-				<button ion-button (click)=add(num) class="center">{{num}}</button>
+				<button ion-button class="center" (click)="add(num")>{{num}}</button>
 			</ion-col>
 		</ion-row>
 		<ion-row>
 			<ion-col *ngFor="let num of row3">
-				<button ion-button (click)=add(num) class="center">{{num}}</button>
+				<button ion-button class="center" (click)="add(num)">{{num}}</button>
 			</ion-col>
 		</ion-row>
 		<ion-row>
 			<ion-col>
 			</ion-col>
 			<ion-col>
-				<button ion-button (click)=add(0) class="center">0</button>
+				<button ion-button class="center" (click)="add(0)">0</button>
 			</ion-col>
 			<ion-col>
-				<button ion-button clear (click)=delete() class="center">
+				<button ion-button clear class="center" (click)="delete()">
 					<ion-icon name="arrow-round-back"></ion-icon>
 				</button>
 			</ion-col>

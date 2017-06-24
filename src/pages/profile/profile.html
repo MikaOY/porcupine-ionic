@@ -1,9 +1,9 @@
 <ion-card>
 	<ion-item *ngIf="userService.user">
 		<ion-avatar item-left>
-			<img src="{{ userService.user.picture }}">
+			<img src="{{userService.user.picture}}">
 		</ion-avatar>
-		<h2>{{ userService.user.nickname }}</h2>
-		<p>{{ userService.user.email }}</p>
+		<h2>{{userService.user.nickname}}</h2>
+		<p>{{userService.user.email}}</p>
 	</ion-item>
 </ion-card>
