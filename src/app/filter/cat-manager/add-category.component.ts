@@ -50,7 +50,7 @@ export class AddCategory implements OnInit {
 		// setting date created to current date
 		var currentDate = new Date();
 		this.newCate.DateCreated = currentDate;
-		this.viewCntrl.dismiss(this.newCate);
+		this.viewCntrl.dismiss();
 		this.todoService.addCategory(this.newCate);
 	}
 

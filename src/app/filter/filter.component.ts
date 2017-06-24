@@ -34,11 +34,6 @@ export class CategorySort implements OnInit {
 
 	presentAddCat() {
 		let addCatModal = this.modalCtrl.create(AddCategory);
-		addCatModal.onDidDismiss(data => {
-			if (data){
-				//this.cats.push(data);
-			}
-		});
 		addCatModal.present();
 	}
 
@@ -51,8 +46,8 @@ export class CategorySort implements OnInit {
 		cat.IsEditActive = !cat.IsEditActive;
 	}
 
-	deleteCat(category: Category) {
-		this.todoService.deleteObject(category);
+	deleteCat(cat: Category) {
+		this.todoService.deleteObject(cat);
 	}
 
 	sortTodos(mode: string) {
