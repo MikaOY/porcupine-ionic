@@ -22,7 +22,7 @@ export class SharePage {
 	sBoard: Board = this.navParams.get('sBoard');
 
 	constructor(public navParams: NavParams,
-							public viewCntrl: ViewController,
+							public viewCtrl: ViewController,
 							private alertCtrl: AlertController,
 							public todoService: TodoService) { }
 
@@ -43,7 +43,7 @@ export class SharePage {
 			console.log('sharing board:' + this.sBoard.Name + ' with ' + this.sharees.length + ' people with note: ' + this.note);
 			this.todoService.shareBoard(this.sharees, this.sBoard, this.note);
 		}
-		this.viewCntrl.dismiss();
+		this.viewCtrl.dismiss();
 	}
 
 	unshareBoard(perm: Permission) {
@@ -101,9 +101,5 @@ export class SharePage {
 			}
 		}
 		return false;
-	}
-
-	closeModal() {
-		this.viewCntrl.dismiss();
 	}
 }

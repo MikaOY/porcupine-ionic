@@ -1,5 +1,5 @@
 <ion-content no-padding>
-	<button ion-button clear (click)="closeModal()">back</button>
+	<button ion-button clear (click)="viewCtrl.dismiss()">back</button>
 	<h3>{{sBoard?.Name}} Board: Manage Sharing</h3>
 	
 	<ion-grid no-padding>
@@ -13,18 +13,18 @@
 		</ion-row>
 		<ion-row>
 			<ion-col>
-				<ng-container *ngFor="let perm of getBoardPerms()">
-					<div class="reciLabels">
+					<div class="reciLabels" *ngFor="let perm of getBoardPerms()">
 						<ion-row>
 							<ion-col>
 								<p>{{perm.User?.Email}} {{perm.IsViewOnly ? '(view only)' : '(can edit)'}}</p>
 							</ion-col>
 							<ion-col col-2>
-								<button clear ion-button type="button" (click)="unshareBoard(perm)"><ion-icon name="close"></ion-icon></button>
+								<button clear ion-button type="button" (click)="unshareBoard(perm)">
+									<ion-icon name="close"></ion-icon>
+								</button>
 							</ion-col>
 						</ion-row>
 					</div>
-				</ng-container>
 			</ion-col>
 		</ion-row>
 	</ion-grid>
@@ -35,7 +35,9 @@
         <ng-container *ngFor="let permission of sharees">
           <ion-item *ngIf="permission.IsViewOnly == false">
 						{{permission.User?.Email}}
-            <button clear ion-button item-right type="button" (click)="removePerm(permission)"><ion-icon name="close"></ion-icon></button>
+            <button clear ion-button item-right type="button" (click)="removePerm(permission)">
+							<ion-icon name="close"></ion-icon>
+						</button>
           </ion-item>
         </ng-container>
       </ion-list>
@@ -47,7 +49,9 @@
         <ng-container *ngFor="let permission of sharees">
         <ion-item *ngIf="permission.IsViewOnly == true">
 					{{permission.User?.Email}}
-          <button clear ion-button item-right type="button" (click)="removePerm(permission)"><ion-icon name="close"></ion-icon></button>
+          <button clear ion-button item-right type="button" (click)="removePerm(permission)">
+						<ion-icon name="close"></ion-icon>
+					</button>
         </ion-item>
         </ng-container>
       </ion-item-group>
@@ -61,7 +65,9 @@
 			<ion-item>
         <ion-label stacked>Email</ion-label>
         <ion-input clearInput [(ngModel)]="newPerm.User.Email" name="email"></ion-input>
-				<button clear ion-button type="button" item-right (click)="addPerm(newPerm)"><ion-icon name="checkmark"></ion-icon></button>
+				<button clear ion-button type="button" item-right (click)="addPerm(newPerm)">
+					<ion-icon name="checkmark"></ion-icon>
+				</button>
       </ion-item>
       <ion-item>
         <ion-label stacked>Write a note! (optional)</ion-label>
