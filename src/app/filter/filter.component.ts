@@ -23,11 +23,7 @@ export class CategorySort implements OnInit {
 		private userService: UserService) { }
 
 	ngOnInit(): void {
-		//this.userService.getUser().then(val => this.currentUser = val);
-
-		setTimeout(() => {
-			this.justWait = true;
-		}, 5000);
+		setTimeout(() => this.justWait = true, 5000);
 	}
 
 	slothBoards(): Board[] {
@@ -52,7 +48,7 @@ export class CategorySort implements OnInit {
 		cat.IsEditActive = !cat.IsEditActive;
 	}
 
-	onEditCatSubmit(cat) {
+	onEditCatSubmit(cat: Category) {
 		this.todoService.updateCategory(cat);
 		cat.IsEditActive = !cat.IsEditActive;
 	}
@@ -60,17 +56,11 @@ export class CategorySort implements OnInit {
 	deleteCat(category: Category) {
 		this.todoService.deleteObject(category);
 	}
-
-	showId() {
-		//this.userService.getUser().then(val => this.currentUser = val);
-		console.log("Show Id: The current user is: " + this.currentUser);
-	}
 }
 
-// PROPERTY
 
 @Component({
-	selector: "property-list",
+	selector: 'property-list',
 	template: `
     <ion-grid no-padding>
         <ion-row nowrap>
@@ -99,12 +89,7 @@ export class PropertySort implements OnInit {
 	constructor(private todoService: TodoService,
 		public modalCtrl: ModalController) { }
 
-	ngOnInit() {
-		setTimeout(() => {
-			
-		}, 5000);
-
-	}
+	ngOnInit() {}
 
 	slothCurrentBoard(): Board {
 		return this.todoService.slothGetCurrentBoard();

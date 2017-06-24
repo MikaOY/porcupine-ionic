@@ -33,24 +33,23 @@ export class AddCategory implements OnInit{
 
 	presentColors() {
 		this.colorPicker = !this.colorPicker;
-		console.log("color picker is" + this.colorPicker);
 	}
 
 	setColor(color) {
-		var colorIndex = this.ColorArray.indexOf(color);
-		this.newCate.Color = colorIndex;
+		this.newCate.Color = this.ColorArray.indexOf(color);
 		this.colorPicker = !this.colorPicker;
 	}
 
-	newCate = new Category("Love", undefined, undefined, undefined, 0, Priority.Low, true, false); 
+	newCate = new Category('Love', undefined, undefined, undefined, 0, Priority.Low, true, false); 
 	onNewCatFormSubmit() {
+		// if board was not assigned, assign to first board 
+		// TODO: change this to currentBoard
 		if (this.newCate.BoardId == undefined){
 			this.newCate.BoardId = this.slothBoards ? this.slothBoards[0].DbId : undefined;
 		}
+		// setting date created to current date
 		var currentDate = new Date();
 		this.newCate.DateCreated = currentDate;
-		console.log("onNewCatForm Clicked");
-		//code to take the newCate and add it to database
 		this.viewCntrl.dismiss(this.newCate);
 		this.todoService.addCategory(this.newCate);
 	}

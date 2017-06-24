@@ -33,23 +33,19 @@ export class BoardManager implements OnInit {
 	}
 
 	openBoard(board: Board) {
-		console.log(board.Name + " board opened");
 		this.todoService.setAsCurrentBoard(board);
 		this.viewCtrl.dismiss();
 	}
 
 	deleteBoard(board: Board) {
-		console.log("board Db Id" + board.DbId);
 		this.todoService.deleteObject(board);
 	}
 
 	deleteSharedBoard(board: Board) {
-		console.log("board Db Id" + board.DbId);
 		//TODO: delete
 	}
 
 	editBoardActive(board: Board) {
-		console.log('what');
 		board.IsEditActive = !board.IsEditActive;
 	}
 
@@ -64,8 +60,7 @@ export class BoardManager implements OnInit {
 	}
 
 	shareBoard(sBoard: Board) {
-		console.log("share clicked");
-		let shareModal = this.modalCtrl.create(SharePage, { "sBoard": sBoard });
+		let shareModal = this.modalCtrl.create(SharePage, { 'sBoard' : sBoard });
 		shareModal.present();
 	}
 
@@ -86,7 +81,7 @@ export class BoardManager implements OnInit {
 		this.showAddBoard = !this.showAddBoard;
 	}
 
-	newBoard: Board = new Board("Dogs", undefined, undefined, undefined, undefined);
+	newBoard: Board = new Board('Dogs', undefined, undefined, undefined, undefined);
 	onAddBoardFormSubmit() {
 		this.newBoard.DateCreated = new Date();
 		this.todoService.addBoard(this.newBoard);

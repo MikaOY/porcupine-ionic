@@ -43,7 +43,6 @@ export class SharePage {
 			console.log('sharing board:' + this.sBoard.Name + ' with ' + this.sharees.length + ' people with note: ' + this.note);
 			this.todoService.shareBoard(this.sharees, this.sBoard, this.note);
 		}
-
 		this.viewCntrl.dismiss();
 	}
 
@@ -52,8 +51,8 @@ export class SharePage {
 	}
 
 	addReciActive() {
+		// toggles whether the adding sharees div is active
 		this.isAddReciActive = !this.isAddReciActive;
-		console.log('isAddReciActive? ' + this.isAddReciActive);
 	}
 
 	addPerm(perm: Permission) {
