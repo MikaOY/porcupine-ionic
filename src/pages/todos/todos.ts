@@ -38,9 +38,4 @@ export class TodosPage implements OnInit {
 	changeBoard(board: Board) {
 		this.todoService.nextBoard(board);
 	}
-
-	doSomething(){
-		var todo = new Todo('eat lots of bananas', undefined, new Date(), false, undefined, false, Priority.Low, undefined);
-		this.todoService.addTodo(todo);
-	}
 }
