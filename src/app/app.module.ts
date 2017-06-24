@@ -10,7 +10,7 @@ import { TodosPage } from '../pages/todos/todos';
 import { TabsPage } from '../pages/tabs/tabs';
 import { UnlockPage } from './lockable/unlock-page.component';
 
-import { CategorySort, PropertySort } from './filter/filter.component';
+import { CategorySort } from './filter/filter.component';
 import { AddCategory } from './filter/cat-manager/add-category.component';
 import { BoardManager } from './filter/board-manager/board-manager.component';
 import { TodoList } from '../pages/todos/todo-list/todo-list.component'; 
@@ -39,7 +39,6 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     TabsPage,
     TodoList,
     CategorySort,
-    PropertySort,
     AddCategory,
     UnlockPage,
     BoardManager,
@@ -60,7 +59,6 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     TodosPage,
     TabsPage,
     CategorySort,
-    PropertySort,
     AddCategory,
     UnlockPage,
     BoardManager,

@@ -45,3 +45,23 @@
 		</ion-item>
 	</ion-list>
 </div>
+
+<ion-grid no-padding>
+	<ion-row nowrap>
+		<ion-col>
+			<ion-list no-lines>
+				<ion-list-header>Priority</ion-list-header>
+				<button ion-item menuClose (click)="sortTodos('HighToLow')">!!! to !</button>
+				<button ion-item menuClose (click)="sortTodos('LowToHigh')">! to !!!</button>
+			</ion-list>
+		</ion-col>
+		<ion-col>
+			<ion-list no-lines>
+				<ion-list-header>Date</ion-list-header>
+				<button ion-item menuClose (click)="sortTodos('Recent')">Most Recent</button>
+				<button ion-item menuClose (click)="sortTodos('Oldest')">Oldest</button>
+			</ion-list>
+		</ion-col>
+	</ion-row>
+</ion-grid>
+<button ion-item (click)="presentBoards()">Boards</button>

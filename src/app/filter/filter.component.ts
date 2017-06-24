@@ -19,8 +19,8 @@ export class CategorySort implements OnInit {
 	justWait: boolean = false;
 
 	constructor(private todoService: TodoService,
-		public modalCtrl: ModalController,
-		private userService: UserService) { }
+							public modalCtrl: ModalController,
+							private userService: UserService) { }
 
 	ngOnInit(): void {
 		setTimeout(() => this.justWait = true, 5000);
@@ -56,48 +56,9 @@ export class CategorySort implements OnInit {
 	deleteCat(category: Category) {
 		this.todoService.deleteObject(category);
 	}
-}
-
-
-@Component({
-	selector: 'property-list',
-	template: `
-    <ion-grid no-padding>
-        <ion-row nowrap>
-            <ion-col>
-                <ion-list no-lines>
-                    <ion-list-header>Priority</ion-list-header>
-                    <button ion-item menuClose (click)="sortTodos('HighToLow')">!!! to !</button>
-                    <button ion-item menuClose (click)="sortTodos('LowToHigh')">! to !!!</button>
-                </ion-list>
-            </ion-col>
-            <ion-col>
-                <ion-list no-lines>
-                    <ion-list-header>Date</ion-list-header>
-                    <button ion-item menuClose (click)="sortTodos('Recent')">Most Recent</button>
-                    <button ion-item menuClose (click)="sortTodos('Oldest')">Oldest</button>
-                </ion-list>
-            </ion-col>
-        </ion-row>
-    </ion-grid>
-    <button ion-item (click)="presentBoards()">Boards</button>
-    `
-})
-
-export class PropertySort implements OnInit {
-
-	constructor(private todoService: TodoService,
-		public modalCtrl: ModalController) { }
-
-	ngOnInit() {}
-
-	slothCurrentBoard(): Board {
-		return this.todoService.slothGetCurrentBoard();
-	}
 
 	sortTodos(mode: string) {
 		let sortedTodos = this.slothCurrentBoard().Todos.sort((a, b) => {
-			console.log("mode:" + mode);
 			switch(mode) {
 				case 'HighToLow':
 					if (a.Priority > b.Priority) 
@@ -107,7 +68,6 @@ export class PropertySort implements OnInit {
 					return 0;
 
 				case 'LowToHigh':
-					console.log("low to high");
 					if (a.Priority > b.Priority) 
 						return 1;
 					if (a.Priority < b.Priority) 
@@ -129,8 +89,6 @@ export class PropertySort implements OnInit {
 					return 0;
 			}
 		});
-		console.log(sortedTodos[0].Info);
-		console.log("hi");
 		this.todoService.sortTodos(sortedTodos);
 	}
 
@@ -138,5 +96,4 @@ export class PropertySort implements OnInit {
 		let boardsModal = this.modalCtrl.create(BoardManager);
 		boardsModal.present();
 	}
-
 }
