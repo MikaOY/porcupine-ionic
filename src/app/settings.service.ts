@@ -15,7 +15,7 @@ export class SettingsService {
 			{ className: 'red-theme', displayName: 'Red' },
 			{ className: 'null', displayName: 'Default' }
 		];
-		this.passcode = "1234";
+		this.passcode = '1234';
 	}
 
 	setTheme(val) {

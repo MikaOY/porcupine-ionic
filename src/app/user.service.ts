@@ -33,7 +33,7 @@ export class UserService {
       console.log(error);
     });
 
-		this.lock.on("authenticated", authResult => {
+		this.lock.on('authenticated', authResult => {
       this.lock.getProfile(authResult.idToken, (error, profile) => {
         if (error) {
           alert(error);
@@ -72,8 +72,8 @@ export class UserService {
       this.local.set('refresh_token', refreshToken);
       this.user = profile;
 			this.isAuthenticated = true;
-			console.log("It logged in???");
-			console.log("is authenticated: " + this.isAuthenticated);
+			console.log('It logged in???');
+			console.log('is authenticated: ' + this.isAuthenticated);
     });    
   }
 

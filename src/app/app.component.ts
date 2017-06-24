@@ -11,9 +11,7 @@ import { SettingsService } from './settings.service';
 
 @Component({
 	templateUrl: 'app.html',
-	providers: [SettingsService, 
-  
-	]
+	providers: [SettingsService]
 })
 
 export class MyApp implements OnInit {
@@ -35,6 +33,7 @@ export class MyApp implements OnInit {
 				splashScreen.hide();
 			}
 			
+			// Present Lock on startup
 			if (this.userService.authenticated() == false){
 				this.userService.login();
 			}

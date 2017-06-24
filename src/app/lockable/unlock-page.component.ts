@@ -8,7 +8,7 @@ import { Todo } from '../todo';
 })
 
 export class UnlockPage implements OnInit {
-	passIn: string = " ";
+	passIn: string = ' ';
 	userPasscode: string;
 	todo: Todo;
 	info: string;
@@ -25,14 +25,15 @@ export class UnlockPage implements OnInit {
 	}
 
 	passcodeSuccess() {
-		this.viewCtrl.dismiss(false); // sets todo.Islocked = false;
+		// sets todo.Islocked = false;
+		this.viewCtrl.dismiss(false);
 	}
 
 	back() {
 		this.viewCtrl.dismiss(true);
 	}
 
-	add(num) {
+	add(num: number) {
 		if (this.passIn == ' ') {
 			this.passIn = String(num);
 		}
@@ -40,6 +41,7 @@ export class UnlockPage implements OnInit {
 			this.passIn = this.passIn + num;
 		}
 
+		// checks if passcode is right
 		if (this.passIn.length == 4) {
 			if (this.passIn == this.userPasscode) {
 				this.passcodeSuccess();
@@ -51,6 +53,7 @@ export class UnlockPage implements OnInit {
 	}
 
 	delete() {
+		// deletes the last character in the box
 		this.passIn = this.passIn.substr(0, this.passIn.length - 1);
 	}
 }

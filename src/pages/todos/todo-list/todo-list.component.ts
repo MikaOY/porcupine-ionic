@@ -15,16 +15,15 @@ import { UnlockPage } from '../../../app/lockable/unlock-page.component';
 export class TodoList implements OnInit {
 	justWait: boolean = false;
 
-	// this sets colors for the category numbers
 	ColorArray: string[];
-
 	selectedTodos: Todo[] = [];
 	selectActive: boolean = false;
-	priority: string[] = ["Low", "Medium", "High"];
+	priority: string[] = ['Low', 'Medium', 'High'];
 
-	constructor(private todoService: TodoService, public params: NavParams, public ModalCtrl?: ModalController) { }
+	constructor(private todoService: TodoService, 
+							public params: NavParams, 
+							public ModalCtrl?: ModalController) { }
 
-	// Leave service calls in init callback!
 	ngOnInit(): void {
 		setTimeout(() => {
 			this.justWait = true;
@@ -37,8 +36,7 @@ export class TodoList implements OnInit {
 	}
 
 	todoPriority(pri: number): Array<number> {
-		let k = pri + 1;
-		var priArray = Array(k).fill(2).map((x, i) => i);
+		var priArray = Array(pri + 1).fill(2).map((x, i) => i);
 		return priArray;
 	}
 
@@ -56,14 +54,13 @@ export class TodoList implements OnInit {
 
 	onFormSubmit(todo: Todo) {
 		todo.IsEditActive = false;
-		console.log(todo.DbId);
 		this.todoService.updateTodo(todo);
 	}
 
-	itemChecked(IsDone: boolean, todo: Todo) { //run when you click the checkbox
+	itemChecked(IsDone: boolean, todo: Todo) { 
 		if (this.slothCurrentBoard().IsViewOnly != true) {
 			if (IsDone == true) {
-				//function to find date and control archive
+				// function to find date and control archive
 				var currentTime = new Date();
 				todo.DateDone = currentTime;
 			}
@@ -71,12 +68,13 @@ export class TodoList implements OnInit {
 				todo.DateDone = undefined;
 			}
 		}
+		else {
+			// TODO: if currentBoard is viewonly, don't check the box
+		}
 	}
 
-	//apparently working?
 	changePrior(val: string, todo: Todo) {
-		var pri: Priority = Priority[val];
-		todo.Priority = pri;
+		todo.Priority = Priority[val];
 	}
 
 	reorderItems(indexes) {
@@ -85,17 +83,18 @@ export class TodoList implements OnInit {
 		this.slothCurrentBoard().Todos.splice(indexes.to, 0, element);
 	}
 
+	// mode that controls ability to select/reorder todos
 	activateSelect(todo: Todo) {
 		if (this.slothCurrentBoard().IsViewOnly != true){
-		this.selectActive = true; //mode that controls ability to select/reorder todos
+			this.selectActive = true;
 
-		if (todo.SelectActive === true) {
-			todo.SelectActive = false;
-		}
-		else {
-			todo.SelectActive = true;
-			this.selectedTodos.push(todo);
-		}
+			if (todo.SelectActive === true) {
+				todo.SelectActive = false;
+			}
+			else {
+				todo.SelectActive = true;
+				this.selectedTodos.push(todo);
+			}
 		}
 	}
 
@@ -111,11 +110,11 @@ export class TodoList implements OnInit {
 		let UnlockModal = this.ModalCtrl.create(UnlockPage); 
 		UnlockModal.onDidDismiss(data => {
 			board.IsLocked = data;
-		})
+		});
 		UnlockModal.present();
 	}
 
-	//adding a new todo
+	// adding a new todo
 	addTodo: boolean = false;
 	newTodo = new Todo(undefined, undefined, undefined, false, undefined, false, undefined, undefined, undefined, false, false, false);
 	AddTodo() {
@@ -127,7 +126,7 @@ export class TodoList implements OnInit {
 		var currentDate = new Date();
 		this.newTodo.DateCreated = currentDate;
 		if (this.newTodo.Info == undefined || this.newTodo.Info == null) {
-			this.newTodo.Info = "Kiss alpaca";
+			this.newTodo.Info = 'Kiss alpaca';
 		}
 		if (this.newTodo.Category == undefined) {
 			this.newTodo.Category = this.slothCurrentBoard().Categories[0];
@@ -138,7 +137,6 @@ export class TodoList implements OnInit {
 		if (this.newTodo.DateDue == undefined) {
 			this.newTodo.DateDue = new Date(2017, 1, 1);
 		}
-		console.log("todo-list new todo info:" + this.newTodo.Info);
 
 		this.todoService.addTodo(this.newTodo);
 		// reset form
