@@ -138,7 +138,7 @@ export class TodoService {
 	}
 
 	// actual delete
-	private deleteBoard(board: Board): Promise<void> {
+	/*private deleteBoard(board: Board): Promise<void> {
 		console.log('deleting board...');
 
 		const url = `${this.apiUrl}/board?boardId=${board.DbId}`;
@@ -146,7 +146,7 @@ export class TodoService {
 			console.log('BOARD delete: ' + response.toString());
 		})
 			.catch(this.handleError);
-	}
+	}*/
 
 	public addCategory(newCat: Category): Promise<void> {
 		console.log('adding category...');
@@ -292,7 +292,7 @@ export class TodoService {
 	}
 
 	// actual delete
-	private deleteCategory(cat: Category): Promise<void> {
+	/*private deleteCategory(cat: Category): Promise<void> {
 		console.log('deleting category...');
 
 		const url = `${this.apiUrl}/category?categoryId=${cat.DbId}`;
@@ -300,7 +300,7 @@ export class TodoService {
 			console.log('CAT delete: ' + response.toString());
 		})
 			.catch(this.handleError);
-	}
+	}*/
 
 	public addTodo(newTodo: Todo): Promise<void> {
 		console.log('adding todo...');
@@ -489,14 +489,14 @@ export class TodoService {
 	}
 
 	// actual delete
-	private deleteTodo(todo: Todo): Promise<void> {
+	/*private deleteTodo(todo: Todo): Promise<void> {
 		const url = `${this.apiUrl}/todo?todoId=${todo.DbId}`;
 
 		return this.http.delete(url).toPromise().then((response: any) => {
 			console.log('TODO delete: ' + response.toString());
 		})
 			.catch(this.handleError);
-	}
+	}*/
 
 	// delete method that just updates prop
 	public deleteObject(obj: DbCompatible) {

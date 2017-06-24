@@ -17,7 +17,7 @@ export class TodoList implements OnInit {
 
 	ColorArray: string[];
 	selectedTodos: Todo[] = [];
-	selectActive: boolean = false;
+	isSelectActive: boolean = false;
 	priority: string[] = ['Low', 'Medium', 'High'];
 
 	constructor(private todoService: TodoService, 
@@ -86,22 +86,22 @@ export class TodoList implements OnInit {
 	// mode that controls ability to select/reorder todos
 	activateSelect(todo: Todo) {
 		if (this.slothCurrentBoard().IsViewOnly != true){
-			this.selectActive = true;
+			this.isSelectActive = true;
 
-			if (todo.SelectActive === true) {
-				todo.SelectActive = false;
+			if (todo.IsSelectActive === true) {
+				todo.IsSelectActive = false;
 			}
 			else {
-				todo.SelectActive = true;
+				todo.IsSelectActive = true;
 				this.selectedTodos.push(todo);
 			}
 		}
 	}
 
 	disableSelect() {
-		this.selectActive = false;
+		this.isSelectActive = false;
 		for (let todo of this.slothCurrentBoard().Todos) { //turns everything back to white color
-			todo.SelectActive = false;
+			todo.IsSelectActive = false;
 		}
 		this.selectedTodos.length = 0; //empties selectedTodos array
 	}

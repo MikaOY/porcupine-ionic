@@ -6,9 +6,9 @@
 <ion-list no-lines *ngIf="!slothCurrentBoard()?.IsLocked">
 		
 	<!--what select mode looks like (tap&hold to activate)-->
-	<ng-container *ngIf="selectActive === true; else selInactive">
+	<ng-container *ngIf="isSelectActive === true; else selInactive">
 		<ion-item-group reorder="true" (ionItemReorder)="reorderItems($event)">
-			<ion-item text-wrap *ngFor="let todo of slothCurrentBoard().Todos" [style.background-color]="todo.SelectActive ? '#d1d1d1' : ''"
+			<ion-item text-wrap *ngFor="let todo of slothCurrentBoard().Todos" [style.background-color]="todo.IsSelectActive ? '#d1d1d1' : ''"
 			 class="todoItem" (click)="activateSelect(todo)">
 				<ion-checkbox [(ngModel)]="todo.IsDone" disabled="true"></ion-checkbox>
 				<ion-label>{{todo.Info}}</ion-label>

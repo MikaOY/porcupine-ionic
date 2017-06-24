@@ -7,7 +7,6 @@ import { Category } from '../category';
 import { BoardManager } from './board-manager/board-manager.component';
 import { UserService } from '../user.service';
 import { AddCategory } from './cat-manager/add-category.component';
-import { ProfilePage } from '../../pages/profile/profile.component';
 
 @Component({
 	selector: 'category-list',
@@ -15,7 +14,6 @@ import { ProfilePage } from '../../pages/profile/profile.component';
 })
 
 export class CategorySort implements OnInit {
-	private currentUser: number;
 	justWait: boolean = false;
 
 	constructor(private todoService: TodoService,

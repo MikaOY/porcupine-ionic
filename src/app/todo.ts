@@ -14,7 +14,7 @@ export class Todo implements DbCompatible {
                 public DateDue?: Date, 
                 public DetailShown?: boolean,
                 public IsEditActive?: boolean,
-                public SelectActive?: boolean,
+                public IsSelectActive?: boolean,
                 ) { }
     }
 

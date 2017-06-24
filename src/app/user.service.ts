@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { Http, RequestOptions, Headers } from '@angular/http';
+import { Http } from '@angular/http';
 import { Storage } from '@ionic/storage';
-import { AuthHttp, JwtHelper, tokenNotExpired } from 'angular2-jwt';
+import { AuthHttp, JwtHelper } from 'angular2-jwt';
 import { User } from './user';
 
 declare var Auth0Lock: any;
@@ -22,7 +22,7 @@ export class UserService {
 
 	public currentUserId: number;
 	private apiUrl: string = 'http://porcupine-dope-api.azurewebsites.net';
-	private headers = new Headers({ 'Content-Type': 'application/x-www-form-urlencoded' });
+	// private headers = new Headers({ 'Content-Type': 'application/x-www-form-urlencoded' });
 	// private options = new RequestOptions({ headers: this.headers });
 
 	constructor(private http: Http,
