@@ -15,9 +15,9 @@ export class AddCategory implements OnInit {
 	isColorPickerActive: boolean = true;
 	newCate = new Category('Love', undefined, undefined, undefined, 0, Priority.Low, true, false); 
 
-	constructor(public viewCntrl: ViewController,
+	constructor(public viewCtrl: ViewController,
 							private todoService: TodoService, 
-							public navCntrl: NavController) {}
+							public navCtrl: NavController) {}
 
 	ngOnInit(){
 		this.todoService.getColors().then(ColorArray => this.ColorArray = ColorArray);
@@ -50,11 +50,7 @@ export class AddCategory implements OnInit {
 		// setting date created to current date
 		var currentDate = new Date();
 		this.newCate.DateCreated = currentDate;
-		this.viewCntrl.dismiss();
+		this.viewCtrl.dismiss();
 		this.todoService.addCategory(this.newCate);
-	}
-
-	closeModal(){
-		this.viewCntrl.dismiss();
 	}
 }

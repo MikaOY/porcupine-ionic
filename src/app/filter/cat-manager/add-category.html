@@ -6,12 +6,14 @@
 		</ion-item>
 
 		<ion-item *ngIf="this.isColorPickerActive">
-			<ion-label (click)="presentColors()" [style.background-color]="newCate.Color ? ColorArray[newCate.Color] : undefined">Color</ion-label>
+			<ion-label [style.background-color]="newCate.Color ? ColorArray[newCate.Color] : undefined" (click)="presentColors()">
+				Color
+			</ion-label>
 		</ion-item>
-		<div *ngIf="!this.isColorPickerActive" class="addCatContainer">
+		<div class="addCatContainer" *ngIf="!this.isColorPickerActive">
 			<div><button ion-button clear (click)="presentColors()">Back</button></div>
 			<ion-list no-lines>
-				<ion-item *ngFor="let color of ColorArray" [style.background-color]="color" (click)="setColor(color)">{{color}}</ion-item>
+				<ion-item [style.background-color]="color" *ngFor="let color of ColorArray" (click)="setColor(color)">{{color}}</ion-item>
 			</ion-list>
 		</div>
 
@@ -31,7 +33,9 @@
 		</ion-item>
 
 		<button clear ion-button type="submit"><ion-icon name="checkmark"></ion-icon></button>
-		<button clear ion-button type="button" (click)="closeModal()"><ion-icon name="arrow-round-back"></ion-icon></button>
+		<button clear ion-button type="button" (click)="viewCtrl.dismiss()">
+			<ion-icon name="arrow-round-back"></ion-icon>
+		</button>
 	</form>
 	
 	<!-- TODO: remove these-->
