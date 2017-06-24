@@ -20,7 +20,7 @@
 
 	<!--your typical todo look-->
 	<ng-template #selInactive>
-		<div *ngIf="justWait">
+		<div *ngIf="isReady">
 					
 			<ng-container *ngFor="let todo of slothCurrentBoard().Todos" class="inline-todo">
 				<ng-container *ngIf="!todo.IsArchived">
@@ -63,7 +63,7 @@
 						</ion-item-sliding>
 
 						<!-- detail box with date, category, priority -->
-						<div id="details" class="container" *ngIf="todo.DetailShown">
+						<div id="details" class="container" *ngIf="todo.IsDetailShown">
 							<ng-template #default>
 								<ion-grid>
 									<ion-row>

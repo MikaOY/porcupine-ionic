@@ -16,7 +16,7 @@ export class Board implements Lockable, DbCompatible {
 							public OwnerId?: number, // sharing
 							public Permissions?: Permission[], // sharing
 							public IsEditActive?: boolean,
-							public BoardActive?: boolean){}
+							public IsBoardActive?: boolean){} // TODO: figure out why this exists
 
 		IsLocked: boolean = false;
     Lock(board: Board): true {

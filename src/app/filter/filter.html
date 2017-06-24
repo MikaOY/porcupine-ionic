@@ -4,7 +4,7 @@
 	<ion-list no-lines>
 		<ion-list-header>Filter by Category</ion-list-header>
 		<button ion-button clear="true" id="addCatButton" (click)="presentAddCat()">+</button>
-		<ng-container *ngIf="justWait">
+		<ng-container *ngIf="isWaitOver">
 			<ng-container *ngFor="let cat of slothCurrentBoard()?.Categories">
 
 				<ion-item>

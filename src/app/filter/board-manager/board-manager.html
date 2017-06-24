@@ -44,9 +44,9 @@
 		</ng-container>
 	</ion-list>
 
-	<button ion-button clear *ngIf="!showAddBoard" (click)="addBoard()">Add Board</button>
+	<button ion-button clear *ngIf="!isAddBoardActive" (click)="addBoard()">Add Board</button>
 
-	<ng-container *ngIf="showAddBoard">
+	<ng-container *ngIf="isAddBoardActive">
 		<form (ngSubmit)="onAddBoardFormSubmit()" #addBoard>
 			<ion-item>
 				<ion-label for="name">Name</ion-label>

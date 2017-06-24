@@ -12,7 +12,7 @@ export class Todo implements DbCompatible {
                 public Priority: Priority,
                 public DbId: number, 
                 public DateDue?: Date, 
-                public DetailShown?: boolean,
+                public IsDetailShown?: boolean,
                 public IsEditActive?: boolean,
                 public IsSelectActive?: boolean,
                 ) { }

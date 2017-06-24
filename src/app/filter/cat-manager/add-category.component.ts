@@ -9,7 +9,12 @@ import { Board } from '../../board';
 	templateUrl: 'add-category.html'
 })
 
-export class AddCategory implements OnInit{
+export class AddCategory implements OnInit {
+	priority = Priority;
+	private ColorArray: string[];
+	isColorPickerActive: boolean = true;
+	newCate = new Category('Love', undefined, undefined, undefined, 0, Priority.Low, true, false); 
+
 	constructor(public viewCntrl: ViewController,
 							private todoService: TodoService, 
 							public navCntrl: NavController) {}
@@ -18,29 +23,24 @@ export class AddCategory implements OnInit{
 		this.todoService.getColors().then(ColorArray => this.ColorArray = ColorArray);
 	}
 
-	private ColorArray: string[];
-	colorPicker: boolean = true;
-
 	slothBoards(): Board[] {
 		return this.todoService.slothGetBoards();
 	}
 	
-	priority = Priority;
 	prior(): Array<string> {
 		var keys = Object.keys(this.priority);
 		return keys.slice(keys.length / 2);
 	}
 
 	presentColors() {
-		this.colorPicker = !this.colorPicker;
+		this.isColorPickerActive = !this.isColorPickerActive;
 	}
 
-	setColor(color) {
+	setColor(color: string) {
 		this.newCate.Color = this.ColorArray.indexOf(color);
-		this.colorPicker = !this.colorPicker;
+		this.isColorPickerActive = !this.isColorPickerActive;
 	}
 
-	newCate = new Category('Love', undefined, undefined, undefined, 0, Priority.Low, true, false); 
 	onNewCatFormSubmit() {
 		// if board was not assigned, assign to first board 
 		// TODO: change this to currentBoard

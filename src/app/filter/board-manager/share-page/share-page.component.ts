@@ -13,11 +13,6 @@ import { TodoService } from '../../../todo.service';
 })
 
 export class SharePage {
-	constructor(public navParams: NavParams,
-							public viewCntrl: ViewController,
-							private alertCtrl: AlertController,
-							public todoService: TodoService) { }
-
 	sharees: Permission[] = [];
 	note: string = 'Check this out!';
 	containsEdit: boolean = false;
@@ -25,6 +20,11 @@ export class SharePage {
 	isAddReciActive: boolean = false;
 	newPerm: Permission = new Permission(new User(undefined, undefined, undefined, undefined, undefined), false);
 	sBoard: Board = this.navParams.get('sBoard');
+
+	constructor(public navParams: NavParams,
+							public viewCntrl: ViewController,
+							private alertCtrl: AlertController,
+							public todoService: TodoService) { }
 
 	getBoardPerms() {
 		return this.todoService.slothGetBoardPerms(this.sBoard);

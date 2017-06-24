@@ -20,7 +20,7 @@ export class UnlockPage implements OnInit {
 							public params: NavParams,
 							public viewCtrl: ViewController) {}
 
-	ngOnInit(){
+	ngOnInit() {
 		this.settingsService.getPasscode().then(val => this.userPasscode = val);
 	}
 

@@ -13,8 +13,7 @@ import { UnlockPage } from '../../../app/lockable/unlock-page.component';
 })
 
 export class TodoList implements OnInit {
-	justWait: boolean = false;
-
+	isReady: boolean = false;
 	ColorArray: string[];
 	selectedTodos: Todo[] = [];
 	isSelectActive: boolean = false;
@@ -26,7 +25,7 @@ export class TodoList implements OnInit {
 
 	ngOnInit(): void {
 		setTimeout(() => {
-			this.justWait = true;
+			this.isReady = true;
 			this.todoService.getColors().then(colorArray => this.ColorArray = colorArray);
 		}, 5000);
 	}
@@ -41,7 +40,7 @@ export class TodoList implements OnInit {
 	}
 
 	toggleDetail(todo: Todo) {
-		todo.DetailShown = !todo.DetailShown;
+		todo.IsDetailShown = !todo.IsDetailShown;
 	}
 
 	deleteTodo(todo: Todo) {

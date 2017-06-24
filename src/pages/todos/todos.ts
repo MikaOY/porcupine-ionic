@@ -13,7 +13,6 @@ export class TodosPage implements OnInit {
 
 	constructor(public todoService: TodoService) { }
 
-	// Leave service calls in init callback!
 	ngOnInit(): void {
 		// leave this and currentBoard to initialize all app caches
 		this.todoService.getCurrentBoard().subscribe(cBoard => this.currentBoard = cBoard as Board);

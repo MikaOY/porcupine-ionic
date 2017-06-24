@@ -22,8 +22,7 @@ export class MyApp implements OnInit {
 							splashScreen: SplashScreen,
 							public modalCtrl: ModalController,
 							public userService: UserService,
-							private settingsService: SettingsService,
-							) {
+							private settingsService: SettingsService) {
 		platform.ready().then((source) => {
 			// Okay, so the platform is ready and our plugins are available.
 			// Here you can do any higher level native things you might need.
@@ -31,15 +30,15 @@ export class MyApp implements OnInit {
 				statusBar.styleDefault();
 				splashScreen.hide();
 			}
-			
+
 			// Present Lock on startup
-			if (this.userService.authenticated() == false){
+			if (this.userService.authenticated() == false) {
 				this.userService.login();
 			}
 		});
 	}
 
-	ngOnInit(){
+	ngOnInit() {
 		this.settingsService.getTheme().subscribe(val => this.chosenTheme = val);
 	}
 }

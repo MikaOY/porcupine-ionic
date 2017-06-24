@@ -14,14 +14,14 @@ import { AddCategory } from './cat-manager/add-category.component';
 })
 
 export class CategorySort implements OnInit {
-	justWait: boolean = false;
+	isWaitOver: boolean = false;
 
 	constructor(private todoService: TodoService,
 							public modalCtrl: ModalController,
 							private userService: UserService) { }
 
 	ngOnInit(): void {
-		setTimeout(() => this.justWait = true, 5000);
+		setTimeout(() => this.isWaitOver = true, 5000);
 	}
 
 	slothBoards(): Board[] {

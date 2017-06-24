@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { ModalController, ViewController } from 'ionic-angular';
 import { TodoService } from '../../todo.service';
 import { Board } from '../../board';
@@ -9,16 +9,14 @@ import { UnlockPage } from '../../lockable/unlock-page.component';
 	templateUrl: 'board-manager.html',
 })
 
-export class BoardManager implements OnInit {
+export class BoardManager {
 
-	showAddBoard: boolean = false;
+	isAddBoardActive: boolean = false;
+	newBoard: Board = new Board('Dogs', undefined, undefined, undefined, undefined);
+	
 	constructor(public modalCtrl: ModalController,
-		public viewCtrl: ViewController,
-		public todoService: TodoService) { }
-
-	ngOnInit() {
-		
-	}
+							public viewCtrl: ViewController,
+							public todoService: TodoService) { }
 
 	slothBoards(): Board[] {
 		return this.todoService.slothGetBoards();
@@ -78,13 +76,12 @@ export class BoardManager implements OnInit {
 	}
 
 	addBoard() {
-		this.showAddBoard = !this.showAddBoard;
+		this.isAddBoardActive = !this.isAddBoardActive;
 	}
 
-	newBoard: Board = new Board('Dogs', undefined, undefined, undefined, undefined);
 	onAddBoardFormSubmit() {
 		this.newBoard.DateCreated = new Date();
 		this.todoService.addBoard(this.newBoard);
-		this.showAddBoard = !this.showAddBoard;
+		this.isAddBoardActive = !this.isAddBoardActive;
 	}
 }
