@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, NgZone } from '@angular/core';
 import { Http } from '@angular/http';
 import { Storage } from '@ionic/storage';
 import { AuthHttp, JwtHelper } from 'angular2-jwt';
@@ -7,7 +7,24 @@ import { User } from '../classes/user';
 
 //import * as bcrypt from '../../node_modules/bcrypt';
 
-declare var Auth0Lock: any;
+
+import { Observable, Subscription } from 'rxjs';
+
+import Auth0Cordova from '@auth0/cordova';
+import Auth0 from 'auth0-js';
+
+const auth0Config = {
+  // needed for auth0
+  clientID: 'pBum20Ve6T5n76t05t6tue5G2MMk9I3d',
+
+  // needed for auth0cordova
+  clientId: 'pBum20Ve6T5n76t05t6tue5G2MMk9I3d',
+  domain: 'porcupine.au.auth0.com',
+  callbackURL: location.href,
+  packageIdentifier: 'YOUR_PACKAGE_ID'
+};
+
+
 
 @Injectable()
 export class UserService {
