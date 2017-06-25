@@ -24,31 +24,21 @@ const auth0Config = {
   packageIdentifier: 'YOUR_PACKAGE_ID'
 };
 
-
+declare var Auth0Lock: any;
 
 @Injectable()
 export class UserService {
-	private clientId: string = 'pBum20Ve6T5n76t05t6tue5G2MMk9I3d'
-	private auth0Domain: string = 'porcupine.au.auth0.com'
-	private lock = new Auth0Lock(this.clientId, this.auth0Domain);	
-	private userAuthO: Object;	
-	private userDb: User;
-	private jwtHelper: JwtHelper = new JwtHelper();
-	private local: Storage = new Storage(localStorage);
+	auth0 = new Auth0.WebAuth(auth0Config);
+  accessToken: string;
+  idToken: string;
+  user: any;
 
-	// TODO: make this unnecessary
-	isAuthenticated: boolean = false;
-	refreshSubscription: any;
+	constructor(private http: Http, private authHttp: AuthHttp, public zone: NgZone) {
+		// these two lines are from ionic2+, kEEP EM <3
+		this.user = this.getStorageVariable('profile');
+    this.idToken = this.getStorageVariable('id_token');
 
-	// password hashing
-	private saltRounds = 10;
-
-	// TODO: migrate to constants file
-	private apiUrl: string = 'http://porcupine-dope-api.azurewebsites.net';
-	private headers = new Headers({ 'Content-Type': 'application/x-www-form-urlencoded' });
-	// private options = new RequestOptions({ headers: this.headers });
-
-	constructor(private http: Http, private authHttp: AuthHttp) {
+		/*OLD constrctor code*/
 		// get local user profile
 		this.local.get('profile').then(profile => {
 			this.userAuthO = JSON.parse(profile);
@@ -74,43 +64,130 @@ export class UserService {
 		// this.setPassword('1234'); 
 	}
 
-	public login() {
-		// Show the Auth0 Lock widget
-		this.lock.show({
-			authParams: {
-				scope: 'openid offline_access',
-				device: 'Mobile device'
-			}
-		}, (err, profile, token, accessToken, state, refreshToken) => {
-			if (err) {
-				alert(err);
-			}
-			// If authentication is successful, save the items
-			// in local storage
-			this.local.set('profile', JSON.stringify(profile));
-			this.local.set('id_token', token);
-			this.local.set('refresh_token', refreshToken);
-			this.userAuthO = profile;
-			this.isAuthenticated = true;
+  private getStorageVariable(name) {
+    return JSON.parse(window.localStorage.getItem(name));
+  }
 
-			console.log("User authenticated: " + this.isAuthenticated);
+  private setStorageVariable(name, data) {
+    window.localStorage.setItem(name, JSON.stringify(data));
+  }
 
-			// TODO: get DB user, GET app data
-		});
-	}
+  private setIdToken(token) {
+    this.idToken = token;
+    this.setStorageVariable('id_token', token);
+  }
 
-	public logout() {
-		this.local.remove('profile');
-		this.local.remove('id_token');
-		this.local.remove('refresh_token');
-		this.userAuthO = null;
-	}
+  private setAccessToken(token) {
+    this.accessToken = token;
+    this.setStorageVariable('access_token', token);
+  }
 
-	public checkIfAuthenticated(): boolean {
-		// Check if there's an unexpired JWT
-		// return tokenNotExpired(); //TODO: tokenNotExpired fix
-		return this.isAuthenticated;
-	}
+  public isAuthenticated() {
+    const expiresAt = JSON.parse(localStorage.getItem('expires_at'));
+    return Date.now() < expiresAt;
+  }
+
+  public login() {
+    const client = new Auth0Cordova(auth0Config);
+
+    const options = {
+      scope: 'openid profile offline_access'
+    };
+
+    client.authorize(options, (err, authResult) => {
+      if(err) {
+        throw err;
+      }
+
+      this.setIdToken(authResult.idToken);
+      this.setAccessToken(authResult.accessToken);
+
+      const expiresAt = JSON.stringify((authResult.expiresIn * 1000) + new Date().getTime());
+      this.setStorageVariable('expires_at', expiresAt);
+
+      this.auth0.client.userInfo(this.accessToken, (err, profile) => {
+        if(err) {
+          throw err;
+        }
+
+        profile.user_metadata = profile.user_metadata || {};
+        this.setStorageVariable('profile', profile);
+        this.zone.run(() => {
+          this.user = profile;
+        });
+      });
+    });
+  }
+
+  public logout() {
+    window.localStorage.removeItem('profile');
+    window.localStorage.removeItem('access_token');
+    window.localStorage.removeItem('id_token');
+    window.localStorage.removeItem('expires_at');
+
+    this.idToken = null;
+    this.accessToken = null;
+    this.user = null;
+  }
+
+	/*OLD CODE STARS NOW*/
+	private clientId: string = 'pBum20Ve6T5n76t05t6tue5G2MMk9I3d'
+	private auth0Domain: string = 'porcupine.au.auth0.com'
+	private lock = new Auth0Lock(this.clientId, this.auth0Domain);	
+	private userAuthO: Object;	
+	private userDb: User;
+	private jwtHelper: JwtHelper = new JwtHelper();
+	private local: Storage = new Storage(localStorage);
+
+	// TODO: make this unnecessary
+	// isAuthenticated: boolean = false;
+	refreshSubscription: any;
+
+	// password hashing
+	private saltRounds = 10;
+
+	// TODO: migrate to constants file
+	private apiUrl: string = 'http://porcupine-dope-api.azurewebsites.net';
+	private headers = new Headers({ 'Content-Type': 'application/x-www-form-urlencoded' });
+	// private options = new RequestOptions({ headers: this.headers });
+
+	// public login() {
+	// 	// Show the Auth0 Lock widget
+	// 	this.lock.show({
+	// 		authParams: {
+	// 			scope: 'openid offline_access',
+	// 			device: 'Mobile device'
+	// 		}
+	// 	}, (err, profile, token, accessToken, state, refreshToken) => {
+	// 		if (err) {
+	// 			alert(err);
+	// 		}
+	// 		// If authentication is successful, save the items
+	// 		// in local storage
+	// 		this.local.set('profile', JSON.stringify(profile));
+	// 		this.local.set('id_token', token);
+	// 		this.local.set('refresh_token', refreshToken);
+	// 		this.userAuthO = profile;
+	// 		this.isAuthenticated = true;
+
+	// 		console.log("User authenticated: " + this.isAuthenticated);
+
+	// 		// TODO: get DB user, GET app data
+	// 	});
+	// }
+
+	// public logout() {
+	// 	this.local.remove('profile');
+	// 	this.local.remove('id_token');
+	// 	this.local.remove('refresh_token');
+	// 	this.userAuthO = null;
+	// }
+
+	// public checkIfAuthenticated(): boolean {
+	// 	// Check if there's an unexpired JWT
+	// 	// return tokenNotExpired(); //TODO: tokenNotExpired fix
+	// 	return this.isAuthenticated;
+	// }
 
 	getUser(authOId?: string, forceGet?: boolean): Promise<User> {
 		if (this.userDb == undefined || (forceGet != undefined && forceGet == true)) {
