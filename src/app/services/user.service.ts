@@ -1,17 +1,14 @@
 import { Injectable, NgZone } from '@angular/core';
 import { Http } from '@angular/http';
+import { Observable, Subscription } from 'rxjs';
 import { Storage } from '@ionic/storage';
 import { AuthHttp, JwtHelper } from 'angular2-jwt';
+import Auth0Cordova from '@auth0/cordova';
+import Auth0 from 'auth0-js';
 
 import { User } from '../classes/user';
 
 //import * as bcrypt from '../../node_modules/bcrypt';
-
-
-import { Observable, Subscription } from 'rxjs';
-
-import Auth0Cordova from '@auth0/cordova';
-import Auth0 from 'auth0-js';
 
 const auth0Config = {
   // needed for auth0
