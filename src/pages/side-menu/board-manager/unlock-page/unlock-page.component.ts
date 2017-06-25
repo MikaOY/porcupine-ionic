@@ -1,14 +1,15 @@
 import { Component, OnInit } from '@angular/core';
-import { SettingsService } from '../settings.service';
 import { NavParams, ViewController } from 'ionic-angular';
-import { Todo } from '../todo';
+
+import { SettingsService } from '../../../../app/services/settings.service';
+import { Todo } from '../../../../app/classes/todo';
 
 @Component({
 	templateUrl: 'unlock-page.html',
 })
 
 export class UnlockPage implements OnInit {
-	passIn: string = " ";
+	passIn: string = ' ';
 	userPasscode: string;
 	todo: Todo;
 	info: string;
@@ -20,19 +21,20 @@ export class UnlockPage implements OnInit {
 							public params: NavParams,
 							public viewCtrl: ViewController) {}
 
-	ngOnInit(){
+	ngOnInit() {
 		this.settingsService.getPasscode().then(val => this.userPasscode = val);
 	}
 
 	passcodeSuccess() {
-		this.viewCtrl.dismiss(false); // sets todo.Islocked = false;
+		// sets todo.Islocked = false;
+		this.viewCtrl.dismiss(false);
 	}
 
 	back() {
 		this.viewCtrl.dismiss(true);
 	}
 
-	add(num) {
+	add(num: number) {
 		if (this.passIn == ' ') {
 			this.passIn = String(num);
 		}
@@ -40,6 +42,7 @@ export class UnlockPage implements OnInit {
 			this.passIn = this.passIn + num;
 		}
 
+		// checks if passcode is right
 		if (this.passIn.length == 4) {
 			if (this.passIn == this.userPasscode) {
 				this.passcodeSuccess();
@@ -51,6 +54,7 @@ export class UnlockPage implements OnInit {
 	}
 
 	delete() {
+		// deletes the last character in the box
 		this.passIn = this.passIn.substr(0, this.passIn.length - 1);
 	}
 }

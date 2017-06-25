@@ -1,6 +1,6 @@
 import { Category } from './category';
 import { Priority } from './priority';
-import { DbCompatible } from './db-compatible.interface';
+import { DbCompatible } from '../interfaces/db-compatible.interface';
 
 export class Todo implements DbCompatible {
     constructor(public Info: string,
@@ -12,9 +12,9 @@ export class Todo implements DbCompatible {
                 public Priority: Priority,
                 public DbId: number, 
                 public DateDue?: Date, 
-                public DetailShown?: boolean,
+                public IsDetailShown?: boolean,
                 public IsEditActive?: boolean,
-                public SelectActive?: boolean,
+                public IsSelectActive?: boolean,
                 ) { }
     }
 

@@ -1,13 +1,4 @@
 import { Injectable } from '@angular/core';
-
-import { Todo } from './todo';
-import { Category } from './category';
-import { Priority } from './priority';
-import { Board } from './board';
-import { User } from './user';
-import { Permission } from './permission';
-import { DbCompatible } from './db-compatible.interface';
-
 import { Http, Response, RequestOptions, Headers } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/catch';
@@ -17,6 +8,13 @@ import 'rxjs/add/operator/startWith';
 import 'rxjs/add/operator/toPromise';
 import 'rxjs/add/observable/fromPromise';
 
+import { Todo } from '../classes/todo';
+import { Category } from '../classes/category';
+import { Priority } from '../classes/priority';
+import { Board } from '../classes/board';
+import { User } from '../classes/user';
+import { Permission } from '../classes/permission';
+import { DbCompatible } from '../interfaces/db-compatible.interface';
 import { UserService } from './user.service';
 
 const ColorArray: string[] = ['#919191', '#ff5c3f', '#ffb523', '#6f9b53', '#1371d6', '#423e7c', '#7606cc', '#c613b4'];
@@ -138,7 +136,7 @@ export class TodoService {
 	}
 
 	// actual delete
-	private deleteBoard(board: Board): Promise<void> {
+	/*private deleteBoard(board: Board): Promise<void> {
 		console.log('deleting board...');
 
 		const url = `${this.apiUrl}/board?boardId=${board.DbId}`;
@@ -146,7 +144,7 @@ export class TodoService {
 			console.log('BOARD delete: ' + response.toString());
 		})
 			.catch(this.handleError);
-	}
+	}*/
 
 	public addCategory(newCat: Category): Promise<void> {
 		console.log('adding category...');
@@ -292,7 +290,7 @@ export class TodoService {
 	}
 
 	// actual delete
-	private deleteCategory(cat: Category): Promise<void> {
+	/*private deleteCategory(cat: Category): Promise<void> {
 		console.log('deleting category...');
 
 		const url = `${this.apiUrl}/category?categoryId=${cat.DbId}`;
@@ -300,7 +298,7 @@ export class TodoService {
 			console.log('CAT delete: ' + response.toString());
 		})
 			.catch(this.handleError);
-	}
+	}*/
 
 	public addTodo(newTodo: Todo): Promise<void> {
 		console.log('adding todo...');
@@ -489,14 +487,14 @@ export class TodoService {
 	}
 
 	// actual delete
-	private deleteTodo(todo: Todo): Promise<void> {
+	/*private deleteTodo(todo: Todo): Promise<void> {
 		const url = `${this.apiUrl}/todo?todoId=${todo.DbId}`;
 
 		return this.http.delete(url).toPromise().then((response: any) => {
 			console.log('TODO delete: ' + response.toString());
 		})
 			.catch(this.handleError);
-	}
+	}*/
 
 	// delete method that just updates prop
 	public deleteObject(obj: DbCompatible) {

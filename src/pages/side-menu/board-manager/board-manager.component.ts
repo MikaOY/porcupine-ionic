@@ -1,24 +1,23 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { ModalController, ViewController } from 'ionic-angular';
-import { TodoService } from '../../todo.service';
-import { Board } from '../../board';
+
+import { TodoService } from '../../../app/services/todo.service';
+import { Board } from '../../../app/classes/board';
 import { SharePage } from './share-page/share-page.component';
-import { UnlockPage } from '../../lockable/unlock-page.component';
+import { UnlockPage } from './unlock-page/unlock-page.component';
 
 @Component({
 	templateUrl: 'board-manager.html',
 })
 
-export class BoardManager implements OnInit {
+export class BoardManager {
 
-	showAddBoard: boolean = false;
+	isAddBoardActive: boolean = false;
+	newBoard: Board = new Board('Dogs', undefined, undefined, undefined, undefined);
+	
 	constructor(public modalCtrl: ModalController,
-		public viewCtrl: ViewController,
-		public todoService: TodoService) { }
-
-	ngOnInit() {
-		
-	}
+							public viewCtrl: ViewController,
+							public todoService: TodoService) { }
 
 	slothBoards(): Board[] {
 		return this.todoService.slothGetBoards();
@@ -28,28 +27,20 @@ export class BoardManager implements OnInit {
 		return this.todoService.slothGetSharedBoards();
 	}
 
-	dismissPage() {
-		this.viewCtrl.dismiss();
-	}
-
 	openBoard(board: Board) {
-		console.log(board.Name + " board opened");
 		this.todoService.setAsCurrentBoard(board);
 		this.viewCtrl.dismiss();
 	}
 
 	deleteBoard(board: Board) {
-		console.log("board Db Id" + board.DbId);
 		this.todoService.deleteObject(board);
 	}
 
 	deleteSharedBoard(board: Board) {
-		console.log("board Db Id" + board.DbId);
 		//TODO: delete
 	}
 
 	editBoardActive(board: Board) {
-		console.log('what');
 		board.IsEditActive = !board.IsEditActive;
 	}
 
@@ -64,8 +55,7 @@ export class BoardManager implements OnInit {
 	}
 
 	shareBoard(sBoard: Board) {
-		console.log("share clicked");
-		let shareModal = this.modalCtrl.create(SharePage, { "sBoard": sBoard });
+		let shareModal = this.modalCtrl.create(SharePage, { 'sBoard' : sBoard });
 		shareModal.present();
 	}
 
@@ -74,7 +64,7 @@ export class BoardManager implements OnInit {
 		board.IsEditActive = !board.IsEditActive;
 	}
 
-	UnlockBoard(board: Board) {
+	unlockBoard(board: Board) {
 		let UnlockModal = this.modalCtrl.create(UnlockPage); 
 		UnlockModal.onDidDismiss(data => {
 			board.IsLocked = data;
@@ -83,13 +73,12 @@ export class BoardManager implements OnInit {
 	}
 
 	addBoard() {
-		this.showAddBoard = !this.showAddBoard;
+		this.isAddBoardActive = !this.isAddBoardActive;
 	}
 
-	newBoard: Board = new Board("Dogs", undefined, undefined, undefined, undefined);
 	onAddBoardFormSubmit() {
 		this.newBoard.DateCreated = new Date();
 		this.todoService.addBoard(this.newBoard);
-		this.showAddBoard = !this.showAddBoard;
+		this.isAddBoardActive = !this.isAddBoardActive;
 	}
 }

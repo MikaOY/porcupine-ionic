@@ -1,23 +1,18 @@
 import { Component } from '@angular/core';
 import { NavParams } from 'ionic-angular';
-import { Board } from '../../../board';
 import { ViewController } from 'ionic-angular';
 import { AlertController } from 'ionic-angular';
 
-import { Permission } from '../../../permission';
-import { User } from '../../../user';
-import { TodoService } from '../../../todo.service';
+import { Board } from '../../../../app/classes/board';
+import { Permission } from '../../../../app/classes/permission';
+import { User } from '../../../../app/classes/user';
+import { TodoService } from '../../../../app/services/todo.service';
 
 @Component({
 	templateUrl: 'share-page.html',
 })
 
 export class SharePage {
-	constructor(public navParams: NavParams,
-							public viewCntrl: ViewController,
-							private alertCtrl: AlertController,
-							public todoService: TodoService) { }
-
 	sharees: Permission[] = [];
 	note: string = 'Check this out!';
 	containsEdit: boolean = false;
@@ -25,6 +20,11 @@ export class SharePage {
 	isAddReciActive: boolean = false;
 	newPerm: Permission = new Permission(new User(undefined, undefined, undefined, undefined, undefined), false);
 	sBoard: Board = this.navParams.get('sBoard');
+
+	constructor(public navParams: NavParams,
+							public viewCtrl: ViewController,
+							private alertCtrl: AlertController,
+							public todoService: TodoService) { }
 
 	getBoardPerms() {
 		return this.todoService.slothGetBoardPerms(this.sBoard);
@@ -43,8 +43,7 @@ export class SharePage {
 			console.log('sharing board:' + this.sBoard.Name + ' with ' + this.sharees.length + ' people with note: ' + this.note);
 			this.todoService.shareBoard(this.sharees, this.sBoard, this.note);
 		}
-
-		this.viewCntrl.dismiss();
+		this.viewCtrl.dismiss();
 	}
 
 	unshareBoard(perm: Permission) {
@@ -52,8 +51,8 @@ export class SharePage {
 	}
 
 	addReciActive() {
+		// toggles whether the adding sharees div is active
 		this.isAddReciActive = !this.isAddReciActive;
-		console.log('isAddReciActive? ' + this.isAddReciActive);
 	}
 
 	addPerm(perm: Permission) {
@@ -102,9 +101,5 @@ export class SharePage {
 			}
 		}
 		return false;
-	}
-
-	closeModal() {
-		this.viewCntrl.dismiss();
 	}
 }

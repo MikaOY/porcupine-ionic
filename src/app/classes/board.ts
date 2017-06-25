@@ -2,8 +2,8 @@ import { Todo } from './todo';
 import { Category } from './category';
 import { Permission } from './permission';
 
-import { DbCompatible } from './db-compatible.interface';
-import { Lockable } from './lockable/lockable.interface';
+import { DbCompatible } from '../interfaces/db-compatible.interface';
+import { Lockable } from '../interfaces/lockable.interface';
 
 export class Board implements Lockable, DbCompatible {
 	constructor(public Name: string,
@@ -16,7 +16,7 @@ export class Board implements Lockable, DbCompatible {
 							public OwnerId?: number, // sharing
 							public Permissions?: Permission[], // sharing
 							public IsEditActive?: boolean,
-							public BoardActive?: boolean){}
+							public IsBoardActive?: boolean){} // TODO: figure out why this exists
 
 		IsLocked: boolean = false;
     Lock(board: Board): true {

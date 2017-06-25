@@ -6,12 +6,11 @@ import { SettingsPage } from '../settings/settings';
 @Component({
 	templateUrl: 'tabs.html'
 })
+
 export class TabsPage {
 
 	tab1Root = TodosPage;
 	tab2Root = SettingsPage;
 
-	constructor() {
-
-	}
+	constructor() { }
 }

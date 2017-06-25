@@ -1,5 +1,5 @@
 import { Priority } from './priority';
-import { DbCompatible } from './db-compatible.interface';
+import { DbCompatible } from '../interfaces/db-compatible.interface';
 
 export class Category implements DbCompatible {
     constructor(public Name: string, 

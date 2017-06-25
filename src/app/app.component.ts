@@ -2,18 +2,15 @@ import { Component, OnInit } from '@angular/core';
 import { Platform, ModalController } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
-import { UserService } from './user.service';
+import { UserService } from './services/user.service';
 
 import { TabsPage } from '../pages/tabs/tabs';
-import { LoginPage } from './login/login.component';
-import { SettingsService } from './settings.service';
+import { SettingsService } from './services/settings.service';
 
 
 @Component({
 	templateUrl: 'app.html',
-	providers: [SettingsService, 
-  
-	]
+	providers: [SettingsService]
 })
 
 export class MyApp implements OnInit {
@@ -25,8 +22,7 @@ export class MyApp implements OnInit {
 							splashScreen: SplashScreen,
 							public modalCtrl: ModalController,
 							public userService: UserService,
-							private settingsService: SettingsService,
-							) {
+							private settingsService: SettingsService) {
 		platform.ready().then((source) => {
 			// Okay, so the platform is ready and our plugins are available.
 			// Here you can do any higher level native things you might need.
@@ -34,14 +30,15 @@ export class MyApp implements OnInit {
 				statusBar.styleDefault();
 				splashScreen.hide();
 			}
-			
-			if (this.userService.authenticated() == false){
+
+			// Present Lock on startup
+			if (this.userService.authenticated() == false) {
 				this.userService.login();
 			}
 		});
 	}
 
-	ngOnInit(){
+	ngOnInit() {
 		this.settingsService.getTheme().subscribe(val => this.chosenTheme = val);
 	}
 }

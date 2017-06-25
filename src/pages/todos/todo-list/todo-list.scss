@@ -1,11 +1,3 @@
-#filterId{
-    color: grey;
-    font-style: italic;
-    font-size: small;
-    padding: 0px;
-    margin: 0px;
-}
-
 #details{
     background: #cddbf4;
     position: relative;
@@ -25,15 +17,9 @@
     right: 0;
 }
 
-#todoInfo {
-    display: inline-block;
-    vertical-align: middle;
-}
-
 .detailLabel{
     font-weight: bold;
 }
-
 
 #addButton{
     position: absolute;
@@ -52,4 +38,3 @@
 .priorBar{
     font-weight: bolder;
 }
-
