@@ -1,6 +1,7 @@
 import { Injectable, NgZone } from '@angular/core';
 import { Http } from '@angular/http';
 import { User } from '../classes/user';
+import { TodoService } from './todo.service';
 import { Observable, Subscription } from 'rxjs';
 import { Storage } from '@ionic/storage';
 import { AuthHttp, JwtHelper } from 'angular2-jwt';
@@ -38,7 +39,7 @@ export class UserService {
 	private headers = new Headers({ 'Content-Type': 'application/x-www-form-urlencoded' });
 	// private options = new RequestOptions({ headers: this.headers });
 
-	constructor(private http: Http, private authHttp: AuthHttp, public zone: NgZone) {
+	constructor(private http: Http, private authHttp: AuthHttp, public zone: NgZone, private todoService: TodoService) {
 		// these two lines are from ionic2+, kEEP EM <3
 		this.user = this.getStorageVariable('profile');
 		this.idToken = this.getStorageVariable('id_token');
@@ -99,8 +100,10 @@ export class UserService {
 					this.user = profile;
 				});
 
-				// TODO: can retrieve db user with authO id (from profile)
-				// this.getUser(this.user['id']);
+				// can retrieve db user with authO id (from profile)
+				this.getUser(this.user['id']).then((user) => {
+					this.todoService.getCurrentBoard();
+				});
 			});
 		});
 	}
@@ -116,6 +119,7 @@ export class UserService {
 		this.user = null;
 	}
 
+	// dev authO id: auth0|594c8b1cc3954a4865ef9bc9
 	getUser(authOId?: string, forceGet?: boolean): Promise<User> {
 		if (this.userDb == undefined || (forceGet != undefined && forceGet == true)) {
 			if (authOId == undefined) {

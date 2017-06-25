@@ -802,6 +802,7 @@ export class TodoService {
 		return val;
 	}
 
+	// TODO: make GET get user id from user.service
 	public getCurrentBoard(isForce?: boolean): Observable<any> {
 		let doRetrieve = true;
 		// return cached if present
