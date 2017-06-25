@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Platform, ModalController } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
+import Auth0Cordova from '@auth0/cordova';
 import { UserService } from './services/user.service';
 
 import { TabsPage } from '../pages/tabs/tabs';
@@ -31,10 +32,10 @@ export class MyApp implements OnInit {
 				splashScreen.hide();
 			}
 
-			// Present Lock on startup
-			if (this.userService.authenticated() == false) {
-				this.userService.login();
-			}
+			 (<any>window).handleOpenURL = (url) => {
+        Auth0Cordova.onRedirectUri(url);
+      };
+
 		});
 	}
 
