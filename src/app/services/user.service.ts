@@ -18,7 +18,7 @@ const auth0Config = {
   clientId: 'pBum20Ve6T5n76t05t6tue5G2MMk9I3d',
   domain: 'porcupine.au.auth0.com',
   callbackURL: location.href,
-  packageIdentifier: 'YOUR_PACKAGE_ID'
+  packageIdentifier: 'com.ionicframework.porcupineionic261894'
 };
 
 declare var Auth0Lock: any;
