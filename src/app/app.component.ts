@@ -7,6 +7,8 @@ import { UserService } from './services/user.service';
 import { TabsPage } from '../pages/tabs/tabs';
 import { SettingsService } from './services/settings.service';
 
+// Import Auth0Cordova
+import Auth0Cordova from '@auth0/cordova';
 
 @Component({
 	templateUrl: 'app.html',
