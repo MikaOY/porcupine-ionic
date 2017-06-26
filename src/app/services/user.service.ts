@@ -7,7 +7,6 @@ import { User } from '../classes/user';
 
 //import * as bcrypt from '../../node_modules/bcrypt';
 
-
 import { Observable, Subscription } from 'rxjs';
 
 import Auth0Cordova from '@auth0/cordova';

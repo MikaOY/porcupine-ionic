@@ -32,9 +32,9 @@ export class MyApp implements OnInit {
 				splashScreen.hide();
 			}
 
-			 (<any>window).handleOpenURL = (url) => {
-        Auth0Cordova.onRedirectUri(url);
-      };
+			//  (<any>window).handleOpenURL = (url) => {
+      //   Auth0Cordova.onRedirectUri(url);
+      // };
 
 		});
 	}
