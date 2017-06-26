@@ -38,6 +38,7 @@ export class UserService {
   idToken: string;
   user: any;
 
+  
   private getStorageVariable(name) {
     return JSON.parse(window.localStorage.getItem(name));
   }
@@ -103,7 +104,6 @@ export class UserService {
     this.accessToken = null;
     this.user = null;
   }
-
 /*USER.SERVICE functions*/
 	getUser(): Promise<number> { //TODO: should get currentUser
 		var user: number;
