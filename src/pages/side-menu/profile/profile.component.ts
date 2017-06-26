@@ -8,4 +8,9 @@ import { UserService } from '../../../app/services/user.service';
 })
 export class ProfilePage {
 	constructor(public userService: UserService) {}
+	logProfile(){
+		let test = this.userService.user;
+		console.log(test);
+		console.log("HI");
+	}
 }
