@@ -30,6 +30,11 @@ export class MyApp implements OnInit {
 				statusBar.styleDefault();
 				splashScreen.hide();
 			}
+
+			// Add this function
+      (<any>window).handleOpenURL = (url) => {
+        Auth0Cordova.onRedirectUri(url);
+      };
 		});
 	}
 

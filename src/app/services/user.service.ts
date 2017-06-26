@@ -11,8 +11,6 @@ export class UserService {
 
 	public currentUserId: number;
 	private apiUrl: string = 'http://porcupine-dope-api.azurewebsites.net';
-	// private headers = new Headers({ 'Content-Type': 'application/x-www-form-urlencoded' });
-	// private options = new RequestOptions({ headers: this.headers });
 
 	constructor(private http: Http,
 							private authHttp: AuthHttp) { 
