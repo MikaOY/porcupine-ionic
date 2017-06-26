@@ -30,11 +30,6 @@ export class MyApp implements OnInit {
 				statusBar.styleDefault();
 				splashScreen.hide();
 			}
-
-			// Present Lock on startup
-			if (this.userService.authenticated() == false) {
-				this.userService.login();
-			}
 		});
 	}
 
