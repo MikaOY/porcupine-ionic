@@ -38,7 +38,7 @@ export class UserService {
   idToken: string;
   user: any;
 	// sets authID if user is already logged in
-	authId: string = this.getStorageVariable('profile').identities[0].user_id;
+	authId: string = this.getStorageVariable('profile') ? this.getStorageVariable('profile').identities[0].user_id : undefined;
   
   private getStorageVariable(name) {
     return JSON.parse(window.localStorage.getItem(name));
