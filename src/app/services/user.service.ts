@@ -23,8 +23,6 @@ const auth0Config = {
   packageIdentifier: 'com.ionicframework.porcupineionic261894'
 };
 
-declare var Auth0Lock: any;
-
 @Injectable()
 export class UserService {
 	auth0 = new Auth0.WebAuth(auth0Config);
@@ -36,31 +34,6 @@ export class UserService {
 		// these two lines are from ionic2+, kEEP EM <3
 		this.user = this.getStorageVariable('profile');
     this.idToken = this.getStorageVariable('id_token');
-
-		/*OLD constrctor code*/
-		// get local user profile
-		this.local.get('profile').then(profile => {
-			this.userAuthO = JSON.parse(profile);
-		}).catch(error => {
-			console.log(error);
-		});
-
-		// event handler for successful login
-		this.lock.on("authenticated", authResult => {
-			this.lock.getProfile(authResult.idToken, (error, profile) => {
-				if (error) {
-					alert(error);
-					return;
-				}
-
-				this.local.set('id_token', authResult.idToken);
-				this.local.set('profile', JSON.stringify(profile));
-				this.userAuthO = profile;
-				console.log('do this run');
-			});
-		});
-
-		// this.setPassword('1234'); 
 	}
 
   private getStorageVariable(name) {
@@ -129,18 +102,7 @@ export class UserService {
     this.user = null;
   }
 
-	/*OLD CODE STARS NOW*/
-	private clientId: string = 'pBum20Ve6T5n76t05t6tue5G2MMk9I3d'
-	private auth0Domain: string = 'porcupine.au.auth0.com'
-	private lock = new Auth0Lock(this.clientId, this.auth0Domain);	
-	private userAuthO: Object;	
 	private userDb: User;
-	private jwtHelper: JwtHelper = new JwtHelper();
-	private local: Storage = new Storage(localStorage);
-
-	// TODO: make this unnecessary
-	// isAuthenticated: boolean = false;
-	refreshSubscription: any;
 
 	// password hashing
 	private saltRounds = 10;
@@ -149,44 +111,6 @@ export class UserService {
 	private apiUrl: string = 'http://porcupine-dope-api.azurewebsites.net';
 	private headers = new Headers({ 'Content-Type': 'application/x-www-form-urlencoded' });
 	// private options = new RequestOptions({ headers: this.headers });
-
-	// public login() {
-	// 	// Show the Auth0 Lock widget
-	// 	this.lock.show({
-	// 		authParams: {
-	// 			scope: 'openid offline_access',
-	// 			device: 'Mobile device'
-	// 		}
-	// 	}, (err, profile, token, accessToken, state, refreshToken) => {
-	// 		if (err) {
-	// 			alert(err);
-	// 		}
-	// 		// If authentication is successful, save the items
-	// 		// in local storage
-	// 		this.local.set('profile', JSON.stringify(profile));
-	// 		this.local.set('id_token', token);
-	// 		this.local.set('refresh_token', refreshToken);
-	// 		this.userAuthO = profile;
-	// 		this.isAuthenticated = true;
-
-	// 		console.log("User authenticated: " + this.isAuthenticated);
-
-	// 		// TODO: get DB user, GET app data
-	// 	});
-	// }
-
-	// public logout() {
-	// 	this.local.remove('profile');
-	// 	this.local.remove('id_token');
-	// 	this.local.remove('refresh_token');
-	// 	this.userAuthO = null;
-	// }
-
-	// public checkIfAuthenticated(): boolean {
-	// 	// Check if there's an unexpired JWT
-	// 	// return tokenNotExpired(); //TODO: tokenNotExpired fix
-	// 	return this.isAuthenticated;
-	// }
 
 	getUser(authOId?: string, forceGet?: boolean): Promise<User> {
 		if (this.userDb == undefined || (forceGet != undefined && forceGet == true)) {
