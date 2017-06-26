@@ -37,7 +37,8 @@ export class UserService {
   accessToken: string;
   idToken: string;
   user: any;
-
+	// sets authID if user is already logged in
+	authId: string = this.getStorageVariable('profile').identities[0].user_id;
   
   private getStorageVariable(name) {
     return JSON.parse(window.localStorage.getItem(name));
@@ -68,12 +69,12 @@ export class UserService {
     const options = {
       scope: 'openid profile offline_access'
     };
-		console.log("Check 1");
+
     client.authorize(options, (err, authResult) => {
       if(err) {
         throw err;
       }
-			console.log("Check 2");
+
       this.setIdToken(authResult.idToken);
       this.setAccessToken(authResult.accessToken);
 
@@ -84,12 +85,13 @@ export class UserService {
         if(err) {
           throw err;
         }
-				console.log("Check 3");
+
         profile.user_metadata = profile.user_metadata || {};
         this.setStorageVariable('profile', profile);
         this.zone.run(() => {
-					console.log("Check 4");
           this.user = profile;
+					this.authId = profile.identities[0].user_id;
+					console.log('authId set: ' + this.authId);
         });
       });
     });
