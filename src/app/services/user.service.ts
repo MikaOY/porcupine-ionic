@@ -9,7 +9,7 @@ import Auth0Cordova from '@auth0/cordova';
 import Auth0 from 'auth0-js';
 import { Board } from '../classes/board';
 
-//import * as bcrypt from '../../node_modules/bcrypt';
+import * as bcrypt from 'bcrypt';
 
 const auth0Config = {
 	// needed for auth0
@@ -197,8 +197,7 @@ export class UserService {
 	}
 
 	/* Password stuff (untested) */
-
-	/*
+/*
 setPassword(plainP: string) {
 	let daHash;
 	bcrypt.hash(plainP, this.saltRounds, function (err, hash) {
