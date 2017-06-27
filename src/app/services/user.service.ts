@@ -1,39 +1,53 @@
 import { Injectable, NgZone } from '@angular/core';
 import { Http } from '@angular/http';
-import { Storage } from '@ionic/storage';
-import { AuthHttp, JwtHelper } from 'angular2-jwt';
-
 import { User } from '../classes/user';
 
 //import * as bcrypt from '../../node_modules/bcrypt';
 
-import { Observable, Subscription } from 'rxjs';
+import { TodoService } from './todo.service';
 
+import { Observable, Subscription } from 'rxjs';
+import { Storage } from '@ionic/storage';
+import { AuthHttp, JwtHelper } from 'angular2-jwt';
 import Auth0Cordova from '@auth0/cordova';
 import Auth0 from 'auth0-js';
 
+// AuthO
 const auth0Config = {
-  // needed for auth0
-  clientID: 'pBum20Ve6T5n76t05t6tue5G2MMk9I3d',
+	// needed for auth0
+	clientID: 'pBum20Ve6T5n76t05t6tue5G2MMk9I3d',
 
-  // needed for auth0cordova
-  clientId: 'pBum20Ve6T5n76t05t6tue5G2MMk9I3d',
-  domain: 'porcupine.au.auth0.com',
-  callbackURL: location.href,
-  packageIdentifier: 'com.ionicframework.porcupineionic261894'
+	// needed for auth0cordova
+	clientId: 'pBum20Ve6T5n76t05t6tue5G2MMk9I3d',
+	domain: 'porcupine.au.auth0.com',
+	callbackURL: location.href,
+	packageIdentifier: 'com.ionicframework.porcupineionic261894'
 };
+
+declare var Auth0Lock: any;
 
 @Injectable()
 export class UserService {
 	auth0 = new Auth0.WebAuth(auth0Config);
-  accessToken: string;
-  idToken: string;
-  user: any;
+	accessToken: string;
+	idToken: string;
+	user: any;
+	userDb: User;
 
-	constructor(private http: Http, private authHttp: AuthHttp, public zone: NgZone) {
+	// password hashing
+	private saltRounds = 10;
+
+	// TODO: migrate to constants file
+	private apiUrl: string = 'http://porcupine-dope-api.azurewebsites.net';
+	private headers = new Headers({ 'Content-Type': 'application/x-www-form-urlencoded' });
+	// private options = new RequestOptions({ headers: this.headers });
+
+	constructor(private http: Http, private authHttp: AuthHttp, public zone: NgZone, private todoService: TodoService) {
 		// these two lines are from ionic2+, kEEP EM <3
 		this.user = this.getStorageVariable('profile');
     this.idToken = this.getStorageVariable('id_token');
+		// TODO: password test 
+		// this.setPassword('1234'); 
 	}
 
   private getStorageVariable(name) {
@@ -102,22 +116,13 @@ export class UserService {
     this.user = null;
   }
 
-	private userDb: User;
-
-	// password hashing
-	private saltRounds = 10;
-
-	// TODO: migrate to constants file
-	private apiUrl: string = 'http://porcupine-dope-api.azurewebsites.net';
-	private headers = new Headers({ 'Content-Type': 'application/x-www-form-urlencoded' });
-	// private options = new RequestOptions({ headers: this.headers });
-
+	// dev authO id: auth0|594c8b1cc3954a4865ef9bc9
 	getUser(authOId?: string, forceGet?: boolean): Promise<User> {
 		if (this.userDb == undefined || (forceGet != undefined && forceGet == true)) {
 			if (authOId == undefined) {
 				Promise.reject('AuthO id not given to getUser method!');
 			} else {
-				return this.getUserById(authOId).then((user) => {
+				return this.GETUserById(authOId).then((user) => {
 					this.userDb = user;
 					return user;
 				});
@@ -126,46 +131,6 @@ export class UserService {
 			return Promise.resolve(this.userDb);
 		}
 	}
-	/*
-	setPassword(plainP: string) {
-		let daHash;
-		bcrypt.hash(plainP, this.saltRounds, function (err, hash) {
-			daHash = hash;
-			console.log('Updating password!');
-
-			const url = `${this.apiUrl}/user`;
-
-			var details = {
-				'fname': this.userDb.fname,
-				'lname': this.userDb.lname,
-				'username': this.userDb.username,
-				'email': this.userDb.email,
-				'hash': hash,
-			};
-			let formBody = [];
-			for (var property in details) {
-				var encodedKey = encodeURIComponent(property);
-				var encodedValue = encodeURIComponent(details[property]);
-				formBody.push(encodedKey + '=' + '\'' + encodedValue + '\'');
-			}
-			let body = formBody.join('&');
-
-			return this.http.put(url, body, this.options).toPromise().then((response: any) => {
-				this.userDb.PasswordHash = daHash;
-				console.log(this.userDb.PasswordHash);
-				console.log('Update user response: ' + response.toString());
-			}).catch(this.handleError);
-		});
-	}
-
-	checkPassword(plainP: string): boolean {
-		let bool: boolean = false;
-		bcrypt.compare(plainP, this.userDb.PasswordHash, (err, res) => {
-			bool = res;
-		});
-		return bool;
-	}
-	*/
 
 	getUserByEmail(email: string): Promise<User> {
 		console.log('getting user by email');
@@ -181,7 +146,7 @@ export class UserService {
 		});
 	}
 
-	getUserById(id: string): Promise<User> {
+	GETUserById(id: string): Promise<User> {
 		console.log('getting user by id');
 
 		const url = `${this.apiUrl}/user?authOId=${id}`;
@@ -202,4 +167,47 @@ export class UserService {
 		}
 		return user;
 	}
+
+	/* Password stuff (untested) */
+
+	/*
+setPassword(plainP: string) {
+	let daHash;
+	bcrypt.hash(plainP, this.saltRounds, function (err, hash) {
+		daHash = hash;
+		console.log('Updating password!');
+
+		const url = `${this.apiUrl}/user`;
+
+		var details = {
+			'fname': this.userDb.fname,
+			'lname': this.userDb.lname,
+			'username': this.userDb.username,
+			'email': this.userDb.email,
+			'hash': hash,
+		};
+		let formBody = [];
+		for (var property in details) {
+			var encodedKey = encodeURIComponent(property);
+			var encodedValue = encodeURIComponent(details[property]);
+			formBody.push(encodedKey + '=' + '\'' + encodedValue + '\'');
+		}
+		let body = formBody.join('&');
+
+		return this.http.put(url, body, this.options).toPromise().then((response: any) => {
+			this.userDb.PasswordHash = daHash;
+			console.log(this.userDb.PasswordHash);
+			console.log('Update user response: ' + response.toString());
+		}).catch(this.handleError);
+	});
+}
+
+checkPassword(plainP: string): boolean {
+	let bool: boolean = false;
+	bcrypt.compare(plainP, this.userDb.PasswordHash, (err, res) => {
+		bool = res;
+	});
+	return bool;
+}
+*/
 }
