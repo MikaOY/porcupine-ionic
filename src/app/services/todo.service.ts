@@ -45,6 +45,12 @@ export class TodoService {
 
 	// generates req options depending on type of request
 	public getReqOptions(reqType: string): RequestOptions {
+		if (this.token == undefined) {
+			this.userService.getAccessToken().then((token) => {
+				this.token = token;
+				console.log("Todo service token set: " + token);
+			});
+		}
 		let hds;
 		let ops;
 		switch (reqType.toLowerCase()) {
@@ -828,8 +834,9 @@ export class TodoService {
 				this.id = user.DbId;
 
 				// get access token
-				this.userService.getAccessToken().then((token) => {
-					this.token = token;
+				// this.userService.getAccessToken().then((token) => {
+				// 	this.token = token;
+				// 	console.log(token);
 
 					// Retrieve all data first, then pull current board after all concluded
 					return this.GETBoards().mergeMap(boards =>
@@ -841,7 +848,7 @@ export class TodoService {
 									return this.CachedBoards[0];
 								}).share()));
 				});
-			});
+			//});
 		} else {
 			return Observable.of(this.CurrentBoard);
 		}

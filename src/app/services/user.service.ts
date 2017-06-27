@@ -51,6 +51,28 @@ export class UserService {
 	// sets authID if user is already logged in
 	authId: string = this.getStorageVariable('profile') ? this.getStorageVariable('profile').identities[0].user_id : undefined;
 
+	public getReqOptions(reqType: string): RequestOptions {
+		if (this.accessToken == undefined) {
+			console.log("accessToken undefined, getting one");
+			this.getAccessToken().then(val => {
+				console.log("Result from getAccessToken " + val);
+				this.accessToken = val;
+			});
+		}
+		let hds;
+		let ops;
+		console.log("access token" + this.accessToken);
+		switch (reqType.toLowerCase()) {
+			case 'get':
+				hds = new Headers({ authorization: this.accessToken });
+				break;
+			default:
+				hds = new Headers({ authorization: this.accessToken, 'Content-Type': 'application/x-www-form-urlencoded' });
+				break;
+		}
+		ops = new RequestOptions({ headers: hds });
+		return ops;
+	}
 
 	private getStorageVariable(name) {
 		return JSON.parse(window.localStorage.getItem(name));
@@ -159,7 +181,7 @@ export class UserService {
 		console.log('getting user by email');
 
 		const url = `${this.apiUrl}/user?email=%27${email}%27`;
-		return this.http.get(url).toPromise().then((response: any) => {
+		return this.http.get(url, this.getReqOptions('get')).toPromise().then((response: any) => {
 			console.log('processing user by email');
 
 			let user: User = this.processIntoUser(response);
@@ -173,7 +195,7 @@ export class UserService {
 		console.log('getting user by id');
 
 		const url = `${this.apiUrl}/user?authOId=${id}`; 
-		return this.http.get(url).toPromise().then((response: any) => {
+		return this.http.get(url, this.getReqOptions('get')).toPromise().then((response: any) => {
 			console.log('processing user by id');
 
 			let user: User = this.processIntoUser(response);
