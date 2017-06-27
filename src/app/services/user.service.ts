@@ -7,6 +7,7 @@ import { Storage } from '@ionic/storage';
 import { AuthHttp, JwtHelper } from 'angular2-jwt';
 import Auth0Cordova from '@auth0/cordova';
 import Auth0 from 'auth0-js';
+import { Board } from '../classes/board';
 
 //import * as bcrypt from '../../node_modules/bcrypt';
 
@@ -23,7 +24,7 @@ const auth0Config = {
 
 @Injectable()
 export class UserService {
-
+	private currentBoard: Board;
 	private userDb: User;
 
 	// password hashing
@@ -34,9 +35,10 @@ export class UserService {
 	//private headers = new Headers({ 'Content-Type': 'application/x-www-form-urlencoded' });
 	// private options = new RequestOptions({ headers: this.headers });
 
-	constructor(private http: Http, private authHttp: AuthHttp, public zone: NgZone) {
-		// Bypassing lock logins
-		this.getUser('auth0|594c8b1cc3954a4865ef9bc9');
+	constructor(private http: Http, private authHttp: AuthHttp, public zone: NgZone, public todoService: TodoService) {
+		// Bypassing lock logins, remove when not testing
+		this.getUser('auth0|594c8b1cc3954a4865ef9bc9').then( () => 
+			this.todoService.getCurrentBoard().subscribe(cBoard => this.currentBoard = cBoard as Board));
 		// let bypassExpireTime = JSON.stringify((100000 * 1000) + new Date().getTime());
 		// this.setStorageVariable('expires_at', bypassExpireTime);
 
@@ -105,7 +107,8 @@ export class UserService {
         this.zone.run(() => {
           this.user = profile;
 					this.authId = profile.user_id;
-					console.log('authId set: ' + this.authId);
+					console.log('authId set: ' + this.authId + ", getting currentBoard from login");
+					this.todoService.getCurrentBoard().subscribe(cBoard => this.currentBoard = cBoard as Board);
 				});
 			});
 		});

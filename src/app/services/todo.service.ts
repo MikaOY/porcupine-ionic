@@ -36,10 +36,10 @@ export class TodoService {
 
 	private isBusy: boolean = false;
 
-	constructor(private http: Http, private userService: UserService) {
-		this.CachedBoards = [];
-		this.CachedCats = [];
-		this.CachedTodos = [];
+	constructor(private http: Http, public userService: UserService) {
+		// this.CachedBoards = [];
+		// this.CachedCats = [];
+		// this.CachedTodos = [];
 	}
 
 	/* START public HTTP functions */

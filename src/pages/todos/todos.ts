@@ -13,7 +13,7 @@ export class TodosPage implements OnInit {
 
 	ngOnInit(): void {
 		// leave this and currentBoard to initialize all app caches
-		this.todoService.getCurrentBoard().subscribe(cBoard => this.currentBoard = cBoard as Board);
+		// this.todoService.getCurrentBoard().subscribe(cBoard => this.currentBoard = cBoard as Board);
 	}
 
 	ionViewWillEnter() { 
