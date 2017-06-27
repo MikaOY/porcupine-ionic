@@ -37,7 +37,7 @@ export class UserService {
 
 	constructor(private http: Http, private authHttp: AuthHttp, public zone: NgZone, public todoService: TodoService) {
 		// Bypassing lock logins, remove when not testing
-		this.getUser('auth0|594c8b1cc3954a4865ef9bc9').then( () => 
+		this.getUser('auth0|594c8b1cc3954a4865ef9bc9').then(() => 
 			this.todoService.getCurrentBoard().subscribe(cBoard => this.currentBoard = cBoard as Board));
 		// let bypassExpireTime = JSON.stringify((100000 * 1000) + new Date().getTime());
 		// this.setStorageVariable('expires_at', bypassExpireTime);
@@ -125,7 +125,7 @@ export class UserService {
 		this.user = null;
 	}
 
-	getAccessToken() {
+	getAccessToken(): Promise<string> {
 		console.log('Getting user access token');
 
 		// get access token for porcupine-api
@@ -136,7 +136,7 @@ export class UserService {
 			headers: hds,
 		});
 
-		this.http.post(url, body, ops).subscribe((response) => {
+		return this.http.post(url, body, ops).toPromise().then((response) => {
 			let json = response.json();
 			console.log(json);
 			console.log(json['token_type'] + ' ' + json['access_token']);

@@ -82,6 +82,15 @@ export class TodoService {
 			this.id = user.DbId;
 		});
 
+		// get access token
+		let token: string;
+		let hds;
+		let ops;
+		this.userService.getAccessToken().then((token) => {
+			hds = new Headers({ authorization: token });
+			ops = new RequestOptions({ headers: this.headers });
+		});
+
 		const url = `${this.apiUrl}/board?userId=${this.id}`;
 		return this.http.get(url).map((response: any) => {
 
