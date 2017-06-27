@@ -9,31 +9,27 @@ import { TodoService } from './todo.service';
 import { Observable, Subscription } from 'rxjs';
 import { Storage } from '@ionic/storage';
 import { AuthHttp, JwtHelper } from 'angular2-jwt';
+
 import Auth0Cordova from '@auth0/cordova';
 import Auth0 from 'auth0-js';
 
-// AuthO
+import { User } from '../classes/user';
+
 const auth0Config = {
-	// needed for auth0
-	clientID: 'pBum20Ve6T5n76t05t6tue5G2MMk9I3d',
+  // needed for auth0
+  clientID: 'pBum20Ve6T5n76t05t6tue5G2MMk9I3d',
 
-	// needed for auth0cordova
-	clientId: 'pBum20Ve6T5n76t05t6tue5G2MMk9I3d',
-	domain: 'porcupine.au.auth0.com',
-	callbackURL: location.href,
-	packageIdentifier: 'com.ionicframework.porcupineionic261894'
+  // needed for auth0cordova
+  clientId: 'pBum20Ve6T5n76t05t6tue5G2MMk9I3d',
+  domain: 'porcupine.au.auth0.com',
+  callbackURL: location.href,
+  packageIdentifier: 'com.ionicframework.porcupineionic26189'
 };
-
-declare var Auth0Lock: any;
 
 @Injectable()
 export class UserService {
-	auth0 = new Auth0.WebAuth(auth0Config);
-	accessToken: string;
-	idToken: string;
-	user: any;
-	userDb: User;
 
+	public currentUserId: number;
 	// password hashing
 	private saltRounds = 10;
 
@@ -50,6 +46,13 @@ export class UserService {
 		// this.setPassword('1234'); 
 	}
 
+  auth0 = new Auth0.WebAuth(auth0Config);
+  accessToken: string;
+  idToken: string;
+  user: any;
+	// sets authID if user is already logged in
+	authId: string = this.getStorageVariable('profile') ? this.getStorageVariable('profile').identities[0].user_id : undefined;
+  
   private getStorageVariable(name) {
     return JSON.parse(window.localStorage.getItem(name));
   }
@@ -100,6 +103,8 @@ export class UserService {
         this.setStorageVariable('profile', profile);
         this.zone.run(() => {
           this.user = profile;
+					this.authId = profile.identities[0].user_id;
+					console.log('authId set: ' + this.authId);
         });
       });
     });
