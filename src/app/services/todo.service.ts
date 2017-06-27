@@ -793,7 +793,7 @@ export class TodoService {
 			errMsg = error.message ? error.message : error.toString();
 		}
 		console.error(errMsg);
-		console.error('Something went wrong!');
+		console.error('todo.service: Something went wrong!');
 		return Observable.throw(errMsg);
 	}
 

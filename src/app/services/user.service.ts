@@ -40,8 +40,6 @@ export class UserService {
 
 		this.user = this.getStorageVariable('profile');
 		this.idToken = this.getStorageVariable('id_token');
-
-		//this.setPassword('1234');
 	}
 
 	auth0 = new Auth0.WebAuth(auth0Config);
@@ -133,6 +131,7 @@ export class UserService {
 		return this.http.post(url, body, ops).toPromise().then((response) => {
 			let json = response.json();
 			console.log('Returning access token');
+			console.log(json['token_type'] + ' ' + json['access_token']);
 			return json['token_type'] + ' ' + json['access_token'];
 		});
 	}
@@ -172,7 +171,7 @@ export class UserService {
 	GETUserById(id: string): Promise<User> {
 		console.log('getting user by id');
 
-		const url = `${this.apiUrl}/user?authOId=${id}`; 
+		const url = `${this.apiUrl}/user?authOId=${id}`;
 		return this.http.get(url).toPromise().then((response: any) => {
 			console.log('processing user by id');
 
@@ -191,45 +190,63 @@ export class UserService {
 		return user;
 	}
 
-	/* Password stuff
+	// Password stuff
 
 	setPassword(plainP: string) {
-		let daHash;
-		bcrypt.hash(plainP, this.saltRounds, function (err, hash) {
-			daHash = hash;
-			console.log('Updating password!');
+		if (bcrypt != undefined) {
+			let daHash;
+			bcrypt.hash(plainP, this.saltRounds, (err, hash) => {
+				daHash = hash;
+				console.log('Updating password!');
 
-			const url = `${this.apiUrl}/user`;
+				const url = `${this.apiUrl}/user`;
 
-			var details = {
-				'fname': this.userDb.fname,
-				'lname': this.userDb.lname,
-				'username': this.userDb.username,
-				'email': this.userDb.email,
-				'hash': hash,
-			};
-			let formBody = [];
-			for (var property in details) {
-				var encodedKey = encodeURIComponent(property);
-				var encodedValue = encodeURIComponent(details[property]);
-				formBody.push(encodedKey + '=' + '\'' + encodedValue + '\'');
-			}
-			let body = formBody.join('&');
+				var details = {
+					'fname': this.userDb.FirstName,
+					'lname': this.userDb.LastName,
+					'username': this.userDb.Username,
+					'email': this.userDb.Email,
+					'hash': hash,
+				};
+				let formBody = [];
+				for (var property in details) {
+					var encodedKey = encodeURIComponent(property);
+					var encodedValue = encodeURIComponent(details[property]);
+					formBody.push(encodedKey + '=' + '\'' + encodedValue + '\'');
+				}
+				let body = formBody.join('&');
 
-			return this.http.put(url, body, this.options).toPromise().then((response: any) => {
-				this.userDb.PasswordHash = daHash;
-				console.log(this.userDb.PasswordHash);
-				console.log('Update user response: ' + response.toString());
-			}).catch(this.handleError);
-		});
+				return this.http.put(url, body, this.options).toPromise().then((response: any) => {
+					this.userDb.PasswordHash = daHash;
+					console.log(this.userDb.PasswordHash);
+					console.log('Update user response: ' + response.toString());
+				}).catch(this.handleError);
+			});
+		}
 	}
 
 	checkPassword(plainP: string): boolean {
-		let bool: boolean = false;
-		bcrypt.compare(plainP, this.userDb.PasswordHash, (err, res) => {
-			bool = res;
-		});
-		return bool;
+		if (bcrypt != undefined) {
+			let bool: boolean = false;
+			bcrypt.compare(plainP, this.userDb.PasswordHash, (err, res) => {
+				bool = res;
+			});
+			return bool;
+		}
 	}
-	*/
+
+	private handleError(error: Response | any) {
+		// In a real world app, you might use a remote logging infrastructure
+		let errMsg: string;
+		if (error instanceof Response) {
+			const body = error.json() || '';
+			const err = body.error || JSON.stringify(body);
+			errMsg = `${error.status} - ${error.statusText || ''} ${err}`;
+		} else {
+			errMsg = error.message ? error.message : error.toString();
+		}
+		console.error(errMsg);
+		console.error('user.service: Something went wrong!');
+		return Observable.throw(errMsg);
+	}
 }
