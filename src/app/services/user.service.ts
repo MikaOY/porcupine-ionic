@@ -14,7 +14,6 @@ import * as bcrypt from 'bcrypt';
 const auth0Config = {
 	// needed for auth0
 	clientID: 'pBum20Ve6T5n76t05t6tue5G2MMk9I3d',
-
 	// needed for auth0cordova
 	clientId: 'pBum20Ve6T5n76t05t6tue5G2MMk9I3d',
 	domain: 'porcupine.au.auth0.com',
@@ -35,18 +34,14 @@ export class UserService {
 	//private headers = new Headers({ 'Content-Type': 'application/x-www-form-urlencoded' });
 	// private options = new RequestOptions({ headers: this.headers });
 
-	constructor(private http: Http, private authHttp: AuthHttp, public zone: NgZone, public todoService: TodoService) {
-		// Bypassing lock logins, remove when not testing
-		this.getUser('auth0|594c8b1cc3954a4865ef9bc9').then(() => 
-			this.todoService.getCurrentBoard().subscribe(cBoard => this.currentBoard = cBoard as Board));
+	constructor(private http: Http, private authHttp: AuthHttp, public zone: NgZone) {
 		// let bypassExpireTime = JSON.stringify((100000 * 1000) + new Date().getTime());
 		// this.setStorageVariable('expires_at', bypassExpireTime);
 
 		this.user = this.getStorageVariable('profile');
 		this.idToken = this.getStorageVariable('id_token');
 
-		// TODO: password test 
-		// this.setPassword('1234'); 
+		//this.setPassword('1234');
 	}
 
 	auth0 = new Auth0.WebAuth(auth0Config);
@@ -55,7 +50,7 @@ export class UserService {
 	user: any;
 	// sets authID if user is already logged in
 	authId: string = this.getStorageVariable('profile') ? this.getStorageVariable('profile').user_id : undefined;
-  
+
 
 	private getStorageVariable(name) {
 		return JSON.parse(window.localStorage.getItem(name));
@@ -102,13 +97,12 @@ export class UserService {
 				if (err) {
 					throw err;
 				}
-        profile.user_metadata = profile.user_metadata || {};
-        this.setStorageVariable('profile', profile);
-        this.zone.run(() => {
-          this.user = profile;
+				profile.user_metadata = profile.user_metadata || {};
+				this.setStorageVariable('profile', profile);
+				this.zone.run(() => {
+					this.user = profile;
 					this.authId = profile.user_id;
 					console.log('authId set: ' + this.authId + ", getting currentBoard from login");
-					this.todoService.getCurrentBoard().subscribe(cBoard => this.currentBoard = cBoard as Board);
 				});
 			});
 		});
@@ -196,45 +190,45 @@ export class UserService {
 		return user;
 	}
 
-	/* Password stuff (untested) */
-/*
-setPassword(plainP: string) {
-	let daHash;
-	bcrypt.hash(plainP, this.saltRounds, function (err, hash) {
-		daHash = hash;
-		console.log('Updating password!');
+	/* Password stuff
 
-		const url = `${this.apiUrl}/user`;
+	setPassword(plainP: string) {
+		let daHash;
+		bcrypt.hash(plainP, this.saltRounds, function (err, hash) {
+			daHash = hash;
+			console.log('Updating password!');
 
-		var details = {
-			'fname': this.userDb.fname,
-			'lname': this.userDb.lname,
-			'username': this.userDb.username,
-			'email': this.userDb.email,
-			'hash': hash,
-		};
-		let formBody = [];
-		for (var property in details) {
-			var encodedKey = encodeURIComponent(property);
-			var encodedValue = encodeURIComponent(details[property]);
-			formBody.push(encodedKey + '=' + '\'' + encodedValue + '\'');
-		}
-		let body = formBody.join('&');
+			const url = `${this.apiUrl}/user`;
 
-		return this.http.put(url, body, this.options).toPromise().then((response: any) => {
-			this.userDb.PasswordHash = daHash;
-			console.log(this.userDb.PasswordHash);
-			console.log('Update user response: ' + response.toString());
-		}).catch(this.handleError);
-	});
-}
+			var details = {
+				'fname': this.userDb.fname,
+				'lname': this.userDb.lname,
+				'username': this.userDb.username,
+				'email': this.userDb.email,
+				'hash': hash,
+			};
+			let formBody = [];
+			for (var property in details) {
+				var encodedKey = encodeURIComponent(property);
+				var encodedValue = encodeURIComponent(details[property]);
+				formBody.push(encodedKey + '=' + '\'' + encodedValue + '\'');
+			}
+			let body = formBody.join('&');
 
-checkPassword(plainP: string): boolean {
-	let bool: boolean = false;
-	bcrypt.compare(plainP, this.userDb.PasswordHash, (err, res) => {
-		bool = res;
-	});
-	return bool;
-}
-*/
+			return this.http.put(url, body, this.options).toPromise().then((response: any) => {
+				this.userDb.PasswordHash = daHash;
+				console.log(this.userDb.PasswordHash);
+				console.log('Update user response: ' + response.toString());
+			}).catch(this.handleError);
+		});
+	}
+
+	checkPassword(plainP: string): boolean {
+		let bool: boolean = false;
+		bcrypt.compare(plainP, this.userDb.PasswordHash, (err, res) => {
+			bool = res;
+		});
+		return bool;
+	}
+	*/
 }

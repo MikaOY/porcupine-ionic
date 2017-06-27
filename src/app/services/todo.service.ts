@@ -36,10 +36,11 @@ export class TodoService {
 
 	private isBusy: boolean = false;
 
-	constructor(private http: Http, public userService: UserService) {
-		// this.CachedBoards = [];
-		// this.CachedCats = [];
-		// this.CachedTodos = [];
+	constructor(private http: Http, private userService: UserService) {
+		// TODO remove: bypass login
+		this.userService.getUser('auth0|594c8b1cc3954a4865ef9bc9').then((user) => {
+			this.getCurrentBoard();
+		});
 	}
 
 	/* START public HTTP functions */
@@ -874,6 +875,7 @@ export class TodoService {
 			tempUser = user;
 		});
 		if (tempUser == null) {
+			console.log('User null, returning null current board!');
 			return Observable.of(null);
 		} else {
 			this.id = tempUser.DbId;
