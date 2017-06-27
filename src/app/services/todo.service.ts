@@ -526,6 +526,7 @@ export class TodoService {
 			case 'categoryId':
 				this.CurrentBoard.Categories.splice(this.CurrentBoard.Categories.indexOf(obj as Category));
 				this.CachedCats.splice(this.CachedCats.indexOf(obj as Category));
+				
 				break;
 			case 'boardId':
 				this.CachedBoards.splice(this.CachedBoards.indexOf(obj as Board));
