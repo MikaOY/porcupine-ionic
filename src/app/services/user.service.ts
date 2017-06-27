@@ -123,7 +123,7 @@ export class UserService {
 	getUser(authOId?: string, forceGet?: boolean): Promise<User> {
 		if (this.userDb == undefined || (forceGet != undefined && forceGet == true)) {
 			if (authOId == undefined) {
-				Promise.reject('AuthO id not given to getUser method!');
+				return Promise.resolve(null);
 			} else {
 				return this.GETUserById(authOId).then((user) => {
 					this.userDb = user;

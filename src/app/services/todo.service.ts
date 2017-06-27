@@ -49,8 +49,12 @@ export class TodoService {
 
 		this.CachedBoards.push(newBoard);
 
-		const url = `${this.apiUrl}/board`;
+		// get user
+		this.userService.getUser().then((user) => {
+			this.id = user.DbId;
+		});
 
+		const url = `${this.apiUrl}/board`;
 		var details = {
 			'userId': String(this.id),
 			'title': newBoard.Name,
@@ -73,9 +77,12 @@ export class TodoService {
 	private GETBoards(): Observable<Board[]> {
 		console.log('requesting boards...');
 
-		const url = `${this.apiUrl}/board?userId=${this.id}`;
-		console.log(url);
+		// get user
+		this.userService.getUser().then((user) => {
+			this.id = user.DbId;
+		});
 
+		const url = `${this.apiUrl}/board?userId=${this.id}`;
 		return this.http.get(url).map((response: any) => {
 
 			console.log('processing boards...');
@@ -113,8 +120,12 @@ export class TodoService {
 	public updateBoard(board: Board): Promise<void> {
 		console.log('updating board...');
 
-		const url = `${this.apiUrl}/board`;
+		// get user
+		this.userService.getUser().then((user) => {
+			this.id = user.DbId;
+		});
 
+		const url = `${this.apiUrl}/board`;
 		var details = {
 			'userId': String(this.id),
 			'title': board.Name,
@@ -152,8 +163,12 @@ export class TodoService {
 		this.CurrentBoard.Categories.push(newCat);
 		this.CachedCats.push(newCat);
 
-		const url = `${this.apiUrl}/category`;
+		// get user
+		this.userService.getUser().then((user) => {
+			this.id = user.DbId;
+		});
 
+		const url = `${this.apiUrl}/category`;
 		var details = {
 			'userId': String(this.id),
 			'title': newCat.Name,
@@ -180,6 +195,11 @@ export class TodoService {
 
 	private GETCategories(args?: any): Observable<Category[]> {
 		console.log('requesting categories...');
+
+		// get user
+		this.userService.getUser().then((user) => {
+			this.id = user.DbId;
+		});
 
 		const url = `${this.apiUrl}/category?userId=${this.id}`;
 		return this.http.get(url).map((response: any) => {
@@ -263,9 +283,12 @@ export class TodoService {
 
 	public updateCategory(cat: Category): Promise<void> {
 		console.log('updating category...');
+		// get user
+		this.userService.getUser().then((user) => {
+			this.id = user.DbId;
+		});
 
 		const url = `${this.apiUrl}/category`;
-
 		var details = {
 			'userId': String(this.id),
 			'categoryId': String(cat.DbId),
@@ -306,8 +329,12 @@ export class TodoService {
 		this.CurrentBoard.Todos.push(newTodo);
 		this.CachedTodos.push(newTodo);
 
-		const url = `${this.apiUrl}/todo`;
+		// get user
+		this.userService.getUser().then((user) => {
+			this.id = user.DbId;
+		});
 
+		const url = `${this.apiUrl}/todo`;
 		// create req body
 		var details = {
 			'userId': String(this.id),
@@ -337,6 +364,11 @@ export class TodoService {
 
 	private GETTodos(args?: any): Observable<Todo[]> {
 		console.log('requesting todos...');
+
+		// get user
+		this.userService.getUser().then((user) => {
+			this.id = user.DbId;
+		});
 
 		const url = `${this.apiUrl}/todo?userId=${this.id}`;
 		return this.http.get(url).map((response: any) => {
@@ -457,8 +489,12 @@ export class TodoService {
 	public updateTodo(todo: Todo): Promise<void> {
 		console.log('updating todo...');
 
-		const url = `${this.apiUrl}/todo`;
+		// get user
+		this.userService.getUser().then((user) => {
+			this.id = user.DbId;
+		});
 
+		const url = `${this.apiUrl}/todo`;
 		// create req body
 		var details = {
 			'userId': String(this.id),
@@ -498,12 +534,15 @@ export class TodoService {
 
 	// delete method that just updates prop
 	public deleteObject(obj: DbCompatible) {
-		const url = `${this.apiUrl}/${obj.constructor.name.toLowerCase()}/delete`;
+		// get user
+		this.userService.getUser().then((user) => {
+			this.id = user.DbId;
+		});
 
+		const url = `${this.apiUrl}/${obj.constructor.name.toLowerCase()}/delete`;
 		// create req body
 		let idName: string = obj.constructor.name.toLowerCase() + 'Id';
 		console.log('deleting...' + idName);
-
 		var details = {
 			'userId': String(this.id),
 			[idName]: String(obj.DbId)
@@ -538,13 +577,15 @@ export class TodoService {
 	}
 
 	public restoreObject(obj: DbCompatible): Promise<void> {
-		const url = `${this.apiUrl}/${obj.constructor.name.toLowerCase()}/restore`;
-		console.log(url);
+		// get user
+		this.userService.getUser().then((user) =>{
+			this.id = user.DbId;
+		});
 
+		const url = `${this.apiUrl}/${obj.constructor.name.toLowerCase()}/restore`;		
 		// create req body
 		let idName: string = obj.constructor.name.toLowerCase() + 'Id';
 		console.log('restoring...' + idName);
-
 		var details = {
 			'userId': String(this.id),
 			[idName]: String(obj.DbId)
@@ -574,7 +615,7 @@ export class TodoService {
 
 		let body: string = '';
 		return this.http.put(url, body, this.options).toPromise().then((response: any) => {
-			console.log('Restore all: ' + response.toString()); 
+			console.log('Restore all: ' + response.toString());
 
 			// refresh cache by getting all data again
 			this.getCurrentBoard(true);
@@ -583,11 +624,15 @@ export class TodoService {
 	}
 
 	public shareBoard(sharees: Permission[], board: Board, note?: string) {
-		console.log('Sharing board in service')
+		console.log('Sharing board in service');
+
+		// get user
+		this.userService.getUser().then((user) =>{
+			this.id = user.DbId;
+		});
 
 		// TODO: send note to recipients
 		const url = `${this.apiUrl}/shared`;
-
 		sharees.forEach(sharee => {
 			// get user by email first
 			this.userService.getUserByEmail(sharee.User.Email).then((user) => {
@@ -621,8 +666,12 @@ export class TodoService {
 	private GETShared(args: any): Observable<Board[]> {
 		console.log('requesting shared...');
 
-		const url = `${this.apiUrl}/shared?userId=${this.id}`;
+		// get user
+		this.userService.getUser().then((user) =>{
+			this.id = user.DbId;
+		});
 
+		const url = `${this.apiUrl}/shared?userId=${this.id}`;
 		return this.http.get(url).map((response: any) => {
 
 			console.log('processing shared...');
@@ -739,6 +788,11 @@ export class TodoService {
 	public unshareBoard(perm: Permission, board: Board) {
 		console.log('unsharing board...');
 
+		// get user
+		this.userService.getUser().then((user) =>{
+			this.id = user.DbId;
+		});
+
 		this.userService.getUserByEmail(perm.User.Email).then((user) => {
 			// first check if user CAN unshare recipient
 			if (board.IsViewOnly) {
@@ -803,8 +857,17 @@ export class TodoService {
 	}
 
 	public getCurrentBoard(isForce?: boolean): Observable<any> {
-
-		// return null if user undefined
+		// if user null, return null
+		// get current user 
+		let tempUser: User;
+		this.userService.getUser().then((user) => {
+			tempUser = user;
+		});
+		if (tempUser == null) {
+			return Observable.of(null);
+		} else {
+			this.id = tempUser.DbId;
+		}
 
 		// first find out if HTTP req is needed
 		let doRetrieve = true;
@@ -816,11 +879,6 @@ export class TodoService {
 		if (isForce != undefined && isForce == true) {
 			doRetrieve = true;
 		}
-
-		// get current user id
-		this.userService.getUser().then((user) => {
-			this.id = user.DbId;
-		});
 
 		if (doRetrieve == true) {
 			this.isBusy = true;
