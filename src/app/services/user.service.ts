@@ -238,7 +238,7 @@ export class UserService {
 				}
 				let body = formBody.join('&');
 
-				return this.http.put(url, body, this.options).toPromise().then((response: any) => {
+				return this.http.put(url, body, this.getReqOptions('put')).toPromise().then((response: any) => {
 					this.userDb.PasswordHash = daHash;
 					console.log(this.userDb.PasswordHash);
 					console.log('Update user response: ' + response.toString());
