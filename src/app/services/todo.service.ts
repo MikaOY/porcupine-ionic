@@ -30,6 +30,7 @@ export class TodoService {
 
 	private apiUrl: string = 'http://porcupine-dope-api.azurewebsites.net';
 	private id: number = 0;
+	private token: string;
 
 	private isBusy: boolean = false;
 
@@ -44,20 +45,17 @@ export class TodoService {
 
 	// generates req options depending on type of request
 	public getReqOptions(reqType: string): RequestOptions {
-		let token: string;
 		let hds;
 		let ops;
-		this.userService.getAccessToken().then((token) => {
-			switch (reqType.toLowerCase()) {
-				case 'get':
-					hds = new Headers({ authorization: token });
-					break;
-				default:
-					hds = new Headers({ authorization: token, 'Content-Type': 'application/x-www-form-urlencoded' });
-					break;
-			}
-			ops = new RequestOptions({ headers: hds });
-		});
+		switch (reqType.toLowerCase()) {
+			case 'get':
+				hds = new Headers({ authorization: this.token });
+				break;
+			default:
+				hds = new Headers({ authorization: this.token, 'Content-Type': 'application/x-www-form-urlencoded' });
+				break;
+		}
+		ops = new RequestOptions({ headers: hds });
 		return ops;
 	}
 
@@ -68,18 +66,12 @@ export class TodoService {
 
 		this.CachedBoards.push(newBoard);
 
-		// get user
-		this.userService.getUser().then((user) => {
-			this.id = user.DbId;
-		});
-
 		const url = `${this.apiUrl}/board`;
 		var details = {
 			'userId': String(this.id),
 			'title': newBoard.Name,
 			'dateCreated': '',
 		};
-
 		let formBody = [];
 		for (var property in details) {
 			var encodedKey = encodeURIComponent(property);
@@ -96,12 +88,8 @@ export class TodoService {
 	private GETBoards(): Observable<Board[]> {
 		console.log('requesting boards...');
 
-		// get user
-		this.userService.getUser().then((user) => {
-			this.id = user.DbId;
-		});
-
 		const url = `${this.apiUrl}/board?userId=${this.id}`;
+		console.log(url);
 		return this.http.get(url, this.getReqOptions('get')).map((response: any) => {
 
 			console.log('processing boards...');
@@ -138,11 +126,6 @@ export class TodoService {
 
 	public updateBoard(board: Board): Promise<void> {
 		console.log('updating board...');
-
-		// get user
-		this.userService.getUser().then((user) => {
-			this.id = user.DbId;
-		});
 
 		const url = `${this.apiUrl}/board`;
 		var details = {
@@ -182,11 +165,6 @@ export class TodoService {
 		this.CurrentBoard.Categories.push(newCat);
 		this.CachedCats.push(newCat);
 
-		// get user
-		this.userService.getUser().then((user) => {
-			this.id = user.DbId;
-		});
-
 		const url = `${this.apiUrl}/category`;
 		var details = {
 			'userId': String(this.id),
@@ -214,11 +192,6 @@ export class TodoService {
 
 	private GETCategories(args?: any): Observable<Category[]> {
 		console.log('requesting categories...');
-
-		// get user
-		this.userService.getUser().then((user) => {
-			this.id = user.DbId;
-		});
 
 		const url = `${this.apiUrl}/category?userId=${this.id}`;
 		return this.http.get(url).map((response: any) => {
@@ -302,10 +275,6 @@ export class TodoService {
 
 	public updateCategory(cat: Category): Promise<void> {
 		console.log('updating category...');
-		// get user
-		this.userService.getUser().then((user) => {
-			this.id = user.DbId;
-		});
 
 		const url = `${this.apiUrl}/category`;
 		var details = {
@@ -348,11 +317,6 @@ export class TodoService {
 		this.CurrentBoard.Todos.push(newTodo);
 		this.CachedTodos.push(newTodo);
 
-		// get user
-		this.userService.getUser().then((user) => {
-			this.id = user.DbId;
-		});
-
 		const url = `${this.apiUrl}/todo`;
 		// create req body
 		var details = {
@@ -383,11 +347,6 @@ export class TodoService {
 
 	private GETTodos(args?: any): Observable<Todo[]> {
 		console.log('requesting todos...');
-
-		// get user
-		this.userService.getUser().then((user) => {
-			this.id = user.DbId;
-		});
 
 		const url = `${this.apiUrl}/todo?userId=${this.id}`;
 		return this.http.get(url).map((response: any) => {
@@ -508,11 +467,6 @@ export class TodoService {
 	public updateTodo(todo: Todo): Promise<void> {
 		console.log('updating todo...');
 
-		// get user
-		this.userService.getUser().then((user) => {
-			this.id = user.DbId;
-		});
-
 		const url = `${this.apiUrl}/todo`;
 		// create req body
 		var details = {
@@ -553,10 +507,6 @@ export class TodoService {
 
 	// delete method that just updates prop
 	public deleteObject(obj: DbCompatible) {
-		// get user
-		this.userService.getUser().then((user) => {
-			this.id = user.DbId;
-		});
 
 		const url = `${this.apiUrl}/${obj.constructor.name.toLowerCase()}/delete`;
 		// create req body
@@ -597,10 +547,6 @@ export class TodoService {
 	}
 
 	public restoreObject(obj: DbCompatible): Promise<void> {
-		// get user
-		this.userService.getUser().then((user) => {
-			this.id = user.DbId;
-		});
 
 		const url = `${this.apiUrl}/${obj.constructor.name.toLowerCase()}/restore`;
 		// create req body
@@ -646,11 +592,6 @@ export class TodoService {
 	public shareBoard(sharees: Permission[], board: Board, note?: string) {
 		console.log('Sharing board in service');
 
-		// get user
-		this.userService.getUser().then((user) => {
-			this.id = user.DbId;
-		});
-
 		// TODO: send note to recipients
 		const url = `${this.apiUrl}/shared`;
 		sharees.forEach(sharee => {
@@ -685,11 +626,6 @@ export class TodoService {
 
 	private GETShared(args: any): Observable<Board[]> {
 		console.log('requesting shared...');
-
-		// get user
-		this.userService.getUser().then((user) => {
-			this.id = user.DbId;
-		});
 
 		const url = `${this.apiUrl}/shared?userId=${this.id}`;
 		return this.http.get(url).map((response: any) => {
@@ -808,11 +744,6 @@ export class TodoService {
 	public unshareBoard(perm: Permission, board: Board) {
 		console.log('unsharing board...');
 
-		// get user
-		this.userService.getUser().then((user) => {
-			this.id = user.DbId;
-		});
-
 		this.userService.getUserByEmail(perm.User.Email).then((user) => {
 			// first check if user CAN unshare recipient
 			if (board.IsViewOnly) {
@@ -895,18 +826,22 @@ export class TodoService {
 			// get user id
 			this.userService.getUser().then((user) => {
 				this.id = user.DbId;
-				console.log(this.id);
-			});
 
-			// Retrieve all data first, then pull current board after all concluded
-			return this.GETBoards().mergeMap(boards =>
-				this.GETCategories(boards).mergeMap(cats =>
-					this.GETTodos(cats).mergeMap(todos =>
-						this.GETShared(todos))
-						.map(args => {
-							this.isBusy = false;
-							return this.CachedBoards[0];
-						}).share()));
+				// get access token
+				this.userService.getAccessToken().then((token) => {
+					this.token = token;
+
+					// Retrieve all data first, then pull current board after all concluded
+					return this.GETBoards().mergeMap(boards =>
+						this.GETCategories(boards).mergeMap(cats =>
+							this.GETTodos(cats).mergeMap(todos =>
+								this.GETShared(todos))
+								.map(args => {
+									this.isBusy = false;
+									return this.CachedBoards[0];
+								}).share()));
+				});
+			});
 		} else {
 			return Observable.of(this.CurrentBoard);
 		}

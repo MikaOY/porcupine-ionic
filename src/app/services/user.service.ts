@@ -173,7 +173,6 @@ export class UserService {
 		console.log('getting user by id');
 
 		const url = `${this.apiUrl}/user?authOId=${id}`; 
-		console.log(url); 
 		return this.http.get(url).toPromise().then((response: any) => {
 			console.log('processing user by id');
 
