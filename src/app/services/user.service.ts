@@ -35,8 +35,14 @@ export class UserService {
 	// private options = new RequestOptions({ headers: this.headers });
 
 	constructor(private http: Http, private authHttp: AuthHttp, public zone: NgZone) {
+		// Bypassing lock logins
+		this.getUser('auth0|594c8b1cc3954a4865ef9bc9');
+		// let bypassExpireTime = JSON.stringify((100000 * 1000) + new Date().getTime());
+		// this.setStorageVariable('expires_at', bypassExpireTime);
+
 		this.user = this.getStorageVariable('profile');
 		this.idToken = this.getStorageVariable('id_token');
+
 		// TODO: password test 
 		// this.setPassword('1234'); 
 	}
