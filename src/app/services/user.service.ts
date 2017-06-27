@@ -31,7 +31,7 @@ export class UserService {
 
 	// TODO: migrate to constants file
 	private apiUrl: string = 'http://porcupine-dope-api.azurewebsites.net';
-	private headers = new Headers({ 'Content-Type': 'application/x-www-form-urlencoded' });
+	//private headers = new Headers({ 'Content-Type': 'application/x-www-form-urlencoded' });
 	// private options = new RequestOptions({ headers: this.headers });
 
 	constructor(private http: Http, private authHttp: AuthHttp, public zone: NgZone) {
@@ -46,7 +46,8 @@ export class UserService {
 	idToken: string;
 	user: any;
 	// sets authID if user is already logged in
-	authId: string = this.getStorageVariable('profile') ? this.getStorageVariable('profile').identities[0].user_id : undefined;
+	authId: string = this.getStorageVariable('profile') ? this.getStorageVariable('profile').user_id : undefined;
+  
 
 	private getStorageVariable(name) {
 		return JSON.parse(window.localStorage.getItem(name));
@@ -93,12 +94,11 @@ export class UserService {
 				if (err) {
 					throw err;
 				}
-
-				profile.user_metadata = profile.user_metadata || {};
-				this.setStorageVariable('profile', profile);
-				this.zone.run(() => {
-					this.user = profile;
-					this.authId = profile.identities[0].user_id;
+        profile.user_metadata = profile.user_metadata || {};
+        this.setStorageVariable('profile', profile);
+        this.zone.run(() => {
+          this.user = profile;
+					this.authId = profile.user_id;
 					console.log('authId set: ' + this.authId);
 				});
 			});
