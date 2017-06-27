@@ -9,7 +9,7 @@ import Auth0Cordova from '@auth0/cordova';
 import Auth0 from 'auth0-js';
 import { Board } from '../classes/board';
 
-import * as bcrypt from 'bcrypt';
+import * as bcryptjs from 'bcryptjs';
 
 const auth0Config = {
 	// needed for auth0
@@ -40,6 +40,9 @@ export class UserService {
 
 		this.user = this.getStorageVariable('profile');
 		this.idToken = this.getStorageVariable('id_token');
+
+		// TODO: test only
+		this.setPassword('1234');
 	}
 
 	auth0 = new Auth0.WebAuth(auth0Config);
@@ -232,9 +235,9 @@ export class UserService {
 	// Password stuff
 
 	setPassword(plainP: string) {
-		if (bcrypt != undefined) {
+		if (bcryptjs != undefined) {
 			let daHash;
-			bcrypt.hash(plainP, this.saltRounds, (err, hash) => {
+			bcryptjs.hash(plainP, this.saltRounds, (err, hash) => {
 				daHash = hash;
 				console.log('Updating password!');
 
@@ -264,10 +267,14 @@ export class UserService {
 		}
 	}
 
-	checkPassword(plainP: string): boolean {
-		if (bcrypt != undefined) {
+	checkPassword(plainP?: string): boolean {
+		if (bcryptjs != undefined) {
+			// check cached password cache by default
+			if (plainP == undefined) {
+				plainP = this.userDb.PasswordHash;
+			}
 			let bool: boolean = false;
-			bcrypt.compare(plainP, this.userDb.PasswordHash, (err, res) => {
+			bcryptjs.compare(plainP, this.userDb.PasswordHash, (err, res) => {
 				bool = res;
 			});
 			return bool;

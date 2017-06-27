@@ -1,57 +1,105 @@
-// Type definitions for bcrypt 1.0
-// Project: https://www.npmjs.org/package/bcrypt
-// Definitions by: Peter Harris <https://github.com/codeanimal>, Ayman Nedjmeddine <https://github.com/IOAyman>
+// Type definitions for bcryptjs v2.4.0
+// Project: https://github.com/dcodeIO/bcrypt.js
+// Definitions by: Joshua Filby <https://github.com/Joshua-F/>, Rafael Kraut <https://github.com/RafaelKr/>
 // Definitions: https://github.com/DefinitelyTyped/DefinitelyTyped
 
 
+
 /**
- * @param rounds  The cost of processing the data. Default 10.
+ * Sets the pseudo random number generator to use as a fallback if neither node's crypto module nor the Web Crypto API is available.
+ * Please note: It is highly important that the PRNG used is cryptographically secure and that it is seeded properly!
+ * @param  random Function taking the number of bytes to generate as its sole argument, returning the corresponding array of cryptographically secure random byte values.
+ */
+export declare function setRandomFallback(random: (random: number) => number[]): void;
+
+/**
+ * Synchronously generates a salt.
+ * @param  rounds Number of rounds to use, defaults to 10 if omitted
+ * @return Resulting salt
+ * @throws If a random fallback is required but not set
  */
 export declare function genSaltSync(rounds?: number): string;
 
 /**
- * @param rounds    The cost of processing the data. Default 10.
- * @param callback  A callback to be fire once the sald has been generated. Uses eio making it asynchronous.
- * @return A promise to be either resolved with the generated salt or rejected with an Error
+ * Asynchronously generates a salt.
+ * @param  rounds  Number of rounds to use, defaults to 10 if omitted
+ * @return Promise with resulting salt, if callback has been omitted
  */
-export declare function genSalt(rounds: number, callback?: (err: Error, salt: string) => void): Promise<string>;
-/**
- * @param callback  A callback to be fire once the sald has been generated. Uses eio making it asynchronous.
- * @return A promise to be either resolved with the generated salt or rejected with an Error
- */
-export declare function genSalt(callback?: (err: Error, salt: string) => void): Promise<string>;
+export declare function genSalt(rounds?: number): Promise<string>;
 
 /**
- * @param data  The data to be encrypted.
- * @param salt  The salt to be used in encryption.
+ * Asynchronously generates a salt.
+ * @param callback Callback receiving the error, if any, and the resulting salt
  */
-export declare function hashSync(data: any, saltOrRounds: string | number): string;
+export declare function genSalt(callback: (err: Error, salt: string) => void): void;
 
 /**
- * @param data      The data to be encrypted.
- * @param salt      The salt to be used in encryption.
- * @param callback  A callback to be fired once the data has been encrypted. Uses eio making it asynchronous.
- * @return A promise to be either resolved with the encrypted data salt or rejected with an Error
+ * Asynchronously generates a salt.
+ * @param  rounds   Number of rounds to use, defaults to 10 if omitted
+ * @param  callback Callback receiving the error, if any, and the resulting salt
  */
-export declare function hash(data: any, saltOrRounds: string | number, callback?: (err: Error, encrypted: string) => void): Promise<string>;
+export declare function genSalt(rounds: number, callback: (err: Error, salt: string) => void): void;
 
 /**
- * @param data      The data to be encrypted.
- * @param encrypted The data to be compared against.
+ * Synchronously generates a hash for the given string.
+ * @param  s    String to hash
+ * @param  salt Salt length to generate or salt to use, default to 10
+ * @return Resulting hash
  */
-export declare function compareSync(data: any, encrypted: string): boolean;
+export declare function hashSync(s: string, salt?: number | string): string;
 
 /**
- * @param data      The data to be encrypted.
- * @param encrypted The data to be compared against.
- * @param callback  A callback to be fire once the data has been compared. Uses eio making it asynchronous.
- * @return A promise to be either resolved with the comparision result salt or rejected with an Error
+ * Asynchronously generates a hash for the given string.
+ * @param s                String to hash
+ * @param salt             Salt length to generate or salt to use
+ * @return Promise with resulting hash, if callback has been omitted
  */
-export declare function compare(data: any, encrypted: string, callback?: (err: Error, same: boolean) => void): Promise<boolean>;
+export declare function hash(s: string, salt: number | string): Promise<string>;
 
 /**
- * Return the number of rounds used to encrypt a given hash
- *
- * @param encrypted Hash from which the number of rounds used should be extracted.
+ * Asynchronously generates a hash for the given string.
+ * @param s                String to hash
+ * @param salt             Salt length to generate or salt to use
+ * @param callback         Callback receiving the error, if any, and the resulting hash
+ * @param progressCallback Callback successively called with the percentage of rounds completed (0.0 - 1.0), maximally once per MAX_EXECUTION_TIME = 100 ms.
  */
-export declare function getRounds(encrypted: string): number;
+export declare function hash(s: string, salt: number | string, callback?: (err: Error, hash: string) => void, progressCallback?: (percent: number) => void): void;
+
+/**
+ * Synchronously tests a string against a hash.
+ * @param  s    String to compare
+ * @param  hash Hash to test against
+ * @return true if matching, otherwise false
+ */
+export declare function compareSync(s: string, hash: string): boolean;
+
+/**
+ * Asynchronously compares the given data against the given hash.
+ * @param  s                Data to compare
+ * @param  hash             Data to be compared to
+ * @return Promise, if callback has been omitted
+ */
+export declare function compare(s: string, hash: string): Promise<boolean>;
+
+/**
+ * Asynchronously compares the given data against the given hash.
+ * @param  s                Data to compare
+ * @param  hash             Data to be compared to
+ * @param  callback         Callback receiving the error, if any, otherwise the result
+ * @param  progressCallback Callback successively called with the percentage of rounds completed (0.0 - 1.0), maximally once per MAX_EXECUTION_TIME = 100 ms.
+ */
+export declare function compare(s: string, hash: string, callback?: (err: Error, success: boolean) => void, progressCallback?: (percent: number) => void): void;
+
+/**
+ * Gets the number of rounds used to encrypt the specified hash.
+ * @param  hash Hash to extract the used number of rounds from
+ * @return Number of rounds used
+ */
+export declare function getRounds(hash: string): number;
+
+/**
+ * Gets the salt portion from a hash. Does not validate the hash.
+ * @param  hash Hash to extract the salt from
+ * @return Extracted salt part
+ */
+export declare function getSalt(hash: string): string;
