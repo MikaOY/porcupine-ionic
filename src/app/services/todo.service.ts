@@ -43,26 +43,37 @@ export class TodoService {
 		});
 	}
 
-	// generates req options depending on type of request
-	public getReqOptions(reqType: string): RequestOptions {
-		if (this.token == undefined) {
-			this.userService.getAccessToken().then((token) => {
-				this.token = token;
-				console.log("Todo service token set: " + token);
-			});
-		}
+public getReqOptions(reqType: string): Promise<RequestOptions> {
 		let hds;
-		let ops;
-		switch (reqType.toLowerCase()) {
-			case 'get':
-				hds = new Headers({ authorization: this.token });
-				break;
-			default:
-				hds = new Headers({ authorization: this.token, 'Content-Type': 'application/x-www-form-urlencoded' });
-				break;
+		let ops: RequestOptions;
+		if (this.token == undefined) {
+			console.log("Token undefined, getting one");
+			this.token = this.userService.accessToken;
+				console.log("access token" + this.token);
+				switch (reqType.toLowerCase()) {
+					case 'get':
+						hds = new Headers({ authorization: this.token });
+						break;
+					default:
+						hds = new Headers({ authorization: this.token, 'Content-Type': 'application/x-www-form-urlencoded' });
+						break;
+				}
+				ops = new RequestOptions({ headers: hds });
+				return Promise.resolve(ops);
 		}
-		ops = new RequestOptions({ headers: hds });
-		return ops;
+		else {
+			console.log("Token already have, returning " + this.token);
+			switch (reqType.toLowerCase()) {
+					case 'get':
+						hds = new Headers({ authorization: this.token });
+						break;
+					default:
+						hds = new Headers({ authorization: this.token, 'Content-Type': 'application/x-www-form-urlencoded' });
+						break;
+				}
+				ops = new RequestOptions({ headers: hds });
+				return Promise.resolve(ops);
+		}
 	}
 
 	/* START public HTTP functions */
