@@ -1,19 +1,14 @@
 import { Injectable, NgZone } from '@angular/core';
 import { Http } from '@angular/http';
 import { User } from '../classes/user';
-
-//import * as bcrypt from '../../node_modules/bcrypt';
-
 import { TodoService } from './todo.service';
-
 import { Observable, Subscription } from 'rxjs';
 import { Storage } from '@ionic/storage';
 import { AuthHttp, JwtHelper } from 'angular2-jwt';
-
 import Auth0Cordova from '@auth0/cordova';
 import Auth0 from 'auth0-js';
 
-import { User } from '../classes/user';
+//import * as bcrypt from '../../node_modules/bcrypt';
 
 const auth0Config = {
   // needed for auth0
@@ -28,8 +23,8 @@ const auth0Config = {
 
 @Injectable()
 export class UserService {
-
-	public currentUserId: number;
+	private userDb: User;
+	
 	// password hashing
 	private saltRounds = 10;
 
