@@ -38,7 +38,7 @@ export class UserService {
   idToken: string;
   user: any;
 	// sets authID if user is already logged in
-	authId: string = this.getStorageVariable('profile') ? this.getStorageVariable('profile').identities[0].user_id : undefined;
+	authId: string = this.getStorageVariable('profile') ? this.getStorageVariable('profile').user_id : undefined;
   
   private getStorageVariable(name) {
     return JSON.parse(window.localStorage.getItem(name));
@@ -90,7 +90,7 @@ export class UserService {
         this.setStorageVariable('profile', profile);
         this.zone.run(() => {
           this.user = profile;
-					this.authId = profile.identities[0].user_id;
+					this.authId = profile.user_id;
 					console.log('authId set: ' + this.authId);
         });
       });
@@ -107,6 +107,7 @@ export class UserService {
     this.accessToken = null;
     this.user = null;
   }
+	
 /*USER.SERVICE functions*/
 	getUser(): Promise<number> { //TODO: should get currentUser
 		var user: number;
