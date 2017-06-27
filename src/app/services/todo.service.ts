@@ -802,16 +802,25 @@ export class TodoService {
 		return val;
 	}
 
-	// TODO: make GET get user id from user.service
 	public getCurrentBoard(isForce?: boolean): Observable<any> {
+
+		// return null if user undefined
+
+		// first find out if HTTP req is needed
 		let doRetrieve = true;
 		// return cached if present
 		if (this.CurrentBoard != null && this.CurrentBoard != undefined) {
 			doRetrieve = false;
 		}
+		// allow force GET
 		if (isForce != undefined && isForce == true) {
 			doRetrieve = true;
 		}
+
+		// get current user id
+		this.userService.getUser().then((user) => {
+			this.id = user.DbId;
+		});
 
 		if (doRetrieve == true) {
 			this.isBusy = true;
