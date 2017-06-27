@@ -1,5 +1,5 @@
 import { Injectable, NgZone } from '@angular/core';
-import { Http } from '@angular/http';
+import { Http, Response, RequestOptions, Headers } from '@angular/http';
 import { User } from '../classes/user';
 import { TodoService } from './todo.service';
 import { Observable, Subscription } from 'rxjs';
@@ -121,6 +121,26 @@ export class UserService {
 		this.accessToken = null;
 		this.user = null;
 	}
+
+	getAccessToken() {
+		console.log('Getting user access token');
+
+		// get access token for porcupine-api
+		let hds = new Headers({ 'Content-Type': 'application/json' });
+		let url = 'https://porcupine.au.auth0.com/oauth/token';
+		let body = '{"client_id":"6SH0ceK2xnoSlkfMbl2rv0ZHp7szmLJr","client_secret":"BiBHTw-8w0VbbQXCE8PgXU3o8ptwk1wudE3fkAYQ3dbn-cdDR8VoCdZU5fmuNo-K","audience":"http://porcupine-dope-api.azurewebsites.net","grant_type":"client_credentials"}';
+		let ops = new RequestOptions({
+			headers: hds,
+		});
+
+		this.http.post(url, body, ops).subscribe((response) => {
+			let json = response.json();
+			console.log(json);
+			console.log(json['token_type'] + ' ' + json['access_token']);
+			return json['token_type'] + ' ' + json['access_token'];
+		});
+	}
+
 	// dev authO id: auth0|594c8b1cc3954a4865ef9bc9
 	getUser(authOId?: string, forceGet?: boolean): Promise<User> {
 		if (this.userDb == undefined || (forceGet != undefined && forceGet == true)) {
@@ -168,7 +188,7 @@ export class UserService {
 	private processIntoUser(response: any) {
 		let user: User;
 		for (let json of response.json()) {
-			user = new User(json['person_id'], json['fname'], json['lname'], json['username'], json['person_email'], json['password_hash']); 
+			user = new User(json['person_id'], json['fname'], json['lname'], json['username'], json['person_email'], json['password_hash']);
 		}
 		return user;
 	}
