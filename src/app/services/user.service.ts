@@ -132,16 +132,16 @@ export class UserService {
 
 		return this.http.post(url, body, ops).toPromise().then((response) => {
 			let json = response.json();
-			console.log(json);
-			console.log(json['token_type'] + ' ' + json['access_token']);
+			console.log('Returning access token');
 			return json['token_type'] + ' ' + json['access_token'];
 		});
 	}
 
-	// dev authO id: auth0|594c8b1cc3954a4865ef9bc9
+	// dev authO id: 594c8b1cc3954a4865ef9bc9
 	getUser(authOId?: string, forceGet?: boolean): Promise<User> {
 		if (this.userDb == undefined || (forceGet != undefined && forceGet == true)) {
 			if (authOId == undefined) {
+				console.log('Returning null user user.service: authOId undefined!');
 				return Promise.resolve(null);
 			} else {
 				return this.GETUserById(authOId).then((user) => {
@@ -150,6 +150,7 @@ export class UserService {
 				});
 			}
 		} else {
+			console.log('Returning userDb in user.service!');
 			return Promise.resolve(this.userDb);
 		}
 	}
@@ -171,7 +172,8 @@ export class UserService {
 	GETUserById(id: string): Promise<User> {
 		console.log('getting user by id');
 
-		const url = `${this.apiUrl}/user?authOId=${id}`;
+		const url = `${this.apiUrl}/user?authOId=${id}`; 
+		console.log(url); 
 		return this.http.get(url).toPromise().then((response: any) => {
 			console.log('processing user by id');
 

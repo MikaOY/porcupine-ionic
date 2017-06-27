@@ -31,33 +31,32 @@ export class TodoService {
 	private apiUrl: string = 'http://porcupine-dope-api.azurewebsites.net';
 	private id: number = 0;
 
-	private headers = new Headers({ 'Content-Type': 'application/x-www-form-urlencoded' });
-	private options = new RequestOptions({ headers: this.headers });
-
 	private isBusy: boolean = false;
 
 	constructor(private http: Http, private userService: UserService) {
 		// TODO remove: bypass login
-		this.userService.getUser('auth0|594c8b1cc3954a4865ef9bc9').then((user) => {
-			this.getCurrentBoard();
+		this.userService.getUser('594c8b1cc3954a4865ef9bc9').then((user) => {
+			while (this.isBusy == false) {
+				this.getCurrentBoard();
+			}
 		});
 	}
 
-	public getReqOps(httpType: string): RequestOptions {
+	// generates req options depending on type of request
+	public getReqOptions(reqType: string): RequestOptions {
 		let token: string;
 		let hds;
 		let ops;
 		this.userService.getAccessToken().then((token) => {
-			switch (httpType) {
+			switch (reqType.toLowerCase()) {
 				case 'get':
 					hds = new Headers({ authorization: token });
-					ops = new RequestOptions({ headers: hds });
 					break;
-				case 'other':
+				default:
 					hds = new Headers({ authorization: token, 'Content-Type': 'application/x-www-form-urlencoded' });
-					ops = new RequestOptions({ headers: hds });
 					break;
-			}	
+			}
+			ops = new RequestOptions({ headers: hds });
 		});
 		return ops;
 	}
@@ -89,7 +88,7 @@ export class TodoService {
 		}
 		let body = formBody.join('&');
 
-		return this.http.post(url, body, this.options).toPromise().then((response: any) => {
+		return this.http.post(url, body, this.getReqOptions('post')).toPromise().then((response: any) => {
 			console.log('addBoard response:' + response.toString());
 		}).catch(this.handleError);
 	}
@@ -102,10 +101,8 @@ export class TodoService {
 			this.id = user.DbId;
 		});
 
-		let ops = this.getReqOps('get');
-
 		const url = `${this.apiUrl}/board?userId=${this.id}`;
-		return this.http.get(url, ops).map((response: any) => {
+		return this.http.get(url, this.getReqOptions('get')).map((response: any) => {
 
 			console.log('processing boards...');
 
@@ -163,7 +160,7 @@ export class TodoService {
 		}
 		let body = formBody.join('&');
 
-		return this.http.put(url, body, this.options).toPromise().then((response: any) => {
+		return this.http.put(url, body, this.getReqOptions('put')).toPromise().then((response: any) => {
 			console.log('updateBoards response:' + response.toString());
 		}).catch(this.handleError);
 	}
@@ -210,7 +207,7 @@ export class TodoService {
 
 		console.log(body);
 
-		return this.http.post(url, body, this.options).toPromise().then((response: any) => {
+		return this.http.post(url, body, this.getReqOptions('post')).toPromise().then((response: any) => {
 			console.log('addCategory response:' + response.toString());
 		}).catch(this.handleError);
 	}
@@ -329,7 +326,7 @@ export class TodoService {
 		}
 		let body = formBody.join('&');
 
-		return this.http.put(url, body, this.options).toPromise().then((response: any) => {
+		return this.http.put(url, body, this.getReqOptions('put')).toPromise().then((response: any) => {
 			console.log('updateCategories response:' + response.toString());
 		}).catch(this.handleError);
 	}
@@ -379,7 +376,7 @@ export class TodoService {
 		let body = formBody.join('&');
 		console.log(body);
 
-		return this.http.post(url, body, this.options).toPromise().then((response: any) => {
+		return this.http.post(url, body, this.getReqOptions('post')).toPromise().then((response: any) => {
 			console.log('addTodo response:' + response.toString());
 		}).catch(this.handleError);
 	}
@@ -539,7 +536,7 @@ export class TodoService {
 		let body = formBody.join('&');
 		console.log(body);
 
-		return this.http.put(url, body, this.options).toPromise().then((response: any) => {
+		return this.http.put(url, body, this.getReqOptions('put')).toPromise().then((response: any) => {
 			console.log('updateTodos response:' + response.toString());
 		}).catch(this.handleError);
 	}
@@ -594,7 +591,7 @@ export class TodoService {
 				break;
 		}
 
-		this.http.put(url, body, this.options).toPromise().then((response: any) => {
+		this.http.put(url, body, this.getReqOptions('put')).toPromise().then((response: any) => {
 			console.log('delete ' + idName + ' response: ' + response.toString());
 		}).catch(this.handleError);
 	}
@@ -623,7 +620,7 @@ export class TodoService {
 		let body = formBody.join('&');
 		console.log(body);
 
-		return this.http.put(url, body, this.options).toPromise().then((response: any) => {
+		return this.http.put(url, body, this.getReqOptions('put')).toPromise().then((response: any) => {
 			console.log('Restore ' + idName + ' ' + obj.DbId + ' ' + response.toString());
 
 			// refresh cache by getting all data again
@@ -637,7 +634,7 @@ export class TodoService {
 		const url = `${this.apiUrl}/restore/all`;
 
 		let body: string = '';
-		return this.http.put(url, body, this.options).toPromise().then((response: any) => {
+		return this.http.put(url, body, this.getReqOptions('put')).toPromise().then((response: any) => {
 			console.log('Restore all: ' + response.toString());
 
 			// refresh cache by getting all data again
@@ -678,7 +675,7 @@ export class TodoService {
 				let body = formBody.join('&');
 				console.log(body);
 
-				this.http.post(url, body, this.options).toPromise().then((response: any) => {
+				this.http.post(url, body, this.getReqOptions('post')).toPromise().then((response: any) => {
 					console.log('share to response:' + response.toString());
 					return;
 				}).catch(this.handleError);
@@ -880,19 +877,6 @@ export class TodoService {
 	}
 
 	public getCurrentBoard(isForce?: boolean): Observable<any> {
-		// if user null, return null
-		// get current user 
-		let tempUser: User;
-		this.userService.getUser().then((user) => {
-			tempUser = user;
-		});
-		if (tempUser == null) {
-			console.log('User null, returning null current board!');
-			return Observable.of(null);
-		} else {
-			this.id = tempUser.DbId;
-		}
-
 		// first find out if HTTP req is needed
 		let doRetrieve = true;
 		// return cached if present
@@ -907,6 +891,12 @@ export class TodoService {
 		if (doRetrieve == true) {
 			this.isBusy = true;
 			console.log('Getting current board...');
+
+			// get user id
+			this.userService.getUser().then((user) => {
+				this.id = user.DbId;
+				console.log(this.id);
+			});
 
 			// Retrieve all data first, then pull current board after all concluded
 			return this.GETBoards().mergeMap(boards =>
