@@ -1,36 +1,35 @@
 import { Injectable, NgZone } from '@angular/core';
 import { Http } from '@angular/http';
 import { User } from '../classes/user';
-import { TodoService } from './todo.service';
-import { Observable, Subscription } from 'rxjs';
-import { Storage } from '@ionic/storage';
-import { AuthHttp, JwtHelper } from 'angular2-jwt';
-import Auth0Cordova from '@auth0/cordova';
-import Auth0 from 'auth0-js';
-
-// AuthO
-const auth0Config = {
-	// needed for auth0
-	clientID: 'pBum20Ve6T5n76t05t6tue5G2MMk9I3d',
-
-	// needed for auth0cordova
-	clientId: 'pBum20Ve6T5n76t05t6tue5G2MMk9I3d',
-	domain: 'porcupine.au.auth0.com',
-	callbackURL: location.href,
-	packageIdentifier: 'com.ionicframework.porcupineionic261894'
-};
-declare var Auth0Lock: any;
 
 //import * as bcrypt from '../../node_modules/bcrypt';
 
+import { TodoService } from './todo.service';
+
+import { Observable, Subscription } from 'rxjs';
+import { Storage } from '@ionic/storage';
+import { AuthHttp, JwtHelper } from 'angular2-jwt';
+
+import Auth0Cordova from '@auth0/cordova';
+import Auth0 from 'auth0-js';
+
+import { User } from '../classes/user';
+
+const auth0Config = {
+  // needed for auth0
+  clientID: 'pBum20Ve6T5n76t05t6tue5G2MMk9I3d',
+
+  // needed for auth0cordova
+  clientId: 'pBum20Ve6T5n76t05t6tue5G2MMk9I3d',
+  domain: 'porcupine.au.auth0.com',
+  callbackURL: location.href,
+  packageIdentifier: 'com.ionicframework.porcupineionic26189'
+};
+
 @Injectable()
 export class UserService {
-	auth0 = new Auth0.WebAuth(auth0Config);
-	accessToken: string;
-	idToken: string;
-	user: any;
-	userDb: User;
 
+	public currentUserId: number;
 	// password hashing
 	private saltRounds = 10;
 
@@ -42,82 +41,85 @@ export class UserService {
 	constructor(private http: Http, private authHttp: AuthHttp, public zone: NgZone, private todoService: TodoService) {
 		// these two lines are from ionic2+, kEEP EM <3
 		this.user = this.getStorageVariable('profile');
-		this.idToken = this.getStorageVariable('id_token');
-
+    this.idToken = this.getStorageVariable('id_token');
 		// TODO: password test 
 		// this.setPassword('1234'); 
 	}
 
-	private getStorageVariable(name) {
-		return JSON.parse(window.localStorage.getItem(name));
-	}
+  auth0 = new Auth0.WebAuth(auth0Config);
+  accessToken: string;
+  idToken: string;
+  user: any;
+	// sets authID if user is already logged in
+	authId: string = this.getStorageVariable('profile') ? this.getStorageVariable('profile').identities[0].user_id : undefined;
+  
+  private getStorageVariable(name) {
+    return JSON.parse(window.localStorage.getItem(name));
+  }
 
-	private setStorageVariable(name, data) {
-		window.localStorage.setItem(name, JSON.stringify(data));
-	}
+  private setStorageVariable(name, data) {
+    window.localStorage.setItem(name, JSON.stringify(data));
+  }
 
-	private setIdToken(token) {
-		this.idToken = token;
-		this.setStorageVariable('id_token', token);
-	}
+  private setIdToken(token) {
+    this.idToken = token;
+    this.setStorageVariable('id_token', token);
+  }
 
-	private setAccessToken(token) {
-		this.accessToken = token;
-		this.setStorageVariable('access_token', token);
-	}
+  private setAccessToken(token) {
+    this.accessToken = token;
+    this.setStorageVariable('access_token', token);
+  }
 
-	public isAuthenticated() {
-		const expiresAt = JSON.parse(localStorage.getItem('expires_at'));
-		return Date.now() < expiresAt;
-	}
+  public isAuthenticated() {
+    const expiresAt = JSON.parse(localStorage.getItem('expires_at'));
+    return Date.now() < expiresAt;
+  }
 
-	public login() {
-		const client = new Auth0Cordova(auth0Config);
+  public login() {
+    const client = new Auth0Cordova(auth0Config);
 
-		const options = {
-			scope: 'openid profile offline_access'
-		};
+    const options = {
+      scope: 'openid profile offline_access'
+    };
 
-		client.authorize(options, (err, authResult) => {
-			if (err) {
-				throw err;
-			}
+    client.authorize(options, (err, authResult) => {
+      if(err) {
+        throw err;
+      }
 
-			this.setIdToken(authResult.idToken);
-			this.setAccessToken(authResult.accessToken);
+      this.setIdToken(authResult.idToken);
+      this.setAccessToken(authResult.accessToken);
 
-			const expiresAt = JSON.stringify((authResult.expiresIn * 1000) + new Date().getTime());
-			this.setStorageVariable('expires_at', expiresAt);
+      const expiresAt = JSON.stringify((authResult.expiresIn * 1000) + new Date().getTime());
+      this.setStorageVariable('expires_at', expiresAt);
 
-			this.auth0.client.userInfo(this.accessToken, (err, profile) => {
-				if (err) {
-					throw err;
-				}
+      this.auth0.client.userInfo(this.accessToken, (err, profile) => {
+        if(err) {
+          throw err;
+        }
 
-				profile.user_metadata = profile.user_metadata || {};
-				this.setStorageVariable('profile', profile);
-				this.zone.run(() => {
-					this.user = profile;
-				});
+        profile.user_metadata = profile.user_metadata || {};
+        this.setStorageVariable('profile', profile);
+        this.zone.run(() => {
+          this.user = profile;
+					this.authId = profile.identities[0].user_id;
+					console.log('authId set: ' + this.authId);
+        });
+      });
+    });
+  }
 
-				// can retrieve db user with authO id (from profile)
-				this.getUser(this.user['id']).then((user) => {
-					this.todoService.getCurrentBoard();
-				});
-			});
-		});
-	}
+  public logout() {
+    window.localStorage.removeItem('profile');
+    window.localStorage.removeItem('access_token');
+    window.localStorage.removeItem('id_token');
+    window.localStorage.removeItem('expires_at');
 
-	public logout() {
-		window.localStorage.removeItem('profile');
-		window.localStorage.removeItem('access_token');
-		window.localStorage.removeItem('id_token');
-		window.localStorage.removeItem('expires_at');
-
-		this.idToken = null;
-		this.accessToken = null;
-		this.user = null;
-	}
+    this.idToken = null;
+    this.accessToken = null;
+    this.user = null;
+  }
 
 	// dev authO id: auth0|594c8b1cc3954a4865ef9bc9
 	getUser(authOId?: string, forceGet?: boolean): Promise<User> {
