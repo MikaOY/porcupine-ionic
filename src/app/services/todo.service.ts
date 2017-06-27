@@ -43,6 +43,25 @@ export class TodoService {
 		});
 	}
 
+	public getReqOps(httpType: string): RequestOptions {
+		let token: string;
+		let hds;
+		let ops;
+		this.userService.getAccessToken().then((token) => {
+			switch (httpType) {
+				case 'get':
+					hds = new Headers({ authorization: token });
+					ops = new RequestOptions({ headers: hds });
+					break;
+				case 'other':
+					hds = new Headers({ authorization: token, 'Content-Type': 'application/x-www-form-urlencoded' });
+					ops = new RequestOptions({ headers: hds });
+					break;
+			}	
+		});
+		return ops;
+	}
+
 	/* START public HTTP functions */
 
 	public addBoard(newBoard: Board): Promise<void> {
@@ -83,17 +102,10 @@ export class TodoService {
 			this.id = user.DbId;
 		});
 
-		// get access token
-		let token: string;
-		let hds;
-		let ops;
-		this.userService.getAccessToken().then((token) => {
-			hds = new Headers({ authorization: token });
-			ops = new RequestOptions({ headers: this.headers });
-		});
+		let ops = this.getReqOps('get');
 
 		const url = `${this.apiUrl}/board?userId=${this.id}`;
-		return this.http.get(url).map((response: any) => {
+		return this.http.get(url, ops).map((response: any) => {
 
 			console.log('processing boards...');
 
