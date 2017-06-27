@@ -51,27 +51,41 @@ export class UserService {
 	// sets authID if user is already logged in
 	authId: string = this.getStorageVariable('profile') ? this.getStorageVariable('profile').identities[0].user_id : undefined;
 
-	public getReqOptions(reqType: string): RequestOptions {
+	public getReqOptions(reqType: string): Promise<RequestOptions> {
+		let hds;
+		let ops: RequestOptions;
 		if (this.accessToken == undefined) {
 			console.log("accessToken undefined, getting one");
-			this.getAccessToken().then(val => {
+			return this.getAccessToken().then(val => {
 				console.log("Result from getAccessToken " + val);
 				this.accessToken = val;
+				
+				console.log("access token" + this.accessToken);
+				switch (reqType.toLowerCase()) {
+					case 'get':
+						hds = new Headers({ authorization: this.accessToken });
+						break;
+					default:
+						hds = new Headers({ authorization: this.accessToken, 'Content-Type': 'application/x-www-form-urlencoded' });
+						break;
+				}
+				ops = new RequestOptions({ headers: hds });
+				return ops;
 			});
 		}
-		let hds;
-		let ops;
-		console.log("access token" + this.accessToken);
-		switch (reqType.toLowerCase()) {
-			case 'get':
-				hds = new Headers({ authorization: this.accessToken });
-				break;
-			default:
-				hds = new Headers({ authorization: this.accessToken, 'Content-Type': 'application/x-www-form-urlencoded' });
-				break;
+		else {
+			console.log("Accesstokan already have, returning " + this.accessToken);
+			switch (reqType.toLowerCase()) {
+					case 'get':
+						hds = new Headers({ authorization: this.accessToken });
+						break;
+					default:
+						hds = new Headers({ authorization: this.accessToken, 'Content-Type': 'application/x-www-form-urlencoded' });
+						break;
+				}
+				ops = new RequestOptions({ headers: hds });
+				return Promise.resolve(ops);
 		}
-		ops = new RequestOptions({ headers: hds });
-		return ops;
 	}
 
 	private getStorageVariable(name) {
@@ -166,6 +180,7 @@ export class UserService {
 				console.log('Returning null user user.service: authOId undefined!');
 				return Promise.resolve(null);
 			} else {
+				console.log("getUser GETting user by ID");
 				return this.GETUserById(authOId).then((user) => {
 					this.userDb = user;
 					return user;
@@ -194,14 +209,16 @@ export class UserService {
 	GETUserById(id: string): Promise<User> {
 		console.log('getting user by id');
 
-		const url = `${this.apiUrl}/user?authOId=${id}`; 
-		return this.http.get(url, this.getReqOptions('get')).toPromise().then((response: any) => {
+		const url = `${this.apiUrl}/user?authOId=${id}`;
+		return this.getReqOptions('get').then(reqOps => { 
+		return this.http.get(url, reqOps).toPromise().then((response: any) => {
 			console.log('processing user by id');
 
 			let user: User = this.processIntoUser(response);
 
 			console.log('User by id retrieved!');
 			return user;
+		});
 		});
 	}
 
