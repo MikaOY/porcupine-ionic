@@ -68,7 +68,7 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
   providers: [
     StatusBar,
     SplashScreen,
-    {provide: ErrorHandler, useClass: IonicErrorHandler},
+    { provide: ErrorHandler, useClass: IonicErrorHandler },
     TodoService,
     SettingsService,
 		UserService,

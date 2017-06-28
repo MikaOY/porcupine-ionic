@@ -8,11 +8,10 @@
       "dom",
       "es2015"
     ],
-    "module": "commonjs",
+    "module": "es2015",
     "moduleResolution": "node",
     "sourceMap": true,
-    "target": "es6",
-    "noImplicitAny": false,
+    "target": "es5",
 		"allowJs": true,
 		"checkJs": true,
 		"types": [
