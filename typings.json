@@ -1,5 +1,8 @@
 {
   "globalDependencies": {
     "mocha": "registry:dt/mocha#2.2.5+20170311011848"
+  },
+  "dependencies": {
+    "bcryptjs": "registry:dt/bcryptjs#2.4.0+20170109141314"
   }
 }
