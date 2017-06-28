@@ -18,7 +18,7 @@ Get started
 Clone the repository, and...
 ```
 npm install
-npm install ionic cordova karma-cli node-gyp -g
+npm install ionic cordova -g
 ```
 
 Debugging commands
@@ -27,6 +27,7 @@ Debugging commands
 `npm start` launches ios simulator
 `npm test` runs unit tests with Karma
 See the example test in `src/app/app.component.spec.ts` for an example of a component test.
+`npm ls -gp --depth=0 | awk -F/ '/node_modules/ && !/\/npm$/ {print $NF}' | xargs npm -g rm` a fresh start
 
 E2E tests (Browser-only)
 ----------------------
