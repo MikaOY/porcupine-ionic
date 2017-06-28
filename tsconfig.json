@@ -18,7 +18,9 @@
 		"types": [
       "mocha",
 			"chai",
-			"sinon"
+			"sinon",
+			"node",
+			"karma"
     ]
   },
   "include": [

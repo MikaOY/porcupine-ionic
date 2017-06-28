@@ -10,13 +10,13 @@ module.exports = function (config) {
 
     // frameworks to use
     // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
-    frameworks: ['mocha', 'chai', 'sinon'],
+    frameworks: ['mocha', 'chai', 'sinon', 'karma-typescript'],
 
 
     // list of files / patterns to load in the browser
     files: [
       'src/**/*.ts',
-      'src/**/!(service-worker).js'
+			'src/**/*.spec.ts'
     ],
 
 
@@ -28,13 +28,14 @@ module.exports = function (config) {
     // preprocess matching files before serving them to the browser
     // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
     preprocessors: {
+			'src/**/*spec.ts': ['karma-typescript'],
     },
 
 
     // test results reporter to use
     // possible values: 'dots', 'progress'
     // available reporters: https://npmjs.org/browse/keyword/karma-reporter
-    reporters: ['progress'],
+    reporters: ['progress', 'karma-typescript'],
 
 
     // web server port
@@ -52,7 +53,6 @@ module.exports = function (config) {
 
     // enable / disable watching file and executing tests whenever any file changes
     autoWatch: true,
-		autoWatchBatchDelay: 1000,
 
 
     // start these browsers
