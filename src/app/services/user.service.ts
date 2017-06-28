@@ -242,27 +242,28 @@ export class UserService {
 				console.log('Updating password!');
 
 				const url = `${this.apiUrl}/user`;
+				if (this.userDb != undefined) {
+					var details = {
+						'fname': this.userDb.FirstName,
+						'lname': this.userDb.LastName,
+						'username': this.userDb.Username,
+						'email': this.userDb.Email,
+						'hash': hash,
+					};
+					let formBody = [];
+					for (var property in details) {
+						var encodedKey = encodeURIComponent(property);
+						var encodedValue = encodeURIComponent(details[property]);
+						formBody.push(encodedKey + '=' + '\'' + encodedValue + '\'');
+					}
+					let body = formBody.join('&');
 
-				var details = {
-					'fname': this.userDb.FirstName,
-					'lname': this.userDb.LastName,
-					'username': this.userDb.Username,
-					'email': this.userDb.Email,
-					'hash': hash,
-				};
-				let formBody = [];
-				for (var property in details) {
-					var encodedKey = encodeURIComponent(property);
-					var encodedValue = encodeURIComponent(details[property]);
-					formBody.push(encodedKey + '=' + '\'' + encodedValue + '\'');
+					return this.http.put(url, body, this.getReqOptions('put')).toPromise().then((response: any) => {
+						this.userDb.PasswordHash = daHash;
+						console.log(this.userDb.PasswordHash);
+						console.log('Update user response: ' + response.toString());
+					}).catch(this.handleError);
 				}
-				let body = formBody.join('&');
-
-				return this.http.put(url, body, this.getReqOptions('put')).toPromise().then((response: any) => {
-					this.userDb.PasswordHash = daHash;
-					console.log(this.userDb.PasswordHash);
-					console.log('Update user response: ' + response.toString());
-				}).catch(this.handleError);
 			});
 		}
 	}
