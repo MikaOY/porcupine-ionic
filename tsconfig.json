@@ -8,13 +8,18 @@
       "dom",
       "es2015"
     ],
-    "module": "es2015",
+    "module": "commonjs",
     "moduleResolution": "node",
     "sourceMap": true,
     "target": "es6",
     "noImplicitAny": false,
 		"allowJs": true,
-		"checkJs": true
+		"checkJs": true,
+		"types": [
+      "mocha",
+			"chai",
+			"sinon"
+    ]
   },
   "include": [
     "src/**/*.ts"
@@ -27,7 +32,6 @@
     "rewriteTsconfig": false
   },
   "files": [
-    "typings/index.d.ts",
-		"src/app/services/user.service.ts"
+    "typings/index.d.ts"
   ]
 }
