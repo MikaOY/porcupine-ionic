@@ -1,7 +1,7 @@
 // Karma configuration
 // Generated on Wed Jun 28 2017 09:38:50 GMT+0800 (+08)
 
-module.exports = function(config) {
+module.exports = function (config) {
   config.set({
 
     // base path that will be used to resolve all patterns (eg. files, exclude)
@@ -16,7 +16,7 @@ module.exports = function(config) {
     // list of files / patterns to load in the browser
     files: [
       'src/**/*.ts',
-      'test/*.js'
+      'src/**/!(service-worker).js'
     ],
 
 
@@ -52,6 +52,7 @@ module.exports = function(config) {
 
     // enable / disable watching file and executing tests whenever any file changes
     autoWatch: true,
+		autoWatchBatchDelay: 1000,
 
 
     // start these browsers
