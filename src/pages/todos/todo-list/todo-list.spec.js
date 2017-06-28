@@ -1,3 +1,4 @@
+/*
 var todolist = require('./todo-list.component.ts');
 
 describe('TodoList', function() {
@@ -13,3 +14,4 @@ describe('TodoList', function() {
 		})
 	});
 });
+*/

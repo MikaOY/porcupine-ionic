@@ -27,7 +27,7 @@
     "rewriteTsconfig": false
   },
   "files": [
-    "typings/main.d.ts",
+    "typings/index.d.ts",
 		"src/app/services/user.service.ts"
   ]
 }
