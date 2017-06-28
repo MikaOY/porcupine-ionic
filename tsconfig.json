@@ -16,7 +16,8 @@
     "checkJs": true,
     "types": [
       "node",
-      "karma"
+      "karma",
+			"jasmine"
     ]
   },
   "include": [
