@@ -9,8 +9,9 @@
 		"build": "ionic-app-scripts build",
 		"ionic:build": "ionic-app-scripts build",
 		"ionic:serve": "ionic-app-scripts serve",
-		"test": "ionic serve -l -c",
-		"start": "ionic cordova emulate ios -l -c"
+		"serve": "ionic serve -l -c",
+		"start": "ionic cordova emulate ios -l -c",
+		"test": "./node_modules/karma/bin/karma start"
 	},
 	"dependencies": {
 		"@angular/common": "4.0.2",
