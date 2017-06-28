@@ -12,27 +12,25 @@
     "moduleResolution": "node",
     "sourceMap": true,
     "target": "es5",
-		"allowJs": true,
-		"checkJs": true,
-		"types": [
+    "allowJs": true,
+    "checkJs": true,
+    "types": [
       "mocha",
-			"chai",
-			"sinon",
-			"node",
-			"karma"
+      "chai",
+      "sinon",
+      "node",
+      "karma"
     ]
   },
   "include": [
     "src/**/*.ts"
   ],
   "exclude": [
-    "node_modules"
+    "node_modules",
+    "src/**/*.spec.ts"
   ],
   "compileOnSave": false,
   "atom": {
     "rewriteTsconfig": false
-  },
-  "files": [
-    "typings/index.d.ts"
-  ]
+  }
 }

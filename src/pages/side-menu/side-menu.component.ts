@@ -9,11 +9,11 @@ import { UserService } from '../../app/services/user.service';
 import { AddCategory } from './add-category/add-category.component';
 
 @Component({
-	selector: 'category-list',
+	selector: 'side-menu',
 	templateUrl: 'side-menu.html'
 })
 
-export class CategorySort implements OnInit {
+export class SideMenu implements OnInit {
 	isWaitOver: boolean = false;
 
 	constructor(private todoService: TodoService,

@@ -3,6 +3,7 @@ import { Platform, ModalController } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { UserService } from './services/user.service';
+import { SideMenu } from '../pages/side-menu/side-menu.component';
 
 import { TabsPage } from '../pages/tabs/tabs';
 import { SettingsService } from './services/settings.service';

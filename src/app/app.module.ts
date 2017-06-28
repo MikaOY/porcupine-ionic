@@ -16,7 +16,7 @@ import { SettingsPage } from '../pages/settings/settings';
 import { TodosPage } from '../pages/todos/todos';
 import { TodoList } from '../pages/todos/todo-list/todo-list.component'; 
 
-import { CategorySort } from '../pages/side-menu/side-menu.component';
+import { SideMenu } from '../pages/side-menu/side-menu.component';
 import { AddCategory } from '../pages/side-menu/add-category/add-category.component';
 import { BoardManager } from '../pages/side-menu/board-manager/board-manager.component';
 import { SharePage } from '../pages/side-menu/board-manager/share-page/share-page.component';
@@ -38,7 +38,7 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     TodosPage,
     TabsPage,
     TodoList,
-    CategorySort,
+    SideMenu,
     AddCategory,
     UnlockPage,
     BoardManager,
@@ -58,7 +58,7 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     SettingsPage,
     TodosPage,
     TabsPage,
-    CategorySort,
+    SideMenu,
     AddCategory,
     UnlockPage,
     BoardManager,
