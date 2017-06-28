@@ -2,6 +2,7 @@
 // Generated on Wed Jun 28 2017 16:28:28 GMT+0800 (+08)
 
 module.exports = function(config) {
+	'use strict';
   config.set({
 
     // base path that will be used to resolve all patterns (eg. files, exclude)
@@ -15,6 +16,13 @@ module.exports = function(config) {
 
     // list of files / patterns to load in the browser
     files: [
+			// zone.js
+      'node_modules/zone.js/dist/zone.js',
+      'node_modules/zone.js/dist/long-stack-trace-zone.js',
+      'node_modules/zone.js/dist/proxy.js',
+      'node_modules/zone.js/dist/sync-test.js',
+      'node_modules/zone.js/dist/async-test.js',
+      'node_modules/zone.js/dist/fake-async-test.js',
 			{ pattern: 'src/**/*.spec.ts' }
     ],
 
