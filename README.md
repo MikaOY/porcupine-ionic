@@ -18,7 +18,7 @@ Get started
 Clone the repository, and...
 ```
 npm install
-npm install ionic cordova karma-cli -g
+npm install ionic cordova karma-cli node-gyp -g
 ```
 
 Debugging commands
