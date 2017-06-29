@@ -5,7 +5,7 @@ import { ElasticModule } from 'angular2-elastic';
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
-import { HttpModule }    from '@angular/http';
+import { HttpModule } from '@angular/http';
 import { Http, RequestOptions } from '@angular/http';
 import { AuthHttp, AuthConfig } from 'angular2-jwt';
 
@@ -18,31 +18,31 @@ import { SideMenuModule } from '../pages/side-menu/side-menu.module';
 import { TabsModule } from '../pages/tabs/tabs.module';
 
 export function authHttpServiceFactory(http: Http, options: RequestOptions) {
-  return new AuthHttp(new AuthConfig(), http, options);
+	return new AuthHttp(new AuthConfig(), http, options);
 }
 
 @NgModule({
-  declarations: [ MyApp ],
-  imports: [
-    IonicModule.forRoot(MyApp, {}, { links: [] }),
-    BrowserModule,
-    FormsModule,
-    HttpModule,
-    ElasticModule,
+	declarations: [MyApp],
+	imports: [
+		IonicModule.forRoot(MyApp, {}, { links: [] }),
+		BrowserModule,
+		FormsModule,
+		HttpModule,
+		ElasticModule,
 		CoreModule,
 		SharedModule,
 		SettingsModule,
 		TodosModule,
 		SideMenuModule,
 		TabsModule
-  ],
-  bootstrap: [IonicApp],
-  entryComponents: [ MyApp ],
-  providers: [
-    StatusBar,
-    SplashScreen,
-    { provide: ErrorHandler, useClass: IonicErrorHandler },
+	],
+	bootstrap: [IonicApp],
+	entryComponents: [MyApp],
+	providers: [
+		StatusBar,
+		SplashScreen,
+		{ provide: ErrorHandler, useClass: IonicErrorHandler },
 		{ provide: AuthHttp, useFactory: authHttpServiceFactory, deps: [Http, RequestOptions] }
-  ]
+	]
 })
 export class AppModule { }
