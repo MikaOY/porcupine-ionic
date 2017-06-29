@@ -24,6 +24,15 @@ export class Mocks {
 
 // IONIC SAMPLE 
 
+export class NavParamsMock {
+  data = {
+  };
+
+  get(param){
+    return this.data[param];
+  }
+}
+
 export class PlatformMock {
   public ready(): Promise<{String}> {
     return new Promise((resolve) => {

@@ -3,8 +3,11 @@ import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
 import { ComponentFixtureAutoDetect } from '@angular/core/testing';
 
+import { IonicModule } from 'ionic-angular';
+
 import { MyApp } from './app.component';
 
+// TODO: fix TestBed config
 xdescribe('Root component (inline template)', () => {
 
 	let comp: MyApp;
@@ -17,6 +20,7 @@ xdescribe('Root component (inline template)', () => {
 		TestBed.configureTestingModule({
 			// declare comps to test
 			declarations: [MyApp],
+			imports: [ IonicModule.forRoot(MyApp) ],
 			providers: [
 				// detects comp changes sometimes
 				// NOTE: call detectChanges() every time to be safe
