@@ -54,7 +54,8 @@ import { User } from '../classes/user';
 // });
 
 describe('TodoService', () => {
-	let uServ, user, tServ;
+	let uServ: UserService;
+	let tServ: TodoService;
 
 	beforeEach(() => {
 		uServ = new UserService(undefined, undefined, undefined);
@@ -66,10 +67,6 @@ describe('TodoService', () => {
 	describe('Fake login', () => {
 		it('should call getUser from UserService', () => {
 			expect(uServ.getUser).toHaveBeenCalled();
-		});
-
-		it('should return mock user when calling getUser', () => {
-			expect(user.getUser).toEqual(Mocks.userMock);
 		});
 	});
 });

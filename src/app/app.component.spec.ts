@@ -14,7 +14,7 @@ import {
 } from '../../test-config/mocks-ionic';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 
-describe('MyApp Component', () => {
+xdescribe('MyApp Component', () => {
   let fixture;
   let component;
 
