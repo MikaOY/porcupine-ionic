@@ -16,10 +16,10 @@ export class SettingsPage implements OnInit {
 	availableThemes: { className: string, displayName: string }[];
 
 	constructor(public navCtrl: NavController,
-							public settingsService: SettingsService,
-							public userService: UserService,
-							public modalCtrl: ModalController,
-							private todoService: TodoService) { }
+		public modalCtrl: ModalController,
+		public settingsService: SettingsService,
+		public userService: UserService,
+		private todoService: TodoService) { }
 
 	ngOnInit() {
 		this.settingsService.getTheme().subscribe(val => this.currentTheme = val);
