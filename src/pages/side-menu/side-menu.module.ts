@@ -8,7 +8,7 @@ import { AddCategory } from './add-category.component';
 
 @NgModule({
 	imports: [],
-	exports: [SideMenu],
+	exports: [ SideMenu ],
 	declarations: [
 		SideMenu,
 		Profile,
