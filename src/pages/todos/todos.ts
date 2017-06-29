@@ -6,6 +6,7 @@ import { TodoService } from '../../app/services/todo.service';
 	selector: 'todos-page',
 	templateUrl: 'todos.html'
 })
+
 export class TodosPage implements OnInit {
 	currentBoard: Board;
 

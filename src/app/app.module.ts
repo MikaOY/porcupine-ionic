@@ -46,8 +46,8 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
 		ProfilePage
   ],
   imports: [
+    IonicModule.forRoot(MyApp, {}, { links: [] }),
     BrowserModule,
-    IonicModule.forRoot(MyApp),
     FormsModule,
     HttpModule,
     ElasticModule
@@ -72,11 +72,7 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     TodoService,
     SettingsService,
 		UserService,
-		{
-      provide: AuthHttp,
-      useFactory: authHttpServiceFactory,
-      deps: [Http, RequestOptions]
-    }
+		{ provide: AuthHttp, useFactory: authHttpServiceFactory, deps: [Http, RequestOptions] }
   ]
 })
 export class AppModule { }

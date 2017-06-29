@@ -1,10 +1,28 @@
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
-import { User } from '../src/app/classes/user';
 
+import { User } from '../src/app/classes/user';
+import { Board } from '../src/app/classes/board';
+import { Category } from '../src/app/classes/category';
+import { Todo } from '../src/app/classes/todo';
+import { Priority } from '../src/app/classes/priority';
+
+// Mock data used in specs
 export class Mocks {
-	public static userMock: User = new User(0, 'Testy', 'Testpaca', 'TestPaca', 'texting.alpaca@gmail.com', undefined);
+	public static MockDate: Date = new Date('2017-06-29 3:33:00');
+
+	public static Category: Category = new Category('Unit testing', 0, Mocks.MockDate, 0, 0, Priority.Medium);
+	public static Category2: Category = new Category('Dreams', 1, Mocks.MockDate, 1, 0, Priority.High);
+	public static Todo: Todo = new Todo('Write unit tests', Mocks.Category, Mocks.MockDate, false, undefined, false, Priority.Low, 0);
+	public static Todo2: Todo = new Todo('Rewrite Jasmine to support async better', Mocks.Category2, Mocks.MockDate, false, undefined, false, Priority.Low, 1);
+	public static TodoArray: Todo[] = [Mocks.Todo, Mocks.Todo2];
+	public static CategoryArray: Category[] = [Mocks.Category, Mocks.Category2];
+	public static Board: Board = new Board('Test Board', Mocks.TodoArray, Mocks.CategoryArray, Mocks.MockDate, 0);	
+	
+	public static User: User = new User(0, 'Testy', 'Testpaca', 'TestPaca', 'texting.alpaca@gmail.com', undefined);
 }
+
+// IONIC SAMPLE 
 
 export class PlatformMock {
   public ready(): Promise<{String}> {

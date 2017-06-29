@@ -10,6 +10,7 @@ import { TodoService } from '../../app/services/todo.service';
 	selector: 'settings-page',
 	templateUrl: 'settings.html'
 })
+
 export class SettingsPage implements OnInit {
 	currentTheme: string;
 	availableThemes: { className: string, displayName: string }[];
