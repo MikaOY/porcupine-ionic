@@ -9,5 +9,6 @@ import { SettingsPage } from './settings';
 	exports: [SettingsPage],
 	declarations: [SettingsPage],
 	providers: [],
+	entryComponents: [ SettingsPage ]
 })
 export class SettingsModule { }

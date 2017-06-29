@@ -16,6 +16,7 @@ import { SettingsModule } from '../pages/settings/settings.module';
 import { TodosModule } from '../pages/todos/todos.module';
 import { SideMenuModule } from '../pages/side-menu/side-menu.module';
 import { TabsModule } from '../pages/tabs/tabs.module';
+import { TabsPage } from '../pages/tabs/tabs';
 
 export function authHttpServiceFactory(http: Http, options: RequestOptions) {
   return new AuthHttp(new AuthConfig(), http, options);
@@ -37,7 +38,7 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
 		TabsModule
   ],
   bootstrap: [IonicApp],
-  entryComponents: [ MyApp ],
+  entryComponents: [ MyApp, TabsPage ],
   providers: [
     StatusBar,
     SplashScreen,

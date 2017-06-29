@@ -13,5 +13,6 @@ import { CoreModule } from "../../app/services/core.module";
 	exports: [TodosPage, TodoList],
 	declarations: [TodosPage, TodoList],
 	providers: [],
+	entryComponents: [ TodosPage ],
 })
 export class TodosModule { }
