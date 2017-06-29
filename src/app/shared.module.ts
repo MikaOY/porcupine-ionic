@@ -1,4 +1,5 @@
 import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
 
 import { Board } from './classes/board';
 import { Todo } from './classes/todo';
@@ -15,4 +16,5 @@ import { Lockable } from './interfaces/lockable.interface';
 	declarations: [],
 	providers: [],
 })
+
 export class SharedModule { }
