@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 import { SettingsPage } from './settings';
 
 @NgModule({
-	imports: [ ],
+	imports: [],
 	exports: [ SettingsPage ],
 	declarations: [ SettingsPage ],
 	providers: [],

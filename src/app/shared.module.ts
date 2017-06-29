@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
+/*
 import { Board } from './classes/board';
 import { Todo } from './classes/todo';
 import { Category } from './classes/category';
@@ -9,6 +10,7 @@ import { Priority } from './classes/priority';
 import { User } from './classes/user';
 import { DbCompatible } from './interfaces/db-compatible.interface';
 import { Lockable } from './interfaces/lockable.interface';
+*/
 
 @NgModule({
 	imports: [],
@@ -16,5 +18,4 @@ import { Lockable } from './interfaces/lockable.interface';
 	declarations: [],
 	providers: [],
 })
-
 export class SharedModule { }
