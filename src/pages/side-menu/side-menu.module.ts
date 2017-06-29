@@ -1,19 +1,24 @@
 import { NgModule } from '@angular/core';
+import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 
-import { SharedModule } from '../../app/shared.module';
 import { SideMenu } from './side-menu.component';
-import { Profile } from './profile.component';
-import { BoardManager } from './board-manager.component';
-import { AddCategory } from './add-category.component';
+import { ProfilePage } from './profile/profile.component';
+import { BoardManager } from './board-manager/board-manager.component';
+import { UnlockPage } from './board-manager/unlock-page/unlock-page.component';
+import { SharePage } from './board-manager/share-page/share-page.component';
+import { AddCategory } from './add-category/add-category.component';
+import { MyApp } from '../../app/app.component';
 
 @NgModule({
-	imports: [],
+	imports: [ IonicModule.forRoot(MyApp) ],
 	exports: [ SideMenu ],
 	declarations: [
 		SideMenu,
-		Profile,
+		ProfilePage,
 		BoardManager,
-		AddCategory
+		AddCategory,
+		UnlockPage,
+		SharePage
 	],
 	providers: [],
 })
