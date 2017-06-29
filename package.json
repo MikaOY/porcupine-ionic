@@ -1,10 +1,21 @@
 {
 	"name": "porcupine-ionic",
-	"author": "Mika Yeap and Tian Ooi",
+	"version": "0.0.1",	
+	"description": "Todo list app made with Angular and Ionic 3",	
 	"homepage": "https://ionicframework.com/",
-	"version": "0.0.1",
-	"description": "porcupine-ionic: Jacked todo list app",
+	"bugs": {
+		"email" : "mikay@makersoframen.com"
+	},
+	"license": "AGPL-3.0",
 	"private": true,
+	"author": { "name": "Mika Yeap", "email": "mikaomarr@gmail.com" },
+	"contributors": [
+		{ "name": "Tian Ooi", "email": "tianooi.to@gmail.com" }
+	],
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/MikaOY/porcupine-ionic.git"
+	},
 	"scripts": {
 		"clean": "ionic-app-scripts clean",
 		"build": "ionic-app-scripts build",

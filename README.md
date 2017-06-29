@@ -24,10 +24,12 @@ npm install ionic cordova -g
 Debugging commands
 ----------------------
 `npm serve` launches Ionic Labs with console logs and live reload
+
 `npm start` launches ios simulator
+
 `npm test` runs unit tests with Karma
-See the example test in `src/app/app.component.spec.ts` for an example of a component test.
-`npm ls -gp --depth=0 | awk -F/ '/node_modules/ && !/\/npm$/ {print $NF}' | xargs npm -g rm` a fresh start
+
+`npm ls -gp --depth=0 | awk -F/ '/node_modules/ && !/\/npm$/ {print $NF}' | xargs npm -g rm` for a fresh start
 
 E2E tests (Browser-only)
 ----------------------

@@ -43,36 +43,36 @@ export class TodoService {
 		});
 	}
 
-public getReqOptions(reqType: string): Promise<RequestOptions> {
+	public getReqOptions(reqType: string): Promise<RequestOptions> {
 		let hds;
 		let ops: RequestOptions;
 		if (this.token == undefined) {
 			console.log("Token undefined, getting one");
 			this.token = this.userService.accessToken;
-				console.log("access token" + this.token);
-				switch (reqType.toLowerCase()) {
-					case 'get':
-						hds = new Headers({ authorization: this.token });
-						break;
-					default:
-						hds = new Headers({ authorization: this.token, 'Content-Type': 'application/x-www-form-urlencoded' });
-						break;
-				}
-				ops = new RequestOptions({ headers: hds });
-				return Promise.resolve(ops);
+			console.log("access token" + this.token);
+			switch (reqType.toLowerCase()) {
+				case 'get':
+					hds = new Headers({ authorization: this.token });
+					break;
+				default:
+					hds = new Headers({ authorization: this.token, 'Content-Type': 'application/x-www-form-urlencoded' });
+					break;
+			}
+			ops = new RequestOptions({ headers: hds });
+			return Promise.resolve(ops);
 		}
 		else {
 			console.log("Token already have, returning " + this.token);
 			switch (reqType.toLowerCase()) {
-					case 'get':
-						hds = new Headers({ authorization: this.token });
-						break;
-					default:
-						hds = new Headers({ authorization: this.token, 'Content-Type': 'application/x-www-form-urlencoded' });
-						break;
-				}
-				ops = new RequestOptions({ headers: hds });
-				return Promise.resolve(ops);
+				case 'get':
+					hds = new Headers({ authorization: this.token });
+					break;
+				default:
+					hds = new Headers({ authorization: this.token, 'Content-Type': 'application/x-www-form-urlencoded' });
+					break;
+			}
+			ops = new RequestOptions({ headers: hds });
+			return Promise.resolve(ops);
 		}
 	}
 
@@ -849,16 +849,16 @@ public getReqOptions(reqType: string): Promise<RequestOptions> {
 				// 	this.token = token;
 				// 	console.log(token);
 
-					// Retrieve all data first, then pull current board after all concluded
-					return this.GETBoards().mergeMap(boards =>
-						this.GETCategories(boards).mergeMap(cats =>
-							this.GETTodos(cats).mergeMap(todos =>
-								this.GETShared(todos))
-								.map(args => {
-									this.isBusy = false;
-									return this.CachedBoards[0];
-								}).share()));
-				});
+				// Retrieve all data first, then pull current board after all concluded
+				return this.GETBoards().mergeMap(boards =>
+					this.GETCategories(boards).mergeMap(cats =>
+						this.GETTodos(cats).mergeMap(todos =>
+							this.GETShared(todos))
+							.map(args => {
+								this.isBusy = false;
+								return this.CachedBoards[0];
+							}).share()));
+			});
 			//});
 		} else {
 			return Observable.of(this.CurrentBoard);
