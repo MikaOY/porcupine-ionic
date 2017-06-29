@@ -8,8 +8,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { TodoService } from './todo.service';
 
 import { UserService } from './user.service';
-import { PlatformMock, StatusBarMock, SplashScreenMock } 
-	from '../../../test-config/mocks-ionic';
+import { PlatformMock, StatusBarMock, SplashScreenMock, Mocks } from '../../../test-config/mocks-ionic';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { User } from '../classes/user';
 
@@ -55,19 +54,22 @@ import { User } from '../classes/user';
 // });
 
 describe('TodoService', () => {
-	let service: TodoService;
-	// let userService = {
-	// 	getUser() {
-	// 		let user: User = new User(0, 'bob', 'joe', 'ilovealpacas', 'piglet@gmail.com');
-	// 		return Promise.resolve(user);
-	// 	}
-	let userService: UserService = new UserService(undefined, undefined, undefined);
-};
+	let uServ, user, tServ;
+
 	beforeEach(() => {
-		service = new TodoService(undefined, userService);
+		uServ = new UserService(undefined, undefined, undefined);
+		spyOn(uServ, 'getUser').and.returnValue(Mocks.userMock);
+
+		tServ = new TodoService(undefined, uServ);
 	});
 
-	it('should return a board on slothBoard', () => {
-		expect(service.slothGetCurrentBoard()).toBeDefined;
+	describe('Fake login', () => {
+		it('should call getUser from UserService', () => {
+			expect(uServ.getUser).toHaveBeenCalled();
+		});
+
+		it('should return mock user when calling getUser', () => {
+			expect(user.getUser).toEqual(Mocks.userMock);
+		});
 	});
 });

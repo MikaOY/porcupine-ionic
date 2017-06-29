@@ -1,5 +1,10 @@
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
+import { User } from '../src/app/classes/user';
+
+export class Mocks {
+	public static userMock: User = new User(0, 'Testy', 'Testpaca', 'TestPaca', 'texting.alpaca@gmail.com', undefined);
+}
 
 export class PlatformMock {
   public ready(): Promise<{String}> {
