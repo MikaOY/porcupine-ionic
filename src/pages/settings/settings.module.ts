@@ -1,11 +1,14 @@
 import { NgModule } from '@angular/core';
+import { IonicModule } from "ionic-angular";
 
+import { MyApp } from "../../app/app.component";
 import { SettingsPage } from './settings';
 
 @NgModule({
-	imports: [ ],
-	exports: [ SettingsPage ],
-	declarations: [ SettingsPage ],
+	imports: [IonicModule.forRoot(MyApp)],
+	exports: [SettingsPage],
+	declarations: [SettingsPage],
 	providers: [],
+	entryComponents: [ SettingsPage ]
 })
 export class SettingsModule { }

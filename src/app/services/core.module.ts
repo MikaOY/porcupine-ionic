@@ -6,7 +6,7 @@ import { UserService } from "./user.service";
 
 @NgModule({
 	imports: [ HttpModule ],
-	exports: [ ],
+	exports: [],
 	// services only, no components!
 	declarations: [],
 	providers: [ SettingsService, UserService, TodoService ],
