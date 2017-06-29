@@ -10,8 +10,8 @@ import { AddCategory } from './add-category/add-category.component';
 import { MyApp } from '../../app/app.component';
 
 @NgModule({
-	imports: [ IonicModule.forRoot(MyApp) ],
-	exports: [ SideMenu ],
+	imports: [IonicModule.forRoot(MyApp)],
+	exports: [SideMenu],
 	declarations: [
 		SideMenu,
 		ProfilePage,
@@ -21,5 +21,6 @@ import { MyApp } from '../../app/app.component';
 		SharePage
 	],
 	providers: [],
+	entryComponents: [SideMenu]
 })
 export class SideMenuModule { }
