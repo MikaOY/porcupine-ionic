@@ -17,6 +17,8 @@ import Auth0Cordova from '@auth0/cordova';
 })
 
 export class MyApp implements OnInit {
+	title: string = 'Porcupine';
+	
 	rootPage: any = TabsPage;
 	chosenTheme: string;
 
