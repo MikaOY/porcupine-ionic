@@ -8,7 +8,6 @@ import { TodoService } from '../../app/services/todo.service';
 })
 
 export class TodosPage implements OnInit {
-	currentBoard: Board;
 
 	constructor(public todoService: TodoService) { }
 

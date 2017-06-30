@@ -3,8 +3,10 @@ import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
 import { ComponentFixtureAutoDetect } from '@angular/core/testing';
 
-import {NavParams} from 'ionic-angular';
+import { NavParams } from 'ionic-angular';
 import { IonicModule, Platform } from 'ionic-angular';
+
+import { Board } from '../../app/classes/board';
 
 import { TodosPage } from './todos';
 import { TodoList } from './todo-list/todo-list.component';
@@ -21,6 +23,19 @@ describe('Todos page', () => {
 	let todoServiceStub = {
 		slothGetCurrentBoard() {
 			return Mocks.Board;
+		},
+
+		nextBoard(board: Board) {
+			var boardIndex: number;
+			var returnBoard: Board;
+			boardIndex = Mocks.BoardsArray.indexOf(board);
+			if (boardIndex + 1 == Mocks.BoardsArray.length) {
+				returnBoard = Mocks.BoardsArray[0];
+			}
+			else {
+				returnBoard = Mocks.BoardsArray[boardIndex + 1];
+			}
+			return returnBoard;
 		}
 	};
 
@@ -68,5 +83,11 @@ describe('Todos page', () => {
 	it('should call slothCurrentBoard()', () => {
 		comp.slothCurrentBoard();
 		expect(comp.slothCurrentBoard).toHaveBeenCalled();
+	});
+
+	it('should change to the next board', () => {
+		comp.changeBoard(Mocks.Board);
+		var currentBoard = comp.slothCurrentBoard();
+		expect(currentBoard).toBeDefined;
 	});
 });
