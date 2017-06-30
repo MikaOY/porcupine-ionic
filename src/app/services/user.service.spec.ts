@@ -9,7 +9,7 @@ import { IonicModule, Platform } from 'ionic-angular';
 import { UserService } from './user.service';
 import { Mocks, NavParamsMock } from '../../../test-config/mocks-ionic';
 
-describe('User service', () => {
+xdescribe('User service', () => {
 	let subject: UserService;
   let backend: MockBackend;
   let responseForm = '<form />';
