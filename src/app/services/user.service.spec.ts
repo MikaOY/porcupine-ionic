@@ -34,9 +34,6 @@ describe('Todos page', () => {
 
 	// synchronous beforeEach (waits for async beforeEach above to complete)
 	beforeEach(() => {
-		fixture = TestBed.createComponent(TodosPage);
-		comp = fixture.componentInstance;
-
-		tServ = fixture.debugElement.injector.get(TodoService);
+		tServ = TestBed.get(TodoService);
 	});
 });
