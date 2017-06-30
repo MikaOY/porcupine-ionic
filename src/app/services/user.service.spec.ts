@@ -19,9 +19,6 @@ describe('User service', () => {
 		TestBed.configureTestingModule({
 			declarations: [],
 			imports: [],
-			// NO! Don't provide the real service!
-			// providers:    [ UserService ]  
-			// Provide a test-double instead
 			providers: [
 				UserService,
 				MockBackend,
