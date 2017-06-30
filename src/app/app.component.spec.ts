@@ -6,9 +6,10 @@ import { ComponentFixtureAutoDetect } from '@angular/core/testing';
 import { IonicModule } from 'ionic-angular';
 
 import { MyApp } from './app.component';
+import { SideMenuModule } from "../pages/side-menu/side-menu.module";
 
-// TODO: fix TestBed config
-xdescribe('Root component (inline template)', () => {
+// TODO: fix testbed config
+describe('Root component (inline template)', () => {
 
 	let comp: MyApp;
 	let fixture: ComponentFixture<MyApp>;
@@ -20,7 +21,7 @@ xdescribe('Root component (inline template)', () => {
 		TestBed.configureTestingModule({
 			// declare comps to test
 			declarations: [MyApp],
-			imports: [ IonicModule.forRoot(MyApp) ],
+			imports: [IonicModule.forRoot(MyApp), SideMenuModule],
 			providers: [
 				// detects comp changes sometimes
 				// NOTE: call detectChanges() every time to be safe
@@ -36,7 +37,7 @@ xdescribe('Root component (inline template)', () => {
 	beforeEach(() => {
 		fixture = TestBed.createComponent(MyApp);
 		// MyApp test instance
-		comp = fixture.componentInstance; 
+		comp = fixture.componentInstance;
 
 		// query for the title <h1> by CSS element selector
 		de = fixture.debugElement.query(By.css('h1'));
