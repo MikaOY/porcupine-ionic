@@ -20,9 +20,6 @@ describe('Todos page', () => {
 		TestBed.configureTestingModule({
 			declarations: [],
 			imports: [],
-			// NO! Don't provide the real service!
-			// providers:    [ UserService ]  
-			// Provide a test-double instead
 			providers: [
 				{ provide: TodoService, useValue: todoServiceStub }
 			]
