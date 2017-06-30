@@ -9,7 +9,7 @@
 					<ion-label text-wrap text-center>
 						<ion-icon name="people" *ngIf="slothCurrentBoard()?.OwnerId && slothCurrentBoard()?.SharerId && slothCurrentBoard()?.IsViewOnly != undefined">
 						</ion-icon>
-						{{slothCurrentBoard()?.Name}}
+						<p id="currentBoardName">{{slothCurrentBoard()?.Name}}</p>
 						<span id="viewLabel" *ngIf="slothCurrentBoard()?.IsViewOnly">(View only)</span>
 					</ion-label>
 				</ion-col>
