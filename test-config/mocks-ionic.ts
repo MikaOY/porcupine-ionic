@@ -1,6 +1,9 @@
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
+import { Http, RequestOptions } from '@angular/http';
+import { AuthHttp, AuthConfig } from 'angular2-jwt';
+
 import { User } from '../src/app/classes/user';
 import { Board } from '../src/app/classes/board';
 import { Category } from '../src/app/classes/category';
@@ -22,7 +25,9 @@ export class Mocks {
 	public static User: User = new User(0, 'Testy', 'Testpaca', 'TestPaca', 'texting.alpaca@gmail.com', undefined);
 }
 
-// IONIC SAMPLE 
+export function AuthHttpServiceFactoryMock(http: Http, options: RequestOptions) {
+	return new AuthHttp(new AuthConfig(), http, options);
+}
 
 export class NavParamsMock {
   data = {
