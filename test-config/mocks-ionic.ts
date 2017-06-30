@@ -17,7 +17,7 @@ export class Mocks {
 	public static Category: Category = new Category('Unit testing', 0, Mocks.MockDate, 0, 0, Priority.Medium);
 	public static Category2: Category = new Category('Dreams', 1, Mocks.MockDate, 1, 0, Priority.High);
 	public static Todo: Todo = new Todo('Write unit tests', Mocks.Category, Mocks.MockDate, false, undefined, false, Priority.Low, 0);
-	public static Todo2: Todo = new Todo('Rewrite Jasmine to support async better', Mocks.Category2, Mocks.MockDate, false, undefined, false, Priority.Low, 1);
+	public static Todo2: Todo = new Todo('Rewrite Jasmine to support async better', Mocks.Category2, Mocks.MockDate, true, new Date(2016, 1, 13), false, Priority.Low, 1);
 	public static TodoArray: Todo[] = [Mocks.Todo, Mocks.Todo2];
 	public static CategoryArray: Category[] = [Mocks.Category, Mocks.Category2];
 	public static Board: Board = new Board('Test Board', Mocks.TodoArray, Mocks.CategoryArray, Mocks.MockDate, 0);	

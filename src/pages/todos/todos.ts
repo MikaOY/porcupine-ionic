@@ -17,7 +17,11 @@ export class TodosPage implements OnInit {
 	}
 
 	ionViewWillEnter() { 
-		// archives todos if more than 24 hours has passed since checked
+		this.archiveTodos();
+	}
+
+	archiveTodos() {
+			// archives todos if more than 24 hours has passed since checked
 		if (this.slothCurrentBoard()) {
 			for (let todo of this.slothCurrentBoard().Todos) {
 				let currentDate = new Date();
