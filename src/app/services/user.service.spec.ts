@@ -42,7 +42,7 @@ describe('User service', () => {
     backend = mockBackend;
   }));
 
-	it('should be called with proper arguments', (done) => {
+	it('should getAccessToken with correct args', (done) => {
     backend.connections.subscribe((connection: MockConnection) => {
       expect(connection.request.url).toEqual('https://blacksonic.eu.auth0.com.auth0.com/usernamepassword/login');
       expect(connection.request.method).toEqual(RequestMethod.Post);
