@@ -9,13 +9,14 @@ import { HttpModule } from '@angular/http';
 import { Http, RequestOptions } from '@angular/http';
 import { AuthHttp, AuthConfig } from 'angular2-jwt';
 
-import { MyApp } from './app.component';
 import { CoreModule } from './services/core.module';
 import { SharedModule } from './shared.module';
 import { SettingsModule } from '../pages/settings/settings.module';
 import { TodosModule } from '../pages/todos/todos.module';
 import { SideMenuModule } from '../pages/side-menu/side-menu.module';
 import { TabsModule } from '../pages/tabs/tabs.module';
+
+import { MyApp } from './app.component';
 import { TabsPage } from '../pages/tabs/tabs';
 
 export function authHttpServiceFactory(http: Http, options: RequestOptions) {

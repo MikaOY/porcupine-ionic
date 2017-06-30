@@ -5,6 +5,8 @@ import { ComponentFixtureAutoDetect } from '@angular/core/testing';
 
 import { NavParams } from 'ionic-angular';
 import { IonicModule, Platform } from 'ionic-angular';
+import { TodoService } from '../../app/services/todo.service';
+import { Mocks, NavParamsMock } from '../../../test-config/mocks-ionic';
 
 import { Board } from '../../app/classes/board';
 
@@ -12,17 +14,15 @@ import { TodosPage } from './todos';
 import { TodoList } from './todo-list/todo-list.component';
 import { SideMenu } from '../side-menu/side-menu.component';
 import { ProfilePage } from '../side-menu/profile/profile.component';
-import { TodoService } from '../../app/services/todo.service';
-import { Mocks, NavParamsMock } from '../../../test-config/mocks-ionic';
 
 describe('Todos page', () => {
 	let comp: TodosPage;
 	let fixture: ComponentFixture<TodosPage>;
-	let todoService;
+	let tServ;
 	// stub must have props and methods used in testing, but is NOT used
 	let todoServiceStub = {
 		slothGetCurrentBoard() {
-			return Mocks.Board;
+			return Promise.resolve(Mocks.Board);
 		},
 
 		nextBoard(board: Board) {
@@ -36,6 +36,7 @@ describe('Todos page', () => {
 				returnBoard = Mocks.BoardsArray[boardIndex + 1];
 			}
 			return returnBoard;
+
 		}
 	};
 
@@ -53,8 +54,8 @@ describe('Todos page', () => {
 			// providers:    [ UserService ]  
 			// Provide a test-double instead
 			providers: [
-				{ provide: TodoService, useValue: todoServiceStub },
-				{provide: NavParams, useClass: NavParamsMock}
+				{ provide: NavParams, useClass: NavParamsMock },				
+				{ provide: TodoService, useValue: todoServiceStub }
 			]
 		})
 			// compile template and css
@@ -69,10 +70,11 @@ describe('Todos page', () => {
 
 		// get todoService actually injected
 		// this one is the 'service' actually used in testing
-		todoService = fixture.debugElement.injector.get(TodoService);
+		tServ = fixture.debugElement.injector.get(TodoService);
 		// also can: get todoService from the root injector
 		// todoService = TestBed.get(TodoService);
 
+		spyOn(tServ, 'slothGetCurrentBoard');
 		spyOn<TodosPage>(comp, 'slothCurrentBoard');
 	});
 
@@ -85,7 +87,12 @@ describe('Todos page', () => {
 		expect(comp.slothCurrentBoard).toHaveBeenCalled();
 	});
 
-	it('should change to the next board', () => {
+	it('should call slothGetCurrentBoard() from TodoService', () => {
+		fixture.detectChanges();
+		expect(tServ.slothGetCurrentBoard).toHaveBeenCalled();
+	});
+
+		it('should change to the next board', () => {
 		comp.changeBoard(Mocks.Board);
 		var currentBoard = comp.slothCurrentBoard();
 		expect(currentBoard).toBeDefined;
