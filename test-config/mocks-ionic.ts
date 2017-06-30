@@ -22,7 +22,16 @@ export class Mocks {
 	public static CategoryArray: Category[] = [Mocks.Category, Mocks.Category2];
 	public static Board: Board = new Board('Test Board', Mocks.TodoArray, Mocks.CategoryArray, Mocks.MockDate, 0);	
 	
-	public static User: User = new User(0, 'Testy', 'Testpaca', 'TestPaca', 'texting.alpaca@gmail.com', undefined);
+	public static Category3: Category = new Category('Nom noms', 0, Mocks.MockDate, 3, 1);
+	public static Category4: Category = new Category('For The Pigs', 2, Mocks.MockDate, 1, 4);
+	public static Todo3: Todo = new Todo('Eat pineapples', Mocks.Category3, Mocks.MockDate, false, undefined, false, Priority.Medium, 3);
+	public static Todo4: Todo = new Todo('Brush piglets', Mocks.Category4, Mocks.MockDate, false, undefined, false, Priority.High, 3);
+	public static TodoArray2: Todo[] = [Mocks.Todo3, Mocks.Todo4];
+	public static CategoryArray2: Category[] = [Mocks.Category3, Mocks.Category4];
+	public static Board2: Board = new Board('Testacular', Mocks.TodoArray2, Mocks.CategoryArray2, Mocks.MockDate, 2)
+
+	public static BoardsArray: Board[] = [Mocks.Board, Mocks.Board2];
+	public static User: User = new User(0, 'Testy', 'Testpaca', 'TestPaca', 'testing.alpaca@gmail.com', undefined);
 }
 
 export function AuthHttpServiceFactoryMock(http: Http, options: RequestOptions) {
