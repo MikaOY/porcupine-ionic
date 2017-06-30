@@ -63,3 +63,5 @@ describe('User service', () => {
       connection.mockRespond(new Response(options));
     });
 });
+
+});
