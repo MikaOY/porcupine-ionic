@@ -17,6 +17,8 @@ import { Board } from '../../app/classes/board';
 describe('Todos page', () => {
 	let comp: TodosPage;
 	let fixture: ComponentFixture<TodosPage>;
+	let de: DebugElement;
+  let el: HTMLElement;
 	let tServ;
 	// stub must have props and methods used in testing, but is NOT used
 	let todoServiceStub = {
