@@ -3,17 +3,16 @@ import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
 import { ComponentFixtureAutoDetect } from '@angular/core/testing';
 
-import { NavParams } from 'ionic-angular';
 import { IonicModule, Platform } from 'ionic-angular';
-import { TodoService } from '../../app/services/todo.service';
+import { AppModule } from "../../app/app.module";
+import { TodosModule } from './todos.module';
+import { SideMenuModule } from '../side-menu/side-menu.module';
+import { NavParams } from 'ionic-angular';
 import { Mocks, NavParamsMock } from '../../../test-config/mocks-ionic';
 
-import { Board } from '../../app/classes/board';
-
+import { TodoService } from '../../app/services/todo.service';
 import { TodosPage } from './todos';
-import { TodoList } from './todo-list/todo-list.component';
-import { SideMenu } from '../side-menu/side-menu.component';
-import { ProfilePage } from '../side-menu/profile/profile.component';
+import { Board } from '../../app/classes/board';
 
 describe('Todos page', () => {
 	let comp: TodosPage;
@@ -43,18 +42,13 @@ describe('Todos page', () => {
 	// async beforeEach (to allow external templates to be compiled)
 	beforeEach(async(() => {
 		TestBed.configureTestingModule({
-			declarations: [TodosPage, TodoList, SideMenu, ProfilePage],
-			imports: [
-				IonicModule.forRoot(TodosPage),
-				IonicModule.forRoot(TodoList),
-				IonicModule.forRoot(SideMenu),
-				IonicModule.forRoot(ProfilePage),
-			],
+			declarations: [],
+			imports: [AppModule, TodosModule, SideMenuModule],
 			// NO! Don't provide the real service!
 			// providers:    [ UserService ]  
 			// Provide a test-double instead
 			providers: [
-				{ provide: NavParams, useClass: NavParamsMock },				
+				{ provide: NavParams, useClass: NavParamsMock },
 				{ provide: TodoService, useValue: todoServiceStub }
 			]
 		})
@@ -92,7 +86,7 @@ describe('Todos page', () => {
 		expect(tServ.slothGetCurrentBoard).toHaveBeenCalled();
 	});
 
-		it('should change to the next board', () => {
+	it('should change to the next board', () => {
 		comp.changeBoard(Mocks.Board);
 		var currentBoard = comp.slothCurrentBoard();
 		expect(currentBoard).toBeDefined;
