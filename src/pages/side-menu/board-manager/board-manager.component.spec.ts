@@ -5,22 +5,20 @@ import { ComponentFixtureAutoDetect } from '@angular/core/testing';
 import { IonicModule, Platform } from 'ionic-angular';
 
 import { AppModule } from "../../../app/app.module";
-import { TodosModule } from '../todos.module';
-import { SideMenuModule } from '../../side-menu/side-menu.module';
+import { TodosModule } from '../../todos/todos.module';
+import { SideMenuModule } from '../side-menu.module';
 import { NavParams } from 'ionic-angular';
 import { Mocks, NavParamsMock } from '../../../../test-config/mocks-ionic';
 import { click } from '../../../../test-config/index';
 
-import { TodoList } from './todo-list.component';
+import { BoardManager } from './board-manager.component';
 import { TodoService } from '../../../app/services/todo.service';
+import { Category } from '../../../app/classes/category';
 import { Board } from '../../../app/classes/board';
 
-let comp: TodoList;
-let fixture: ComponentFixture<TodoList>;
-let de: DebugElement;
-let aTodoBt: DebugElement;
-let ele: HTMLElement
-let buttonArray: DebugElement[]
+let comp: BoardManager;
+let fixture: ComponentFixture<BoardManager>;
+
 let tServ;
 
 // stub must have props and methods used in testing, but is NOT used
@@ -29,22 +27,9 @@ let todoServiceStub = {
 	slothGetCurrentBoard() {
 		return Promise.resolve(Mocks.Board);
 	},
-
-	nextBoard(board: Board) {
-		var boardIndex: number;
-		var returnBoard: Board;
-		boardIndex = Mocks.BoardsArray.indexOf(board);
-		if (boardIndex + 1 == Mocks.BoardsArray.length) {
-			returnBoard = Mocks.BoardsArray[0];
-		}
-		else {
-			returnBoard = Mocks.BoardsArray[boardIndex + 1];
-		}
-		return returnBoard;
-	}
 };
 
-describe('Todo List', () => {
+describe('BoardManager', () => {
 	
 	// async beforeEach (to allow external templates to be compiled)
 	beforeEach(async(() => {
@@ -66,7 +51,7 @@ describe('Todo List', () => {
 
 	// synchronous beforeEach (waits for async beforeEach above to complete)
 	beforeEach(() => {
-		fixture = TestBed.createComponent(TodoList);
+		fixture = TestBed.createComponent(BoardManager);
 		comp = fixture.componentInstance;
 		// get todoService actually injected
 		// this one is the 'service' actually used in testing
@@ -75,29 +60,12 @@ describe('Todo List', () => {
 		// todoService = TestBed.get(TodoService);
 
 		spyOn(tServ, 'slothGetCurrentBoard').and.returnValue(tServ.currentBoard);
-		spyOn<TodoList>(comp, 'slothCurrentBoard').and.returnValue(tServ.slothGetCurrentBoard());
-
-		buttonArray = fixture.debugElement.queryAll(By.css('button'));
-		aTodoBt = buttonArray[11];
-
+		
 		fixture.detectChanges();
 	});
 
 	it('should be created', () => {
-		expect(comp instanceof TodoList).toBe(true);
+		expect(comp instanceof BoardManager).toBe(true);
 	});
 
-	it('should open the add todo menu on click add todo btn', () => {
-		fixture.detectChanges();
-		expect(comp.isAddTodoActive).toBeFalsy;
-		aTodoBt = fixture.debugElement.query(By.css('#addTodoButton'));
-		expect(aTodoBt).toBeDefined;
-		aTodoBt.triggerEventHandler('click', null);
-		expect(comp.isAddTodoActive).toBeTruthy;
-	});
-
-	xit('should change the todolist color when activating select', () => {
-		comp.activateSelect(Mocks.Todo);
-
-	});
 });
