@@ -75,7 +75,7 @@ export class UserService {
 			});
 		}
 		else {
-			console.log("Accesstokan already have, returning " + this.accessToken);
+			console.log("Accesstoken already have, returning " + this.accessToken);
 			switch (reqType.toLowerCase()) {
 					case 'get':
 						hds = new Headers({ authorization: this.accessToken });
@@ -194,7 +194,7 @@ export class UserService {
 		}
 	}
 
-	getUserByEmail(email: string): Promise<User> {
+	GETUserByEmail(email: string): Promise<User> {
 		console.log('getting user by email');
 
 		const url = `${this.apiUrl}/user?email=%27${email}%27`;
@@ -216,7 +216,7 @@ export class UserService {
 		return this.http.get(url, reqOps).toPromise().then((response: any) => {
 			console.log('processing user by id');
 
-			let user: User = this.processIntoUser(response);
+			let user: User = this.processIntoUser(response.json());
 
 			console.log('User by id retrieved!');
 			return user;
@@ -224,9 +224,9 @@ export class UserService {
 		});
 	}
 
-	private processIntoUser(response: any) {
+	private processIntoUser(responseJSON: any) {
 		let user: User;
-		for (let json of response.json()) {
+		for (let json of responseJSON) {
 			user = new User(json['person_id'], json['fname'], json['lname'], json['username'], json['person_email'], json['password_hash']);
 		}
 		return user;

@@ -1,67 +1,77 @@
-import { ComponentFixture, async, TestBed, inject } from '@angular/core/testing';
+import { ComponentFixture, async, TestBed, addProviders, inject } from '@angular/core/testing';
 import { MockBackend, MockConnection } from '@angular/http/testing';
-import { Http, BaseRequestOptions, Response, ResponseOptions, RequestMethod, ResponseContentType } from '@angular/http';
+import {
+	Http,
+	HttpModule,
+	BaseRequestOptions,
+	Response,
+	ResponseOptions,
+	RequestMethod,
+	ResponseContentType,
+	RequestOptions
+} from '@angular/http';
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
 import { ComponentFixtureAutoDetect } from '@angular/core/testing';
+import { AuthHttp, AuthConfig } from 'angular2-jwt';
 
 import { IonicModule, Platform } from 'ionic-angular';
 import { UserService } from './user.service';
-import { Mocks, NavParamsMock } from '../../../test-config/mocks-ionic';
+import { Mocks, NavParamsMock, AuthHttpServiceFactoryMock } from '../../../test-config/mocks-ionic';
 
-xdescribe('User service', () => {
-	let subject: UserService;
-  let backend: MockBackend;
-  let responseForm = '<form />';
+describe('User service', () => {
+	let subject: UserService = null;
+	let backend: MockBackend;
+	let responseForm = '<form />';
 
 	// async beforeEach (to allow external templates to be compiled)
 	beforeEach(async(() => {
 		TestBed.configureTestingModule({
 			declarations: [],
-			imports: [],
+			imports: [HttpModule],
 			providers: [
 				UserService,
 				MockBackend,
-        BaseRequestOptions,
-        {
-          provide: Http,
-          useFactory: (mockBackend, defaultOptions) => {
-            return new Http(mockBackend, defaultOptions);
-          },
-          deps: [MockBackend, BaseRequestOptions]
-        }
+				BaseRequestOptions,
+				{
+					provide: Http,
+					useFactory: (mockBackend, defaultOptions) => {
+						return new Http(mockBackend, defaultOptions);
+					},
+					deps: [MockBackend, BaseRequestOptions]
+				},
+				{ provide: AuthHttp, useFactory: AuthHttpServiceFactoryMock, deps: [Http, RequestOptions] },
 			]
-		})
-			// compile template and css
-			// NOTE: DO NOT config TestBed after method below
-			// .compileComponents();
+		}).compileComponents();
 	}));
 
 	beforeEach(inject([UserService, MockBackend], (userService, mockBackend) => {
-    subject = userService;
-    backend = mockBackend;
-  }));
+		subject = userService;
+		backend = mockBackend;
+	}));
 
-	it('should getAccessToken with correct args', (done) => {
-    backend.connections.subscribe((connection: MockConnection) => {
-      expect(connection.request.url).toEqual('https://blacksonic.eu.auth0.com.auth0.com/usernamepassword/login');
-      expect(connection.request.method).toEqual(RequestMethod.Post);
-      expect(connection.request.headers.get('Content-Type')).toEqual('application/json');
-      expect(connection.request.getBody()).toEqual(JSON.stringify(
-        {
-          username: 'blacksonic',
-          password: 'secret',
-          client_id: 'YOUR_CLIENT_ID'
-        }, null, 2
-      ));
-      // expect(connection.request.detectContentType()).toEqual(ResponseContentType.Json);
+	describe('Getting user', () => {
+		beforeAll(() => {
 
-      let options = new ResponseOptions({
-        body: responseForm
-      });
+		});
 
-      connection.mockRespond(new Response(options));
-    });
-});
+		it('should #GETUserById', (done) => {
+			backend.connections.subscribe((connection: MockConnection) => {
+				expect(connection.request.url).toContain('http://porcupine-dope-api.azurewebsites.net/user?authOId');
+				expect(connection.request.method).toEqual(RequestMethod.Get);
 
+				let options = new ResponseOptions({
+					body: JSON.stringify()
+				});
+				connection.mockRespond(new Response(options));
+			});
+
+			subject
+				.GETUserById('594c8b1cc3954a4865ef9bc9')
+				.then((response) => {
+					expect(response.json()).toEqual({ success: true });
+					done();
+				});
+		});
+	});
 });
