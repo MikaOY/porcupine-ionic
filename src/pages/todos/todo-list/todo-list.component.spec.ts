@@ -18,7 +18,7 @@ import { Board } from '../../../app/classes/board';
 class TodoListSpecPage {
 
 }
-describe('Todo List', () => {
+xdescribe('Todo List', () => {
 	let comp: TodoList;
 	let fixture: ComponentFixture<TodoList>;
 	let de: DebugElement;

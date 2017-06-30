@@ -845,7 +845,7 @@ export class TodoService {
 				this.id = user.DbId;
 
 				// get access token
-				// this.userService.getAccessToken().then((token) => {
+				// this.userService.GETAccessToken().then((token) => {
 				// 	this.token = token;
 				// 	console.log(token);
 

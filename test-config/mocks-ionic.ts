@@ -29,9 +29,11 @@ export class Mocks {
 	public static TodoArray2: Todo[] = [Mocks.Todo3, Mocks.Todo4];
 	public static CategoryArray2: Category[] = [Mocks.Category3, Mocks.Category4];
 	public static Board2: Board = new Board('Testacular', Mocks.TodoArray2, Mocks.CategoryArray2, Mocks.MockDate, 2)
-
 	public static BoardsArray: Board[] = [Mocks.Board, Mocks.Board2];
-	public static User: User = new User(0, 'Testy', 'Testpaca', 'TestPaca', 'testing.alpaca@gmail.com', undefined);
+
+	// TODO: password 
+	public static User: User = new User(0, 'Curly', 'Alpaca', 'Curlpaca', 'curly@alpaca.com', undefined);
+	public static UserJSON: any = { 'person_id': 0, 'fname': 'Curly', 'lname': 'Alpaca', 'username': 'Curlpaca', 'person_email': 'curly@alpaca.com' };
 }
 
 export function AuthHttpServiceFactoryMock(http: Http, options: RequestOptions) {

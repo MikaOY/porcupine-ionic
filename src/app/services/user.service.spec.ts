@@ -1,4 +1,4 @@
-import { ComponentFixture, async, TestBed, addProviders, inject } from '@angular/core/testing';
+import { ComponentFixture, async, TestBed, inject } from '@angular/core/testing';
 import { MockBackend, MockConnection } from '@angular/http/testing';
 import {
 	Http,
@@ -23,6 +23,10 @@ describe('User service', () => {
 	let subject: UserService = null;
 	let backend: MockBackend;
 	let responseForm = '<form />';
+
+	let tokenUrl: string = 'https://porcupine.au.auth0.com/oauth/token';
+	let apiUrl: string = 'http://porcupine-dope-api.azurewebsites.net';
+	let authOId: string = '594c8b1cc3954a4865ef9bc9';
 
 	// async beforeEach (to allow external templates to be compiled)
 	beforeEach(async(() => {
@@ -51,25 +55,30 @@ describe('User service', () => {
 	}));
 
 	describe('Getting user', () => {
-		beforeAll(() => {
+		it('should get user with authOId', (done) => {
+			spyOn<UserService>(subject, 'getReqOptions').and.returnValue(Promise.resolve(new RequestOptions()));
+			spyOn<UserService>(subject, 'processIntoUser');
 
-		});
-
-		it('should #GETUserById', (done) => {
 			backend.connections.subscribe((connection: MockConnection) => {
-				expect(connection.request.url).toContain('http://porcupine-dope-api.azurewebsites.net/user?authOId');
-				expect(connection.request.method).toEqual(RequestMethod.Get);
+				// check #GETUserById
+				expect(connection.request.url).toEqual(`${apiUrl}/user?authOId=${authOId}`, 'Wrong url/ AuthOId');
 
+				// return fake response to user GET, passes to #processIntoUser
 				let options = new ResponseOptions({
-					body: JSON.stringify()
+					status: 200,
+					body: JSON.stringify(Mocks.UserJSON),
+					url: `${apiUrl}/user?authOId=${authOId}`
 				});
 				connection.mockRespond(new Response(options));
+				expect(connection.response).toBeTruthy();
+
+				//expect(subject.processIntoUser).toHaveBeenCalledWith(new Response(options));
 			});
 
 			subject
-				.GETUserById('594c8b1cc3954a4865ef9bc9')
+				.getUser(authOId)
 				.then((response) => {
-					expect(response.json()).toEqual({ success: true });
+					//expect(response).toEqual(Mocks.User);
 					done();
 				});
 		});

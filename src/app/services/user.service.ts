@@ -30,8 +30,10 @@ export class UserService {
 	private saltRounds = 10;
 
 	// TODO: migrate to constants file
+	private tokenUrl: string = 'https://porcupine.au.auth0.com/oauth/token';
+	private tokenBody: string = '{"client_id":"6SH0ceK2xnoSlkfMbl2rv0ZHp7szmLJr","client_secret":"BiBHTw-8w0VbbQXCE8PgXU3o8ptwk1wudE3fkAYQ3dbn-cdDR8VoCdZU5fmuNo-K","audience":"http://porcupine-dope-api.azurewebsites.net","grant_type":"client_credentials"}';
 	private apiUrl: string = 'http://porcupine-dope-api.azurewebsites.net';
-	//private headers = new Headers({ 'Content-Type': 'application/x-www-form-urlencoded' });
+	// private headers = new Headers({ 'Content-Type': 'application/x-www-form-urlencoded' });
 	// private options = new RequestOptions({ headers: this.headers });
 
 	constructor(private http: Http, private authHttp: AuthHttp, public zone: NgZone) {
@@ -42,7 +44,7 @@ export class UserService {
 		this.idToken = this.getStorageVariable('id_token');
 
 		// TODO: test only
-		this.setPassword('1234');
+		//this.setPassword('1234');
 	}
 
 	auth0 = new Auth0.WebAuth(auth0Config);
@@ -57,11 +59,9 @@ export class UserService {
 		let ops: RequestOptions;
 		if (this.accessToken == undefined) {
 			console.log("accessToken undefined, getting one");
-			return this.getAccessToken().then(val => {
-				console.log("Result from getAccessToken " + val);
+			return this.GETAccessToken().then(val => {
 				this.accessToken = val;
-				
-				console.log("access token" + this.accessToken);
+
 				switch (reqType.toLowerCase()) {
 					case 'get':
 						hds = new Headers({ authorization: this.accessToken });
@@ -77,15 +77,15 @@ export class UserService {
 		else {
 			console.log("Accesstoken already have, returning " + this.accessToken);
 			switch (reqType.toLowerCase()) {
-					case 'get':
-						hds = new Headers({ authorization: this.accessToken });
-						break;
-					default:
-						hds = new Headers({ authorization: this.accessToken, 'Content-Type': 'application/x-www-form-urlencoded' });
-						break;
-				}
-				ops = new RequestOptions({ headers: hds });
-				return Promise.resolve(ops);
+				case 'get':
+					hds = new Headers({ authorization: this.accessToken });
+					break;
+				default:
+					hds = new Headers({ authorization: this.accessToken, 'Content-Type': 'application/x-www-form-urlencoded' });
+					break;
+			}
+			ops = new RequestOptions({ headers: hds });
+			return Promise.resolve(ops);
 		}
 	}
 
@@ -156,13 +156,13 @@ export class UserService {
 		this.user = null;
 	}
 
-	getAccessToken(): Promise<string> {
+	GETAccessToken(): Promise<string> {
 		console.log('Getting user access token');
 
 		// get access token for porcupine-api
 		let hds = new Headers({ 'Content-Type': 'application/json' });
-		let url = 'https://porcupine.au.auth0.com/oauth/token';
-		let body = '{"client_id":"6SH0ceK2xnoSlkfMbl2rv0ZHp7szmLJr","client_secret":"BiBHTw-8w0VbbQXCE8PgXU3o8ptwk1wudE3fkAYQ3dbn-cdDR8VoCdZU5fmuNo-K","audience":"http://porcupine-dope-api.azurewebsites.net","grant_type":"client_credentials"}';
+		let url = this.tokenUrl;
+		let body = this.tokenBody;
 		let ops = new RequestOptions({
 			headers: hds,
 		});
@@ -194,6 +194,22 @@ export class UserService {
 		}
 	}
 
+	GETUserById(id: string): Promise<User> {
+		console.log('getting user by id');
+
+		const url = `${this.apiUrl}/user?authOId=${id}`;
+		return this.getReqOptions('get').then(reqOps => {
+			return this.http.get(url, reqOps).toPromise().then((response: any) => {
+				console.log('processing user by id');
+
+				let user: User = this.processIntoUser(response.json());
+
+				console.log('User by id retrieved!');
+				return user;
+			});
+		});
+	}
+
 	GETUserByEmail(email: string): Promise<User> {
 		console.log('getting user by email');
 
@@ -208,25 +224,9 @@ export class UserService {
 		});
 	}
 
-	GETUserById(id: string): Promise<User> {
-		console.log('getting user by id');
-
-		const url = `${this.apiUrl}/user?authOId=${id}`;
-		return this.getReqOptions('get').then(reqOps => { 
-		return this.http.get(url, reqOps).toPromise().then((response: any) => {
-			console.log('processing user by id');
-
-			let user: User = this.processIntoUser(response.json());
-
-			console.log('User by id retrieved!');
-			return user;
-		});
-		});
-	}
-
-	private processIntoUser(responseJSON: any) {
+	processIntoUser(response: any) {
 		let user: User;
-		for (let json of responseJSON) {
+		for (let json of response.json()) {
 			user = new User(json['person_id'], json['fname'], json['lname'], json['username'], json['person_email'], json['password_hash']);
 		}
 		return user;
