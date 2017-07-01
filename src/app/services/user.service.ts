@@ -217,7 +217,7 @@ export class UserService {
 		return this.http.get(url, this.getReqOptions('get')).toPromise().then((response: any) => {
 			console.log('processing user by email');
 
-			let user: User = this.processIntoUser(response);
+			let user: User = this.processIntoUser(response.json());
 
 			console.log('User by email retrieved!');
 			return user;
@@ -226,7 +226,7 @@ export class UserService {
 
 	processIntoUser(response: any) {
 		let user: User;
-		for (let json of response.json()) {
+		for (let json of response) {
 			user = new User(json['person_id'], json['fname'], json['lname'], json['username'], json['person_email'], json['password_hash']);
 		}
 		return user;
