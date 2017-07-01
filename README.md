@@ -27,7 +27,7 @@ npm install ionic cordova -g
 
 Debugging commands
 ----------------------
-`npm serve` launches Ionic Labs with console logs and live reload
+`npm run serve` launches Ionic Labs with console logs and live reload
 
 `npm start` launches ios simulator
 
