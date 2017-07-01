@@ -17,7 +17,6 @@ import { SideMenuModule } from '../pages/side-menu/side-menu.module';
 import { TabsModule } from '../pages/tabs/tabs.module';
 
 import { MyApp } from './app.component';
-import { TabsPage } from '../pages/tabs/tabs';
 
 export function authHttpServiceFactory(http: Http, options: RequestOptions) {
 	return new AuthHttp(new AuthConfig(), http, options);

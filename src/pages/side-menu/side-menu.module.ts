@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
+import { IonicModule } from 'ionic-angular';
 
 import { SideMenu } from './side-menu.component';
 import { ProfilePage } from './profile/profile.component';

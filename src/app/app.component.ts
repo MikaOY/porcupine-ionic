@@ -3,7 +3,6 @@ import { Platform, ModalController } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { UserService } from './services/user.service';
-import { SideMenu } from '../pages/side-menu/side-menu.component';
 
 import { TabsPage } from '../pages/tabs/tabs';
 import { SettingsService } from './services/settings.service';
@@ -18,7 +17,7 @@ import Auth0Cordova from '@auth0/cordova';
 
 export class MyApp implements OnInit {
 	title: string = 'Porcupine';
-	
+
 	rootPage: any = TabsPage;
 	chosenTheme: string;
 

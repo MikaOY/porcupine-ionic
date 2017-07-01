@@ -1,4 +1,4 @@
-import { ComponentFixture, async, TestBed, inject } from '@angular/core/testing';
+import {  async, TestBed, inject } from '@angular/core/testing';
 import { MockBackend, MockConnection } from '@angular/http/testing';
 import {
 	Http,
@@ -6,18 +6,16 @@ import {
 	BaseRequestOptions,
 	Response,
 	ResponseOptions,
-	RequestMethod,
-	ResponseContentType,
 	RequestOptions
 } from '@angular/http';
-import { By } from '@angular/platform-browser';
-import { DebugElement } from '@angular/core';
-import { ComponentFixtureAutoDetect } from '@angular/core/testing';
-import { AuthHttp, AuthConfig } from 'angular2-jwt';
+// import { By } from '@angular/platform-browser';
+// import { DebugElement } from '@angular/core';
+// import { ComponentFixtureAutoDetect } from '@angular/core/testing';
+import { AuthHttp } from 'angular2-jwt';
 
-import { IonicModule, Platform } from 'ionic-angular';
+// import { IonicModule, Platform } from 'ionic-angular';
 import { UserService } from './user.service';
-import { Mocks, NavParamsMock, AuthHttpServiceFactoryMock } from '../../../test-config/mocks-ionic';
+import { Mocks, AuthHttpServiceFactoryMock } from '../../../test-config/mocks-ionic';
 
 describe('User service', () => {
 	let subject: UserService = null;

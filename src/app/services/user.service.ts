@@ -1,10 +1,8 @@
 import { Injectable, NgZone } from '@angular/core';
 import { Http, Response, RequestOptions, Headers } from '@angular/http';
 import { User } from '../classes/user';
-import { TodoService } from './todo.service';
-import { Observable, Subscription } from 'rxjs';
-import { Storage } from '@ionic/storage';
-import { AuthHttp, JwtHelper } from 'angular2-jwt';
+import { Observable } from 'rxjs';
+import { AuthHttp } from 'angular2-jwt';
 import Auth0Cordova from '@auth0/cordova';
 import Auth0 from 'auth0-js';
 import { Board } from '../classes/board';
@@ -23,7 +21,6 @@ const auth0Config = {
 
 @Injectable()
 export class UserService {
-	private currentBoard: Board;
 	private userDb: User;
 
 	// password hashing

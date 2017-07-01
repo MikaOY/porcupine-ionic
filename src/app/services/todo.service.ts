@@ -107,38 +107,40 @@ export class TodoService {
 
 		const url = `${this.apiUrl}/board?userId=${this.id}`;
 		console.log(url);
-		return this.http.get(url, this.getReqOptions('get')).map((response: any) => {
+		return Observable.fromPromise(this.getReqOptions('get').then( reqOps => {
+			console.log('gonna do the get boards now');
+			return this.http.get(url, reqOps).map((response: any) => {
 
-			console.log('processing boards...');
+				console.log('processing boards...');
 
-			let array: Board[] = [];
-			for (let json of response.json()) {
-				array.push(new Board(json['board_title'], [], [], json['board_date_created'],
-					json['board_id'], undefined, undefined, json['person_id_board']));
+				let array: Board[] = [];
+				for (let json of response.json()) {
+					array.push(new Board(json['board_title'], [], [], json['board_date_created'],
+						json['board_id'], undefined, undefined, json['person_id_board']));
 
-				// populate Permissions[] in board
-				this.GETBoardPerms(array[array.length - 1]).then((perms) => {
-					array[array.length - 1].Permissions = perms;
-				});
-			}
-
-			// assign built array to cache
-			// if already has boards in cache, delete them
-			array.forEach(arrayB => {
-				if (this.checkIfAvailable([this.CachedBoards])) {
-					let possibleDuplicate: Board = this.CachedBoards.find((cacheB, cacheIndex, cacheArray) => cacheB.DbId == arrayB.DbId);
-					if (possibleDuplicate != undefined) {
-						this.CachedBoards.splice(this.CachedBoards.indexOf(possibleDuplicate));
-					}
+					// populate Permissions[] in board
+					this.GETBoardPerms(array[array.length - 1]).then((perms) => {
+						array[array.length - 1].Permissions = perms;
+					});
 				}
-			});
 
-			this.CachedBoards = array;
-			this.CurrentBoard = this.CachedBoards[0];
-			console.log('Boards retrieved!');
-			return array;
-		}).share()
-			.catch(this.handleError);
+				// assign built array to cache
+				// if already has boards in cache, delete them
+				array.forEach(arrayB => {
+					if (this.checkIfAvailable([this.CachedBoards])) {
+						let possibleDuplicate: Board = this.CachedBoards.find((cacheB, cacheIndex, cacheArray) => cacheB.DbId == arrayB.DbId);
+						if (possibleDuplicate != undefined) {
+							this.CachedBoards.splice(this.CachedBoards.indexOf(possibleDuplicate));
+						}
+					}
+				});
+
+				this.CachedBoards = array;
+				this.CurrentBoard = this.CachedBoards[0];
+				console.log('Boards retrieved!');
+				return array;
+			}).share()
+		})).catch(this.handleError);
 	}
 
 	public updateBoard(board: Board): Promise<void> {
@@ -235,7 +237,7 @@ export class TodoService {
 						|| this.CachedBoards.length == 0) {
 					}
 
-					// 2 - find board in cached where id matches cat board_id prop, 
+					// 2 - find board in cached where id matches cat board_id prop,
 					let b: Board = this.CachedBoards.find((board, index, array) => json['board_id_category'] == board.DbId);
 
 					// 3 - check if cat already in board, if NOT, add it
@@ -542,7 +544,7 @@ export class TodoService {
 		}
 		let body = formBody.join('&');
 
-		// delete obj from cache 
+		// delete obj from cache
 		switch (idName) {
 			case 'todoId':
 				this.CurrentBoard.Todos.splice(this.CurrentBoard.Todos.indexOf(obj as Todo));
@@ -649,7 +651,7 @@ export class TodoService {
 
 			console.log('processing shared...');
 
-			// for each row, 
+			// for each row,
 			// check if new board => create + add to boards
 			// check if new cat => create + add to cats
 			// check if new todo => create + add to todos
