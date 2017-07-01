@@ -3,6 +3,7 @@ import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
 import { ComponentFixtureAutoDetect } from '@angular/core/testing';
 import { IonicModule, Platform } from 'ionic-angular';
+import { ViewController, NavController } from 'ionic-angular';
 
 import { AppModule } from "../../../app/app.module";
 import { TodosModule } from '../../todos/todos.module';
@@ -16,6 +17,8 @@ import { TodoService } from '../../../app/services/todo.service';
 import { Category } from '../../../app/classes/category';
 import { Board } from '../../../app/classes/board';
 
+import { ColorArray } from '../../../app/services/todo.service';
+
 let comp: AddCategory;
 let fixture: ComponentFixture<AddCategory>;
 
@@ -27,6 +30,10 @@ let todoServiceStub = {
 	slothGetCurrentBoard() {
 		return Promise.resolve(Mocks.Board);
 	},
+
+	getColors() {
+		return ColorArray;
+	}
 };
 
 describe('AddCategory', () => {
@@ -40,7 +47,8 @@ describe('AddCategory', () => {
 			// providers:    [ UserService ]  
 			// Provide a test-double instead
 			providers: [
-				{ provide: NavParams, useClass: NavParamsMock },
+				{ provide: ViewController },
+				{ provide: NavController },
 				{ provide: TodoService, useValue: todoServiceStub }
 			]
 		})
@@ -58,9 +66,8 @@ describe('AddCategory', () => {
 		tServ = fixture.debugElement.injector.get(TodoService);
 		// also can: get todoService from the root injector
 		// todoService = TestBed.get(TodoService);
-
-		spyOn(tServ, 'slothGetCurrentBoard').and.returnValue(tServ.currentBoard);
 		
+		spyOn(tServ, 'getColors').and.returnValue(tServ.ColorArray);
 		fixture.detectChanges();
 	});
 

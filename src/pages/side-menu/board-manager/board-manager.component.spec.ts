@@ -3,6 +3,7 @@ import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
 import { ComponentFixtureAutoDetect } from '@angular/core/testing';
 import { IonicModule, Platform } from 'ionic-angular';
+import { ModalController, ViewController } from 'ionic-angular';
 
 import { AppModule } from "../../../app/app.module";
 import { TodosModule } from '../../todos/todos.module';
@@ -27,6 +28,9 @@ let todoServiceStub = {
 	slothGetCurrentBoard() {
 		return Promise.resolve(Mocks.Board);
 	},
+	slothGetBoards() {
+		return Promise.resolve(Mocks.BoardsArray);
+	},
 };
 
 describe('BoardManager', () => {
@@ -40,7 +44,8 @@ describe('BoardManager', () => {
 			// providers:    [ UserService ]  
 			// Provide a test-double instead
 			providers: [
-				{ provide: NavParams, useClass: NavParamsMock },
+				{ provide: ModalController },
+				{ provide: ViewController },
 				{ provide: TodoService, useValue: todoServiceStub }
 			]
 		})
@@ -58,8 +63,6 @@ describe('BoardManager', () => {
 		tServ = fixture.debugElement.injector.get(TodoService);
 		// also can: get todoService from the root injector
 		// todoService = TestBed.get(TodoService);
-
-		spyOn(tServ, 'slothGetCurrentBoard').and.returnValue(tServ.currentBoard);
 		
 		fixture.detectChanges();
 	});
