@@ -4,7 +4,7 @@
 		<button ion-button clear (click)="unlockBoard(slothCurrentBoard())">Unlock Board</button>
 	</ng-container>
 	<ion-list no-lines *ngIf="!slothCurrentBoard()?.IsLocked">
-			
+
 		<!--what select mode looks like (tap&hold to activate)-->
 		<ng-container *ngIf="isSelectActive === true; else selInactive">
 			<ion-item-group reorder="true" (ionItemReorder)="reorderItems($event)">
@@ -19,7 +19,7 @@
 
 		<!--your typical todo look-->
 		<ng-template #selInactive>
-			<ng-container *ngIf="isReady">		
+			<ng-container *ngIf="isReady">
 				<ng-container class="inline-todo" *ngFor="let todo of slothCurrentBoard().Todos">
 					<ng-container *ngIf="!todo.IsArchived && (todo.Category == null ? true : todo.Category.IsShown)">
 							<ion-item-sliding>
@@ -47,7 +47,7 @@
 									<button ion-button [style.background-color]="ColorArray[todo.Category.Color]" id="slideCat">
 										<div class="pRow">
 												<!-- TODO: fix dis!! -->
-												<div class="pColumn priorBar" *ngFor="let num of todoPriority(todo.Priority)">I</div> 
+												<div class="pColumn priorBar" *ngFor="let num of todoPriority(todo.Priority)">I</div>
 										</div>
 										<div>{{todo.Category.Name}}</div>
 									</button>
@@ -84,7 +84,7 @@
 											<ion-col>{{priority[todo.Priority]}}</ion-col>
 										</ion-row>
 									</ion-grid>
-									<button ion-button small clear id="editButton" *ngIf="!slothCurrentBoard()?.IsViewOnly" 
+									<button ion-button small clear id="editButton" *ngIf="!slothCurrentBoard()?.IsViewOnly"
 										(click)=activateEdit(todo)>edit</button>
 								</ng-template>
 
@@ -93,7 +93,7 @@
 									<form (ngSubmit)="onEditFormSubmit(todo)" #editForm="ngForm">
 										<ion-item>
 											<ion-label for="dateDue">Date Due:</ion-label>
-											<ion-datetime displayFormat="DDD MMM D, YYYY" [(ngModel)]="todo.DateDue" name="dateDue" 
+											<ion-datetime displayFormat="DDD MMM D, YYYY" [(ngModel)]="todo.DateDue" name="dateDue"
 												placeholder="{{todo.DateDue | date: yEEEMMMMd}}"></ion-datetime>
 										</ion-item>
 										<ion-item>
@@ -129,8 +129,8 @@
 						<ion-input clearInput [(ngModel)]="newTodo.Info" name="Info"></ion-input>
 					</ion-item>
 					<ion-item-options side="left">
-						<button ion-button 
-							[style.background-color]="newTodo.Category !== undefined ? ColorArray[newTodo.Category.Color] : ' '">       
+						<button ion-button
+							[style.background-color]="newTodo.Category !== undefined ? ColorArray[newTodo.Category.Color] : ' '">
 								{{newTodo.Category !== undefined ? newTodo.Category.Name : 'undefined'}}
 						</button>
 					</ion-item-options>
@@ -171,7 +171,7 @@
 		</ng-container>
 
 	</ion-list>
-	<ion-fab *ngIf="!slothCurrentBoard()?.IsViewOnly">
-		<button ion-fab mini id="addTodoButton" (click)=addTodo()>+</button>
+	<ion-fab id="addTodoButton" *ngIf="!slothCurrentBoard()?.IsViewOnly">
+		<button ion-fab mini (click)=addTodo()>+</button>
 	</ion-fab>
 </ion-content>
