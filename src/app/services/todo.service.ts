@@ -17,7 +17,7 @@ import { Permission } from '../classes/permission';
 import { DbCompatible } from '../interfaces/db-compatible.interface';
 import { UserService } from './user.service';
 
-const ColorArray: string[] = ['#919191', '#ff5c3f', '#ffb523', '#6f9b53', '#1371d6', '#423e7c', '#7606cc', '#c613b4'];
+export const ColorArray: string[] = ['#919191', '#ff5c3f', '#ffb523', '#6f9b53', '#1371d6', '#423e7c', '#7606cc', '#c613b4'];
 
 @Injectable()
 export class TodoService {
