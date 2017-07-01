@@ -613,7 +613,7 @@ export class TodoService {
 		const url = `${this.apiUrl}/shared`;
 		sharees.forEach(sharee => {
 			// get user by email first
-			this.userService.getUserByEmail(sharee.User.Email).then((user) => {
+			this.userService.GETUserByEmail(sharee.User.Email).then((user) => {
 				// then create req body
 				var details = {
 					'boardId': String(board.DbId),
@@ -761,7 +761,7 @@ export class TodoService {
 	public unshareBoard(perm: Permission, board: Board) {
 		console.log('unsharing board...');
 
-		this.userService.getUserByEmail(perm.User.Email).then((user) => {
+		this.userService.GETUserByEmail(perm.User.Email).then((user) => {
 			// first check if user CAN unshare recipient
 			if (board.IsViewOnly) {
 				console.log('Board view only! Cannot unshare!');
@@ -845,7 +845,7 @@ export class TodoService {
 				this.id = user.DbId;
 
 				// get access token
-				// this.userService.getAccessToken().then((token) => {
+				// this.userService.GETAccessToken().then((token) => {
 				// 	this.token = token;
 				// 	console.log(token);
 
