@@ -11,7 +11,11 @@ UPDATES:
 --------
 *2017-06-28: Massive changes!*
 
-After trying to use Karma + Mocha + Chai + Sinon to implement testing in app, we ran into a roadblock. We could not get Mocha and Angular/Ionic to play nice together. So we're switching to Karma + Jasmine, which is more well-documented.
+After trying to use Karma + Mocha + Chai + Sinon to implement testing in app, we ran into a roadblock. We could not get Mocha and Angular/Ionic to play nice together. So we're switching to Karma + Jasmine, which is officially supported by Angular. 
+
+*2017-06-30: Modules*
+
+All components have be reorganized into neater modules, as per the Angular style guide. 
 
 Get started
 -------------------------------
