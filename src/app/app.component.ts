@@ -4,6 +4,7 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { UserService } from './services/user.service';
 import { SideMenu } from '../pages/side-menu/side-menu.component';
+import { environment } from '../environments/environment';
 
 import { TabsPage } from '../pages/tabs/tabs';
 import { SettingsService } from './services/settings.service';
@@ -18,16 +19,16 @@ import Auth0Cordova from '@auth0/cordova';
 
 export class MyApp implements OnInit {
 	title: string = 'Porcupine';
-	
+
 	rootPage: any = TabsPage;
 	chosenTheme: string;
 
 	constructor(platform: Platform,
-							statusBar: StatusBar,
-							splashScreen: SplashScreen,
-							public modalCtrl: ModalController,
-							public userService: UserService,
-							private settingsService: SettingsService) {
+		statusBar: StatusBar,
+		splashScreen: SplashScreen,
+		public modalCtrl: ModalController,
+		public userService: UserService,
+		private settingsService: SettingsService) {
 		platform.ready().then((source) => {
 			// Okay, so the platform is ready and our plugins are available.
 			// Here you can do any higher level native things you might need.
@@ -37,9 +38,9 @@ export class MyApp implements OnInit {
 			}
 
 			// Add this function
-      (<any>window).handleOpenURL = (url) => {
-        Auth0Cordova.onRedirectUri(url);
-      };
+			(<any>window).handleOpenURL = (url) => {
+				Auth0Cordova.onRedirectUri(url);
+			};
 		});
 	}
 

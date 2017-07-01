@@ -7,8 +7,9 @@ import { Storage } from '@ionic/storage';
 import { AuthHttp, JwtHelper } from 'angular2-jwt';
 import Auth0Cordova from '@auth0/cordova';
 import Auth0 from 'auth0-js';
-import { Board } from '../classes/board';
+import { environment } from '../../environments/environment';
 
+import { Board } from '../classes/board';
 import * as bcryptjs from 'bcryptjs';
 
 const auth0Config = {
@@ -29,10 +30,6 @@ export class UserService {
 	// password hashing
 	private saltRounds = 10;
 
-	// TODO: migrate to constants file
-	private tokenUrl: string = 'https://porcupine.au.auth0.com/oauth/token';
-	private tokenBody: string = '{"client_id":"6SH0ceK2xnoSlkfMbl2rv0ZHp7szmLJr","client_secret":"BiBHTw-8w0VbbQXCE8PgXU3o8ptwk1wudE3fkAYQ3dbn-cdDR8VoCdZU5fmuNo-K","audience":"http://porcupine-dope-api.azurewebsites.net","grant_type":"client_credentials"}';
-	private apiUrl: string = 'http://porcupine-dope-api.azurewebsites.net';
 	// private headers = new Headers({ 'Content-Type': 'application/x-www-form-urlencoded' });
 	// private options = new RequestOptions({ headers: this.headers });
 
@@ -161,8 +158,8 @@ export class UserService {
 
 		// get access token for porcupine-api
 		let hds = new Headers({ 'Content-Type': 'application/json' });
-		let url = this.tokenUrl;
-		let body = this.tokenBody;
+		let url = environment.tokenUrl;
+		let body = environment.tokenReqBody;
 		let ops = new RequestOptions({
 			headers: hds,
 		});
@@ -197,7 +194,7 @@ export class UserService {
 	GETUserById(id: string): Promise<User> {
 		console.log('getting user by id');
 
-		const url = `${this.apiUrl}/user?authOId=${id}`;
+		const url = `${environment.apiUrl}/user?authOId=${id}`;
 		return this.getReqOptions('get').then(reqOps => {
 			return this.http.get(url, reqOps).toPromise().then((response: any) => {
 				console.log('processing user by id');
@@ -213,7 +210,7 @@ export class UserService {
 	GETUserByEmail(email: string): Promise<User> {
 		console.log('getting user by email');
 
-		const url = `${this.apiUrl}/user?email=%27${email}%27`;
+		const url = `${environment.apiUrl}/user?email=%27${email}%27`;
 		return this.http.get(url, this.getReqOptions('get')).toPromise().then((response: any) => {
 			console.log('processing user by email');
 
@@ -241,7 +238,7 @@ export class UserService {
 				daHash = hash;
 				console.log('Updating password!');
 
-				const url = `${this.apiUrl}/user`;
+				const url = `${environment.apiUrl}/user`;
 				if (this.userDb != undefined) {
 					var details = {
 						'fname': this.userDb.FirstName,

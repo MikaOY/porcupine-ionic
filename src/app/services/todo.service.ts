@@ -7,6 +7,7 @@ import 'rxjs/add/operator/share';
 import 'rxjs/add/operator/startWith';
 import 'rxjs/add/operator/toPromise';
 import 'rxjs/add/observable/fromPromise';
+import { environment } from '../../environments/environment';
 
 import { Todo } from '../classes/todo';
 import { Category } from '../classes/category';
@@ -28,7 +29,6 @@ export class TodoService {
 
 	public CachedSharedBoards: Board[] = [];
 
-	private apiUrl: string = 'http://porcupine-dope-api.azurewebsites.net';
 	private id: number = 0;
 	private token: string;
 
@@ -83,7 +83,7 @@ export class TodoService {
 
 		this.CachedBoards.push(newBoard);
 
-		const url = `${this.apiUrl}/board`;
+		const url = `${environment.apiUrl}/board`;
 		var details = {
 			'userId': String(this.id),
 			'title': newBoard.Name,
@@ -105,7 +105,7 @@ export class TodoService {
 	private GETBoards(): Observable<Board[]> {
 		console.log('requesting boards...');
 
-		const url = `${this.apiUrl}/board?userId=${this.id}`;
+		const url = `${environment.apiUrl}/board?userId=${this.id}`;
 		console.log(url);
 		return this.http.get(url, this.getReqOptions('get')).map((response: any) => {
 
@@ -144,7 +144,7 @@ export class TodoService {
 	public updateBoard(board: Board): Promise<void> {
 		console.log('updating board...');
 
-		const url = `${this.apiUrl}/board`;
+		const url = `${environment.apiUrl}/board`;
 		var details = {
 			'userId': String(this.id),
 			'title': board.Name,
@@ -169,7 +169,7 @@ export class TodoService {
 	/*private deleteBoard(board: Board): Promise<void> {
 		console.log('deleting board...');
 
-		const url = `${this.apiUrl}/board?boardId=${board.DbId}`;
+		const url = `${environment.apiUrl}/board?boardId=${board.DbId}`;
 		return this.http.delete(url).toPromise().then((response: any) => {
 			console.log('BOARD delete: ' + response.toString());
 		})
@@ -182,7 +182,7 @@ export class TodoService {
 		this.CurrentBoard.Categories.push(newCat);
 		this.CachedCats.push(newCat);
 
-		const url = `${this.apiUrl}/category`;
+		const url = `${environment.apiUrl}/category`;
 		var details = {
 			'userId': String(this.id),
 			'title': newCat.Name,
@@ -210,7 +210,7 @@ export class TodoService {
 	private GETCategories(args?: any): Observable<Category[]> {
 		console.log('requesting categories...');
 
-		const url = `${this.apiUrl}/category?userId=${this.id}`;
+		const url = `${environment.apiUrl}/category?userId=${this.id}`;
 		return this.http.get(url).map((response: any) => {
 			console.log('processing categories...');
 
@@ -235,7 +235,7 @@ export class TodoService {
 						|| this.CachedBoards.length == 0) {
 					}
 
-					// 2 - find board in cached where id matches cat board_id prop, 
+					// 2 - find board in cached where id matches cat board_id prop,
 					let b: Board = this.CachedBoards.find((board, index, array) => json['board_id_category'] == board.DbId);
 
 					// 3 - check if cat already in board, if NOT, add it
@@ -293,7 +293,7 @@ export class TodoService {
 	public updateCategory(cat: Category): Promise<void> {
 		console.log('updating category...');
 
-		const url = `${this.apiUrl}/category`;
+		const url = `${environment.apiUrl}/category`;
 		var details = {
 			'userId': String(this.id),
 			'categoryId': String(cat.DbId),
@@ -321,7 +321,7 @@ export class TodoService {
 	/*private deleteCategory(cat: Category): Promise<void> {
 		console.log('deleting category...');
 
-		const url = `${this.apiUrl}/category?categoryId=${cat.DbId}`;
+		const url = `${environment.apiUrl}/category?categoryId=${cat.DbId}`;
 		return this.http.delete(url).toPromise().then((response: any) => {
 			console.log('CAT delete: ' + response.toString());
 		})
@@ -334,7 +334,7 @@ export class TodoService {
 		this.CurrentBoard.Todos.push(newTodo);
 		this.CachedTodos.push(newTodo);
 
-		const url = `${this.apiUrl}/todo`;
+		const url = `${environment.apiUrl}/todo`;
 		// create req body
 		var details = {
 			'userId': String(this.id),
@@ -365,7 +365,7 @@ export class TodoService {
 	private GETTodos(args?: any): Observable<Todo[]> {
 		console.log('requesting todos...');
 
-		const url = `${this.apiUrl}/todo?userId=${this.id}`;
+		const url = `${environment.apiUrl}/todo?userId=${this.id}`;
 		return this.http.get(url).map((response: any) => {
 			console.log('processing todos...');
 
@@ -484,7 +484,7 @@ export class TodoService {
 	public updateTodo(todo: Todo): Promise<void> {
 		console.log('updating todo...');
 
-		const url = `${this.apiUrl}/todo`;
+		const url = `${environment.apiUrl}/todo`;
 		// create req body
 		var details = {
 			'userId': String(this.id),
@@ -514,7 +514,7 @@ export class TodoService {
 
 	// actual delete
 	/*private deleteTodo(todo: Todo): Promise<void> {
-		const url = `${this.apiUrl}/todo?todoId=${todo.DbId}`;
+		const url = `${environment.apiUrl}/todo?todoId=${todo.DbId}`;
 
 		return this.http.delete(url).toPromise().then((response: any) => {
 			console.log('TODO delete: ' + response.toString());
@@ -525,7 +525,7 @@ export class TodoService {
 	// delete method that just updates prop
 	public deleteObject(obj: DbCompatible) {
 
-		const url = `${this.apiUrl}/${obj.constructor.name.toLowerCase()}/delete`;
+		const url = `${environment.apiUrl}/${obj.constructor.name.toLowerCase()}/delete`;
 		// create req body
 		let idName: string = obj.constructor.name.toLowerCase() + 'Id';
 		console.log('deleting...' + idName);
@@ -542,7 +542,7 @@ export class TodoService {
 		}
 		let body = formBody.join('&');
 
-		// delete obj from cache 
+		// delete obj from cache
 		switch (idName) {
 			case 'todoId':
 				this.CurrentBoard.Todos.splice(this.CurrentBoard.Todos.indexOf(obj as Todo));
@@ -565,7 +565,7 @@ export class TodoService {
 
 	public restoreObject(obj: DbCompatible): Promise<void> {
 
-		const url = `${this.apiUrl}/${obj.constructor.name.toLowerCase()}/restore`;
+		const url = `${environment.apiUrl}/${obj.constructor.name.toLowerCase()}/restore`;
 		// create req body
 		let idName: string = obj.constructor.name.toLowerCase() + 'Id';
 		console.log('restoring...' + idName);
@@ -594,7 +594,7 @@ export class TodoService {
 
 	// TODO: remove for prod
 	public raiseTheDead() {
-		const url = `${this.apiUrl}/restore/all`;
+		const url = `${environment.apiUrl}/restore/all`;
 
 		let body: string = '';
 		return this.http.put(url, body, this.getReqOptions('put')).toPromise().then((response: any) => {
@@ -610,7 +610,7 @@ export class TodoService {
 		console.log('Sharing board in service');
 
 		// TODO: send note to recipients
-		const url = `${this.apiUrl}/shared`;
+		const url = `${environment.apiUrl}/shared`;
 		sharees.forEach(sharee => {
 			// get user by email first
 			this.userService.GETUserByEmail(sharee.User.Email).then((user) => {
@@ -644,12 +644,12 @@ export class TodoService {
 	private GETShared(args: any): Observable<Board[]> {
 		console.log('requesting shared...');
 
-		const url = `${this.apiUrl}/shared?userId=${this.id}`;
+		const url = `${environment.apiUrl}/shared?userId=${this.id}`;
 		return this.http.get(url).map((response: any) => {
 
 			console.log('processing shared...');
 
-			// for each row, 
+			// for each row,
 			// check if new board => create + add to boards
 			// check if new cat => create + add to cats
 			// check if new todo => create + add to todos
@@ -767,7 +767,7 @@ export class TodoService {
 				console.log('Board view only! Cannot unshare!');
 			} else {
 				// unshare if can
-				const url = `${this.apiUrl}/shared?boardId=${board.DbId}&recipientId=${user.DbId}&userId=${this.id}`;
+				const url = `${environment.apiUrl}/shared?boardId=${board.DbId}&recipientId=${user.DbId}&userId=${this.id}`;
 				console.log(url);
 
 				return this.http.delete(url).toPromise().then((response: any) => {
@@ -781,7 +781,7 @@ export class TodoService {
 	public GETBoardPerms(board: Board): Promise<Permission[]> {
 		console.log('getting board permissions...');
 
-		const url = `${this.apiUrl}/shared?boardId=${board.DbId}`;
+		const url = `${environment.apiUrl}/shared?boardId=${board.DbId}`;
 		return this.http.get(url).toPromise().then((response: any) => {
 			console.log('Processing board permissions...');
 			let array: Permission[] = [];
