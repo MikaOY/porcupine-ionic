@@ -47,22 +47,24 @@ export class TodoService {
 		let hds;
 		let ops: RequestOptions;
 		if (this.token == undefined) {
-			console.log("Token undefined, getting one");
+			console.log('getReqOptions: Todo service token undefined, getting one');
 			this.token = this.userService.accessToken;
-			console.log("access token" + this.token);
+			console.log('getReqOptions: todo service access token' + this.token);
 			switch (reqType.toLowerCase()) {
 				case 'get':
 					hds = new Headers({ authorization: this.token });
+					console.log('getReqOptions: returning header for get req');
 					break;
 				default:
 					hds = new Headers({ authorization: this.token, 'Content-Type': 'application/x-www-form-urlencoded' });
 					break;
 			}
 			ops = new RequestOptions({ headers: hds });
+			console.log('getReqOptions: returning something');
 			return Promise.resolve(ops);
 		}
 		else {
-			console.log("Token already have, returning " + this.token);
+			console.log("getReqOptions: Token already have, returning " + this.token);
 			switch (reqType.toLowerCase()) {
 				case 'get':
 					hds = new Headers({ authorization: this.token });
@@ -103,42 +105,44 @@ export class TodoService {
 	}
 
 	private GETBoards(): Observable<Board[]> {
-		console.log('requesting boards...');
+		console.log('GETBoards: requesting boards...');
 
 		const url = `${environment.apiUrl}/board?userId=${this.id}`;
-		console.log(url);
-		return this.http.get(url, this.getReqOptions('get')).map((response: any) => {
+		console.log('GETBoards:' + url);
+		return Observable.fromPromise(this.getReqOptions('get').then( reqOps => {
+			console.log('GETBoards: reqOp headers = ' + reqOps.headers.get("authorization"));
+			return this.http.get(url, reqOps).map((response: any) => {
 
-			console.log('processing boards...');
+				console.log('GETBoards: processing boards...');
 
-			let array: Board[] = [];
-			for (let json of response.json()) {
-				array.push(new Board(json['board_title'], [], [], json['board_date_created'],
-					json['board_id'], undefined, undefined, json['person_id_board']));
+				let array: Board[] = [];
+				for (let json of response.json()) {
+					array.push(new Board(json['board_title'], [], [], json['board_date_created'],
+						json['board_id'], undefined, undefined, json['person_id_board']));
 
-				// populate Permissions[] in board
-				this.GETBoardPerms(array[array.length - 1]).then((perms) => {
-					array[array.length - 1].Permissions = perms;
-				});
-			}
-
-			// assign built array to cache
-			// if already has boards in cache, delete them
-			array.forEach(arrayB => {
-				if (this.checkIfAvailable([this.CachedBoards])) {
-					let possibleDuplicate: Board = this.CachedBoards.find((cacheB, cacheIndex, cacheArray) => cacheB.DbId == arrayB.DbId);
-					if (possibleDuplicate != undefined) {
-						this.CachedBoards.splice(this.CachedBoards.indexOf(possibleDuplicate));
-					}
+					// populate Permissions[] in board
+					this.GETBoardPerms(array[array.length - 1]).then((perms) => {
+						array[array.length - 1].Permissions = perms;
+					});
 				}
-			});
 
-			this.CachedBoards = array;
-			this.CurrentBoard = this.CachedBoards[0];
-			console.log('Boards retrieved!');
-			return array;
-		}).share()
-			.catch(this.handleError);
+				// assign built array to cache
+				// if already has boards in cache, delete them
+				array.forEach(arrayB => {
+					if (this.checkIfAvailable([this.CachedBoards])) {
+						let possibleDuplicate: Board = this.CachedBoards.find((cacheB, cacheIndex, cacheArray) => cacheB.DbId == arrayB.DbId);
+						if (possibleDuplicate != undefined) {
+							this.CachedBoards.splice(this.CachedBoards.indexOf(possibleDuplicate));
+						}
+					}
+				});
+
+				this.CachedBoards = array;
+				this.CurrentBoard = this.CachedBoards[0];
+				console.log('GETBoards: Boards retrieved!');
+				return array;
+			}).share();
+		})).catch(this.handleError);
 	}
 
 	public updateBoard(board: Board): Promise<void> {
@@ -838,11 +842,12 @@ export class TodoService {
 
 		if (doRetrieve == true) {
 			this.isBusy = true;
-			console.log('Getting current board...');
+			console.log('getCurrentBoard: Getting current board...');
 
 			// get user id
 			this.userService.getUser().then((user) => {
 				this.id = user.DbId;
+				console.log('getCurrentBoard: this.id set to ' + this.id);
 
 				// get access token
 				// this.userService.GETAccessToken().then((token) => {

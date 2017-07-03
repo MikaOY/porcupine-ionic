@@ -9,7 +9,7 @@
 		<ng-container *ngIf="isSelectActive === true; else selInactive">
 			<ion-item-group reorder="true" (ionItemReorder)="reorderItems($event)">
 				<ion-item text-wrap [style.background-color]="todo.IsSelectActive ? '#d1d1d1' : ''"
-					class="todoItem" *ngFor="let todo of slothCurrentBoard().Todos" (click)="activateSelect(todo)">
+					class="todoItem" *ngFor="let todo of slothCurrentBoard()?.Todos" (click)="activateSelect(todo)">
 					<ion-checkbox disabled="true" [(ngModel)]="todo.IsDone"></ion-checkbox>
 					<ion-label>{{todo.Info}}</ion-label>
 				</ion-item>
@@ -20,7 +20,7 @@
 		<!--your typical todo look-->
 		<ng-template #selInactive>
 			<ng-container *ngIf="isReady">
-				<ng-container class="inline-todo" *ngFor="let todo of slothCurrentBoard().Todos">
+				<ng-container class="inline-todo" *ngFor="let todo of slothCurrentBoard()?.Todos">
 					<ng-container *ngIf="!todo.IsArchived && (todo.Category == null ? true : todo.Category.IsShown)">
 							<ion-item-sliding>
 								<!--editable text area (edit to activate)-->
