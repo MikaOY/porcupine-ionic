@@ -30,5 +30,6 @@
   "compileOnSave": false,
   "atom": {
     "rewriteTsconfig": false
-  }
+  },
+	"tslint.exclude": "./src/**.spec.ts"
 }

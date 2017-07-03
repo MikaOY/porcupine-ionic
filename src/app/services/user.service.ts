@@ -55,7 +55,7 @@ export class UserService {
 		let hds;
 		let ops: RequestOptions;
 		if (this.accessToken == undefined) {
-			console.log("accessToken undefined, getting one");
+			console.log("getReqOptions: accessToken undefined, getting one");
 			return this.GETAccessToken().then(val => {
 				this.accessToken = val;
 
@@ -72,7 +72,7 @@ export class UserService {
 			});
 		}
 		else {
-			console.log("Accesstoken already have, returning " + this.accessToken);
+			console.log("getReqOptions: Accesstoken already have, returning " + this.accessToken);
 			switch (reqType.toLowerCase()) {
 				case 'get':
 					hds = new Headers({ authorization: this.accessToken });
@@ -154,7 +154,7 @@ export class UserService {
 	}
 
 	GETAccessToken(): Promise<string> {
-		console.log('Getting user access token');
+		console.log('GETAccessToken: Getting user access token');
 
 		// get access token for porcupine-api
 		let hds = new Headers({ 'Content-Type': 'application/json' });
@@ -166,8 +166,8 @@ export class UserService {
 
 		return this.http.post(url, body, ops).toPromise().then((response) => {
 			let json = response.json();
-			console.log('Returning access token');
-			console.log(json['token_type'] + ' ' + json['access_token']);
+			console.log('GETAccessToken: Returning access token');
+			console.log('GETAccessToken:' + json['token_type'] + ' ' + json['access_token']);
 			return json['token_type'] + ' ' + json['access_token'];
 		});
 	}
@@ -176,32 +176,32 @@ export class UserService {
 	getUser(authOId?: string, forceGet?: boolean): Promise<User> {
 		if (this.userDb == undefined || (forceGet != undefined && forceGet == true)) {
 			if (authOId == undefined) {
-				console.log('Returning null user user.service: authOId undefined!');
+				console.log('getUser: Returning null user user.service: authOId undefined!');
 				return Promise.resolve(null);
 			} else {
-				console.log("getUser GETting user by ID");
+				console.log("getUser: GETting user by ID");
 				return this.GETUserById(authOId).then((user) => {
 					this.userDb = user;
 					return user;
 				});
 			}
 		} else {
-			console.log('Returning userDb in user.service!');
+			console.log('getUser: Returning userDb in user.service!');
 			return Promise.resolve(this.userDb);
 		}
 	}
 
 	GETUserById(id: string): Promise<User> {
-		console.log('getting user by id');
+		console.log('GETUserById: getting user by id');
 
 		const url = `${environment.apiUrl}/user?authOId=${id}`;
 		return this.getReqOptions('get').then(reqOps => {
 			return this.http.get(url, reqOps).toPromise().then((response: any) => {
-				console.log('processing user by id');
+				console.log('GETUserById: processing user by id');
 
 				let user: User = this.processIntoUser(response.json());
 
-				console.log('User by id retrieved!');
+				console.log('GETUserById: User by id retrieved!');
 				return user;
 			});
 		});
