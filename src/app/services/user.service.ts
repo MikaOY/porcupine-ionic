@@ -58,6 +58,7 @@ export class UserService {
 			console.log("getReqOptions: accessToken undefined, getting one");
 			return this.GETAccessToken().then(val => {
 				this.accessToken = val;
+				console.log('Assigning req options');
 
 				switch (reqType.toLowerCase()) {
 					case 'get':
@@ -179,7 +180,6 @@ export class UserService {
 				console.log('getUser: Returning null user user.service: authOId undefined!');
 				return Promise.resolve(null);
 			} else {
-				console.log("getUser: GETting user by ID");
 				return this.GETUserById(authOId).then((user) => {
 					this.userDb = user;
 					return user;
@@ -196,6 +196,8 @@ export class UserService {
 
 		const url = `${environment.apiUrl}/user?authOId=${id}`;
 		return this.getReqOptions('get').then(reqOps => {
+			console.log('Actually requesting user by ID');
+			console.log(url);
 			return this.http.get(url, reqOps).toPromise().then((response: any) => {
 				console.log('GETUserById: processing user by id');
 
