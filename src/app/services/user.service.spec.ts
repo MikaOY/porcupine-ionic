@@ -14,6 +14,7 @@ import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
 import { ComponentFixtureAutoDetect } from '@angular/core/testing';
 import { AuthHttp, AuthConfig } from 'angular2-jwt';
+import { environment } from '../../environments/environment';
 
 import { IonicModule, Platform } from 'ionic-angular';
 import { UserService } from './user.service';
@@ -23,10 +24,6 @@ describe('User service', () => {
 	let subject: UserService = null;
 	let backend: MockBackend;
 	let responseForm = '<form />';
-
-	let tokenUrl: string = 'https://porcupine.au.auth0.com/oauth/token';
-	let apiUrl: string = 'http://porcupine-dope-api.azurewebsites.net';
-	let authOId: string = '594c8b1cc3954a4865ef9bc9';
 
 	// async beforeEach (to allow external templates to be compiled)
 	beforeEach(async(() => {
@@ -61,13 +58,13 @@ describe('User service', () => {
 
 			backend.connections.subscribe((connection: MockConnection) => {
 				// check #GETUserById
-				expect(connection.request.url).toEqual(`${apiUrl}/user?authOId=${authOId}`, 'Wrong url/ AuthOId');
+				expect(connection.request.url).toEqual(`${environment.apiUrl}/user?authOId=${environment.dummyAuthOId}`, 'Wrong url/ AuthOId');
 
 				// return fake response to user GET, passes to #processIntoUser
 				let options = new ResponseOptions({
 					status: 200,
 					body: JSON.stringify(Mocks.UserJSON),
-					url: `${apiUrl}/user?authOId=${authOId}`
+					url: `${environment.apiUrl}/user?authOId=${environment.dummyAuthOId}`
 				});
 				connection.mockRespond(new Response(options));
 				expect(connection.response).toBeTruthy();
@@ -76,7 +73,7 @@ describe('User service', () => {
 			});
 
 			subject
-				.getUser(authOId)
+				.getUser(environment.dummyAuthOId)
 				.then((response) => {
 					//expect(response).toEqual(Mocks.User);
 					done();

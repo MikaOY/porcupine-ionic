@@ -1,4 +1,4 @@
-#details{
+#details {
     background: #cddbf4;
     position: relative;
     margin: auto;
@@ -6,25 +6,25 @@
     padding: 20px;
 }
 
-#toggleButton{
+#toggleButton {
     display: inline-block;
     vertical-align: middle;
 }
 
-#editButton{ //restyle later
+#editButton { //restyle later
     position: absolute;
     top: 0;
     right: 0;
 }
 
-.detailLabel{
+.detailLabel {
     font-weight: bold;
 }
 
-#addButton{
+#addTodoButton {
     position: absolute;
     right: 15px;
-    bottom: 50px;
+    bottom: 15px;
 }
 
 .pRow{
