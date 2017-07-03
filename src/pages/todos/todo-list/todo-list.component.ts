@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ModalController, NavParams } from 'ionic-angular';
 
 import { TodoService } from '../../../app/services/todo.service';
+import { SettingsService } from '../../../app/services/settings.service';
 import { Todo } from '../../../app/classes/todo';
 import { Priority } from '../../../app/classes/priority';
 import { Board } from '../../../app/classes/board';
@@ -22,14 +23,15 @@ export class TodoList implements OnInit {
 	isAddTodoActive: boolean = false;
 	newTodo = new Todo(undefined, undefined, undefined, false, undefined, false, undefined, undefined, undefined, false, false, false);
 
-	constructor(private todoService: TodoService, 
-							public params: NavParams, 
+	constructor(private todoService: TodoService,
+							public params: NavParams,
+							public settingsService: SettingsService,
 							public ModalCtrl?: ModalController) { }
 
 	ngOnInit(): void {
 		setTimeout(() => {
 			this.isReady = true;
-			this.todoService.getColors().then(colorArray => this.ColorArray = colorArray);
+			this.settingsService.getColors().then(colorArray => this.ColorArray = colorArray);
 		}, 5000);
 	}
 
@@ -59,7 +61,7 @@ export class TodoList implements OnInit {
 		this.todoService.updateTodo(todo);
 	}
 
-	itemChecked(IsDone: boolean, todo: Todo) { 
+	itemChecked(IsDone: boolean, todo: Todo) {
 		if (this.slothCurrentBoard().IsViewOnly != true) {
 			if (IsDone == true) {
 				// function to find date and control archive
@@ -99,14 +101,14 @@ export class TodoList implements OnInit {
 	disableSelect() {
 		this.isSelectActive = false;
 		// turns everything back to white color
-		for (let todo of this.slothCurrentBoard().Todos) { 
+		for (let todo of this.slothCurrentBoard().Todos) {
 			todo.IsSelectActive = false;
 		}
 		this.selectedTodos.length = 0;
 	}
 
 	unlockBoard(board: Board) {
-		let UnlockModal = this.ModalCtrl.create(UnlockPage); 
+		let UnlockModal = this.ModalCtrl.create(UnlockPage);
 		UnlockModal.onDidDismiss(data => {
 			board.IsLocked = data;
 		});
@@ -138,6 +140,6 @@ export class TodoList implements OnInit {
 		this.todoService.addTodo(this.newTodo);
 		// reset form
 		this.newTodo = new Todo("Kiss alpaca", this.slothCurrentBoard().Categories[0], undefined, false, undefined, false, Priority.Low, undefined);
-		// DB id can be undefined because server generates auto 
+		// DB id can be undefined because server generates auto
 	}
 }
