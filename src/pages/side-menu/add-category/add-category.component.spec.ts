@@ -17,7 +17,7 @@ import { TodoService } from '../../../app/services/todo.service';
 import { Category } from '../../../app/classes/category';
 import { Board } from '../../../app/classes/board';
 
-import { ColorArray } from '../../../app/services/todo.service';
+import { ColorArray } from '../../../app/services/settings.service';
 
 let comp: AddCategory;
 let fixture: ComponentFixture<AddCategory>;
@@ -37,14 +37,14 @@ let todoServiceStub = {
 };
 
 describe('AddCategory', () => {
-	
+
 	// async beforeEach (to allow external templates to be compiled)
 	beforeEach(async(() => {
 		TestBed.configureTestingModule({
 			declarations: [],
 			imports: [AppModule, TodosModule, SideMenuModule],
 			// NO! Don't provide the real service!
-			// providers:    [ UserService ]  
+			// providers:    [ UserService ]
 			// Provide a test-double instead
 			providers: [
 				{ provide: ViewController },
@@ -66,7 +66,7 @@ describe('AddCategory', () => {
 		tServ = fixture.debugElement.injector.get(TodoService);
 		// also can: get todoService from the root injector
 		// todoService = TestBed.get(TodoService);
-		
+
 		spyOn(tServ, 'getColors').and.returnValue(tServ.ColorArray);
 		fixture.detectChanges();
 	});

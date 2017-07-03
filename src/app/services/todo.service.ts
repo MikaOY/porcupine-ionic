@@ -18,20 +18,16 @@ import { Permission } from '../classes/permission';
 import { DbCompatible } from '../interfaces/db-compatible.interface';
 import { UserService } from './user.service';
 
-export const ColorArray: string[] = ['#919191', '#ff5c3f', '#ffb523', '#6f9b53', '#1371d6', '#423e7c', '#7606cc', '#c613b4'];
-
 @Injectable()
 export class TodoService {
 	public CurrentBoard: Board;
 	public CachedBoards: Board[] = [];
 	public CachedCats: Category[] = [];
 	public CachedTodos: Todo[] = [];
-
 	public CachedSharedBoards: Board[] = [];
 
 	private id: number = 0;
 	private token: string;
-
 	private isBusy: boolean = false;
 
 	constructor(private http: Http, private userService: UserService) {
@@ -43,11 +39,12 @@ export class TodoService {
 		});
 	}
 
-	public getReqOptions(reqType: string): Promise<RequestOptions> {
+	private getReqOptions(reqType: string): Promise<RequestOptions> {
 		let hds;
 		let ops: RequestOptions;
 		if (this.token == undefined) {
 			console.log("Token undefined, getting one");
+
 			this.token = this.userService.accessToken;
 			console.log("access token" + this.token);
 			switch (reqType.toLowerCase()) {
@@ -76,9 +73,20 @@ export class TodoService {
 		}
 	}
 
-	/* START public HTTP functions */
+	private removeCacheDuplicates(array, cacheArray) {
+		array.forEach(dbObj => {
+			if (this.checkIfAvailable([cacheArray])) {
+				let possibleDuplicate: Board = cacheArray.find((cacheB, cacheIndex, cacheArr) => cacheB.DbId == dbObj.DbId);
+				if (possibleDuplicate != undefined) {
+					cacheArray.splice(cacheArray.indexOf(possibleDuplicate));
+				}
+			}
+		});
+	}
 
-	public addBoard(newBoard: Board): Promise<void> {
+	// HTTP FUNCTIONS //
+
+	private POSTBoard(newBoard: Board): Promise<void> {
 		console.log('adding board...');
 
 		this.CachedBoards.push(newBoard);
@@ -99,6 +107,7 @@ export class TodoService {
 
 		return this.http.post(url, body, this.getReqOptions('post')).toPromise().then((response: any) => {
 			console.log('addBoard response:' + response.toString());
+			return null;
 		}).catch(this.handleError);
 	}
 
@@ -106,9 +115,7 @@ export class TodoService {
 		console.log('requesting boards...');
 
 		const url = `${environment.apiUrl}/board?userId=${this.id}`;
-		console.log(url);
 		return this.http.get(url, this.getReqOptions('get')).map((response: any) => {
-
 			console.log('processing boards...');
 
 			let array: Board[] = [];
@@ -123,15 +130,8 @@ export class TodoService {
 			}
 
 			// assign built array to cache
-			// if already has boards in cache, delete them
-			array.forEach(arrayB => {
-				if (this.checkIfAvailable([this.CachedBoards])) {
-					let possibleDuplicate: Board = this.CachedBoards.find((cacheB, cacheIndex, cacheArray) => cacheB.DbId == arrayB.DbId);
-					if (possibleDuplicate != undefined) {
-						this.CachedBoards.splice(this.CachedBoards.indexOf(possibleDuplicate));
-					}
-				}
-			});
+			// BEFORE: if already has boards in cache, delete them
+			this.removeCacheDuplicates(array, this.CachedBoards);
 
 			this.CachedBoards = array;
 			this.CurrentBoard = this.CachedBoards[0];
@@ -141,7 +141,26 @@ export class TodoService {
 			.catch(this.handleError);
 	}
 
-	public updateBoard(board: Board): Promise<void> {
+	private GETBoardPerms(board: Board): Promise<Permission[]> {
+		console.log('getting board permissions...');
+
+		const url = `${environment.apiUrl}/shared?boardId=${board.DbId}`;
+		return this.http.get(url).toPromise().then((response: any) => {
+			console.log('Processing board permissions...');
+			let array: Permission[] = [];
+			for (let json of response.json()) {
+				array.push(new Permission(new User(json['person_id'], json['fname'], json['lname'], json['username'], json['person_email']),
+					json['is_view_only']));
+			}
+			console.log('Board permissions retrieved!');
+			array.forEach((perm) => {
+				console.log(perm.User.Email);
+			});
+			return array;
+		});
+	}
+
+	private PUTBoard(board: Board): Promise<void> {
 		console.log('updating board...');
 
 		const url = `${environment.apiUrl}/board`;
@@ -162,6 +181,7 @@ export class TodoService {
 
 		return this.http.put(url, body, this.getReqOptions('put')).toPromise().then((response: any) => {
 			console.log('updateBoards response:' + response.toString());
+			return null;
 		}).catch(this.handleError);
 	}
 
@@ -176,7 +196,7 @@ export class TodoService {
 			.catch(this.handleError);
 	}*/
 
-	public addCategory(newCat: Category): Promise<void> {
+	private POSTCategory(newCat: Category): Promise<void> {
 		console.log('adding category...');
 
 		this.CurrentBoard.Categories.push(newCat);
@@ -204,6 +224,7 @@ export class TodoService {
 
 		return this.http.post(url, body, this.getReqOptions('post')).toPromise().then((response: any) => {
 			console.log('addCategory response:' + response.toString());
+			return null;
 		}).catch(this.handleError);
 	}
 
@@ -275,22 +296,16 @@ export class TodoService {
 			}
 
 			// assign built array to cache
-			// if already has cats in cache, delete them
-			array.forEach(arrayCat => {
-				if (this.checkIfAvailable([this.CachedCats])) {
-					let possibleDuplicate: Category = this.CachedCats.find((cacheCat, cacheIndex, cacheArray) => cacheCat.DbId == arrayCat.DbId);
-					if (possibleDuplicate != undefined) {
-						this.CachedCats.splice(this.CachedCats.indexOf(possibleDuplicate));
-					}
-				}
-			});
+			// BEFORE: if already has cats in cache, delete them
+			this.removeCacheDuplicates(array, this.CachedCats);
+
 			this.CachedCats = array;
 			console.log('Categories retrieved!');
 			return array;
 		}).catch(this.handleError);
 	}
 
-	public updateCategory(cat: Category): Promise<void> {
+	private PUTCategory(cat: Category): Promise<void> {
 		console.log('updating category...');
 
 		const url = `${environment.apiUrl}/category`;
@@ -314,6 +329,7 @@ export class TodoService {
 
 		return this.http.put(url, body, this.getReqOptions('put')).toPromise().then((response: any) => {
 			console.log('updateCategories response:' + response.toString());
+			return null;
 		}).catch(this.handleError);
 	}
 
@@ -328,7 +344,7 @@ export class TodoService {
 			.catch(this.handleError);
 	}*/
 
-	public addTodo(newTodo: Todo): Promise<void> {
+	private POSTTodo(newTodo: Todo): Promise<void> {
 		console.log('adding todo...');
 
 		this.CurrentBoard.Todos.push(newTodo);
@@ -359,6 +375,7 @@ export class TodoService {
 
 		return this.http.post(url, body, this.getReqOptions('post')).toPromise().then((response: any) => {
 			console.log('addTodo response:' + response.toString());
+			return null;
 		}).catch(this.handleError);
 	}
 
@@ -459,14 +476,7 @@ export class TodoService {
 
 			// assign built array to cache
 			// if already has todos in cache, delete them
-			array.forEach(arrayTodo => {
-				if (this.checkIfAvailable([this.CachedTodos])) {
-					let possibleDuplicate: Todo = this.CachedTodos.find((cacheTodo, cacheIndex, cacheArray) => cacheTodo.DbId == arrayTodo.DbId);
-					if (possibleDuplicate != undefined) {
-						this.CachedTodos.splice(this.CachedTodos.indexOf(possibleDuplicate));
-					}
-				}
-			});
+			this.removeCacheDuplicates(array, this.CachedTodos);
 
 			this.CachedTodos = array;
 			console.log('Todos retrieved!');
@@ -481,7 +491,7 @@ export class TodoService {
 		}).catch(this.handleError);
 	}
 
-	public updateTodo(todo: Todo): Promise<void> {
+	private PUTTodo(todo: Todo): Promise<void> {
 		console.log('updating todo...');
 
 		const url = `${environment.apiUrl}/todo`;
@@ -509,6 +519,7 @@ export class TodoService {
 
 		return this.http.put(url, body, this.getReqOptions('put')).toPromise().then((response: any) => {
 			console.log('updateTodos response:' + response.toString());
+			return null;
 		}).catch(this.handleError);
 	}
 
@@ -523,7 +534,7 @@ export class TodoService {
 	}*/
 
 	// delete method that just updates prop
-	public deleteObject(obj: DbCompatible) {
+	public PUTDeleteObject(obj: DbCompatible): Promise<void> {
 
 		const url = `${environment.apiUrl}/${obj.constructor.name.toLowerCase()}/delete`;
 		// create req body
@@ -558,12 +569,13 @@ export class TodoService {
 				break;
 		}
 
-		this.http.put(url, body, this.getReqOptions('put')).toPromise().then((response: any) => {
+		return this.http.put(url, body, this.getReqOptions('put')).toPromise().then((response: any) => {
 			console.log('delete ' + idName + ' response: ' + response.toString());
+			return null;
 		}).catch(this.handleError);
 	}
 
-	public restoreObject(obj: DbCompatible): Promise<void> {
+	public PUTRestoreObject(obj: DbCompatible): Promise<void> {
 
 		const url = `${environment.apiUrl}/${obj.constructor.name.toLowerCase()}/restore`;
 		// create req body
@@ -585,15 +597,14 @@ export class TodoService {
 
 		return this.http.put(url, body, this.getReqOptions('put')).toPromise().then((response: any) => {
 			console.log('Restore ' + idName + ' ' + obj.DbId + ' ' + response.toString());
-
 			// refresh cache by getting all data again
 			this.getCurrentBoard();
-			return;
+			return null;
 		}).catch(this.handleError);
 	}
 
 	// TODO: remove for prod
-	public raiseTheDead() {
+	public raiseTheDead(): Promise<void> {
 		const url = `${environment.apiUrl}/restore/all`;
 
 		let body: string = '';
@@ -602,11 +613,11 @@ export class TodoService {
 
 			// refresh cache by getting all data again
 			this.getCurrentBoard(true);
-			return;
+			return null;
 		}).catch(this.handleError);
 	}
 
-	public shareBoard(sharees: Permission[], board: Board, note?: string) {
+	public POSTShare(sharees: Permission[], board: Board, note?: string) {
 		console.log('Sharing board in service');
 
 		// TODO: send note to recipients
@@ -633,9 +644,9 @@ export class TodoService {
 				let body = formBody.join('&');
 				console.log(body);
 
-				this.http.post(url, body, this.getReqOptions('post')).toPromise().then((response: any) => {
+				return this.http.post(url, body, this.getReqOptions('post')).toPromise().then((response: any) => {
 					console.log('share to response:' + response.toString());
-					return;
+					return null;
 				}).catch(this.handleError);
 			});
 		});
@@ -732,33 +743,16 @@ export class TodoService {
 			}
 
 			// assign built array to cache
-			// if already has boards in cache, delete them
-			boardArray.forEach(arrayB => {
-				if (this.checkIfAvailable([this.CachedSharedBoards])) {
-					let possibleDuplicate: Board = this.CachedSharedBoards.find((cacheB, cacheIndex, cacheArray) => cacheB.DbId == arrayB.DbId);
-					if (possibleDuplicate != undefined) {
-						this.CachedSharedBoards.splice(this.CachedSharedBoards.indexOf(possibleDuplicate));
-					}
-				}
-			});
+			// BEFORE: if already has boards in cache, delete them
+			this.removeCacheDuplicates(boardArray, this.CachedSharedBoards);
 
 			this.CachedSharedBoards = boardArray;
 			console.log('Shared retrieved!');
-			/*
-			this.CachedSharedBoards.forEach(board => {
-				board.Todos.forEach(todo => {
-					console.log(board.Name + ': (TODO) ' + todo.Info);
-				});
-				board.Categories.forEach(cat => {
-					console.log(board.Name + ': (CAT) ' + cat.Name);
-				});
-			});
-			*/
 			return boardArray;
 		}).catch(this.handleError);
 	}
 
-	public unshareBoard(perm: Permission, board: Board) {
+	public DELETEShare(perm: Permission, board: Board) {
 		console.log('unsharing board...');
 
 		this.userService.GETUserByEmail(perm.User.Email).then((user) => {
@@ -772,32 +766,14 @@ export class TodoService {
 
 				return this.http.delete(url).toPromise().then((response: any) => {
 					console.log('Unshared board ' + board.Name + ' with ' + user.Email + response.toString());
+					return null;
 				})
 					.catch(this.handleError);
 			}
 		});
 	}
 
-	public GETBoardPerms(board: Board): Promise<Permission[]> {
-		console.log('getting board permissions...');
-
-		const url = `${environment.apiUrl}/shared?boardId=${board.DbId}`;
-		return this.http.get(url).toPromise().then((response: any) => {
-			console.log('Processing board permissions...');
-			let array: Permission[] = [];
-			for (let json of response.json()) {
-				array.push(new Permission(new User(json['person_id'], json['fname'], json['lname'], json['username'], json['person_email']),
-					json['is_view_only']));
-			}
-			console.log('Board permissions retrieved!');
-			array.forEach((perm) => {
-				console.log(perm.User.Email);
-			});
-			return array;
-		});
-	}
-
-	/* END HTTP functions */
+	// HTTP HELPERS
 
 	private handleError(error: Response | any) {
 		// In a real world app, you might use a remote logging infrastructure
@@ -824,6 +800,76 @@ export class TodoService {
 		return val;
 	}
 
+	// HTTP FUNCTIONS END //
+
+	// COMPONENT METHODS //
+
+	public addBoard(newBoard: Board) {
+		if (newBoard) {
+			return this.POSTBoard(newBoard);
+		}
+	}
+
+	public getBoardPerms(b: Board) {
+		if (b) {
+			return this.getBoardPerms(b);
+		}
+	}
+
+	public updateBoard(b: Board) {
+		if (b) {
+			return this.PUTBoard(b);
+		}
+	}
+
+	public addCategory(c: Category) {
+		if (c) {
+			return this.POSTCategory(c);
+		}
+	}
+
+	public updateCategory(c: Category) {
+		if (c) {
+			return this.PUTCategory(c);
+		}
+	}
+
+	public addTodo(t: Todo) {
+		if (t) {
+			return this.POSTTodo(t);
+		}
+	}
+
+	public updateTodo(t: Todo) {
+		if (t) {
+			return this.PUTTodo(t);
+		}
+	}
+
+	public deleteObject(dbObj: DbCompatible) {
+		if (dbObj) {
+			return this.PUTDeleteObject(dbObj);
+		}
+	}
+
+	public restoreObject(dbObj: DbCompatible) {
+		if (dbObj) {
+			return this.PUTRestoreObject(dbObj);
+		}
+	}
+
+	public shareBoard(pA: Permission[], b: Board, n?: string) {
+		if (pA && b) {
+			return this.POSTShare(pA, b, n);
+		}
+	}
+
+	public unshareBoard(p: Permission, b: Board) {
+		if (p && b) {
+			return this.DELETEShare(p, b);
+		}
+	}
+
 	public getCurrentBoard(isForce?: boolean): Observable<any> {
 		// first find out if HTTP req is needed
 		let doRetrieve = true;
@@ -844,11 +890,6 @@ export class TodoService {
 			this.userService.getUser().then((user) => {
 				this.id = user.DbId;
 
-				// get access token
-				// this.userService.GETAccessToken().then((token) => {
-				// 	this.token = token;
-				// 	console.log(token);
-
 				// Retrieve all data first, then pull current board after all concluded
 				return this.GETBoards().mergeMap(boards =>
 					this.GETCategories(boards).mergeMap(cats =>
@@ -859,7 +900,6 @@ export class TodoService {
 								return this.CachedBoards[0];
 							}).share()));
 			});
-			//});
 		} else {
 			return Observable.of(this.CurrentBoard);
 		}
@@ -868,6 +908,34 @@ export class TodoService {
 	public setAsCurrentBoard(board: Board) {
 		this.CurrentBoard = board;
 	}
+
+	public nextBoard(board: Board) {
+		var boardIndex: number;
+		if (board.SharerId == undefined && board.OwnerId == undefined) {
+			boardIndex = this.CachedBoards.indexOf(board);
+			if (boardIndex + 1 == this.CachedBoards.length) {
+				this.CurrentBoard = this.CachedSharedBoards[0];
+			}
+			else {
+				this.CurrentBoard = this.CachedBoards[boardIndex + 1];
+			}
+		}
+		else {
+			boardIndex = this.CachedSharedBoards.indexOf(board);
+			if (boardIndex + 1 == this.CachedSharedBoards.length) {
+				this.CurrentBoard = this.CachedBoards[0];
+			}
+			else {
+				this.CurrentBoard = this.CachedSharedBoards[boardIndex + 1];
+			}
+		}
+	}
+
+	public sortTodos(sortedTodos: Todo[]) {
+		this.CurrentBoard.Todos = sortedTodos;
+	}
+
+	// SLOTH METHODS //
 
 	public slothGetBoards(): Board[] {
 		if (this.checkIfAvailable([this.CachedBoards])) {
@@ -931,33 +999,7 @@ export class TodoService {
 		}
 	}
 
-	public nextBoard(board: Board) {
-		var boardIndex: number;
-		if (board.SharerId == undefined && board.OwnerId == undefined) {
-			boardIndex = this.CachedBoards.indexOf(board);
-			if (boardIndex + 1 == this.CachedBoards.length) {
-				this.CurrentBoard = this.CachedSharedBoards[0];
-			}
-			else {
-				this.CurrentBoard = this.CachedBoards[boardIndex + 1];
-			}
-		}
-		else {
-			boardIndex = this.CachedSharedBoards.indexOf(board);
-			if (boardIndex + 1 == this.CachedSharedBoards.length) {
-				this.CurrentBoard = this.CachedBoards[0];
-			}
-			else {
-				this.CurrentBoard = this.CachedSharedBoards[boardIndex + 1];
-			}
-		}
-	}
+	// SLOTH METHODS END //
 
-	public sortTodos(sortedTodos: Todo[]) {
-		this.CurrentBoard.Todos = sortedTodos;
-	}
-
-	public getColors(): Promise<string[]> {
-		return Promise.resolve(ColorArray);
-	}
+	// COMPONENT METHODS END //
 }

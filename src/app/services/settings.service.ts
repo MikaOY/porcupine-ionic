@@ -3,6 +3,8 @@ import { BehaviorSubject } from 'rxjs/Rx';
 
 import { UserService } from './user.service';
 
+export const ColorArray: string[] = ['#919191', '#ff5c3f', '#ffb523', '#6f9b53', '#1371d6', '#423e7c', '#7606cc', '#c613b4'];
+
 @Injectable()
 export class SettingsService {
 	private theme: BehaviorSubject<string>;
@@ -17,6 +19,10 @@ export class SettingsService {
 			{ className: 'null', displayName: 'Default' }
 		];
 		this.passcode = '1234';
+	}
+
+	public getColors(): Promise<string[]> {
+		return Promise.resolve(ColorArray);
 	}
 
 	setTheme(val) {
