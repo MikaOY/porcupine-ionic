@@ -117,8 +117,6 @@ export class UserService {
 		};
 
 		client.authorize(options, (err, authResult) => {
-			console.log('auth0 returned');
-			console.log('testing');
 			if (err) {
 				throw err;
 			}
