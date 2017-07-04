@@ -124,7 +124,7 @@ export class UserService {
 
 			this.setIdToken(authResult.idToken);
 			this.setAccessToken(authResult.accessToken);
-
+			console.log('Login: access token = ' + authResult.accessToken);
 			const expiresAt = JSON.stringify((authResult.expiresIn * 1000) + new Date().getTime());
 			this.setStorageVariable('expires_at', expiresAt);
 

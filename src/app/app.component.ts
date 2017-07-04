@@ -39,8 +39,8 @@ export class MyApp implements OnInit {
 
 			// Add this function
 			(<any>window).handleOpenURL = (url) => {
-				Auth0Cordova.onRedirectUri(url);
-			};
+        Auth0Cordova.onRedirectUri(url);
+      };
 		});
 	}
 

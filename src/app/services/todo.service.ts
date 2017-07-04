@@ -32,11 +32,11 @@ export class TodoService {
 
 	constructor(private http: Http, private userService: UserService) {
 		// TODO remove: bypass login
-		this.userService.getUser('594c8b1cc3954a4865ef9bc9').then((user) => {
-			while (this.isBusy == false) {
-				this.getCurrentBoard();
-			}
-		});
+		// this.userService.getUser('594c8b1cc3954a4865ef9bc9').then((user) => {
+		// 	while (this.isBusy == false) {
+		// 		this.getCurrentBoard();
+		// 	}
+		// });
 	}
 
 	private getReqOptions(reqType: string): Promise<RequestOptions> {

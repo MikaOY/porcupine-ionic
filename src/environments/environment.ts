@@ -7,6 +7,6 @@ export const environment = {
 	production: false,
 	apiUrl: 'http://localhost:3000',//http://porcupine-dope-api.azurewebsites.net',
 	tokenUrl: 'https://porcupine.au.auth0.com/oauth/token',
-	tokenReqBody: '{"client_id":"6SH0ceK2xnoSlkfMbl2rv0ZHp7szmLJr","client_secret":"BiBHTw-8w0VbbQXCE8PgXU3o8ptwk1wudE3fkAYQ3dbn-cdDR8VoCdZU5fmuNo-K","audience":"http://porcupine-dope-api.azurewebsites.net","grant_type":"client_credentials"}',
+	tokenReqBody: '{"client_id":"pBum20Ve6T5n76t05t6tue5G2MMk9I3d","client_secret":"rPjrpRg2PXHI0GZX9AZvK6HwzgBO08JR3QzpFUV-Y8y4t8nKesf-pLk_BL8e1U14","audience":"http://porcupine-dope-api.azurewebsites.net","grant_type":"client_credentials"}',
 	dummyAuthOId: '594c8b1cc3954a4865ef9bc9'
 };
