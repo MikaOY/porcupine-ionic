@@ -53,7 +53,6 @@ describe('User service', () => {
 
 	describe('Getting user', () => {
 		it('should get user with authOId', (done) => {
-			spyOn<UserService>(subject, 'getReqOptions').and.returnValue(Promise.resolve(new RequestOptions()));
 			spyOn<UserService>(subject, 'processIntoUser');
 
 			backend.connections.subscribe((connection: MockConnection) => {

@@ -1,56 +1,43 @@
 import { Injectable, NgZone } from '@angular/core';
-import { Http, Response, RequestOptions, Headers } from '@angular/http';
+import { Http, Response} from '@angular/http';
 import { User } from '../classes/user';
-import { TodoService } from './todo.service';
-import { Observable, Subscription } from 'rxjs';
-import { Storage } from '@ionic/storage';
-import { AuthHttp, JwtHelper } from 'angular2-jwt';
-import Auth0Cordova from '@auth0/cordova';
-import Auth0 from 'auth0-js';
-import { environment } from '../../environments/environment';
-
-import { Board } from '../classes/board';
+import { Observable } from 'rxjs';
+// import { Storage } from '@ionic/storage';
+// import { AuthHttp, JwtHelper } from 'angular2-jwt';
+// import Auth0Cordova from '@auth0/cordova';
+// import Auth0 from 'auth0-js';
 import * as bcryptjs from 'bcryptjs';
 
-const auth0Config = {
-	// needed for auth0
-	clientID: 'pBum20Ve6T5n76t05t6tue5G2MMk9I3d',
-	// needed for auth0cordova
-	clientId: 'pBum20Ve6T5n76t05t6tue5G2MMk9I3d',
-	domain: 'porcupine.au.auth0.com',
-	callbackURL: location.href,
-	packageIdentifier: 'com.ionicframework.porcupineionic26189'
-};
+import { environment } from '../../environments/environment';
 
 @Injectable()
 export class UserService {
-	private currentBoard: Board;
-	private userDb: User;
-
-	// password hashing
-	private saltRounds = 10;
-
-	// private headers = new Headers({ 'Content-Type': 'application/x-www-form-urlencoded' });
-	// private options = new RequestOptions({ headers: this.headers });
-
-	constructor(private http: Http, private authHttp: AuthHttp, public zone: NgZone) {
-		// let bypassExpireTime = JSON.stringify((100000 * 1000) + new Date().getTime());
-		// this.setStorageVariable('expires_at', bypassExpireTime);
-
-		this.user = this.getStorageVariable('profile');
-		this.idToken = this.getStorageVariable('id_token');
-
-		// TODO: test only
-		//this.setPassword('1234');
-	}
-
+	/*
 	auth0 = new Auth0.WebAuth(auth0Config);
 	accessToken: string;
 	idToken: string;
 	user: any;
 	// sets authID if user is already logged in
 	authId: string = this.getStorageVariable('profile') ? this.getStorageVariable('profile').identities[0].user_id : undefined;
+	*/
 
+	private userDb: User;
+	// password hashing
+	private saltRounds = 10;
+
+	constructor(private http: Http, /*private authHttp: AuthHttp,*/ public zone: NgZone) {
+		/* AuthO
+		let bypassExpireTime = JSON.stringify((100000 * 1000) + new Date().getTime());
+		this.setStorageVariable('expires_at', bypassExpireTime);
+		this.user = this.getStorageVariable('profile');
+		this.idToken = this.getStorageVariable('id_token');
+		*/
+
+		// TODO: test only
+		//this.setPassword('1234');
+	}
+
+	/* AuthO
 	public getReqOptions(reqType: string): Promise<RequestOptions> {
 		let hds;
 		let ops: RequestOptions;
@@ -171,20 +158,19 @@ export class UserService {
 			return json['token_type'] + ' ' + json['access_token'];
 		});
 	}
+	*/
 
 	// dev authO id: 594c8b1cc3954a4865ef9bc9
-	getUser(authOId?: string, forceGet?: boolean): Promise<User> {
+	getUser(authOId: string = '594c8b1cc3954a4865ef9bc9', forceGet?: boolean): Promise<User> {
 		if (this.userDb == undefined || (forceGet != undefined && forceGet == true)) {
-			if (authOId == undefined) {
-				console.log('getUser: Returning null user user.service: authOId undefined!');
-				return Promise.resolve(null);
-			} else {
-				console.log("getUser: GETting user by ID");
-				return this.GETUserById(authOId).then((user) => {
-					this.userDb = user;
-					return user;
-				});
+			if (authOId == '594c8b1cc3954a4865ef9bc9') {
+				console.warn('Getting sample user!');
 			}
+			console.log("getUser: GETting user by ID");
+			return this.GETUserById(authOId).then((user) => {
+				this.userDb = user;
+				return user;
+			});
 		} else {
 			console.log('getUser: Returning userDb in user.service!');
 			return Promise.resolve(this.userDb);
@@ -195,28 +181,27 @@ export class UserService {
 		console.log('GETUserById: getting user by id');
 
 		const url = `${environment.apiUrl}/user?authOId=${id}`;
-		return this.getReqOptions('get').then(reqOps => {
-			return this.http.get(url, reqOps).toPromise().then((response: any) => {
-				console.log('GETUserById: processing user by id');
+		console.log(url);
+		return this.http.get(url).toPromise().then((response: any) => {
+			console.log('GETUserById: processing user by id');
 
-				let user: User = this.processIntoUser(response.json());
+			let user: User = this.processIntoUser(response.json());
 
-				console.log('GETUserById: User by id retrieved!');
-				return user;
-			});
+			console.log('GETUserById: User by id retrieved!');
+			return user;
 		});
 	}
 
 	GETUserByEmail(email: string): Promise<User> {
-		console.log('getting user by email');
+		console.log('GETUserByEmail: getting user by email');
 
 		const url = `${environment.apiUrl}/user?email=%27${email}%27`;
-		return this.http.get(url, this.getReqOptions('get')).toPromise().then((response: any) => {
-			console.log('processing user by email');
+		return this.http.get(url).toPromise().then((response: any) => {
+			console.log('GETUserById: processing user by email');
 
 			let user: User = this.processIntoUser(response.json());
 
-			console.log('User by email retrieved!');
+			console.log('GETUserById: User by email retrieved!');
 			return user;
 		});
 	}
@@ -255,7 +240,7 @@ export class UserService {
 					}
 					let body = formBody.join('&');
 
-					return this.http.put(url, body, this.getReqOptions('put')).toPromise().then((response: any) => {
+					return this.http.put(url, body, environment.requestOps).toPromise().then((response: any) => {
 						this.userDb.PasswordHash = daHash;
 						console.log(this.userDb.PasswordHash);
 						console.log('Update user response: ' + response.toString());
@@ -265,12 +250,8 @@ export class UserService {
 		}
 	}
 
-	checkPassword(plainP?: string): boolean {
+	checkPassword(plainP: string = this.userDb.PasswordHash): boolean {
 		if (bcryptjs != undefined) {
-			// check cached password cache by default
-			if (plainP == undefined) {
-				plainP = this.userDb.PasswordHash;
-			}
 			let bool: boolean = false;
 			bcryptjs.compare(plainP, this.userDb.PasswordHash, (err, res) => {
 				bool = res;

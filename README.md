@@ -25,6 +25,8 @@ npm install
 npm install ionic cordova -g
 ```
 
+`src/app/environments` contains private resource info needed for the app to function. If you wish to debug the app, please contact us directly for the files. 
+
 Debugging commands
 ----------------------
 `npm run serve` launches Ionic Labs with console logs and live reload

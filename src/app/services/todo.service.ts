@@ -31,14 +31,9 @@ export class TodoService {
 	private isBusy: boolean = false;
 
 	constructor(private http: Http, private userService: UserService) {
-		// TODO remove: bypass login
-		// this.userService.getUser('594c8b1cc3954a4865ef9bc9').then((user) => {
-		// 	while (this.isBusy == false) {
-		// 		this.getCurrentBoard();
-		// 	}
-		// });
+		this.getCurrentBoard();
 	}
-
+	/*
 	private getReqOptions(reqType: string): Promise<RequestOptions> {
 		let hds;
 		let ops: RequestOptions;
@@ -73,7 +68,7 @@ export class TodoService {
 			return Promise.resolve(ops);
 		}
 	}
-
+	*/
 	private removeCacheDuplicates(array, cacheArray) {
 		array.forEach(dbObj => {
 			if (this.checkIfAvailable([cacheArray])) {
@@ -106,7 +101,7 @@ export class TodoService {
 		}
 		let body = formBody.join('&');
 
-		return this.http.post(url, body, this.getReqOptions('post')).toPromise().then((response: any) => {
+		return this.http.post(url, body, environment.requestOps).toPromise().then((response: any) => {
 			console.log('addBoard response:' + response.toString());
 			return null;
 		}).catch(this.handleError);
@@ -116,34 +111,30 @@ export class TodoService {
 		console.log('GETBoards: requesting boards...');
 
 		const url = `${environment.apiUrl}/board?userId=${this.id}`;
-		console.log('GETBoards:' + url);
-		return Observable.fromPromise(this.getReqOptions('get').then( reqOps => {
-			console.log('GETBoards: reqOp headers = ' + reqOps.headers.get("authorization"));
-			return this.http.get(url, reqOps).map((response: any) => {
+		return this.http.get(url, environment.requestOps).map((response: any) => {
 
-				console.log('GETBoards: processing boards...');
+			console.log('GETBoards: processing boards...');
 
-				let array: Board[] = [];
-				for (let json of response.json()) {
-					array.push(new Board(json['board_title'], [], [], json['board_date_created'],
-						json['board_id'], undefined, undefined, json['person_id_board']));
+			let array: Board[] = [];
+			for (let json of response.json()) {
+				array.push(new Board(json['board_title'], [], [], json['board_date_created'],
+					json['board_id'], undefined, undefined, json['person_id_board']));
 
-					// populate Permissions[] in board
-					this.GETBoardPerms(array[array.length - 1]).then((perms) => {
-						array[array.length - 1].Permissions = perms;
-					});
-				}
+				// populate Permissions[] in board
+				this.GETBoardPerms(array[array.length - 1]).then((perms) => {
+					array[array.length - 1].Permissions = perms;
+				});
+			}
 
 			// assign built array to cache
 			// BEFORE: if already has boards in cache, delete them
 			this.removeCacheDuplicates(array, this.CachedBoards);
 
-				this.CachedBoards = array;
-				this.CurrentBoard = this.CachedBoards[0];
-				console.log('GETBoards: Boards retrieved!');
-				return array;
-			}).share();
-		})).catch(this.handleError);
+			this.CachedBoards = array;
+			this.CurrentBoard = this.CachedBoards[0];
+			console.log('GETBoards: Boards retrieved!');
+			return array;
+		}).share();
 	}
 
 	private GETBoardPerms(board: Board): Promise<Permission[]> {
@@ -184,7 +175,7 @@ export class TodoService {
 		}
 		let body = formBody.join('&');
 
-		return this.http.put(url, body, this.getReqOptions('put')).toPromise().then((response: any) => {
+		return this.http.put(url, body, environment.requestOps).toPromise().then((response: any) => {
 			console.log('updateBoards response:' + response.toString());
 			return null;
 		}).catch(this.handleError);
@@ -227,7 +218,7 @@ export class TodoService {
 
 		console.log(body);
 
-		return this.http.post(url, body, this.getReqOptions('post')).toPromise().then((response: any) => {
+		return this.http.post(url, body, environment.requestOps).toPromise().then((response: any) => {
 			console.log('addCategory response:' + response.toString());
 			return null;
 		}).catch(this.handleError);
@@ -332,7 +323,7 @@ export class TodoService {
 		}
 		let body = formBody.join('&');
 
-		return this.http.put(url, body, this.getReqOptions('put')).toPromise().then((response: any) => {
+		return this.http.put(url, body, environment.requestOps).toPromise().then((response: any) => {
 			console.log('updateCategories response:' + response.toString());
 			return null;
 		}).catch(this.handleError);
@@ -378,7 +369,7 @@ export class TodoService {
 		let body = formBody.join('&');
 		console.log(body);
 
-		return this.http.post(url, body, this.getReqOptions('post')).toPromise().then((response: any) => {
+		return this.http.post(url, body, environment.requestOps).toPromise().then((response: any) => {
 			console.log('addTodo response:' + response.toString());
 			return null;
 		}).catch(this.handleError);
@@ -522,7 +513,7 @@ export class TodoService {
 		let body = formBody.join('&');
 		console.log(body);
 
-		return this.http.put(url, body, this.getReqOptions('put')).toPromise().then((response: any) => {
+		return this.http.put(url, body, environment.requestOps).toPromise().then((response: any) => {
 			console.log('updateTodos response:' + response.toString());
 			return null;
 		}).catch(this.handleError);
@@ -574,7 +565,7 @@ export class TodoService {
 				break;
 		}
 
-		return this.http.put(url, body, this.getReqOptions('put')).toPromise().then((response: any) => {
+		return this.http.put(url, body, environment.requestOps).toPromise().then((response: any) => {
 			console.log('delete ' + idName + ' response: ' + response.toString());
 			return null;
 		}).catch(this.handleError);
@@ -600,7 +591,7 @@ export class TodoService {
 		let body = formBody.join('&');
 		console.log(body);
 
-		return this.http.put(url, body, this.getReqOptions('put')).toPromise().then((response: any) => {
+		return this.http.put(url, body, environment.requestOps).toPromise().then((response: any) => {
 			console.log('Restore ' + idName + ' ' + obj.DbId + ' ' + response.toString());
 			// refresh cache by getting all data again
 			this.getCurrentBoard();
@@ -613,7 +604,7 @@ export class TodoService {
 		const url = `${environment.apiUrl}/restore/all`;
 
 		let body: string = '';
-		return this.http.put(url, body, this.getReqOptions('put')).toPromise().then((response: any) => {
+		return this.http.put(url, body, environment.requestOps).toPromise().then((response: any) => {
 			console.log('Restore all: ' + response.toString());
 
 			// refresh cache by getting all data again
@@ -649,7 +640,7 @@ export class TodoService {
 				let body = formBody.join('&');
 				console.log(body);
 
-				return this.http.post(url, body, this.getReqOptions('post')).toPromise().then((response: any) => {
+				return this.http.post(url, body, environment.requestOps).toPromise().then((response: any) => {
 					console.log('share to response:' + response.toString());
 					return null;
 				}).catch(this.handleError);
