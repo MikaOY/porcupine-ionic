@@ -21,6 +21,6 @@ import { MyApp } from '../../app/app.component';
 		SharePage
 	],
 	providers: [],
-	entryComponents: [SideMenu]
+	entryComponents: [SideMenu, BoardManager, AddCategory, SharePage, UnlockPage]
 })
 export class SideMenuModule { }

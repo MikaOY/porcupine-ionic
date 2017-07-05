@@ -14,10 +14,8 @@ import { SharedModule } from './shared.module';
 import { SettingsModule } from '../pages/settings/settings.module';
 import { TodosModule } from '../pages/todos/todos.module';
 import { SideMenuModule } from '../pages/side-menu/side-menu.module';
-import { TabsModule } from '../pages/tabs/tabs.module';
 
 import { MyApp } from './app.component';
-import { TabsPage } from '../pages/tabs/tabs';
 
 export function authHttpServiceFactory(http: Http, options: RequestOptions) {
 	return new AuthHttp(new AuthConfig(), http, options);
@@ -35,8 +33,7 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
 		SharedModule,
 		SettingsModule,
 		TodosModule,
-		SideMenuModule,
-		TabsModule
+		SideMenuModule
 	],
 	bootstrap: [IonicApp],
 	entryComponents: [MyApp],
