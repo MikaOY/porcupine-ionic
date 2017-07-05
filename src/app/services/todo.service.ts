@@ -31,7 +31,7 @@ export class TodoService {
 	private isBusy: boolean = false;
 
 	constructor(private http: Http, private userService: UserService) {
-		this.getCurrentBoard();
+		//this.getCurrentBoard();
 	}
 	/*
 	private getReqOptions(reqType: string): Promise<RequestOptions> {

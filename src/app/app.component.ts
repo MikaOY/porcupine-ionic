@@ -6,7 +6,7 @@ import { UserService } from './services/user.service';
 import { SideMenu } from '../pages/side-menu/side-menu.component';
 import { environment } from '../environments/environment';
 
-import { TabsPage } from '../pages/tabs/tabs';
+import { TodosPage } from '../pages/todos/todos';
 import { SettingsService } from './services/settings.service';
 
 // Import Auth0Cordova
@@ -20,7 +20,7 @@ import Auth0Cordova from '@auth0/cordova';
 export class MyApp implements OnInit {
 	title: string = 'Porcupine';
 
-	rootPage: any = TabsPage;
+	rootPage: any = TodosPage;
 	chosenTheme: string;
 
 	constructor(platform: Platform,
