@@ -12,12 +12,12 @@ import { EditCat } from './edit-cat.component';
 })
 
 export class CatList implements OnInit {
-	isWaitOver: boolean = false;
+	isWaitOver: boolean = true;
 
 	constructor(public modalCtrl: ModalController, public todoService: TodoService) { }
 
 	ngOnInit() {
-		setTimeout(() => this.isWaitOver = true, 5000);
+		//setTimeout(() => this.isWaitOver = true, 5000);
 	}
 
 	slothCurrentBoard(): Board {
