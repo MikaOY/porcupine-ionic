@@ -17,17 +17,21 @@ export class SharePage {
 	note: string = 'Check this out!';
 	containsEdit: boolean = false;
 	containsViewOnly: boolean = false;
-	isAddReciActive: boolean = false;
 	newPerm: Permission = new Permission(new User(undefined, undefined, undefined, undefined, undefined), false);
 	sBoard: Board = this.navParams.get('sBoard');
 
 	constructor(public navParams: NavParams,
-							public viewCtrl: ViewController,
-							private alertCtrl: AlertController,
-							public todoService: TodoService) { }
+		public viewCtrl: ViewController,
+		private alertCtrl: AlertController,
+		public todoService: TodoService) { }
 
 	getBoardPerms() {
 		return this.todoService.slothGetBoardPerms(this.sBoard);
+	}
+
+	clearForm() {
+		// reset form
+		this.newPerm = new Permission(new User(undefined, undefined, undefined, undefined, undefined), false);
 	}
 
 	shareBoard() {
@@ -50,26 +54,18 @@ export class SharePage {
 		this.todoService.unshareBoard(perm, this.sBoard);
 	}
 
-	addReciActive() {
-		// toggles whether the adding sharees div is active
-		this.isAddReciActive = !this.isAddReciActive;
-	}
-
 	addPerm(perm: Permission) {
-		// only share if email doesn't exist in sharee list AND perms list
-		if (this.sharees.find((sPerm, index, sArray) => perm.User.Email == sPerm.User.Email) == undefined) {
+		let doShare = false;
+		if (this.sharees == undefined || this.sharees.length == 0) {
+			doShare = true;
+
+			// only share if email doesn't exist in sharee list AND perms list
+		} else if (this.sharees.find((sPerm, index, sArray) => perm.User.Email == sPerm.User.Email) == undefined) {
 			if (this.sBoard.Permissions.find((sPerm, index, sArray) => perm.User.Email == sPerm.User.Email) == undefined) {
-				this.sharees.push(perm);
-				if (this.containsEdit == false || this.containsViewOnly == false) {
-					if (perm.IsViewOnly == true) {
-						this.containsViewOnly = true;
-					}
-					if (perm.IsViewOnly == false) {
-						this.containsEdit = true;
-					}
-				}
-				this.newPerm = new Permission(new User(undefined, undefined, undefined, undefined, undefined), false);
+				doShare = true;
 			} else {
+				doShare = false;
+
 				// alert the user of his/her mistake
 				let alert = this.alertCtrl.create({
 					title: 'Are you demented?',
@@ -79,6 +75,8 @@ export class SharePage {
 				alert.present();
 			}
 		} else {
+			doShare = false;
+
 			// alert the user of his/her mistake
 			let alert = this.alertCtrl.create({
 				title: 'Are you blind?',
@@ -86,6 +84,26 @@ export class SharePage {
 				buttons: ['Oops']
 			});
 			alert.present();
+		}
+
+		// can finally act on decision
+		if (doShare) {
+			this.sharees.push(perm);
+
+			if (this.containsEdit == false || this.containsViewOnly == false) {
+				if (perm.IsViewOnly == true) {
+					this.containsViewOnly = true;
+				}
+				if (perm.IsViewOnly == false) {
+					this.containsEdit = true;
+				}
+			}
+
+			// reset form
+			this.newPerm = new Permission(new User(undefined, undefined, undefined, undefined, undefined), false);
+			this.sharees.forEach((perm) => {
+				console.log(perm.User.Email);
+			})
 		}
 	}
 
@@ -102,4 +120,5 @@ export class SharePage {
 		}
 		return false;
 	}
+
 }

@@ -152,7 +152,7 @@ export class TodoService {
 				console.log(perm.User.Email);
 			});
 			return array;
-		});
+		}).catch(this.handleError);
 	}
 
 	private PUTBoard(board: Board): Promise<void> {
