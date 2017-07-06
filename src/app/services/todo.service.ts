@@ -30,9 +30,7 @@ export class TodoService {
 	// private token: string;
 	private isBusy: boolean = false;
 
-	constructor(private http: Http, private userService: UserService) {
-		this.getCurrentBoard();
-	}
+	constructor(private http: Http, private userService: UserService) { }
 	/*
 	private getReqOptions(reqType: string): Promise<RequestOptions> {
 		let hds;
@@ -800,6 +798,13 @@ export class TodoService {
 	// HTTP FUNCTIONS END //
 
 	// COMPONENT METHODS //
+
+	public checkIfDone(): Observable<boolean> {
+		while (!this.checkIfAvailable([this.CachedBoards, this.CachedCats, this.CachedTodos, this.CachedSharedBoards])) {
+
+		}
+		return Observable.of(true);
+	}
 
 	public addBoard(newBoard: Board) {
 		if (newBoard) {
