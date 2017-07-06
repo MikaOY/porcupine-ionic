@@ -9,7 +9,7 @@ import { TodoService } from '../../app/services/todo.service';
 
 export class TodosPage implements OnInit {
 	isCatRevealed: boolean = false;
-
+	dateToday: Date = new Date();
 	constructor(public todoService: TodoService) { }
 
 	ngOnInit(): void {
@@ -19,6 +19,7 @@ export class TodosPage implements OnInit {
 
 	ionViewWillEnter() {
 		this.archiveTodos();
+		this.dateToday = new Date();
 	}
 
 	onSwipe(e){
