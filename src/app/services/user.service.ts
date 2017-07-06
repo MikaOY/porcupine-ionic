@@ -1,7 +1,12 @@
-import { Injectable, NgZone } from '@angular/core';
-import { Http, Response} from '@angular/http';
-import { User } from '../classes/user';
-import { Observable } from 'rxjs';
+import { Injectable } from '@angular/core';
+import { Http, Response } from '@angular/http';
+import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/operator/catch';
+import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/share';
+import 'rxjs/add/operator/startWith';
+import 'rxjs/add/operator/toPromise';
+import 'rxjs/add/observable/fromPromise';
 // import { Storage } from '@ionic/storage';
 // import { AuthHttp, JwtHelper } from 'angular2-jwt';
 // import Auth0Cordova from '@auth0/cordova';
@@ -9,6 +14,8 @@ import { Observable } from 'rxjs';
 import * as bcryptjs from 'bcryptjs';
 
 import { environment } from '../../environments/environment';
+import { User } from '../classes/user';
+
 
 @Injectable()
 export class UserService {
@@ -25,7 +32,7 @@ export class UserService {
 	// password hashing
 	private saltRounds = 10;
 
-	constructor(private http: Http, /*private authHttp: AuthHttp,*/ public zone: NgZone) {
+	constructor(private http: Http, /*private authHttp: AuthHttp, public zone: NgZone*/) {
 		/* AuthO
 		let bypassExpireTime = JSON.stringify((100000 * 1000) + new Date().getTime());
 		this.setStorageVariable('expires_at', bypassExpireTime);
@@ -161,34 +168,34 @@ export class UserService {
 	*/
 
 	// dev authO id: 594c8b1cc3954a4865ef9bc9
-	getUser(authOId: string = '594c8b1cc3954a4865ef9bc9', forceGet?: boolean): Promise<User> {
+	getUser(authOId: string = '594c8b1cc3954a4865ef9bc9', forceGet?: boolean): Observable<User> {
 		if (this.userDb == undefined || (forceGet != undefined && forceGet == true)) {
 			if (authOId == '594c8b1cc3954a4865ef9bc9') {
 				console.warn('Getting sample user!');
 			}
-			return this.GETUserById(authOId).then((user) => {
+			return this.GETUserById(authOId).map((user) => {
 				this.userDb = user;
 				return user;
 			});
 		} else {
 			console.log('getUser: Returning userDb in user.service!');
-			return Promise.resolve(this.userDb);
+			return Observable.of(this.userDb);
 		}
 	}
 
-	GETUserById(id: string): Promise<User> {
+	GETUserById(id: string): Observable<User> {
 		console.log('GETUserById: getting user by id');
 
 		const url = `${environment.apiUrl}/user?authOId=${id}`;
 		console.log(url);
-		return this.http.get(url, environment.requestOps).toPromise().then((response: any) => {
+		return this.http.get(url, environment.requestOps).map((response: any) => {
 			console.log('GETUserById: processing user by id');
 
 			let user: User = this.processIntoUser(response.json());
 
 			console.log('GETUserById: User by id retrieved!');
 			return user;
-		});
+		}).catch(this.handleError);
 	}
 
 	GETUserByEmail(email: string): Promise<User> {
@@ -202,7 +209,7 @@ export class UserService {
 
 			console.log('GETUserById: User by email retrieved!');
 			return user;
-		});
+		}).catch(this.handleError);
 	}
 
 	processIntoUser(response: any) {

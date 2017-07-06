@@ -111,7 +111,8 @@ export class TodoService {
 		console.log('GETBoards: requesting boards...');
 
 		const url = `${environment.apiUrl}/board?userId=${this.id}`;
-		return this.http.get(url, environment.requestOps).map((response: any) => {
+		console.log(url);
+		return this.http.get(url).map((response: any) => {
 
 			console.log('GETBoards: processing boards...');
 
@@ -883,7 +884,7 @@ export class TodoService {
 			console.log('getCurrentBoard: Getting current board...');
 
 			// get user id
-			this.userService.getUser().then((user) => {
+			this.userService.getUser().subscribe((user) => {
 				this.id = user.DbId;
 				console.log('getCurrentBoard: this.id set to ' + this.id);
 

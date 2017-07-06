@@ -35,7 +35,7 @@ export class SettingsService {
 
 	getPasscode(): Promise<string> {
 		var user;
-		this.userService.getUser().then(val => user = val);
+		this.userService.getUser().subscribe(val => user = val);
 		//TODO: fetch this user's passcode and return it
 		return Promise.resolve(this.passcode);
 	}
