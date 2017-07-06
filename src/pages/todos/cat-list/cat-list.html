@@ -4,32 +4,20 @@
 		<button ion-button clear="true" id="addCatButton" (click)="presentAddCat()">+</button>
 		<ng-container *ngIf="isWaitOver">
 			<ng-container *ngFor="let cat of slothCurrentBoard()?.Categories">
-				<ion-item>
-					<ion-checkbox [(ngModel)]="cat.IsShown"></ion-checkbox>
-					<ion-label>{{cat.Name}}</ion-label>
-					<button ion-button item-right small clear (click)="editCat(cat)">
-						<ion-icon name="md-create"></ion-icon>
-					</button>
-				</ion-item>
-
-				<ng-container *ngIf="cat.IsEditActive">
-					<form (ngSubmit)="onEditCatSubmit(cat)" #editCatForm>
-						<ion-item>
-							<ion-label>Name</ion-label>
-							<ion-input [(ngModel)]="cat.Name" name="catName"></ion-input>
-						</ion-item>
-
-						<ion-item>
-							<ion-label for="board">Board:</ion-label>
-							<ion-select interface="popover" [(ngModel)]="cat.BoardId" name="boardId">
-								<ion-option *ngFor="let board of slothBoards()" [value]="board.DbId">{{board.Name}}</ion-option>
-							</ion-select>
-						</ion-item>
-
-						<button ion-button clear type="submit">Done</button>
-						<button ion-button clear (click)="deleteCat(cat)"><ion-icon name="trash"></ion-icon></button>
-					</form>
-				</ng-container>
+				<ion-item-sliding>
+					<ion-item>
+						<ion-checkbox [(ngModel)]="cat.IsShown"></ion-checkbox>
+						<ion-label>{{cat.Name}}</ion-label>
+					</ion-item>
+					<ion-item-options side="left">
+						<button ion-button item-right small clear (click)="editCat(cat)">
+							<ion-icon name="md-create"></ion-icon>
+						</button>
+						<button ion-button clear (click)="deleteCat(cat)">
+							<ion-icon name="trash"></ion-icon>
+						</button>
+					</ion-item-options>
+				</ion-item-sliding>
 			</ng-container>
 		</ng-container>
 		<ion-item>
