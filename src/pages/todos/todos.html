@@ -1,5 +1,5 @@
 <ion-header>
-	<ion-navbar (swipe)="onSwipe($event)">
+	<ion-navbar (swipe)="onSwipe($event)" (click)="revealCats()">
 		<ion-grid no-padding>
 			<ion-row align-items-center>
 				<ion-col col-2>
@@ -20,6 +20,7 @@
 
 <!--insert todo array here-->
 <ion-content>
+<cat-list *ngIf="isCatRevealed"></cat-list>
 <todo-list id="todolist"></todo-list>
 <div id="footerBar" (swipe)="onSwipe($event)"></div>
 </ion-content>

@@ -8,6 +8,7 @@ import { TodoService } from '../../app/services/todo.service';
 })
 
 export class TodosPage implements OnInit {
+	isCatRevealed: boolean = false;
 
 	constructor(public todoService: TodoService) { }
 
@@ -27,7 +28,12 @@ export class TodosPage implements OnInit {
 		}
 		if (e.direction == 4) {
 			console.log('swiped right');
+			this.todoService.previousBoard(this.slothCurrentBoard());
 		}
+	}
+
+	revealCats() {
+		this.isCatRevealed = !this.isCatRevealed;
 	}
 
 	archiveTodos() {
