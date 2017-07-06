@@ -112,7 +112,7 @@ export class TodoService {
 
 		const url = `${environment.apiUrl}/board?userId=${this.id}`;
 		console.log(url);
-		return this.http.get(url).map((response: any) => {
+		return this.http.get(url, environment.requestOps).map((response: any) => {
 
 			console.log('GETBoards: processing boards...');
 
@@ -896,7 +896,7 @@ export class TodoService {
 							.map(args => {
 								this.isBusy = false;
 								return this.CachedBoards[0];
-							}).share()));
+							}).share())).subscribe();
 			});
 		} else {
 			return Observable.of(this.CurrentBoard);

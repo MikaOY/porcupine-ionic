@@ -176,7 +176,7 @@ export class UserService {
 			return this.GETUserById(authOId).map((user) => {
 				this.userDb = user;
 				return user;
-			});
+			}).catch(this.handleError);
 		} else {
 			console.log('getUser: Returning userDb in user.service!');
 			return Observable.of(this.userDb);
@@ -187,7 +187,6 @@ export class UserService {
 		console.log('GETUserById: getting user by id');
 
 		const url = `${environment.apiUrl}/user?authOId=${id}`;
-		console.log(url);
 		return this.http.get(url, environment.requestOps).map((response: any) => {
 			console.log('GETUserById: processing user by id');
 
