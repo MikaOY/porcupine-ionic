@@ -11,7 +11,7 @@ export class Board implements Lockable, DbCompatible {
 							public Categories: Category[] = [],
 							public DateCreated: Date,
 							public DbId: number,
-							public IsViewOnly?: boolean, // sharing
+							public IsViewOnly = false, // sharing
 							public SharerId?: number, // sharing
 							public OwnerId?: number, // sharing
 							public Permissions?: Permission[], // sharing
