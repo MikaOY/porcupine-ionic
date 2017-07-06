@@ -29,7 +29,7 @@ export class MyApp implements OnInit {
 		public userService: UserService,
 		public todoService: TodoService,
 		private settingsService: SettingsService,
-		private loadingCtrl: LoadingController) {
+		public loadingCtrl: LoadingController) {
 		platform.ready().then((source) => {
 			// Okay, so the platform is ready and our plugins are available.
 			// Here you can do any higher level native things you might need.
@@ -51,31 +51,5 @@ export class MyApp implements OnInit {
 		this.todoService.getCurrentBoard();
 	}
 
-	presentLoading() {
-		let content: string;
-		let x = Math.random();
-		switch (true) {
-			case (x < 0.25):
-				content = 'Dispatching retriever-pacas...';
-				break;
-			case (x < 0.5):
-				content = 'Assembling hunter piglets...';
-				break;
-			case (x < 0.75):
-				content = 'Waking sniffer porcupines...';
-				break;
-			case (x <= 1):
-				content = 'Consulting omniscient wombat...';
-				break;
-		}
-		let loading = this.loadingCtrl.create({
-			spinner: 'crescent',
-			content: content
-		});
-		loading.present();
 
-		this.todoService.checkIfDone().subscribe((bool) => {
-			loading.dismiss();
-		});
-	}
 }
