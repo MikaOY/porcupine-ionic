@@ -58,6 +58,12 @@
 		</ng-container>
 
     <form (ngSubmit)="shareBoard()" #shareBoardForm="ngForm">
+`			<!-- View only toggling for later!
+			<ion-item>
+        <ion-label for="options">{{(newPerm.IsViewOnly ? 'View only' : 'Can edit')}}</ion-label>
+        <ion-toggle [(ngModel)]="newPerm.IsViewOnly" name="viewOnly"></ion-toggle>
+      </ion-item>
+			-->
 			<ion-item>
         <ion-label stacked>Email</ion-label>
         <ion-input clearInput [(ngModel)]="newPerm.User.Email" name="email"></ion-input>
