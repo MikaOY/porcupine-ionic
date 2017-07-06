@@ -18,7 +18,7 @@
 		</ng-container>
 	</ion-list>
 
-	<p class="boardLabel">Shared With Me</p>
+<p class="boardLabel">Shared With Me</p>
 	<ion-list>
 		<ng-container *ngFor="let board of slothSharedBoards()">
 			<ng-template #normalBoard>
@@ -30,18 +30,11 @@
 					</button>
 					-->
 				</button>
-			</ng-template>
-			<ng-container *ngIf="board.IsEditActive; else normalBoard">
-				<ion-item text-wrap class="todoItem">
-					<ion-input [(ngModel)]="board.Name"></ion-input>
-				</ion-item>
-				<button ion-button clear (click)="onEditSharedBoardSubmit(board)">Done</button>
-				<button ion-button clear (click)="lockBoard(board)"><ion-icon name="lock"></ion-icon></button>
-			</ng-container>
+			</button>
 		</ng-container>
 	</ion-list>
 
-	<button ion-button clear *ngIf="!isAddBoardActive" (click)="addBoard()">Add Board</button>
+	<button ion-button clear *ngIf="!isAddBoardActive" (click)="toggleBoard()">Add Board</button>
 
 	<ng-container *ngIf="isAddBoardActive">
 		<form (ngSubmit)="onAddBoardFormSubmit()" #addBoard>
@@ -50,6 +43,7 @@
 				<ion-input [(ngModel)]="newBoard.Name" name="name"></ion-input>
 			</ion-item>
 			<button ion-button clear type="submit">Okay</button>
+			<button ion-button clear type="button" (click)="toggleBoard()">Nevermind</button>
 		</form>
 	</ng-container>
 </div>
