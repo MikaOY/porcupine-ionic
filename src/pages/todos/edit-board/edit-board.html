@@ -1,0 +1,10 @@
+<div class="editBoardContainer">
+	<form (ngSubmit)="onEditBoardSubmit(editBoard)" #editCatForm>
+		<ion-item>
+			<ion-label>Name</ion-label>
+			<ion-input [(ngModel)]="editBoard.Name" name="BoardName"></ion-input>
+		</ion-item>
+		<button ion-button clear type="button" (click)="deleteBoard(editBoard)"><ion-icon name="trash"></ion-icon></button>
+		<button ion-button clear type="submit">Done</button>
+	</form>
+</div>

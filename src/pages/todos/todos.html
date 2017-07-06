@@ -1,5 +1,5 @@
 <ion-header>
-	<ion-navbar (swipe)="onSwipe($event)" (press)="onPress()">
+	<ion-navbar (swipe)="onSwipe($event)" (press)="onPress(slothCurrentBoard())">
 		<ion-grid no-padding>
 			<ion-row align-items-center class="navRow">
 				<ion-col col-2>
@@ -18,17 +18,9 @@
 				<ion-col>
 					<p>{{dateToday | date }}</p>
 				</ion-col>
-				<button *ngIf="slothCurrentBoard()?.IsLocked" ion-button item-right small clear (click)="unlockBoard(slothCurrentBoard())">
+						<button *ngIf="slothCurrentBoard()?.IsLocked" ion-button item-right small clear
+							(click)="unlockBoard(slothCurrentBoard())">
 							<ion-icon name="unlock"></ion-icon>
-						</button>
-						<button ion-button clear item-right *ngIf="!slothCurrentBoard()?.IsLocked" (click)="deleteBoard(slothCurrentBoard())">
-							<ion-icon name="trash"></ion-icon>
-						</button>
-						<button ion-button clear item-right *ngIf="!slothCurrentBoard()?.IsLocked" (click)="editBoardActive(slothCurrentBoard())">
-							<ion-icon name="create"></ion-icon>
-						</button>
-						<button ion-button clear item-right *ngIf="!slothCurrentBoard()?.IsLocked" (click)="shareBoard(slothCurrentBoard())">
-							<ion-icon name="share"></ion-icon>
 						</button>
 			</ion-row>
 		</ion-grid>
