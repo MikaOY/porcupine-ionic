@@ -4,6 +4,7 @@ import { Category } from '../../../app/classes/category';
 import { Board } from '../../../app/classes/board';
 import { TodoService} from '../../../app/services/todo.service';
 import { AddCategory } from '../add-category/add-category.component';
+import { EditCat } from './edit-cat.component';
 
 @Component({
 	selector: 'cat-list',
@@ -28,13 +29,9 @@ export class CatList implements OnInit {
 		addCatModal.present();
 	}
 
-		editCat(cat: Category) {
-		cat.IsEditActive = !cat.IsEditActive;
-	}
-
-	onEditCatSubmit(cat: Category) {
-		this.todoService.updateCategory(cat);
-		cat.IsEditActive = !cat.IsEditActive;
+	editCat(cat: Category) {
+		let editCatModal = this.modalCtrl.create(EditCat, {category: cat});
+		editCatModal.present();
 	}
 
 	deleteCat(cat: Category) {
