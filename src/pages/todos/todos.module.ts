@@ -8,6 +8,8 @@ import { CatList } from './cat-list/cat-list.component';
 import { EditCat } from './cat-list/edit-cat.component';
 import { AddCategory } from './add-category/add-category.component';
 import { SharePage } from './share-page/share-page.component';
+import { EditBoard } from './edit-board/edit-board.component';
+
 import { SideMenuModule } from '../side-menu/side-menu.module';
 import { SharedModule } from '../../app/shared.module';
 import { CoreModule } from '../../app/services/core.module';
@@ -15,8 +17,8 @@ import { CoreModule } from '../../app/services/core.module';
 @NgModule({
 	imports: [IonicModule.forRoot(MyApp), SideMenuModule, SharedModule, CoreModule],
 	exports: [TodosPage, TodoList],
-	declarations: [TodosPage, TodoList, CatList, EditCat, AddCategory, SharePage],
+	declarations: [TodosPage, TodoList, CatList, EditCat, AddCategory, SharePage, EditBoard],
 	providers: [],
-	entryComponents: [ TodosPage, EditCat, AddCategory, SharePage],
+	entryComponents: [ TodosPage, EditCat, AddCategory, SharePage, EditBoard],
 })
 export class TodosModule { }

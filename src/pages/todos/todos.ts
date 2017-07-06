@@ -4,6 +4,7 @@ import { Board } from '../../app/classes/board';
 import { TodoService } from '../../app/services/todo.service';
 import { SharePage } from './share-page/share-page.component';
 import { UnlockPage } from '../side-menu/board-manager/unlock-page/unlock-page.component';
+import { EditBoard } from './edit-board/edit-board.component';
 
 @Component({
 	selector: 'todos-page',
@@ -36,8 +37,9 @@ export class TodosPage implements OnInit {
 		}
 	}
 
-	onPress() {
-
+	onPress(board: Board) {
+		let editBoardModal = this.modalCtrl.create(EditBoard, {cBoard: board});
+		editBoardModal.present();
 	}
 
 	revealCats() {
@@ -61,37 +63,6 @@ export class TodosPage implements OnInit {
 		return this.todoService.slothGetCurrentBoard();
 	}
 
-	deleteBoard(board: Board) {
-		this.todoService.deleteObject(board);
-	}
-
-	deleteSharedBoard(board: Board) {
-		//TODO: delete
-	}
-
-	editBoardActive(board: Board) {
-		board.IsEditActive = !board.IsEditActive;
-	}
-
-	onEditBoardSubmit(board: Board) {
-		this.todoService.updateBoard(board);
-		board.IsEditActive = !board.IsEditActive;
-	}
-
-	onEditSharedBoardSubmit(board: Board) {
-		//TODO: update
-		board.IsEditActive = !board.IsEditActive;
-	}
-
-	shareBoard(sBoard: Board) {
-		let shareModal = this.modalCtrl.create(SharePage, { 'sBoard' : sBoard });
-		shareModal.present();
-	}
-
-	lockBoard(board: Board){
-		board.Lock(board);
-		board.IsEditActive = !board.IsEditActive;
-	}
 
 	unlockBoard(board: Board) {
 		let UnlockModal = this.modalCtrl.create(UnlockPage);
