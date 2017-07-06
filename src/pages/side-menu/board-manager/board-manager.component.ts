@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ModalController, ViewController } from 'ionic-angular';
+import { ModalController } from 'ionic-angular';
 
 import { TodoService } from '../../../app/services/todo.service';
 import { Board } from '../../../app/classes/board';
@@ -17,7 +17,6 @@ export class BoardManager {
 	newBoard: Board = new Board('Dogs', undefined, undefined, undefined, undefined);
 
 	constructor(public modalCtrl: ModalController,
-							public viewCtrl: ViewController,
 							public todoService: TodoService) { }
 
 	slothBoards(): Board[] {
@@ -30,7 +29,6 @@ export class BoardManager {
 
 	openBoard(board: Board) {
 		this.todoService.setAsCurrentBoard(board);
-		this.viewCtrl.dismiss();
 	}
 
 	deleteBoard(board: Board) {
