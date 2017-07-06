@@ -1,0 +1,17 @@
+<div class="editCatContainer">
+	<form (ngSubmit)="onEditCatSubmit(cat)" #editCatForm>
+		<ion-item>
+			<ion-label>Name</ion-label>
+			<ion-input [(ngModel)]="editCat.Name" name="catName"></ion-input>
+		</ion-item>
+
+		<ion-item>
+			<ion-label for="board">Board:</ion-label>
+			<ion-select interface="popover" [(ngModel)]="editCat.BoardId" name="boardId">
+				<ion-option *ngFor="let board of slothBoards()" [value]="board.DbId">{{board.Name}}</ion-option>
+			</ion-select>
+		</ion-item>
+
+		<button ion-button clear type="submit">Done</button>
+	</form>
+</div>

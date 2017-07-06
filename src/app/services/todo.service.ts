@@ -929,6 +929,28 @@ export class TodoService {
 		}
 	}
 
+	public previousBoard(board: Board) {
+		var boardIndex: number;
+		if (board.SharerId == undefined && board.OwnerId == undefined) {
+			boardIndex = this.CachedBoards.indexOf(board);
+			if (boardIndex == 0) {
+				this.CurrentBoard = this.CachedSharedBoards[this.CachedSharedBoards.length - 1];
+			}
+			else {
+				this.CurrentBoard = this.CachedBoards[boardIndex - 1];
+			}
+		}
+		else {
+			boardIndex = this.CachedSharedBoards.indexOf(board);
+			if (boardIndex == 0) {
+				this.CurrentBoard = this.CachedBoards[this.CachedBoards.length - 1];
+			}
+			else {
+				this.CurrentBoard = this.CachedSharedBoards[boardIndex - 1];
+			}
+		}
+	}
+
 	public sortTodos(sortedTodos: Todo[]) {
 		this.CurrentBoard.Todos = sortedTodos;
 	}

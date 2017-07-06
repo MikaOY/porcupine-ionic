@@ -8,7 +8,8 @@ import { TodoService } from '../../app/services/todo.service';
 })
 
 export class TodosPage implements OnInit {
-
+	isCatRevealed: boolean = false;
+	dateToday: Date = new Date();
 	constructor(public todoService: TodoService) { }
 
 	ngOnInit(): void {
@@ -18,6 +19,7 @@ export class TodosPage implements OnInit {
 
 	ionViewWillEnter() {
 		this.archiveTodos();
+		this.dateToday = new Date();
 	}
 
 	onSwipe(e){
@@ -27,7 +29,12 @@ export class TodosPage implements OnInit {
 		}
 		if (e.direction == 4) {
 			console.log('swiped right');
+			this.todoService.previousBoard(this.slothCurrentBoard());
 		}
+	}
+
+	revealCats() {
+		this.isCatRevealed = !this.isCatRevealed;
 	}
 
 	archiveTodos() {
