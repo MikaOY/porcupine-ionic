@@ -1,7 +1,7 @@
 <ion-content no-padding>
 	<button ion-button clear (click)="viewCtrl.dismiss()">back</button>
 	<h3>{{sBoard?.Name}} Board: Manage Sharing</h3>
-	
+
 	<ion-grid no-padding>
 		<ion-row>
 			<ion-col>
@@ -58,10 +58,12 @@
 		</ng-container>
 
     <form (ngSubmit)="shareBoard()" #shareBoardForm="ngForm">
-      <ion-item>
+`			<!-- View only toggling for later!
+			<ion-item>
         <ion-label for="options">{{(newPerm.IsViewOnly ? 'View only' : 'Can edit')}}</ion-label>
         <ion-toggle [(ngModel)]="newPerm.IsViewOnly" name="viewOnly"></ion-toggle>
       </ion-item>
+			-->
 			<ion-item>
         <ion-label stacked>Email</ion-label>
         <ion-input clearInput [(ngModel)]="newPerm.User.Email" name="email"></ion-input>

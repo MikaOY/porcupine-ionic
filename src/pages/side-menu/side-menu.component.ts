@@ -3,8 +3,6 @@ import { ModalController } from 'ionic-angular';
 
 import { TodoService } from '../../app/services/todo.service';
 import { Board } from '../../app/classes/board';
-import { Category } from '../../app/classes/category';
-import { BoardManager } from './board-manager/board-manager.component';
 import { UserService } from '../../app/services/user.service';
 
 

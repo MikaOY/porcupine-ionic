@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Http, Response, RequestOptions, Headers } from '@angular/http';
+import { Http, Response } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
@@ -27,7 +27,7 @@ export class TodoService {
 	public CachedSharedBoards: Board[] = [];
 
 	private id: number = 0;
-	private token: string;
+	// private token: string;
 	private isBusy: boolean = false;
 
 	constructor(private http: Http, private userService: UserService) {
