@@ -3,16 +3,10 @@
 	<ion-list>
 		<ng-container *ngFor="let board of slothBoards()">
 			<ng-template #normalBoard>
-				<ion-item-sliding>
-					<ion-item [style.background-color]="board.IsLocked ? '#dbb7b3' : ''" (click)="openBoard(board)">
-						{{board.Name}}
-					</ion-item>
-					<ion-item-options side="left">
-
-					</ion-item-options>
-				</ion-item-sliding>
+				<ion-item menuClose="left" [style.background-color]="board.IsLocked ? '#dbb7b3' : ''" (click)="openBoard(board)">
+					{{board.Name}}
+				</ion-item>
 			</ng-template>
-
 
 			<ng-container *ngIf="board.IsEditActive; else normalBoard">
 			<ion-item text-wrap class="todoItem">

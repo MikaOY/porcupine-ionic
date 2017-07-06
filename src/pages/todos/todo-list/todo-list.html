@@ -4,7 +4,7 @@
 			<form (ngSubmit)="onNewTodoFormSubmit()" #newTodoForm="ngForm">
 					<ion-item class="todoItem">
 						<ion-input clearInput [(ngModel)]="newTodo.Info" name="Info"
-							placeholder="What do you have to do?" (focus)="onAddTodoFocus()"></ion-input>
+							placeholder="Add a todo..." (focus)="onAddTodoFocus()"></ion-input>
 					</ion-item>
 
 				<div id="details" class="container" *ngIf="isTodoFocused">
