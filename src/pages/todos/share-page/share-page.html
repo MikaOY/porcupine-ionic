@@ -1,16 +1,10 @@
 <div class="dialog">
-	<button ion-button clear (click)="viewCtrl.dismiss()">back</button>
-	<h3>{{sBoard?.Name}} Board: Manage Sharing</h3>
+	<h3>Share {{sBoard?.Name}}</h3>
+	<button ion-button clear (click)="viewCtrl.dismiss()"><=</button>
 
+	<!--Shared with list-->
 	<ion-grid no-padding>
-		<ion-row>
-			<ion-col>
-				<p>Shared With</p>
-			</ion-col>
-			<ion-col col-2>
-				<button ion-button clear *ngIf="!isAddReciActive" (click)="addReciActive()">+</button>
-			</ion-col>
-		</ion-row>
+		<p>Shared With</p>
 		<ion-row>
 			<ion-col>
 					<div class="reciLabels" *ngFor="let perm of getBoardPerms()">
@@ -28,7 +22,9 @@
 			</ion-col>
 		</ion-row>
 	</ion-grid>
-	<div id="addReciContainer" *ngIf="isAddReciActive">
+
+	<!--New share form-->
+	<div id="addReciContainer">
 		<ng-container *ngIf="containsEdit">
 			<p class="shareLabels">Can edit</p>
 			<ion-list no-lines>
@@ -57,27 +53,27 @@
       </ion-item-group>
 		</ng-container>
 
+
     <form (ngSubmit)="shareBoard()" #shareBoardForm="ngForm">
-`			<!-- View only toggling for later!
 			<ion-item>
         <ion-label for="options">{{(newPerm.IsViewOnly ? 'View only' : 'Can edit')}}</ion-label>
         <ion-toggle [(ngModel)]="newPerm.IsViewOnly" name="viewOnly"></ion-toggle>
       </ion-item>
-			-->
+
 			<ion-item>
         <ion-label stacked>Email</ion-label>
         <ion-input clearInput [(ngModel)]="newPerm.User.Email" name="email"></ion-input>
-				<button clear ion-button type="button" item-right (click)="addPerm(newPerm)">
-					<ion-icon name="checkmark"></ion-icon>
-				</button>
       </ion-item>
+
       <ion-item>
-        <ion-label stacked>Write a note! (optional)</ion-label>
+        <ion-label stacked>Write a note!</ion-label>
         <ion-textarea fz-elastic [(ngModel)]="note" name="note"></ion-textarea>
       </ion-item>
 
-      <button ion-button clear type="button" (click)="addReciActive()">Cancel</button>
-      <button ion-button item-right clear type="submit">Share</button>
+      <button ion-button clear type="button" (click)="clearForm()">Cancel</button>
+			<button ion-button clear item-right type="button" (click)="addPerm(newPerm)">Add</button>
+			<span></span>
+      <button ion-button clear type="submit">Share</button>
     </form>
 	</div>
 </div>
