@@ -1,11 +1,11 @@
 <ion-header>
-	<ion-navbar (swipe)="onSwipe($event)" (click)="revealCats()">
+	<ion-navbar (swipe)="onSwipe($event)">
 		<ion-grid no-padding>
 			<ion-row align-items-center>
 				<ion-col col-2>
 					<button center menuToggle ion-button>Menu</button>
 				</ion-col>
-				<ion-col>
+				<ion-col (click)="revealCats()">
 					<ion-label text-wrap text-center>
 						<ion-icon name="people" *ngIf="slothCurrentBoard()?.OwnerId && slothCurrentBoard()?.SharerId && slothCurrentBoard()?.IsViewOnly != undefined">
 						</ion-icon>
