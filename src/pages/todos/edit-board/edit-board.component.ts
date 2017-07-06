@@ -19,10 +19,7 @@ export class EditBoard implements OnInit {
 
 	deleteBoard(board: Board) {
 		this.todoService.deleteObject(board);
-	}
-
-	deleteSharedBoard(board: Board) {
-		//TODO: delete
+		this.viewCtrl.dismiss();
 	}
 
 	onEditBoardSubmit(board: Board) {
