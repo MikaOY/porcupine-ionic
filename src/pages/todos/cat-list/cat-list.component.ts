@@ -71,5 +71,6 @@ export class CatList implements OnInit {
 			}
 		});
 		this.todoService.sortTodos(sortedTodos);
+		this.todoService.toggleCatRevealed();
 	}
 }

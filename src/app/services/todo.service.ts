@@ -1026,5 +1026,14 @@ export class TodoService {
 
 	// SLOTH METHODS END //
 
+	isCatRevealed: boolean = false;
+	public checkCatRevealed(): boolean {
+		return this.isCatRevealed;
+	}
+
+	public toggleCatRevealed() {
+		this.isCatRevealed = !this.isCatRevealed;
+	}
+
 	// COMPONENT METHODS END //
 }

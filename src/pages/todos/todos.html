@@ -5,7 +5,7 @@
 				<ion-col col-2>
 					<button center menuToggle ion-button>Menu</button>
 				</ion-col>
-				<ion-col (click)="revealCats()">
+				<ion-col (click)="todoService?.toggleCatRevealed()">
 					<ion-label text-wrap text-center>
 
 						<p id="currentBoardName">
@@ -37,7 +37,7 @@
 
 <!--insert todo array here-->
 <ion-content>
-<cat-list *ngIf="isCatRevealed"></cat-list>
+<cat-list *ngIf="todoService?.checkCatRevealed()"></cat-list>
 <todo-list id="todolist"></todo-list>
 <div id="footerBar" (swipe)="onSwipe($event)"></div>
 </ion-content>
