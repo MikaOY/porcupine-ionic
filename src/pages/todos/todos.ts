@@ -16,8 +16,18 @@ export class TodosPage implements OnInit {
 		// this.todoService.getCurrentBoard().subscribe(cBoard => this.currentBoard = cBoard as Board);
 	}
 
-	ionViewWillEnter() { 
+	ionViewWillEnter() {
 		this.archiveTodos();
+	}
+
+	onSwipe(e){
+		if (e.direction == 2) {
+			console.log('swiped left');
+			this.todoService.nextBoard(this.slothCurrentBoard());
+		}
+		if (e.direction == 4) {
+			console.log('swiped right');
+		}
 	}
 
 	archiveTodos() {
@@ -35,9 +45,5 @@ export class TodosPage implements OnInit {
 
 	slothCurrentBoard(): Board {
 		return this.todoService.slothGetCurrentBoard();
-	}
-
-	changeBoard(board: Board) {
-		this.todoService.nextBoard(board);
 	}
 }
