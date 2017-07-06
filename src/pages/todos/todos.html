@@ -7,9 +7,11 @@
 				</ion-col>
 				<ion-col (click)="revealCats()">
 					<ion-label text-wrap text-center>
-						<ion-icon name="people" *ngIf="slothCurrentBoard()?.OwnerId && slothCurrentBoard()?.SharerId && slothCurrentBoard()?.IsViewOnly != undefined">
+
+						<p id="currentBoardName">
+							<ion-icon name="people" *ngIf="slothCurrentBoard()?.OwnerId && slothCurrentBoard()?.SharerId && slothCurrentBoard()?.IsViewOnly != undefined">
 						</ion-icon>
-						<p id="currentBoardName">{{slothCurrentBoard()?.Name}}</p>
+							{{slothCurrentBoard()?.Name}}</p>
 						<!--<span id="viewLabel" *ngIf="slothCurrentBoard()?.IsViewOnly">(View only)</span>-->
 					</ion-label>
 				</ion-col>
