@@ -5,7 +5,6 @@ import { SideMenu } from './side-menu.component';
 import { ProfilePage } from './profile/profile.component';
 import { BoardManager } from './board-manager/board-manager.component';
 import { UnlockPage } from './board-manager/unlock-page/unlock-page.component';
-import { SharePage } from './board-manager/share-page/share-page.component';
 import { MyApp } from '../../app/app.component';
 
 @NgModule({
@@ -16,9 +15,8 @@ import { MyApp } from '../../app/app.component';
 		ProfilePage,
 		BoardManager,
 		UnlockPage,
-		SharePage
 	],
 	providers: [],
-	entryComponents: [SideMenu, BoardManager, SharePage, UnlockPage]
+	entryComponents: [SideMenu, BoardManager, UnlockPage]
 })
 export class SideMenuModule { }

@@ -32,7 +32,7 @@ export class TodoList implements OnInit {
 		setTimeout(() => {
 			this.isReady = true;
 			this.settingsService.getColors().then(colorArray => this.ColorArray = colorArray);
-		}, 5000);
+		}, 3000);
 	}
 
 	slothCurrentBoard(): Board {

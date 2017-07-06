@@ -3,7 +3,6 @@ import { ModalController } from 'ionic-angular';
 
 import { TodoService } from '../../../app/services/todo.service';
 import { Board } from '../../../app/classes/board';
-import { SharePage } from './share-page/share-page.component';
 import { UnlockPage } from './unlock-page/unlock-page.component';
 
 @Component({
@@ -29,38 +28,6 @@ export class BoardManager {
 
 	openBoard(board: Board) {
 		this.todoService.setAsCurrentBoard(board);
-	}
-
-	deleteBoard(board: Board) {
-		this.todoService.deleteObject(board);
-	}
-
-	deleteSharedBoard(board: Board) {
-		//TODO: delete
-	}
-
-	editBoardActive(board: Board) {
-		board.IsEditActive = !board.IsEditActive;
-	}
-
-	onEditBoardSubmit(board: Board) {
-		this.todoService.updateBoard(board);
-		board.IsEditActive = !board.IsEditActive;
-	}
-
-	onEditSharedBoardSubmit(board: Board) {
-		//TODO: update
-		board.IsEditActive = !board.IsEditActive;
-	}
-
-	shareBoard(sBoard: Board) {
-		let shareModal = this.modalCtrl.create(SharePage, { 'sBoard' : sBoard });
-		shareModal.present();
-	}
-
-	lockBoard(board: Board){
-		board.Lock(board);
-		board.IsEditActive = !board.IsEditActive;
 	}
 
 	unlockBoard(board: Board) {

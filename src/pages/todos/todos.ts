@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+import { ModalController } from 'ionic-angular';
 import { Board } from '../../app/classes/board';
 import { TodoService } from '../../app/services/todo.service';
+import { SharePage } from './share-page/share-page.component';
+import { UnlockPage } from '../side-menu/board-manager/unlock-page/unlock-page.component';
 
 @Component({
 	selector: 'todos-page',
@@ -10,7 +13,7 @@ import { TodoService } from '../../app/services/todo.service';
 export class TodosPage implements OnInit {
 	isCatRevealed: boolean = false;
 	dateToday: Date = new Date();
-	constructor(public todoService: TodoService) { }
+	constructor(public todoService: TodoService, public modalCtrl: ModalController) { }
 
 	ngOnInit(): void {
 		// leave this and currentBoard to initialize all app caches
@@ -33,6 +36,10 @@ export class TodosPage implements OnInit {
 		}
 	}
 
+	onPress() {
+
+	}
+
 	revealCats() {
 		this.isCatRevealed = !this.isCatRevealed;
 	}
@@ -52,5 +59,45 @@ export class TodosPage implements OnInit {
 
 	slothCurrentBoard(): Board {
 		return this.todoService.slothGetCurrentBoard();
+	}
+
+	deleteBoard(board: Board) {
+		this.todoService.deleteObject(board);
+	}
+
+	deleteSharedBoard(board: Board) {
+		//TODO: delete
+	}
+
+	editBoardActive(board: Board) {
+		board.IsEditActive = !board.IsEditActive;
+	}
+
+	onEditBoardSubmit(board: Board) {
+		this.todoService.updateBoard(board);
+		board.IsEditActive = !board.IsEditActive;
+	}
+
+	onEditSharedBoardSubmit(board: Board) {
+		//TODO: update
+		board.IsEditActive = !board.IsEditActive;
+	}
+
+	shareBoard(sBoard: Board) {
+		let shareModal = this.modalCtrl.create(SharePage, { 'sBoard' : sBoard });
+		shareModal.present();
+	}
+
+	lockBoard(board: Board){
+		board.Lock(board);
+		board.IsEditActive = !board.IsEditActive;
+	}
+
+	unlockBoard(board: Board) {
+		let UnlockModal = this.modalCtrl.create(UnlockPage);
+		UnlockModal.onDidDismiss(data => {
+			board.IsLocked = data;
+		})
+		UnlockModal.present();
 	}
 }

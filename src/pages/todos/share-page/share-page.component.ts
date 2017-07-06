@@ -3,10 +3,10 @@ import { NavParams } from 'ionic-angular';
 import { ViewController } from 'ionic-angular';
 import { AlertController } from 'ionic-angular';
 
-import { Board } from '../../../../app/classes/board';
-import { Permission } from '../../../../app/classes/permission';
-import { User } from '../../../../app/classes/user';
-import { TodoService } from '../../../../app/services/todo.service';
+import { Board } from '../../../app/classes/board';
+import { Permission } from '../../../app/classes/permission';
+import { User } from '../../../app/classes/user';
+import { TodoService } from '../../../app/services/todo.service';
 
 @Component({
 	templateUrl: 'share-page.html',
