@@ -166,7 +166,6 @@ export class UserService {
 			if (authOId == '594c8b1cc3954a4865ef9bc9') {
 				console.warn('Getting sample user!');
 			}
-			console.log("getUser: GETting user by ID");
 			return this.GETUserById(authOId).then((user) => {
 				this.userDb = user;
 				return user;
@@ -182,7 +181,7 @@ export class UserService {
 
 		const url = `${environment.apiUrl}/user?authOId=${id}`;
 		console.log(url);
-		return this.http.get(url).toPromise().then((response: any) => {
+		return this.http.get(url, environment.requestOps).toPromise().then((response: any) => {
 			console.log('GETUserById: processing user by id');
 
 			let user: User = this.processIntoUser(response.json());
