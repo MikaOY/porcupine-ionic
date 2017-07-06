@@ -21,16 +21,13 @@
 <p class="boardLabel">Shared With Me</p>
 	<ion-list>
 		<ng-container *ngFor="let board of slothSharedBoards()">
-			<ng-template #normalBoard>
 				<button ion-item menuClose="left" [style.background-color]="board.IsLocked ? '#dbb7b3' : ''" (click)="openBoard(board)">
 					{{board.Name}}
-					<!--
+
 					<button ion-button item-right small clear *ngIf="board.IsLocked" (click)="UnlockBoard(board)">
 						<ion-icon name="unlock"></ion-icon>
 					</button>
-					-->
 				</button>
-			</button>
 		</ng-container>
 	</ion-list>
 

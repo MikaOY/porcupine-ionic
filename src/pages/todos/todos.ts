@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ModalController } from 'ionic-angular';
+import { ModalController, LoadingController } from 'ionic-angular';
 import { Board } from '../../app/classes/board';
 import { TodoService } from '../../app/services/todo.service';
 import { SharePage } from './share-page/share-page.component';
@@ -14,11 +14,46 @@ import { EditBoard } from './edit-board/edit-board.component';
 export class TodosPage implements OnInit {
 	isCatRevealed: boolean = false;
 	dateToday: Date = new Date();
-	constructor(public todoService: TodoService, public modalCtrl: ModalController) { }
+	constructor(public todoService: TodoService, public modalCtrl: ModalController,
+							public loadingCtrl: LoadingController) { }
 
 	ngOnInit(): void {
 		// leave this and currentBoard to initialize all app caches
 		// this.todoService.getCurrentBoard().subscribe(cBoard => this.currentBoard = cBoard as Board);
+			this.presentLoading();
+	}
+
+	presentLoading() {
+		console.log('um hello');
+		let content: string;
+		let x = Math.random();
+		switch (true) {
+			case (x < 0.25):
+				content = 'Dispatching retriever-pacas...';
+				break;
+			case (x < 0.5):
+				content = 'Assembling hunter piglets...';
+				break;
+			case (x < 0.75):
+				content = 'Waking sniffer porcupines...';
+				break;
+			case (x <= 1):
+				content = 'Consulting omniscient wombat...';
+				break;
+		}
+		let loading = this.loadingCtrl.create({
+			spinner: 'crescent',
+			content: content,
+			duration: 1500,
+		});
+		console.log('gonna present dis hooi');
+		loading.present();
+
+		// this.todoService.checkIfDone().subscribe((bool) => {
+		// 	if (bool == true){
+		// 	loading.dismiss();
+		// 	}
+		// });
 	}
 
 	ionViewWillEnter() {
