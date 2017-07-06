@@ -18,8 +18,9 @@ export class Board implements Lockable, DbCompatible {
 							public IsEditActive?: boolean,
 							public IsBoardActive?: boolean){} // TODO: figure out why this exists
 
-		IsLocked: boolean = false;
-    Lock(board: Board): true {
+		public IsLocked: boolean = false;
+
+    public Lock(board: Board): true {
         board.IsLocked = true;
         return true;
 		}
