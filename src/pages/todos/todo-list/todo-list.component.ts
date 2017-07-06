@@ -19,8 +19,8 @@ export class TodoList implements OnInit {
 	selectedTodos: Todo[] = [];
 	isSelectActive: boolean = false;
 	priority: string[] = ['Low', 'Medium', 'High'];
+	isTodoFocused: boolean = false;
 
-	isAddTodoActive: boolean = false;
 	newTodo = new Todo(undefined, undefined, undefined, false, undefined, false, undefined, undefined, undefined, false, false, false);
 
 	constructor(private todoService: TodoService,
@@ -116,12 +116,12 @@ export class TodoList implements OnInit {
 	}
 
 	// adding a new todo
-	addTodo() {
-		this.isAddTodoActive = !this.isAddTodoActive;
+	onAddTodoFocus() {
+		this.isTodoFocused= !this.isTodoFocused;
 	}
 
 	onNewTodoFormSubmit() {
-		this.isAddTodoActive = !this.isAddTodoActive;
+		this.isTodoFocused = !this.isTodoFocused;
 		var currentDate = new Date();
 		this.newTodo.DateCreated = currentDate;
 		if (this.newTodo.Info == undefined || this.newTodo.Info == null) {

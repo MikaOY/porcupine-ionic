@@ -1,4 +1,45 @@
 <ion-content padding>
+
+	<!-- code for adding new todos -->
+			<form (ngSubmit)="onNewTodoFormSubmit()" #newTodoForm="ngForm">
+					<ion-item class="todoItem">
+						<ion-input clearInput [(ngModel)]="newTodo.Info" name="Info"
+							placeholder="What do you have to do?" (focus)="onAddTodoFocus()"></ion-input>
+					</ion-item>
+
+				<div id="details" class="container" *ngIf="isTodoFocused">
+					<ion-item>
+						<ion-label for="dateDue">Date Due:</ion-label>
+						<ion-datetime displayFormat="DDD MMM D, YYYY" [(ngModel)]="newTodo.DateDue" name="DateDue"></ion-datetime>
+					</ion-item>
+					<ion-item>
+						<ion-label for="category">Category:</ion-label>
+						<ion-select interface="popover" [(ngModel)]="newTodo.Category" name="Category">
+							<ion-option *ngFor="let cat of slothCurrentBoard()?.Categories" [value]="cat">{{cat.Name}}</ion-option>
+						</ion-select>
+					</ion-item>
+					<ion-item>
+						<ion-label for="priority">Priority:</ion-label>
+						<ion-select interface="popover" [(ngModel)]="newTodo.Priority" name="Priority">
+							<ion-option *ngFor="let pri of priority">{{pri}}</ion-option>
+						</ion-select>
+					</ion-item>
+					<button ion-button clear type="submit">Done</button>
+					<button ion-button clear type="button" (click)="onAddTodoFocus()">Cancel</button>
+				</div>
+			</form>
+			<!--TODO: remove test newTodo data-->
+			<div>
+				<p>{{newTodo.Info !== undefined ? newTodo.Info : 'undefined'}}</p>
+				<p>{{newTodo.Category !== undefined ? newTodo.Category.Name : 'undefined'}}</p>
+				<p>{{newTodo.Category !== undefined ? newTodo.Category.Color : 'undefined'}}</p>
+				<p>{{newTodo.Priority !== undefined ? newTodo.Priority : 'undefined'}}</p>
+				<p>{{newTodo.DateDue !== undefined ? newTodo.DateDue : 'undefined'}}</p>
+			</div>
+
+
+
+
 	<ng-container *ngIf="slothCurrentBoard()?.IsLocked">
 		<h4>This board is locked</h4>
 		<button ion-button clear (click)="unlockBoard(slothCurrentBoard())">Unlock Board</button>
@@ -119,59 +160,5 @@
 			</ng-container>
 		</ng-template>
 
-		<!-- code for adding new todos -->
-		<ng-container *ngIf="isAddTodoActive">
-			<!--see addButton below-->
-			<form (ngSubmit)="onNewTodoFormSubmit()" #newTodoForm="ngForm">
-				<ion-item-sliding>
-					<ion-item class="todoItem">
-						<ion-checkbox [(ngModel)]="newTodo.IsDone" name="IsDone"></ion-checkbox>
-						<ion-input clearInput [(ngModel)]="newTodo.Info" name="Info"></ion-input>
-					</ion-item>
-					<ion-item-options side="left">
-						<button ion-button
-							[style.background-color]="newTodo.Category !== undefined ? ColorArray[newTodo.Category.Color] : ' '">
-								{{newTodo.Category !== undefined ? newTodo.Category.Name : 'undefined'}}
-						</button>
-					</ion-item-options>
-					<ion-item-options side="right">
-						<button ion-button>Delete</button>
-					</ion-item-options>
-				</ion-item-sliding>
-
-				<div id="details" class="container">
-					<ion-item>
-						<ion-label for="dateDue">Date Due:</ion-label>
-						<ion-datetime displayFormat="DDD MMM D, YYYY" [(ngModel)]="newTodo.DateDue" name="DateDue"></ion-datetime>
-					</ion-item>
-					<ion-item>
-						<ion-label for="category">Category:</ion-label>
-						<ion-select interface="popover" [(ngModel)]="newTodo.Category" name="Category">
-							<ion-option *ngFor="let cat of slothCurrentBoard().Categories" [value]="cat">{{cat.Name}}</ion-option>
-						</ion-select>
-					</ion-item>
-					<ion-item>
-						<ion-label for="priority">Priority:</ion-label>
-						<ion-select interface="popover" [(ngModel)]="newTodo.Priority" name="Priority">
-							<ion-option *ngFor="let pri of priority">{{pri}}</ion-option>
-						</ion-select>
-					</ion-item>
-					<button ion-button clear type="submit">Done</button>
-					<button ion-button clear type="button" (click)="addTodo()">Cancel</button>
-				</div>
-			</form>
-			<!--TODO: remove test newTodo data-->
-			<div>
-				<p>{{newTodo.Info !== undefined ? newTodo.Info : 'undefined'}}</p>
-				<p>{{newTodo.Category !== undefined ? newTodo.Category.Name : 'undefined'}}</p>
-				<p>{{newTodo.Category !== undefined ? newTodo.Category.Color : 'undefined'}}</p>
-				<p>{{newTodo.Priority !== undefined ? newTodo.Priority : 'undefined'}}</p>
-				<p>{{newTodo.DateDue !== undefined ? newTodo.DateDue : 'undefined'}}</p>
-			</div>
-		</ng-container>
-
 	</ion-list>
-	<ion-fab id="addTodoButton" *ngIf="!slothCurrentBoard()?.IsViewOnly">
-		<button ion-fab mini (click)=addTodo()>+</button>
-	</ion-fab>
 </ion-content>
