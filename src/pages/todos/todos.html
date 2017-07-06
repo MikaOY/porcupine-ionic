@@ -15,13 +15,19 @@
 				</ion-col>
 			</ion-row>
 			<ion-row align-items-center class="navRow">
-				<ion-col>
+				<ion-col col-8>
 					<p>{{dateToday | date }}</p>
 				</ion-col>
-						<button *ngIf="slothCurrentBoard()?.IsLocked" ion-button item-right small clear
+				<ion-col>
+					<button *ngIf="slothCurrentBoard()?.IsLocked" ion-button item-left small clear
 							(click)="unlockBoard(slothCurrentBoard())">
 							<ion-icon name="unlock"></ion-icon>
-						</button>
+					</button>
+					<button *ngIf="!slothCurrentBoard()?.IsLocked" ion-button item-left small clear
+							(click)="shareBoard(slothCurrentBoard())">
+							<ion-icon name="share"></ion-icon>
+					</button>
+				</ion-col>
 			</ion-row>
 		</ion-grid>
 	</ion-navbar>

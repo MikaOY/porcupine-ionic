@@ -38,7 +38,7 @@ export class BoardManager {
 		UnlockModal.present();
 	}
 
-	addBoard() {
+	toggleBoard() {
 		this.isAddBoardActive = !this.isAddBoardActive;
 	}
 

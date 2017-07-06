@@ -47,7 +47,7 @@ export class TodosPage implements OnInit {
 	}
 
 	archiveTodos() {
-			// archives todos if more than 24 hours has passed since checked
+		// archives todos if more than 24 hours has passed since checked
 		if (this.slothCurrentBoard()) {
 			for (let todo of this.slothCurrentBoard().Todos) {
 				let currentDate = new Date();
@@ -63,12 +63,16 @@ export class TodosPage implements OnInit {
 		return this.todoService.slothGetCurrentBoard();
 	}
 
-
 	unlockBoard(board: Board) {
 		let UnlockModal = this.modalCtrl.create(UnlockPage);
 		UnlockModal.onDidDismiss(data => {
 			board.IsLocked = data;
 		})
 		UnlockModal.present();
+	}
+
+	shareBoard(sBoard: Board) {
+		let shareModal = this.modalCtrl.create(SharePage, {sBoard: sBoard});
+		shareModal.present();
 	}
 }

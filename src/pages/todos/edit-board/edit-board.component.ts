@@ -27,15 +27,6 @@ export class EditBoard implements OnInit {
 		this.viewCtrl.dismiss();
 	}
 
-	onEditSharedBoardSubmit(board: Board) {
-		//TODO: update
-		board.IsEditActive = !board.IsEditActive;
-	}
-
-	shareBoard(sBoard: Board) {
-
-	}
-
 	lockBoard(board: Board){
 		board.Lock(board);
 		board.IsEditActive = !board.IsEditActive;
