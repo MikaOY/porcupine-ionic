@@ -34,4 +34,8 @@ export class SettingsPage implements OnInit {
 	restoreAll() {
 		this.todoService.raiseTheDead();
 	}
+
+	closeModal(){
+		this.viewCtrl.dismiss();
+	}
 }
