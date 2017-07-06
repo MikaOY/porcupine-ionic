@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NavController } from 'ionic-angular';
-import { ModalController } from 'ionic-angular';
+import { ModalController, ViewController } from 'ionic-angular';
 
 import { SettingsService } from '../../app/services/settings.service';
 import { UserService } from '../../app/services/user.service';
@@ -19,7 +19,8 @@ export class SettingsPage implements OnInit {
 		public modalCtrl: ModalController,
 		public settingsService: SettingsService,
 		public userService: UserService,
-		private todoService: TodoService) { }
+		private todoService: TodoService,
+		public viewCtrl: ViewController) { }
 
 	ngOnInit() {
 		this.settingsService.getTheme().subscribe(val => this.currentTheme = val);

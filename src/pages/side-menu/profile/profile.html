@@ -1,14 +1,13 @@
-  <div *ngIf="!userService.isAuthenticated()">
-    <button ion-button block color="primary" (click)="userService.login()">Login</button>
-  </div>
-
-  <!-- a card with your picture and name, plus a logout button -->
-  <div *ngIf="userService.isAuthenticated()">
+<!-- a card with your picture and name, plus a logout button -->
+  <div>
     <ion-card>
-      <img [src]="userService.user.picture" />
       <ion-card-content>
-        <p>{{ userService.user.name }}</p>
+        <!--<p>{{ userService.getUser().FirstName }} {{ userService.getUser().LastName }}</p>-->
+				<p>Mr. Paca
+<ion-icon name="settings" (click)="openSettings()"></ion-icon>
+				</p>
       </ion-card-content>
     </ion-card>
-    <button ion-button block color="primary" (click)="userService.logout()">Logout</button>
+    <button ion-button block color="primary">Logout</button>
+
   </div>

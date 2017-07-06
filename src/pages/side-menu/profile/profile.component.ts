@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
+import { ModalController } from 'ionic-angular';
 
+import { SettingsPage } from '../../settings/settings';
 import { UserService } from '../../../app/services/user.service';
 
 @Component({
@@ -7,5 +9,10 @@ import { UserService } from '../../../app/services/user.service';
 	templateUrl: 'profile.html'
 })
 export class ProfilePage {
-	constructor(public userService: UserService) {}
+	constructor(public userService: UserService, public modalCtrl: ModalController) {}
+
+	openSettings() {
+		let settingsModal = this.modalCtrl.create(SettingsPage);
+		settingsModal.present();
+	}
 }

@@ -8,13 +8,14 @@ import { UnlockPage } from './unlock-page/unlock-page.component';
 
 @Component({
 	templateUrl: 'board-manager.html',
+	selector: 'board-manager'
 })
 
 export class BoardManager {
 
 	isAddBoardActive: boolean = false;
 	newBoard: Board = new Board('Dogs', undefined, undefined, undefined, undefined);
-	
+
 	constructor(public modalCtrl: ModalController,
 							public viewCtrl: ViewController,
 							public todoService: TodoService) { }
@@ -65,7 +66,7 @@ export class BoardManager {
 	}
 
 	unlockBoard(board: Board) {
-		let UnlockModal = this.modalCtrl.create(UnlockPage); 
+		let UnlockModal = this.modalCtrl.create(UnlockPage);
 		UnlockModal.onDidDismiss(data => {
 			board.IsLocked = data;
 		})

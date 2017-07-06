@@ -1,6 +1,4 @@
-<ion-content padding>
-	<ion-title>Boards</ion-title>
-	<p class="boardLabel">My Boards</p>
+<p class="boardLabel">My Boards</p>
 	<ion-list>
 		<ng-container *ngFor="let board of slothBoards()">
 			<ng-template #normalBoard>
@@ -72,4 +70,4 @@
 		</form>
 	</ng-container>
 	<button ion-button clear (click)="viewCtrl.dismiss()">Done</button>
-</ion-content>
+
