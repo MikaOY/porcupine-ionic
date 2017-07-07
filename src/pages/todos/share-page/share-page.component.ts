@@ -14,6 +14,8 @@ import { TodoService } from '../../../app/services/todo.service';
 
 export class SharePage {
 	sharees: Permission[] = [];
+	shareesEdit: Permission[];
+	shareesView: Permission[];
 	note: string = 'Check this out!';
 	containsEdit: boolean = false;
 	containsViewOnly: boolean = false;

@@ -1,34 +1,36 @@
 <div class="dialog">
-	<h3>Share {{sBoard?.Name}}</h3>
-	<button ion-button clear (click)="viewCtrl.dismiss()"><=</button>
+	<ion-grid no-padding>
+		<ion-row>
+			<button ion-button clear (click)="viewCtrl.dismiss()">
+				<ion-icon name="arrow-round-back"></ion-icon>
+			</button>
+			<h3>Share {{sBoard?.Name}}</h3>
+		</ion-row>
 
 	<!--Shared with list-->
-	<ion-grid no-padding>
-		<p>Shared With</p>
-		<ion-row>
+		<p class="shareHeaders">Who can see this board?</p>
+		<ion-row *ngFor="let perm of getBoardPerms()">
 			<ion-col>
-					<div class="reciLabels" *ngFor="let perm of getBoardPerms()">
-						<ion-row>
-							<ion-col>
-								<p>{{perm.User?.Email}} {{perm.IsViewOnly ? '(view only)' : '(can edit)'}}</p>
-							</ion-col>
-							<ion-col col-2>
-								<button clear ion-button type="button" (click)="unshareBoard(perm)">
-									<ion-icon name="close"></ion-icon>
-								</button>
-							</ion-col>
-						</ion-row>
-					</div>
+				<p>{{perm.User?.Email}} {{perm.IsViewOnly ? '(view only)' : '(can edit)'}}</p>
+			</ion-col>
+			<ion-col col-2>
+				<button clear ion-button type="button" (click)="unshareBoard(perm)">
+					<ion-icon name="close"></ion-icon>
+				</button>
 			</ion-col>
 		</ion-row>
-	</ion-grid>
+		<ion-row *ngIf="getBoardPerms()?.length == 0">
+			<p>No one! :}</p>
+		</ion-row>
+
 
 	<!--New share form-->
 	<div id="addReciContainer">
+		<p class="shareHeaders">Add Collaborators</p>
 		<ng-container *ngIf="containsEdit">
-			<p class="shareLabels">Can edit</p>
 			<ion-list no-lines>
-        <ng-container *ngFor="let permission of sharees">
+				<ion-list-header>Can edit</ion-list-header>
+        <ng-container *ngFor="let permission of shareesEdit">
           <ion-item *ngIf="permission.IsViewOnly == false">
 						{{permission.User?.Email}}
             <button clear ion-button item-right type="button" (click)="removePerm(permission)">
@@ -76,4 +78,6 @@
       <button ion-button clear type="submit">Share</button>
     </form>
 	</div>
+
+	</ion-grid>
 </div>
