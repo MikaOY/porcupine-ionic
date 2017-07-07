@@ -31,6 +31,7 @@ export class BoardManager {
 	}
 
 	unlockBoard(board: Board) {
+		// creates modal for unlocking locked boards
 		let UnlockModal = this.modalCtrl.create(UnlockPage);
 		UnlockModal.onDidDismiss(data => {
 			board.IsLocked = data;
@@ -39,12 +40,14 @@ export class BoardManager {
 	}
 
 	toggleBoard() {
+		// toggles whether form is visible or not
 		this.isAddBoardActive = !this.isAddBoardActive;
 	}
 
 	onAddBoardFormSubmit() {
+		// sets date created to current date, calls the http post, and hides the form again
 		this.newBoard.DateCreated = new Date();
 		this.todoService.addBoard(this.newBoard);
-		this.isAddBoardActive = !this.isAddBoardActive;
+		this.toggleBoard();
 	}
 }

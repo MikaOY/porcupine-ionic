@@ -12,17 +12,10 @@ import { UserService } from '../../app/services/user.service';
 })
 
 export class SideMenu implements OnInit {
-	isWaitOver: boolean = false;
 
 	constructor(private todoService: TodoService,
 							public modalCtrl: ModalController,
 							private userService: UserService) { }
 
-	ngOnInit(): void {
-		setTimeout(() => this.isWaitOver = true, 5000);
-	}
-
-	slothBoards(): Board[] {
-		return this.todoService.slothGetBoards();
-	}
+	ngOnInit(): void { }
 }

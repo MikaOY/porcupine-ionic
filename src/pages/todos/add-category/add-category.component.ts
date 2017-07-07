@@ -14,7 +14,7 @@ import { Board } from '../../../app/classes/board';
 export class AddCategory implements OnInit {
 	priority = Priority;
 	private ColorArray: string[];
-	isColorPickerActive: boolean = true;
+	isColorPickerActive: boolean = false;
 	newCate = new Category('Love', undefined, undefined, undefined, 0, Priority.Low, true, false);
 
 	constructor(public viewCtrl: ViewController,
@@ -23,6 +23,7 @@ export class AddCategory implements OnInit {
 							public settingsService: SettingsService) {}
 
 	ngOnInit(){
+		// retrieves colors for category options
 		this.settingsService.getColors().then(ColorArray => this.ColorArray = ColorArray);
 	}
 

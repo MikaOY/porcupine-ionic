@@ -2,8 +2,11 @@
 	<button ion-button clear (click)="back()">
 		<ion-icon name="arrow-round-back"></ion-icon>
 	</button>
+
 	<h1>Unlock</h1>
+
 	<ion-grid>
+		<!-- Row that displays each number of user input -->
 		<ion-row>
 			<ion-col>
 				<div class="passIn">{{passIn.length > 0 ? passIn.substring(0, 1) : ' '}}</div>
@@ -19,6 +22,7 @@
 			</ion-col>
 		</ion-row>
 
+		<!-- Numpad -->
 		<ion-row>
 			<ion-col *ngFor="let num of row1">
 				<button ion-button class="center" (click)="add(num)">{{num}}</button>
@@ -36,11 +40,13 @@
 		</ion-row>
 		<ion-row>
 			<ion-col>
+				<!-- empty col for formatting purposes -->
 			</ion-col>
 			<ion-col>
 				<button ion-button class="center" (click)="add(0)">0</button>
 			</ion-col>
 			<ion-col>
+				<!-- Deletes last number from user input -->
 				<button ion-button clear class="center" (click)="delete()">
 					<ion-icon name="arrow-round-back"></ion-icon>
 				</button>
